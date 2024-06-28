@@ -10,7 +10,7 @@
       ./hardware-configuration.nix
     ];
   config = {
-    system.nixos.label = "Test";
+    system.nixos.label = "Flake";
     #
     # Bootloader
     boot.loader = {
@@ -35,9 +35,9 @@
             reboot
           }
         ''; # Menus extras
-        extraEntriesBeforeNixOS = true;
+        extraEntriesBeforeNixOS = true; # Menus-extras não ficam no fim da lista! Então melhor emcima
         default = 3; # Menu seleciona NixOS como padrão
-        configurationLimit = 100; # Quantidade máxima de gerações
+        configurationLimit = 100; # Quantidade máxima de gerações exibidas
         extraInstallCommands = ''
           TEMP_FILE="/boot/grub/grubTEMP.tmp"
           GRUB_FILE="/boot/grub/grub.cfg"
@@ -121,7 +121,7 @@
     users.users.yo = {
       isNormalUser = true;
       description = "yo";
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [ "wheel" "networkmanager" ];
       packages = with pkgs; [
         kdePackages.kate
       #  thunderbird
@@ -163,6 +163,8 @@
     # networking.firewall.allowedUDPPorts = [ ... ];
     # Or disable the firewall altogether.
     # networking.firewall.enable = false;
+
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
     system.stateVersion = "24.05"; # Versão inicial do sistema. (Opções padrões).
     # (Mais em "man configuration.nix" ou em "https://nixos.org/nixos/options.html").
