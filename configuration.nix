@@ -123,26 +123,22 @@
       description = "yo";
       extraGroups = [ "wheel" "networkmanager" ];
       packages = with pkgs; [
-        kdePackages.kate
-      #  thunderbird
+        # Browsers
+        firefox
+        # Book Management
+        calibre
+        # Developer Tools
+        kdePackages.kate # Editor de código
+        vscodium         # Editor de código
+        git              # Versionamento
       ];
     };
-
-    # Install firefox.
-    programs.firefox.enable = true;
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
     environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
-      calibre
-      vscodium
-      gparted
-      git
+      gparted # Gerencia partições
     ];
 
     # Some programs need SUID wrappers, can be configured further or are
