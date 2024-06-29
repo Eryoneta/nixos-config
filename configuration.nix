@@ -2,15 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   imports =
     [ # Scan de hardware
       ./hardware-configuration.nix
     ];
   config = {
-    system.nixos.label = "Flake";
+    system.nixos.label = "Home_Manager";
     #
     # Bootloader
     boot.loader = {
@@ -120,18 +118,8 @@
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.yo = {
       isNormalUser = true;
-      description = "yo";
+      description = "Yo";
       extraGroups = [ "wheel" "networkmanager" ];
-      packages = with pkgs; [
-        # Browsers
-        firefox
-        # Book Management
-        calibre
-        # Developer Tools
-        kdePackages.kate # Editor de código
-        vscodium         # Editor de código
-        git              # Versionamento
-      ];
     };
 
     # Allow unfree packages
