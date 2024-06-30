@@ -1,15 +1,12 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }: {
+{ config, pkgs, host, ... }: {
   imports =
-    [ # Scan de hardware
-      ./hardware-configuration.nix
+    [
+      ./hardware-configuration.nix # Scan de hardware
     ];
   config = {
-    system.nixos.label = "Home_Manager";
-    #
+    # Label da Configuração Atual
+    system.nixos.label = "Config_Organization:_Flake_Logic"; #[a-zA-Z0-9:_\.-]*
+
     # Bootloader
     boot.loader = {
       efi = {
@@ -33,7 +30,7 @@
             reboot
           }
         ''; # Menus extras
-        extraEntriesBeforeNixOS = true; # Menus-extras não ficam no fim da lista! Então melhor emcima
+        extraEntriesBeforeNixOS = true; # Menus-extras não ficam no fim da lista! Então melhor encima
         default = 3; # Menu seleciona NixOS como padrão
         configurationLimit = 100; # Quantidade máxima de gerações exibidas
         extraInstallCommands = ''
@@ -44,22 +41,26 @@
       };
     };
 
-    networking.hostName = "LiCo"; # Define your hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    # Computador na Rede
+    networking.hostName = host.name;
 
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-    # Enable networking
+    # Internet
     networking.networkmanager.enable = true;
 
-    # Set your time zone.
+    # Proxy
+    #networking.proxy.default = "http://user:password@proxy:port/";
+    #networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+    # Firewall
+    networking.firewall.enable = true;
+    #networking.firewall.allowedTCPPorts = [ ... ];
+    #networking.firewall.allowedUDPPorts = [ ... ];
+
+    # Fuso Horário
     time.timeZone = "America/Sao_Paulo";
 
-    # Select internationalisation properties.
+    # Localização
     i18n.defaultLocale = "pt_BR.UTF-8";
-
     i18n.extraLocaleSettings = {
       LC_ADDRESS = "pt_BR.UTF-8";
       LC_IDENTIFICATION = "pt_BR.UTF-8";
@@ -72,31 +73,32 @@
       LC_TIME = "pt_BR.UTF-8";
     };
 
-    # Enable the X11 windowing system.
-    # You can disable this if you're only using the Wayland session.
+    # Server X11(Antigo)
     services.xserver.enable = true;
 
-    # Enable the KDE Plasma Desktop Environment.
+    # Display Manager
     services.displayManager = {
       sddm.enable = true;
       autoLogin.enable = true;
-      autoLogin.user = "yo";
+      autoLogin.user = host.user.username;
     };
+
+    # Desktop Environment
     services.desktopManager.plasma6.enable = true;
 
-    # Configure keymap in X11
+    # Layout do Teclado(X11)
     services.xserver.xkb = {
       layout = "br";
       variant = ""; # Lista de todos: man xkeyboard-config
     };
 
-    # Configure console keymap
+    # Layout do Teclado
     console.keyMap = "br-abnt2";
 
-    # Enable CUPS to print documents.
+    # Impressoras
     services.printing.enable = true;
 
-    # Enable sound with pipewire.
+    # Som
     hardware.pulseaudio.enable = false;
     security.rtkit.enable = true;
     services.pipewire = {
@@ -104,53 +106,41 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
-      #jack.enable = true;
-
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
-      #media-session.enable = true;
     };
 
-    # Enable touchpad support (enabled default in most desktopManager).
-    # services.xserver.libinput.enable = true;
+    # Touchpad
+    #services.libinput.enable = true; # Dead touchpad
 
-    # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.users.yo = {
+    # Usuários
+    users.users.${host.user.username} = {
+      description = host.user.name;
       isNormalUser = true;
-      description = "Yo";
       extraGroups = [ "wheel" "networkmanager" ];
     };
 
-    # Allow unfree packages
+    # Pacotes
     nixpkgs.config.allowUnfree = true;
-
     environment.systemPackages = with pkgs; [
-      gparted # Gerencia partições
+      gparted   # Gerencia partições
+      neofetch  # Exibe informações do sistema (Deprecated)
     ];
 
-    # Some programs need SUID wrappers, can be configured further or are
-    # started in user sessions.
-    # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
-    #   enableSSHSupport = true;
-    # };
+    # OpenSSH
+    services.openssh.enable = false;
 
-    # List services that you want to enable:
-
-    # Enable the OpenSSH daemon.
-    # services.openssh.enable = true;
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
-
+    # Recursos Experimentais
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-    system.stateVersion = "24.05"; # Versão inicial do sistema. (Opções padrões).
+    # Nix Store
+    nix.settings.auto-optimise-store = true; # Remove duplicatas e cria hardlinks
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      #options = "--delete-older-than 1w"; # Deleta gerações antigas
+    };
+
+    # Versão Inicial
+    system.stateVersion = "24.05"; # Versão inicial do NixOS. (Opções padrões).
     # (Mais em "man configuration.nix" ou em "https://nixos.org/nixos/options.html").
   };
 }

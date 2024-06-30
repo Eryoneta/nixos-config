@@ -10,21 +10,66 @@
         };
     };
     # Outputs
-    outputs = inputs@{ nixpkgs, home-manager, ... }: {
-        nixosConfigurations = {
-            LiCo = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./configuration.nix
-                    home-manager.nixosModules.home-manager {
-                        home-manager = {
-                          useGlobalPkgs = true;
-                          useUserPackages = true;
-                          users.yo = import ./home/home.nix;
-                        };
-                    }
-                ];
+    outputs = inputs@{ self, ... }:
+        let
+            # Defaults
+            defaultUser = {
+                username = "nixos";
+                name = "nixos";
             };
+            defaultHost = {
+                system = "x86_64-linux";
+                hostname = "nixos";
+                name = "nixos";
+                user = defaultUser;
+            };
+            # Builders
+            systemBuild = host: inputs.nixpkgs.lib.nixosSystem {
+                system = host.system;
+                modules = [
+                    (./hosts + ("/" + host.hostname) + "/configuration.nix")
+                ];
+                specialArgs = {
+                    inherit host;
+                };
+
+            };
+            homeManagerBuild = user: inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = inputs.nixpkgs.legacyPackages.${defaultHost.system};
+                modules = [
+                    (./users + ("/" + user.username) + "/home.nix")
+                ];
+                extraSpecialArgs = {
+                    inherit user;
+                };
+            };
+        in
+            let
+                # Users
+                Yo = defaultUser // {
+                    username = "yo";
+                    name = "Yo";
+                };
+                # Hosts
+                LiCo = defaultHost // {
+                    hostname = "lico";
+                    name = "LiCo";
+                    user = Yo;
+                };
+                NeLiCo = defaultHost // {
+                    hostname = "nelico";
+                    name = "NeLiCo";
+                    user = Yo;
+                };
+            in {
+                # NixOS
+                nixosConfigurations = {
+                    LiCo = systemBuild LiCo;
+                    NeLiCo = systemBuild NeLiCo;
+                };
+                # Home Manager
+                homeConfigurations = {
+                    Yo = homeManagerBuild Yo;
+                };
         };
-    };
 }

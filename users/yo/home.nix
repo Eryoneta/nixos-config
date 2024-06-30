@@ -1,9 +1,10 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, user, ... }: {
 
     home = {
-        username = "yo";
-        homeDirectory = "/home/yo";
-
+        # Usuário
+        username = user.username;
+        homeDirectory = "/home/" + user.username;
+        # Pacotes
         packages = with pkgs; [
             # Browsers
             firefox
@@ -14,9 +15,9 @@
             vscodium         # Editor de código
             git              # Versionamento
         ];
-
-        stateVersion = "24.05";
+        # Versão Inicial
+        stateVersion = "24.05"; # Versão inicial do Home Manager. (Opções padrões).
     };
-
+    # AutoInstall
     programs.home-manager.enable = true;
 }
