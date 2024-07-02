@@ -28,7 +28,7 @@
             systemBuild = host: inputs.nixpkgs.lib.nixosSystem {
                 system = host.system;
                 modules = [
-                    (./. + "./hosts/${host.hostname}/configuration.nix")
+                    (./. + "/hosts/${host.hostname}/configuration.nix")
                 ];
                 specialArgs = {
                     inherit host;
