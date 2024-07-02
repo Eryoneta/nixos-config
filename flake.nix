@@ -52,7 +52,7 @@
                 Yo = defaultUser // {
                     username = "yo";
                     name = "Yo";
-                    dotFolder = dotFolderPathBuild Yo "Utilities/nixos-config";
+                    dotFolder = dotFolderPathBuild Yo "Utilities/SystemConfig/nixos-config";
                 };
                 # Hosts
                 LiCo = defaultHost // {
