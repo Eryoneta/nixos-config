@@ -1,3 +1,0 @@
-[submodule "dotfiles"]
-	path = users/yo/dotfiles
-	url = file:///home/yo/Utilities/SystemConfig/dotfiles
