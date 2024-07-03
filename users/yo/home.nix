@@ -18,6 +18,7 @@
                 vscodium         # Editor de código
                 git              # Versionamento
             ];
+            # Dotfiles
             file.".config/calibre".source = mkOutOfStoreSymlink "${user.dotFolder}/calibre/.config/calibre";
             # Versão Inicial
             stateVersion = "24.05"; # Versão inicial do Home Manager. (Opções padrões).
