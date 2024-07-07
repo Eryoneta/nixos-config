@@ -3,8 +3,9 @@
       mkDefault = value: lib.mkDefault value;
   in {
     config = {
+
       # Label da Configuração Atual
-      system.nixos.label = mkDefault "NixOS"; #[a-zA-Z0-9:_\.-]*
+      system.nixos.label = host.system.label; #[a-zA-Z0-9:_.-]*
 
       # Bootloader
       boot.loader = {
@@ -108,7 +109,7 @@
       };
 
       # Pacotes
-      nixpkgs.config.allowUnfree = true;
+      nixpkgs.config.allowUnfree = mkDefault true;
       environment.systemPackages = with pkgs; [
         gparted   # Gerencia partições
         neofetch  # Exibe informações do sistema (Deprecated)
@@ -126,6 +127,22 @@
         automatic = true;
         dates = "weekly";
         #options = "--delete-older-than 1w"; # Deleta gerações antigas
+      };
+
+      # System Update
+      system.autoUpgrade = {
+        enable = mkDefault true;
+        operation = "switch";
+        flags = [
+          "--update-input"
+          "-L" # Imprime logs durante update
+          "--commit-lock-file" # Grava "flake.lock"
+        ];
+        allowReboot = false;
+        persistent = true;
+        dates = "Fri *-*-* 16:00:00"; # Toda sexta, 14h00
+        randomizedDelaySec = "10min"; # Varia em 10min(Eh, why not?)
+        flake = "git+file://${host.configFolder}";
       };
 
       # Versão Inicial

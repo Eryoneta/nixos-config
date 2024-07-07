@@ -13,20 +13,26 @@
     outputs = inputs@{ self, ... }:
         let
             # Defaults
-            defaultUser = {
-                username = "nixos";
-                name = "nixos";
-                dotFolder = "";
-            };
             defaultHost = {
-                system = "x86_64-linux";
                 hostname = "nixos";
                 name = "nixos";
                 user = defaultUser;
+                system = {
+                    architecture = "x86_64-linux";
+                    label = "";
+                };
+                configFolder = "/etc/nixos";
+            };
+            defaultUser = {
+                username = "nixos";
+                name = "nixos";
+                host = defaultHost;
+                dotFolder = "";
+                configFolder = defaultHost.configFolder;
             };
             # Builders
-            systemBuild = host: inputs.nixpkgs.lib.nixosSystem {
-                system = host.system;
+            buildSystem = host: inputs.nixpkgs.lib.nixosSystem {
+                system = host.system.architecture;
                 modules = [
                     (./. + "/hosts/${host.hostname}/configuration.nix")
                 ];
@@ -35,8 +41,8 @@
                 };
 
             };
-            homeManagerBuild = user: inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = inputs.nixpkgs.legacyPackages.${defaultHost.system};
+            buildHomeManager = user: inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = inputs.nixpkgs.legacyPackages.${user.host.system.architecture};
                 modules = [
                     (./. + "/users/${user.username}/home.nix")
                 ];
@@ -44,36 +50,51 @@
                     inherit user;
                 };
             };
-            # Dotfiles
-            dotFolderPathBuild = user: flakePath: "/home/${user.username}/${flakePath}/users/${user.username}/dotfiles";
+            buildHost = user: host: defaultHost // {
+                hostname = host.hostname;
+                name = host.name;
+                system = defaultHost.system // {
+                    label = host.system.label;
+                };
+                user = user;
+                configFolder = user.configFolder;
+            };
+            buildUser = host: user: defaultUser // {
+                username = user.username;
+                name = user.name;
+                host = host;
+                configFolder = user.configFolder;
+                dotFolder = buildDotFolderPath user.username user.configFolder;
+            };
+            buildDotFolderPath = username: configFolderPath: "${configFolderPath}/users/${username}/dotfiles";
         in
             let
-                # Users
-                Yo = defaultUser // {
-                    username = "yo";
-                    name = "Yo";
-                    dotFolder = dotFolderPathBuild Yo "Utilities/SystemConfig/nixos-config";
-                };
                 # Hosts
-                LiCo = defaultHost // {
+                LiCo = user: buildHost user {
                     hostname = "lico";
                     name = "LiCo";
-                    user = Yo;
+                    system.label = "Config_Organization:_Reordem"; #[a-zA-Z0-9:_.-]*
                 };
-                NeLiCo = defaultHost // {
+                NeLiCo = user: buildHost user {
                     hostname = "nelico";
                     name = "NeLiCo";
-                    user = Yo;
+                    system.label = ""; #[a-zA-Z0-9:_.-]*
+                };
+                # Users
+                Yo = host: buildUser host {
+                    username = "yo";
+                    name = "Yo";
+                    configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
                 };
             in {
                 # NixOS
                 nixosConfigurations = {
-                    LiCo = systemBuild LiCo;
-                    NeLiCo = systemBuild NeLiCo;
+                    "Yo@LiCo" = buildSystem (LiCo (Yo { }));
+                    "Yo@NeLiCo" = buildSystem (NeLiCo (Yo { }));
                 };
                 # Home Manager
                 homeConfigurations = {
-                    Yo = homeManagerBuild Yo;
+                    "Yo@LiCo" = buildHomeManager (Yo (LiCo { }));
                 };
-        };
+            };
 }

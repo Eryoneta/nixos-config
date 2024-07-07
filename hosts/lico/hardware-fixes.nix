@@ -1,5 +1,6 @@
 { config, pkgs, host, ... }: {
   config = {
+
     # Atrasa Grub para que seu video carregue
     boot.loader.grub.extraInstallCommands = ''
       TEMP_FILE="/boot/grub/grubTEMP.tmp"
@@ -8,6 +9,6 @@
     '';
 
     # Dead touchpad
-    #services.libinput.enable = true;
+    #services.libinput.enable = false;
   };
 }
