@@ -113,6 +113,7 @@
       environment.systemPackages = with pkgs; [
         gparted   # Gerencia partições
         neofetch  # Exibe informações do sistema (Deprecated)
+        home-manager
       ];
 
       # OpenSSH

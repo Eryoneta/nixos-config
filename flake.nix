@@ -35,6 +35,16 @@
                 system = host.system.architecture;
                 modules = [
                     (./. + "/hosts/${host.hostname}/configuration.nix")
+                    inputs.home-manager.nixosModules.home-manager {
+                        home-manager = {
+                            useGlobalPkgs = true;
+                            useUserPackages = true;
+                            users.${host.user.username} = import (./. + "/users/${host.user.username}/home.nix");
+                            extraSpecialArgs = {
+                                user = host.user;
+                            };
+                        };
+                    }
                 ];
                 specialArgs = {
                     inherit host;
@@ -73,7 +83,7 @@
                 LiCo = user: buildHost user {
                     hostname = "lico";
                     name = "LiCo";
-                    system.label = "Config_Organization:_Reordem"; #[a-zA-Z0-9:_.-]*
+                    system.label = "Config_Organization:_Dual_Manager"; #[a-zA-Z0-9:_.-]*
                 };
                 NeLiCo = user: buildHost user {
                     hostname = "nelico";

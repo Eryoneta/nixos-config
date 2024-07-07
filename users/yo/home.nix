@@ -6,7 +6,7 @@
         home = {
             # Usuário
             username = user.username;
-            homeDirectory = "/home/" + user.username;
+            homeDirectory = "/home/${user.username}";
             # Pacotes
             packages = with pkgs; [
                 # Browsers
