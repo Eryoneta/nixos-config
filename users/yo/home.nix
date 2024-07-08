@@ -17,6 +17,8 @@
                 kdePackages.kate # Editor de código
                 vscodium         # Editor de código
                 git              # Versionamento
+                # Tools
+                kdePackages.ktorrent
             ];
             # Dotfiles
             file.".config/calibre".source = mkOutOfStoreSymlink "${user.dotFolder}/calibre/.config/calibre";

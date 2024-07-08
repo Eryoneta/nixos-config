@@ -31,80 +31,91 @@
                 configFolder = defaultHost.configFolder;
             };
             # Builders
-            buildSystem = host: inputs.nixpkgs.lib.nixosSystem {
-                system = host.system.architecture;
+            buildSystem = pair: inputs.nixpkgs.lib.nixosSystem {
+                system = pair.host.system.architecture;
                 modules = [
-                    (./. + "/hosts/${host.hostname}/configuration.nix")
+                    (./. + "/hosts/${pair.host.hostname}/configuration.nix")
                     inputs.home-manager.nixosModules.home-manager {
                         home-manager = {
                             useGlobalPkgs = true;
                             useUserPackages = true;
-                            users.${host.user.username} = import (./. + "/users/${host.user.username}/home.nix");
+                            users.${pair.user.username} = import (./. + "/users/${pair.user.username}/home.nix");
                             extraSpecialArgs = {
-                                user = host.user;
+                                user = pair.user;
                             };
                         };
                     }
                 ];
                 specialArgs = {
-                    inherit host;
+                    host = pair.host;
                 };
 
             };
-            buildHomeManager = user: inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = inputs.nixpkgs.legacyPackages.${user.host.system.architecture};
+            buildHomeManager = pair: inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = inputs.nixpkgs.legacyPackages.${pair.host.system.architecture};
                 modules = [
-                    (./. + "/users/${user.username}/home.nix")
+                    (./. + "/users/${pair.user.username}/home.nix")
                 ];
                 extraSpecialArgs = {
-                    inherit user;
+                    user = pair.user;
                 };
             };
-            buildHost = user: host: defaultHost // {
+            buildHost = host: defaultHost // {
                 hostname = host.hostname;
                 name = host.name;
                 system = defaultHost.system // {
                     label = host.system.label;
                 };
-                user = user;
-                configFolder = user.configFolder;
             };
-            buildUser = host: user: defaultUser // {
+            buildUser = user: defaultUser // {
                 username = user.username;
                 name = user.name;
-                host = host;
                 configFolder = user.configFolder;
                 dotFolder = buildDotFolderPath user.username user.configFolder;
             };
             buildDotFolderPath = username: configFolderPath: "${configFolderPath}/users/${username}/dotfiles";
+            buildPair = host: user: {
+                user = user // {
+                    host = host // {
+                        user = user; # User -> Host -> User -> void
+                        configFolder = user.configFolder;
+                    };
+                };
+                host = host // {
+                    user = user // {
+                        host = host; # Host -> User -> Host -> void
+                    };
+                    configFolder = user.configFolder;
+                };
+            };
         in
             let
                 # Hosts
-                LiCo = user: buildHost user {
+                LiCo = buildHost {
                     hostname = "lico";
                     name = "LiCo";
-                    system.label = "Config_Organization:_Dual_Manager"; #[a-zA-Z0-9:_.-]*
+                    system.label = "Config_Organization:_Dual_Manager_Teste"; #[a-zA-Z0-9:_.-]*
                 };
-                NeLiCo = user: buildHost user {
+                NeLiCo = buildHost {
                     hostname = "nelico";
                     name = "NeLiCo";
                     system.label = ""; #[a-zA-Z0-9:_.-]*
                 };
                 # Users
-                Yo = host: buildUser host {
+                Yo = buildUser {
                     username = "yo";
                     name = "Yo";
                     configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
                 };
             in {
-                # NixOS
+                # NixOS + Home Manager
                 nixosConfigurations = {
-                    "Yo@LiCo" = buildSystem (LiCo (Yo { }));
-                    "Yo@NeLiCo" = buildSystem (NeLiCo (Yo { }));
+                    "Yo@LiCo" = buildSystem (buildPair LiCo Yo);
+                    "Yo@NeLiCo" = buildSystem (buildPair NeLiCo Yo);
                 };
                 # Home Manager
                 homeConfigurations = {
-                    "Yo@LiCo" = buildHomeManager (Yo (LiCo { }));
+                    "Yo@LiCo" = buildHomeManager (buildPair LiCo Yo);
                 };
             };
 }
