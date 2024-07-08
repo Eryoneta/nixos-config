@@ -52,7 +52,7 @@
                                     system = pair.host.system.architecture;
                                     config.allowUnfree = true;
                                 };
-                                pkgs-unstable = inputs.nixpkgs-unstable {
+                                pkgs-unstable = import inputs.nixpkgs-unstable {
                                     system = pair.host.system.architecture;
                                     config.allowUnfree = true;
                                 };
@@ -76,7 +76,7 @@
                         system = pair.host.system.architecture;
                         config.allowUnfree = true;
                     };
-                    pkgs-unstable = inputs.nixpkgs-unstable {
+                    pkgs-unstable = import inputs.nixpkgs-unstable {
                         system = pair.host.system.architecture;
                         config.allowUnfree = true;
                     };
