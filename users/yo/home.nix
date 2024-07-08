@@ -1,4 +1,4 @@
-{ config, pkgs, user, ... }:
+{ config, pkgs, pkgs-stable, pkgs-unstable, user, ... }:
     let
         mkOutOfStoreSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
     in {
@@ -8,18 +8,23 @@
             username = user.username;
             homeDirectory = "/home/${user.username}";
             # Pacotes
-            packages = with pkgs; [
-                # Browsers
-                firefox
-                # Book Management
-                calibre
-                # Developer Tools
-                kdePackages.kate # Editor de código
-                vscodium         # Editor de código
-                git              # Versionamento
-                # Tools
-                kdePackages.ktorrent
-            ];
+            packages = []
+            # Pacotes: Stable, AutoUpdate
+            ++ (with pkgs; [
+                firefox                 # Navegador
+                kdePackages.kate        # Editor de código
+                vscodium                # Editor de código
+                git                     # Versionamento
+                kdePackages.ktorrent    # Torrent
+            ])
+            # Pacotes: Stable, Manual Update
+            ++ (with pkgs-stable; [
+                calibre                 # Gerenciador de Livros
+            ])
+            # Pacotes: Unstable, Manual Update
+            ++ (with pkgs-unstable; [
+
+            ]);
             # Dotfiles
             file.".config/calibre".source = mkOutOfStoreSymlink "${user.dotFolder}/calibre/.config/calibre";
             # Versão Inicial

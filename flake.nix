@@ -3,11 +3,17 @@
     description = "Yo Flake";
     # Inputs
     inputs = {
+        # NixOS (AutoUpdate)
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+        # Home-Manager (AutoUpdate)
         home-manager = {
             url = "github:nix-community/home-manager/release-24.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        # Packages (ManualUpdate)
+        nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+        # Packages (ManualUpdate)
+        nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     # Outputs
     outputs = inputs@{ self, ... }:
@@ -42,6 +48,14 @@
                             users.${pair.user.username} = import (./. + "/users/${pair.user.username}/home.nix");
                             extraSpecialArgs = {
                                 user = pair.user;
+                                pkgs-stable = import inputs.nixpkgs-stable {
+                                    system = pair.host.system.architecture;
+                                    config.allowUnfree = true;
+                                };
+                                pkgs-unstable = inputs.nixpkgs-unstable {
+                                    system = pair.host.system.architecture;
+                                    config.allowUnfree = true;
+                                };
                             };
                         };
                     }
@@ -58,6 +72,14 @@
                 ];
                 extraSpecialArgs = {
                     user = pair.user;
+                    pkgs-stable = import inputs.nixpkgs-stable {
+                        system = pair.host.system.architecture;
+                        config.allowUnfree = true;
+                    };
+                    pkgs-unstable = inputs.nixpkgs-unstable {
+                        system = pair.host.system.architecture;
+                        config.allowUnfree = true;
+                    };
                 };
             };
             buildHost = host: defaultHost // {
@@ -94,7 +116,7 @@
                 LiCo = buildHost {
                     hostname = "lico";
                     name = "LiCo";
-                    system.label = "Config_Organization:_Dual_Manager_Teste"; #[a-zA-Z0-9:_.-]*
+                    system.label = "Config_Organization:_AutoUpgrade"; #[a-zA-Z0-9:_.-]*
                 };
                 NeLiCo = buildHost {
                     hostname = "nelico";
