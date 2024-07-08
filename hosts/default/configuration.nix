@@ -111,9 +111,9 @@
       # Pacotes
       nixpkgs.config.allowUnfree = mkDefault true;
       environment.systemPackages = with pkgs; [
-        gparted   # Gerencia partições
-        neofetch  # Exibe informações do sistema (Deprecated)
-        home-manager
+        gparted       # Gerencia partições
+        neofetch      # Exibe informações do sistema (Deprecated)
+        home-manager  # Gerencia HOME
       ];
 
       # OpenSSH
@@ -122,29 +122,57 @@
       # Recursos Experimentais
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-      # Nix Store
-      nix.settings.auto-optimise-store = true; # Remove duplicatas e cria hardlinks
-      nix.gc = {
-        automatic = true;
-        dates = "weekly";
-        #options = "--delete-older-than 1w"; # Deleta gerações antigas
-      };
-
       # System Update
       system.autoUpgrade = {
         enable = mkDefault true;
-        operation = "switch";
+        operation = "boot";
         flags = [
-          "--update-input"
-          "-L" # Imprime logs durante update
+          "--profile-name System_Updates"
+          "--update-input nixpkgs"      # Update nixos
+          "--update-input home-manager" # Update home-manager
           "--commit-lock-file" # Grava "flake.lock"
+          "-L" # Imprime logs durante update
         ];
         allowReboot = false;
         persistent = true;
-        dates = "Fri *-*-* 16:00:00"; # Toda sexta, 14h00
-        randomizedDelaySec = "10min"; # Varia em 10min(Eh, why not?)
-        flake = "git+file://${host.configFolder}";
+        dates = "Fri *-*-* 16:00:00"; # Toda sexta, 16h00
+        randomizedDelaySec = "10min"; # Varia em 10min(Para não travar a rede em conjunto com outros PCs)
+        flake = "git+file://${host.configFolder}#${host.user.name}@${host.name}";
       };
+
+      # Garbage Collector
+      systemd = (
+        let
+          name = "trim-system-update-profile";
+          description = "Trim System_Updates profile";
+          dates = "Fri *-*-* 17:00:00";
+        in {
+          timers.${name} = {
+            description = description;
+            wantedBy = [ "timers.target" ];
+            partOf = [ "${name}.service" ];
+            timerConfig.Persistent = true;
+          };
+          services.${name} = {
+            serviceConfig.Type = "oneshot";
+            restartIfChanged = false;
+            path = with pkgs; [
+              nix
+            ];
+            script = ''
+              nix-env --delete-generations 60d --profile /nix/var/nix/profiles/system-profiles/System_Updates
+            '';
+            startAt = dates;
+          };
+        }
+      );
+      nix.gc = {
+        automatic = true;
+        dates = "Fri *-*-* 18:00:00"; # Toda sexta, 18h00
+      };
+
+      # Nix Store
+      nix.settings.auto-optimise-store = true; # Remove duplicatas e cria hardlinks
 
       # Versão Inicial
       system.stateVersion = "24.05"; # Versão inicial do NixOS. (Opções padrões).

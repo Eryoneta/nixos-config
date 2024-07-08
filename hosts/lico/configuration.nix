@@ -19,6 +19,6 @@
     };
 
     # System Update
-    system.autoUpgrade.enable = false;
+    #system.autoUpgrade.enable = false;
   };
 }
