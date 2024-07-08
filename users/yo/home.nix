@@ -19,11 +19,11 @@
             ])
             # Pacotes: Stable, Manual Update
             ++ (with pkgs-stable; [
-                calibre                 # Gerenciador de Livros
+
             ])
             # Pacotes: Unstable, Manual Update
             ++ (with pkgs-unstable; [
-
+                calibre                 # Gerenciador de Livros
             ]);
             # Dotfiles
             file.".config/calibre".source = mkOutOfStoreSymlink "${user.dotFolder}/calibre/.config/calibre";
