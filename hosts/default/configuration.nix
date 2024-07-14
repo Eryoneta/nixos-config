@@ -21,6 +21,12 @@
         extraGroups = [ "wheel" "networkmanager" ];
       };
 
+      # Autologin
+      services.displayManager = {
+        autoLogin.enable = mkDefault false;
+        autoLogin.user = host.user.username;
+      };
+
       # Pacotes
       nixpkgs.config.allowUnfree = mkDefault true;
       environment.systemPackages = with pkgs; [
@@ -28,6 +34,7 @@
         neofetch      # Exibe informações do sistema (Deprecated)
         home-manager  # Gerencia home
         openssh
+        git
       ];
 
       # Garbage Collector

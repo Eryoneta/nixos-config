@@ -13,10 +13,7 @@
     ];
 
     # Autologin
-    services.displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = host.user.username;
-    };
+    services.displayManager.autoLogin.enable = true;
 
     # System Update
     #system.autoUpgrade.enable = false;
