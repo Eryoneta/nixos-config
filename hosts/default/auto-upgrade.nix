@@ -21,11 +21,6 @@
           enable= true;
           systemUser = host.user.username;
           directory = host.configFolder;
-          remote = "origin";
-          branches = {
-            local = "main";
-            remote = "main";
-          };
           push = true;
         };
         updateFlakeLock = {

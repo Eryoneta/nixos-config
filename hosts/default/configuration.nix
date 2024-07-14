@@ -51,7 +51,7 @@
 
       # Firewall
       networking.firewall.enable = true;
-      networking.firewall.allowedTCPPorts = [ 22 ];
+      networking.firewall.allowedTCPPorts = [ ];
       #networking.firewall.allowedUDPPorts = [ ... ];
 
       # Fuso Horário
@@ -133,6 +133,7 @@
       services.openssh = {
         enable = false;
         ports = [ 22 ];
+        openFirewall = true;
         settings = {
           PermitRootLogin = "no";
           PasswordAuthentication = true;
