@@ -116,7 +116,7 @@
                 LiCo = buildHost {
                     hostname = "lico";
                     name = "LiCo";
-                    system.label = "Config_Organization:_AutoUpgrade"; #[a-zA-Z0-9:_.-]*
+                    system.label = "Config_Organization:_Default_Reordem"; #[a-zA-Z0-9:_.-]*
                 };
                 NeLiCo = buildHost {
                     hostname = "nelico";
