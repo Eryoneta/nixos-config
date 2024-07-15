@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, host, lib, ... }:
+{ config, host, lib, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
@@ -8,6 +8,7 @@
       ./networking.nix
       ./gui.nix
       ./auto-upgrade.nix
+      ./programs.nix
     ];
     config = {
 
@@ -26,15 +27,6 @@
         autoLogin.enable = mkDefault false;
         autoLogin.user = host.user.username;
       };
-
-      # Pacotes
-      nixpkgs.config.allowUnfree = true;
-      environment.systemPackages = with pkgs-bundle.stable; [
-        gparted       # Gerencia partições
-        neofetch      # Exibe informações do sistema (Deprecated)
-        home-manager  # Gerencia home
-        git           # Versionamento
-      ];
 
       # Garbage Collector
       nix.gc = {

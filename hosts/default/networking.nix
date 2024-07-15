@@ -36,16 +36,5 @@
         LC_TIME = "pt_BR.UTF-8";
       };
 
-      # OpenSSH
-      services.openssh = {
-        enable = mkDefault false;
-        ports = [ 22 ];
-        openFirewall = true;
-        settings = {
-          PermitRootLogin = "no";
-          PasswordAuthentication = false;
-        };
-      };
-
     };
 }
