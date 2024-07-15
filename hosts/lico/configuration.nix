@@ -1,7 +1,7 @@
 { config, pkgs-bundle, host, ... }: {
   imports = [
+    ../default/configuration.nix # Default
     ./hardware-configuration.nix # Scan de hardware
-    ../default/configuration.nix # Defaults
     ./hardware-fixes.nix # Hardware fixes
   ];
   config = {
