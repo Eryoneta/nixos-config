@@ -14,21 +14,8 @@
           default = "root";
         };
         directory = lib.mkOption {
-          type = lib.types.str;
+          type = lib.types.path;
           description = "The path to the Git directory.";
-        };
-        remote = lib.mkOption {
-          type = lib.types.str;
-          description = "The remote repository name.";
-          default = "origin";
-        };
-        branches = lib.mkOption {
-          type = lib.types.attrs;
-          description = "Which local and remote branches to use.";
-          default = {
-            local = "main";
-            remote = "main";
-          };
         };
         pull = lib.mkEnableOption "Pulls commits from remote.";
         commit = lib.mkEnableOption "Realizes a commit of all files.";
@@ -41,24 +28,6 @@
           assertion = !(cfg_gs.directory == "");
           message = ''
             The option 'system.autoUpgrade.gitSupport.directory' cannot be empty
-          '';
-        }
-        {
-          assertion = !(cfg_gs.remote == "");
-          message = ''
-            The option 'system.autoUpgrade.gitSupport.remote' cannot be empty
-          '';
-        }
-        {
-          assertion = !(cfg_gs.branches.local == "");
-          message = ''
-            The option 'system.autoUpgrade.gitSupport.branches.local' cannot be empty
-          '';
-        }
-        {
-          assertion = !(cfg_gs.branches.remote == "");
-          message = ''
-            The option 'system.autoUpgrade.gitSupport.branches.remote' cannot be empty
           '';
         }
       ];

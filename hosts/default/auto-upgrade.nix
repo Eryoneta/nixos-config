@@ -21,18 +21,15 @@
           enable= true;
           systemUser = host.user.username;
           directory = host.configFolder;
-          remote = "origin";
-          branches = {
-            local = "main";
-            remote = "main";
-          };
           push = true;
         };
         updateFlakeLock = {
           enable = true;
           inputs = [
-            "nixpkgs"       # Update nixos
-            "home-manager"  # Update home-manager
+            "nixpkgs"           # Update nixos
+            "home-manager"      # Update home-manager
+            "nixpkgs-stable"    # Update stable-packages
+            "nixpkgs-unstable"  # Update unstable-packages
           ];
           commitLockFile = true; # Grava "flake.lock"
         };

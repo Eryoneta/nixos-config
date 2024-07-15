@@ -1,4 +1,4 @@
-{ config, pkgs, host, ... }: {
+{ config, pkgs-bundle, host, ... }: {
   imports = [
     ./hardware-configuration.nix # Scan de hardware
     ../default/configuration.nix # Defaults
@@ -8,15 +8,12 @@
 
     # Pacotes
     nixpkgs.config.allowUnfree = true;
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs-bundle; [
       #
     ];
 
     # Autologin
-    services.displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = host.user.username;
-    };
+    services.displayManager.autoLogin.enable = true;
 
     # System Update
     #system.autoUpgrade.enable = false;

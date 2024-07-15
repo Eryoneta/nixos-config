@@ -25,7 +25,7 @@
           '';
         };
         directory = lib.mkOption {
-          type = lib.types.str;
+          type = lib.types.path;
           description = ''
             The path to the flake directory.
 
