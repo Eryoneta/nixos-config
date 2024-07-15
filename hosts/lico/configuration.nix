@@ -1,4 +1,4 @@
-{ config, pkgs, host, ... }: {
+{ config, pkgs-bundle, host, ... }: {
   imports = [
     ./hardware-configuration.nix # Scan de hardware
     ../default/configuration.nix # Defaults
@@ -8,7 +8,7 @@
 
     # Pacotes
     nixpkgs.config.allowUnfree = true;
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs-bundle; [
       #
     ];
 

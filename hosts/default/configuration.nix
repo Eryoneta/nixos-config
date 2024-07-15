@@ -1,4 +1,4 @@
-{ config, pkgs, host, lib, ... }:
+{ config, pkgs-bundle, host, lib, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
@@ -28,13 +28,12 @@
       };
 
       # Pacotes
-      nixpkgs.config.allowUnfree = mkDefault true;
-      environment.systemPackages = with pkgs; [
+      nixpkgs.config.allowUnfree = true;
+      environment.systemPackages = with pkgs-bundle.stable; [
         gparted       # Gerencia partições
         neofetch      # Exibe informações do sistema (Deprecated)
         home-manager  # Gerencia home
-        openssh
-        git
+        git           # Versionamento
       ];
 
       # Garbage Collector
