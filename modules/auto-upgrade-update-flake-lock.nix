@@ -1,4 +1,4 @@
-{ config, options, pkgs, host, lib, ... }:
+{ config, options, pkgs, lib, ... }:
   let
     # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     # Depende de "flake"
@@ -99,6 +99,11 @@
             # Nix Flake Update
             echo "Updating flake.lock..."
             nix flake update ${toString cfg_ufl.inputs} ${lib.optionalString cfg_ufl.commitLockFile "--commit-lock-file"} --flake "${cfg_ufl.directory}"
+            # Git deve ser usado para mudar o nome do autor
+            # Acessa pasta
+            cd "${cfg_ufl.directory}"
+            # Muda o nome do autor do commit
+            git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${config.networking.hostName}>"
           '';
         };
 
