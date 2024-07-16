@@ -43,22 +43,14 @@
       home-manager = extraArgs.home-manager;
 
       # Pacotes
-      importPkgsStable = host: import extraArgs.nixpkgs-stable {
-        system = host.system.architecture;
-        config.allowUnfree = true;
-      };
-      importPkgsUnstable = host: import extraArgs.nixpkgs-unstable {
-        system = host.system.architecture;
-        config.allowUnfree = true;
-      };
-      importPkgsUnstableFixed = host: import extraArgs.nixpkgs-unstable-fixed {
+      pkgsConfig = host: {
         system = host.system.architecture;
         config.allowUnfree = true;
       };
       buildPkgsBundle = host: {
-        stable = (importPkgsStable host);
-        unstable = (importPkgsUnstable host);
-        unstable-fixed = (importPkgsUnstableFixed host);
+        stable = (import extraArgs.nixpkgs-stable (pkgsConfig host));
+        unstable = (import extraArgs.nixpkgs-unstable (pkgsConfig host));
+        unstable-fixed = (import extraArgs.nixpkgs-unstable-fixed (pkgsConfig host));
       };
       
     in (

@@ -13,7 +13,7 @@
         git           # Versionamento
       ];
 
-      # OpenSSH
+      # OpenSSH (Server SSH)
       services.openssh.enable = mkDefault false;
       services.openssh = {
         ports = [ 22 ];
@@ -22,10 +22,6 @@
           PermitRootLogin = "no";
           PasswordAuthentication = false;
         };
-      };
-      programs.ssh = {
-        startAgent = true;
-        package = pkgs-bundle.stable.openssh;
       };
 
     };
