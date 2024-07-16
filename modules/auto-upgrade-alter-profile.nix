@@ -10,7 +10,7 @@
           Enables a secondary profile menu entry inside the bootloader to separate system-updates generatons from others.
         '';
         name = lib.mkOption {
-          type = lib.types.strMatching "[a-zA-Z0-9:_\\.-]*";
+          type = lib.types.strMatching "[a-zA-Z0-9:_.-]*";
           description = ''
             The name of the profile.
 
