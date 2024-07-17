@@ -1,6 +1,7 @@
 {
   # Description
   description = "Yo Flake";
+
   # Inputs
   inputs = {
 
@@ -21,6 +22,7 @@
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   };
+
   # Outputs
   outputs = { self, ... }@extraArgs: (
     # let 
@@ -38,11 +40,11 @@
     # )
     let
 
-      # Sistema
+      # Sistem
       nixpkgs = extraArgs.nixpkgs;
       home-manager = extraArgs.home-manager;
 
-      # Pacotes
+      # Packages
       pkgsConfig = host: {
         system = host.system.architecture;
         config.allowUnfree = true;
@@ -173,12 +175,15 @@
           # NixOS + Home Manager
           nixosConfigurations = {
             "Yo@LiCo" = buildSystem (buildPair LiCo Yo);
-            "Yo@NeLiCo" = buildSystem (buildPair NeLiCo Yo);
+            #"Yo@NeLiCo" = buildSystem (buildPair NeLiCo Yo);
+            #"Eryoneta@NeLiCo" = buildSystem (buildPair NeLiCo Eryoneta);
           };
           
           # Home Manager
           homeConfigurations = {
             "Yo@LiCo" = buildHomeManager (buildPair LiCo Yo);
+            #"Yo@NeLiCo" = buildHomeManager (buildPair NeLiCo Yo);
+            #"Eryoneta@NeLiCo" = buildHomeManager (buildPair NeLiCo Eryoneta);
           };
 
         }
