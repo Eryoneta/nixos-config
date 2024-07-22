@@ -43,7 +43,7 @@
       LiCo = helper.buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = "Flake_Reorder"; #[a-zA-Z0-9:_.-]*
+        system.label = "Hardware_Re-Label"; #[a-zA-Z0-9:_.-]*
       };
       NeLiCo = helper.buildHost {
         hostname = "nelico";
