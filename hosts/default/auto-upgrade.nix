@@ -21,6 +21,7 @@
           enable= true;
           systemUser = host.user.username;
           directory = host.configFolder;
+          markDirectoryAsSafe = true;
           push = true;
         };
         updateFlakeLock = {
