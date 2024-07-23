@@ -1,8 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, options, pkgs, lib, ... }:
   let
     # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;
+    hasHomeManager = (builtins.hasAttr "home-manager" options);
   in {
 
     options = {
@@ -20,6 +21,14 @@
           type = lib.types.path;
           description = "The path to the Git directory.";
         };
+
+        markDirectoryAsSafe = lib.mkEnableOption ''
+          Marks the Git directory as a safe-directory to be run by root.
+
+          This allows 'nixos-upgrade.service'(Run as root) to read a user flake.
+
+          Note that this edits '/root/.gitconfig' and requires 'home-manager'.
+        '';
 
         pull = lib.mkEnableOption "Pulls commits from remote.";
 
@@ -52,6 +61,15 @@
           '';
         }
       ];
+
+      # Safe Directory
+      home-manager.users.root.home = {
+        file.".gitconfig".text = lib.mkAfter ''
+          [safe]
+            directory = ${cfg_gs.directory}/.git
+        '';
+        stateVersion = lib.mkIf (cfg_gs.systemUser != "root") (lib.mkDefault config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion);
+      };
 
       # Git Pull & Git Commit
       systemd.services."nixos-upgrade-git-prepare" = {
