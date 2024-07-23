@@ -102,8 +102,11 @@
             # Git deve ser usado para mudar o nome do autor
             # Acessa pasta
             cd "${cfg_ufl.directory}"
-            # Muda o nome do autor do commit
-            git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${config.networking.hostName}>"
+            # Se o arquivo modificado é o 'flake.lock', então 'git commit' para mudar o nome do autor
+            if [[ $(git diff --name-only HEAD HEAD~1) == 'flake.lock' ]]; then
+              # Muda o nome do autor do commit
+              git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${config.networking.hostName}>";
+            fi
           '';
         };
 
