@@ -10,5 +10,6 @@
 
     # Dead touchpad
     #services.libinput.enable = false;
+    
   };
 }

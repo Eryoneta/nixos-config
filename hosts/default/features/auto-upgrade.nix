@@ -1,12 +1,14 @@
-{ config, pkgs, host, lib, ... }:
+{ config, host, lib, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
+
     imports = [
-      ../../modules/auto-upgrade-git-support.nix
-      ../../modules/auto-upgrade-update-flake-lock.nix
-      ../../modules/auto-upgrade-alter-profile.nix
+      ../../../modules/auto-upgrade-git-support.nix
+      ../../../modules/auto-upgrade-update-flake-lock.nix
+      ../../../modules/auto-upgrade-alter-profile.nix
     ];
+
     config = {
       # System AutoUpgrade
       system.autoUpgrade = {
@@ -14,31 +16,36 @@
         operation = "boot";
         allowReboot = false;
         persistent = true;
-        dates = "Tue *-*-* 16:00:00"; # Toda sexta, 16h00
-        randomizedDelaySec = "10min"; # Varia em 10min(Para não travar a rede em conjunto com outros PCs)
+        dates = mkDefault "Tue *-*-* 16:00:00"; # Toda sexta, 16h00
+        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não travar a rede em conjunto com outros PCs)
         flake = "git+file://${host.configFolder}#${host.user.name}@${host.name}";
+
         gitSupport = {
-          enable= true;
+          enable = mkDefault true;
           systemUser = host.user.username;
           directory = host.configFolder;
-          markDirectoryAsSafe = true;
-          push = true;
+          markDirectoryAsSafe = mkDefault true;
+          push = mkDefault true;
         };
+
         updateFlakeLock = {
-          enable = true;
+          enable = mkDefault true;
           inputs = [
             "nixpkgs"           # Update nixos
             "home-manager"      # Update home-manager
             "nixpkgs-stable"    # Update stable-packages
             "nixpkgs-unstable"  # Update unstable-packages
           ];
-          commitLockFile = true; # Grava "flake.lock"
+          commitLockFile = mkDefault true; # Grava "flake.lock"
         };
+
         alterProfile = {
-          enable = true;
-          name = "System_Updates";
-          configurationLimit = 24;
+          enable = mkDefault true;
+          name = mkDefault "System_Updates";
+          configurationLimit = mkDefault 24;
         };
+        
       };
     };
+
   }
