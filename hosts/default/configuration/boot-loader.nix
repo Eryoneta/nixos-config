@@ -6,11 +6,14 @@
 
       # Bootloader
       boot.loader = {
+
         efi = {
           canTouchEfiVariables = true;
           efiSysMountPoint = "/boot";
         };
+
         timeout = mkDefault 10; # 10 segundos
+
         grub = {
           enable = true;
           efiSupport = true;
@@ -31,6 +34,7 @@
           default = 3; # Menu seleciona NixOS como padrão
           configurationLimit = mkDefault 100; # Quantidade máxima de gerações exibidas
         };
+        
       };
 
     };

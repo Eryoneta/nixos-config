@@ -1,15 +1,17 @@
-{ config, user, ... }:
-  let
-    mkOutOfStoreSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
-  in {
+{ config, user, ... }: {
     
-    imports = [
-      ../default/home.nix # Default
-      ./programs.nix # Programas
-    ];
+  imports = [
+    ../default/home.nix # Default
+    ./programs.nix # Programas
+  ];
 
-    config = {
+  # Yo
+  config = {
+    
+    home = {
 
     };
+    
+  };
 
-  }
+}

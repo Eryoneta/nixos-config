@@ -1,21 +1,18 @@
-{ config, pkgs-bundle, host, ... }: {
+{ config, host, ... }: {
+
   imports = [
     ../default/configuration.nix # Default
     ./hardware-configuration.nix # Scan de hardware
     ./hardware-fixes.nix # Hardware fixes
+    ./programs.nix # Programs
   ];
-  config = {
 
-    # Pacotes
-    nixpkgs.config.allowUnfree = true;
-    environment.systemPackages = with pkgs-bundle; [
-      #
-    ];
+  # LiCo
+  config = {
 
     # Autologin
     services.displayManager.autoLogin.enable = true;
 
-    # System Update
-    #system.autoUpgrade.enable = false;
   };
+
 }
