@@ -20,9 +20,17 @@ let
       username = "nixos";
       name = "nixos";
       host = default.host;
-      dotfolder-public = "";
-      dotfolder-private = "";
       configFolder = default.host.configFolder;
+      public = {
+        dotfolder = "";
+        resources = "";
+        secrets = "";
+      };
+      private = {
+        dotfolder = "";
+        resources = "";
+        secrets = "";
+      };
     };
 
     # Default NixOS Config
@@ -84,8 +92,16 @@ in {
     username = user.username;
     name = user.name;
     configFolder = user.configFolder;
-    dotfolder-public = "${user.configFolder}/public-config/dotfiles";
-    dotfolder-private = "${user.configFolder}/private-config/dotfiles";
+    public = {
+      dotfiles = "${user.configFolder}/public-config/dotfiles";
+      resources = "${user.configFolder}/public-config/resources";
+      secrets = "${user.configFolder}/public-config/secrets";
+    };
+    private = {
+      dotfiles = "${user.configFolder}/private-config/dotfiles";
+      resources = "${user.configFolder}/private-config/resources";
+      secrets = "${user.configFolder}/private-config/secrets";
+    };
   };
 
   # System Builder

@@ -7,7 +7,7 @@
       # Calibre: Biblioteca de livros
       home = {
         packages = with pkgs-bundle.unstable-fixed; [ calibre ]; # Pacote: Unstable, Manual Upgrade
-        file.".config/calibre".source = mkOutOfStoreSymlink "${user.dotfolder-private}/calibre/.config/calibre";
+        file.".config/calibre".source = mkOutOfStoreSymlink "${user.private.dotfiles}/calibre/.config/calibre";
       };
 
     };

@@ -52,10 +52,29 @@
       };
 
       # Users
-      Yo = helper.buildUser {
+      Yo = (helper.buildUser {
         username = "yo";
         name = "Yo";
         configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
+      }) // (
+        # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
+        # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
+        # So, all changes happens in 'develop', and 'main' only gets occasional upgrades
+        # ...If the folder "nixos-config-dev" is present, that is
+        if (builtins.pathExists /home/yo/Utilities/SystemConfig/nixos-config-dev) then (
+          let
+            configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev";
+          in {
+            private.dotfiles = "${configDevFolder}/private-config/dotfiles";
+            private.resources = "${configDevFolder}/private-config/resources";
+            private.secrets = "${configDevFolder}/private-config/secrets";
+          } 
+        ) else {}
+      );
+      Eryoneta = helper.buildUser {
+        username = "eryoneta";
+        name = "Eryoneta";
+        configFolder = "/home/eryoneta/.nixos-config";
       };
       
       # Common Config
