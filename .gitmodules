@@ -1,0 +1,3 @@
+[submodule "private-config"]
+	path = private-config
+	url = https://Eryoneta@github.com/Eryoneta/nixos-private-config.git
