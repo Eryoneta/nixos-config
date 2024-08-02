@@ -20,7 +20,8 @@ let
       username = "nixos";
       name = "nixos";
       host = default.host;
-      dotFolder = "";
+      dotfolder-public = "";
+      dotfolder-private = "";
       configFolder = default.host.configFolder;
     };
 
@@ -83,7 +84,8 @@ in {
     username = user.username;
     name = user.name;
     configFolder = user.configFolder;
-    dotFolder = "${user.configFolder}/users/${user.username}/dotfiles";
+    dotfolder-public = "${user.configFolder}/public-config/dotfiles";
+    dotfolder-private = "${user.configFolder}/private-config/dotfiles";
   };
 
   # System Builder
