@@ -37,6 +37,7 @@ let
     nixosConfig = {
       package = {};
       specialArgs.pgks-bundle = {};
+      specialArgs.auto-upgrade = [];
       homeManagerConfig = default.homeManagerConfig // {
         enable = false;
       };
@@ -72,9 +73,23 @@ let
     system = host.system.architecture;
     config.allowUnfree = true;
   };
-  # MapAttrs: { pkgs = pkgs; } -> { pkgs = import pkgs { ... }; }
-  buildPkgsBundle = host: packages:
-    builtins.mapAttrs (name: value: import value (pkgsConfig host)) packages;
+  buildPkgsBundle = host: packages: (
+    # MapAttrs: { pkgs = pkgs; } -> { pkgs = import pkgs { ... }; }
+    builtins.mapAttrs (name: value: import value (pkgsConfig host)) packages
+  );
+
+  # AutoUpgradeList Builder
+  buildAutoUpgradeList = autoUpgradePackages: (
+    let
+      # AttrNames: { pkgs = ...; } -> [ "pkgs" ]
+      getAttrList = item: (builtins.attrNames item);
+      # ElemAt: [ "pkgs" ] -> "pkgs"
+      getPkgsName = item: (builtins.elemAt (getAttrList item) 0);
+    in (
+      # Map: [ { pkgs = ...; } ] -> [ "pkgs" ]
+      builtins.map (pkgs: (getPkgsName pkgs)) autoUpgradePackages
+    )
+  );
 
 in {
 
@@ -130,8 +145,13 @@ in {
         ] else []);
         specialArgs = {
           host = pair.host;
+        } // (nixosConfig.specialArgs // ({ # Any set inside "nixosConfig.specialArgs" is automatically included
+          # But "nixosConfig.specialArgs.pkgs-bundle" needs to have all its packages imported to be used
+          # And needs to override the original "nixosConfig.specialArgs.pkgs-bundle"
           pkgs-bundle = (buildPkgsBundle pair.host nixosConfig.specialArgs.pgks-bundle);
-        };
+        } // {
+          auto-upgrade-pkgs = (buildAutoUpgradeList nixosConfig.specialArgs.auto-upgrade-pkgs);
+        }));
       };
 
   # Home-Manager Builder

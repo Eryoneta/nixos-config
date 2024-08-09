@@ -1,4 +1,4 @@
-{ config, host, lib, ... }:
+{ config, host, lib, auto-upgrade-pkgs, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
@@ -30,12 +30,7 @@
 
         updateFlakeLock = {
           enable = mkDefault true;
-          inputs = [
-            "nixpkgs"           # Update nixos
-            "home-manager"      # Update home-manager
-            "nixpkgs-stable"    # Update stable-packages
-            "nixpkgs-unstable"  # Update unstable-packages
-          ];
+          inputs = auto-upgrade-pkgs;
           commitLockFile = mkDefault true; # Grava "flake.lock"
         };
 

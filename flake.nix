@@ -27,6 +27,15 @@
   outputs = { self, ... }@extraArgs: (
     let
 
+      # AutoUpgrade
+      auto-upgrade-pkgs = with extraArgs; [
+        { inherit nixpkgs; }
+        { inherit home-manager; }
+        { inherit nixpkgs-stable; }
+        { inherit nixpkgs-unstable; }
+        # { inherit nixpkgs-unstable-fixed; }
+      ];
+
       # Packages
       nixpkgs = extraArgs.nixpkgs;
       home-manager = extraArgs.home-manager;
@@ -43,7 +52,7 @@
       LiCo = helper.buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = "AutoUpgrade_Git_Fix"; #[a-zA-Z0-9:_.-]*
+        system.label = "Flake:_AutoUpgrade_List"; #[a-zA-Z0-9:_.-]*
       };
       NeLiCo = helper.buildHost {
         hostname = "nelico";
@@ -89,6 +98,7 @@
             extraSpecialArgs.pgks-bundle = pgks-bundle;
           };
           specialArgs.pgks-bundle = pgks-bundle;
+          specialArgs.auto-upgrade-pkgs = auto-upgrade-pkgs;
         };
       };
       commonHMConfig = user: host: {
