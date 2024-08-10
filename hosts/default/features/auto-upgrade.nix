@@ -16,8 +16,8 @@
         operation = "boot";
         allowReboot = false;
         persistent = true;
-        dates = mkDefault "Tue *-*-* 16:00:00"; # Toda sexta, 16h00
-        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não travar a rede em conjunto com outros PCs)
+        dates = mkDefault "Fri *-*-* 16:00:00"; # Toda sexta, 16h00
+        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não iniciar imediatamente, se atrasado(persistent))
         flake = "git+file://${host.configFolder}#${host.user.name}@${host.name}";
 
         gitSupport = {
