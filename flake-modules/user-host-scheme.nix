@@ -1,0 +1,114 @@
+flakePath: (
+  let
+
+    # Defaults
+    default = {
+
+      # Default Host
+      host = {
+        hostname = "nixos";
+        name = "nixos";
+        user = default.user;
+        system = {
+          architecture = "x86_64-linux";
+          label = "";
+        };
+        configFolder = /etc/nixos;
+      };
+
+      # Default User
+      user = {
+        username = "nixos";
+        name = "nixos";
+        host = default.host;
+        configFolder = default.host.configFolder;
+      };
+
+    };
+
+    # Host-User-Pair Builder
+    buildPair = user: host: {
+      user = user // {
+        host = host // {
+          user = user; # User -> Host -> User -> void
+          configFolder = user.configFolder;
+        };
+      };
+      host = host // {
+        user = user // {
+          host = host; # Host -> User -> Host -> void
+        };
+        configFolder = user.configFolder;
+      };
+    };
+
+  in {
+
+    # Host Builder
+    buildHost = host: (
+      default.host // (host // {
+        hostname = host.hostname;
+        name = host.name;
+        system = (default.host.system // host.system);
+      })
+    );
+
+    # User Builder
+    buildUser = user: (
+      default.user // (user // {
+        username = user.username;
+        name = user.name;
+        configFolder = user.configFolder;
+      })
+    );
+
+    # User-Host-Scheme Builder
+    buildFor = {
+
+      # Override Home-Manager-Module Configuration
+      homeManagerModule = { user ? default.user, host ? default.host }: (
+        let
+          pair = (buildPair user host);
+        in {
+          home-manager = {
+            users.${pair.user.username} = (import "${flakePath}/users/${pair.user.username}/home.nix");
+            sharedModules = [];
+            extraSpecialArgs = {
+              user = pair.user;
+            };
+          };
+        }
+      );
+
+      # Override Home-Manager-Standalone Configuration
+      homeManagerStandalone = { user ? default.user, host ? default.host }: (
+        let
+          pair = (buildPair user host);
+        in {
+          modules = [
+            "${flakePath}/users/${pair.user.username}/home.nix"
+          ];
+          extraSpecialArgs = {
+            user = pair.user;
+          };
+        }
+      );
+
+      # Override System Configuration
+      nixosSystem = { user ? default.user, host ? default.host }: (
+        let
+          pair = (buildPair user host);
+        in {
+          modules = [
+            "${flakePath}/hosts/${pair.host.hostname}/configuration.nix"
+          ];
+          specialArgs = {
+            host = pair.host;
+          };
+        }
+      );
+
+    };
+
+  }
+)
