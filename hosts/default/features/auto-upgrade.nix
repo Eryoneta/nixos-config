@@ -1,12 +1,12 @@
-{ config, host, lib, ... }:
+{ config, host, lib, auto-upgrade-pkgs, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
 
     imports = [
-      ../../../modules/auto-upgrade-git-support.nix
-      ../../../modules/auto-upgrade-update-flake-lock.nix
-      ../../../modules/auto-upgrade-alter-profile.nix
+      ../../../nixos-modules/auto-upgrade-git-support.nix
+      ../../../nixos-modules/auto-upgrade-update-flake-lock.nix
+      ../../../nixos-modules/auto-upgrade-alter-profile.nix
     ];
 
     config = {
@@ -16,8 +16,8 @@
         operation = "boot";
         allowReboot = false;
         persistent = true;
-        dates = mkDefault "Tue *-*-* 16:00:00"; # Toda sexta, 16h00
-        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não travar a rede em conjunto com outros PCs)
+        dates = mkDefault "Fri *-*-* 16:00:00"; # Toda sexta, 16h00
+        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não iniciar imediatamente, se atrasado(persistent))
         flake = "git+file://${host.configFolder}#${host.user.name}@${host.name}";
 
         gitSupport = {
@@ -30,12 +30,7 @@
 
         updateFlakeLock = {
           enable = mkDefault true;
-          inputs = [
-            "nixpkgs"           # Update nixos
-            "home-manager"      # Update home-manager
-            "nixpkgs-stable"    # Update stable-packages
-            "nixpkgs-unstable"  # Update unstable-packages
-          ];
+          inputs = auto-upgrade-pkgs;
           commitLockFile = mkDefault true; # Grava "flake.lock"
         };
 

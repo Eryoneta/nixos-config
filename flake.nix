@@ -27,94 +27,141 @@
   outputs = { self, ... }@extraArgs: (
     let
 
-      # Packages
-      nixpkgs = extraArgs.nixpkgs;
-      home-manager = extraArgs.home-manager;
-      pgks-bundle = {
-        stable = extraArgs.nixpkgs-stable;
-        unstable = extraArgs.nixpkgs-unstable;
-        unstable-fixed = extraArgs.nixpkgs-unstable-fixed;
-      };
-
-      # Flake Helper
-      helper = import ./flake-helper.nix;
+      # Imports
+      nixosSystem = (import ./flake-modules/nixos-system.nix self.outPath);
+      homeManagerModule = (import ./flake-modules/home-manager-module.nix self.outPath);
+      homeManagerStandalone = (import ./flake-modules/home-manager-standalone.nix self.outPath);
+      userHostScheme = (import ./flake-modules/user-host-scheme.nix self.outPath);
+      packageBundle = (import ./flake-modules/package-bundle.nix self.outPath);
+      pubPrivDomains = (import ./flake-modules/public-private-domains.nix self.outPath);
+      autoUpgradeList = (import ./flake-modules/auto-upgrade-list.nix self.outPath);
 
       # Hosts
-      LiCo = helper.buildHost {
+      LiCo = userHostScheme.buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = "AutoUpgrade_Git_Fix"; #[a-zA-Z0-9:_.-]*
+        system.label = "Flake:_Nix-Modules"; #[a-zA-Z0-9:_.-]*
       };
-      NeLiCo = helper.buildHost {
+      NeLiCo = userHostScheme.buildHost {
         hostname = "nelico";
         name = "NeLiCo";
         system.label = ""; #[a-zA-Z0-9:_.-]*
       };
 
       # Users
-      Yo = (helper.buildUser {
+      Yo = userHostScheme.buildUser {
         username = "yo";
         name = "Yo";
         configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
-      }) // (
-        # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
-        # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
-        # So, all changes happens in 'develop', and 'main' only gets occasional upgrades
-        # ...If the folder "nixos-config-dev" is present, that is
-        if (builtins.pathExists /home/yo/Utilities/SystemConfig/nixos-config-dev) then (
-          let
-            configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev";
-          in {
-            private.dotfiles = "${configDevFolder}/private-config/dotfiles";
-            private.resources = "${configDevFolder}/private-config/resources";
-            private.secrets = "${configDevFolder}/private-config/secrets";
-          } 
-        ) else {}
-      );
-      Eryoneta = helper.buildUser {
+        configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev";
+      };
+      Eryoneta = userHostScheme.buildUser {
         username = "eryoneta";
         name = "Eryoneta";
         configFolder = "/home/eryoneta/.nixos-config";
       };
-      
-      # Common Config
-      commonSystemConfig = user: host: {
+
+      # Common Configurations
+      userHostSchemeConfig = user: host: {
         inherit user;
         inherit host;
-        nixosConfig = {
-          package = nixpkgs;
-          homeManagerConfig = {
-            enable = true;
-            package = home-manager;
-            extraSpecialArgs.pgks-bundle = pgks-bundle;
-          };
-          specialArgs.pgks-bundle = pgks-bundle;
-        };
       };
-      commonHMConfig = user: host: {
-        inherit user;
-        inherit host;
-        homeManagerConfig = {
-          package = home-manager;
-          systemPackage = nixpkgs;
-          extraSpecialArgs.pgks-bundle = pgks-bundle;
+      packageBundleConfig = host: {
+        architecture = host.system.architecture;
+        packages = (with extraArgs; {
+          stable = nixpkgs-stable;
+          unstable = nixpkgs-unstable;
+          unstable-fixed = nixpkgs-unstable-fixed;
+        });
+      };
+      pubPrivDomainsConfig = user: {
+        # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
+        # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
+        # So, all changes happens in 'develop', and 'main' only gets occasional system upgrades
+        configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
+        # configPath = user.configFolder;
+        folders = {
+          dotfiles = "/dotfiles";
+          programs = "/programs";
+          resources = "/resources";
+          secrets = "/secrets";
         };
+        absolutePaths.dotfiles = true;
+      };
+      autoUpgradeListConfig = {
+        packages = (with extraArgs; {
+          inherit nixpkgs;
+          inherit home-manager;
+          inherit nixpkgs-stable;
+          inherit nixpkgs-unstable;
+          # inherit nixpkgs-unstable-fixed;
+        });
       };
 
+      # Common NixOS Configuration
+      buildCommonConfig = user: host: (
+        # NixOS-System
+        nixosSystem.build {
+          architecture = host.system.architecture;
+          package = extraArgs.nixpkgs;
+          modifiers = [
+            # User-Host-Scheme
+            (userHostScheme.buildFor.nixosSystem (userHostSchemeConfig user host))
+            # Home-Manager-Module
+            (homeManagerModule.build {
+              username = user.username;
+              package = extraArgs.home-manager;
+              modifiers = [
+                # User-Host-Scheme
+                (userHostScheme.buildFor.homeManagerModule (userHostSchemeConfig user host))
+                # Pkgs-Bundle
+                (packageBundle.buildFor.homeManagerModule (packageBundleConfig host))
+                # Public-Private-Zones
+                (pubPrivDomains.buildFor.homeManagerModule (pubPrivDomainsConfig user))
+              ];
+            })
+            # Pkgs-Bundle
+            (packageBundle.buildFor.nixosSystem (packageBundleConfig host))
+            # Public-Private-Zones
+            (pubPrivDomains.buildFor.nixosSystem (pubPrivDomainsConfig user))
+            # Auto-Upgrade-List
+            (autoUpgradeList.buildFor.nixosSystem (autoUpgradeListConfig))
+          ];
+        }
+      );
+
+      # Common Home-Manager Configuration
+      buildCommonHMConfig = user: host: (
+        # Home-Manager-Standalone
+        homeManagerStandalone.build {
+          package = extraArgs.home-manager;
+          systemPackage = extraArgs.nixpkgs;
+          username = user.username;
+          modifiers = [
+            # User-Host-Scheme
+            (userHostScheme.buildFor.homeManagerStandalone (userHostSchemeConfig user host))
+            # Pkgs-Bundle
+            (packageBundle.buildFor.homeManagerStandalone (packageBundleConfig host))
+            # Public-Private-Zones
+            (pubPrivDomains.buildFor.homeManagerStandalone (pubPrivDomainsConfig user))
+          ];
+        }
+      );
+      
     in {
 
       # NixOS + Home Manager
       nixosConfigurations = {
-        "Yo@LiCo" = helper.buildSystem (commonSystemConfig Yo LiCo);
-        #"Yo@NeLiCo" = helper.buildSystem (commonSystemConfig Yo NeLiCo);
-        #"Eryoneta@NeLiCo" = helper.buildSystem (commonSystemConfig Eryoneta NeLiCo);
+        "Yo@LiCo" = (buildCommonConfig Yo LiCo);
+        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo);
+        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo);
       };
       
       # Home Manager
       homeConfigurations = {
-        "Yo@LiCo" = helper.buildHomeManager (commonHMConfig Yo LiCo);
-        #"Yo@NeLiCo" = helper.buildHomeManager (commonHMConfig Yo NeLiCo);
-        #"Eryoneta@NeLiCo" = helper.buildHomeManager (commonHMConfig Eryoneta NeLiCo);
+        "Yo@LiCo" = (buildCommonHMConfig Yo LiCo);
+        #"Yo@NeLiCo" = (buildCommonHMConfig Yo NeLiCo);
+        #"Eryoneta@NeLiCo" = (buildCommonHMConfig Eryoneta NeLiCo);
       };
 
     }

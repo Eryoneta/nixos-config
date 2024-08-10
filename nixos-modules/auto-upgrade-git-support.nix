@@ -1,9 +1,9 @@
 { config, options, pkgs, lib, ... }:
   let
-    # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;
-    hasHomeManager = (builtins.hasAttr "home-manager" options);
+    configuration = config;
   in {
 
     options = {
@@ -63,15 +63,24 @@
       ];
 
       # Safe Directory
-      home-manager.users.root.home = {
+      # "Home-Manager" is used to edit the file "/root/.gitconfig"
+      # That means that it fails if "Home-Manager" is not present!
+      # There is no way to check if it's present...?
+      home-manager.users.root.home = lib.mkIf (cfg_gs.markDirectoryAsSafe) {
         file.".gitconfig".text = lib.mkAfter ''
           [safe]
             directory = ${cfg_gs.directory}/.git
         '';
-        stateVersion = lib.mkIf (cfg_gs.systemUser != "root") (lib.mkDefault config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion);
+        stateVersion = lib.mkDefault (
+          if (cfg_gs.systemUser != "root") then (
+            if (builtins.hasAttr "home-manager" configuration) then
+              config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion
+            else config.system.stateVersion
+          ) else config.system.stateVersion
+        );
       };
 
-      # Git Pull & Git Commit
+      # Git-Pull&Commit
       systemd.services."nixos-upgrade-git-prepare" = {
         serviceConfig.Type = "oneshot";
         serviceConfig.User = cfg_gs.systemUser;
@@ -98,7 +107,7 @@
         '';
       };
 
-      # Git Push
+      # Git-Push
       systemd.services."nixos-upgrade-git-conclude" = {
         serviceConfig.Type = "oneshot";
         serviceConfig.User = cfg_gs.systemUser;
@@ -120,13 +129,13 @@
         '';
       };
 
-      # Git Push deve ser feito apenas depois de Git Pull & Commit
+      # Git-Push comes after Git-Pull&Commit
       systemd.services."nixos-upgrade-git-prepare" = {
         wants = [ "nixos-upgrade-git-conclude.service" ];
         before = [ "nixos-upgrade-git-conclude.service" ];
       };
 
-      # Upgrade deve iniciar apenas após ambos
+      # NixOS-Upgrade starts only after both
       systemd.services."nixos-upgrade" = {
         wants = [ "nixos-upgrade-git-prepare.service" "nixos-upgrade-git-conclude.service" ];
         after = [ "nixos-upgrade-git-prepare.service" "nixos-upgrade-git-conclude.service" ];
