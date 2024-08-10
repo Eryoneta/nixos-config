@@ -1,9 +1,9 @@
 { config, options, pkgs, lib, ... }:
   let
-    # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
-    # Depende de "flake"
-    # Depende de "nix-commands"
-    # Depende de "./auto-upgrade-git-support.nix"
+    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+    # Depends of "flake"
+    # Depends of "nix-commands"
+    # Optionally depends of "./auto-upgrade-git-support.nix"
     cfg = config.system.autoUpgrade;
     cfg_ufl = config.system.autoUpgrade.updateFlakeLock;
   in {
@@ -49,18 +49,20 @@
 
     config = lib.mkIf (cfg.enable && cfg_ufl.enable) (
       let
+        # Default options
         cfg_gs = {
           enable = false;
           systemUser = "root";
           directory = "";
+        # If "gitSupport" is present, uses it
         } // (lib.optionalAttrs (builtins.hasAttr "gitSupport" options.system.autoUpgrade) {
           enable = cfg.gitSupport.enable;
           systemUser = cfg.gitSupport.systemUser;
           directory = cfg.gitSupport.directory;
-        }); # Apenas se "gitSupport" existir é que suas opções são usadas
+        });
       in {
 
-        # Deve ser "updateFlakeLock.directory = gitSupport.directory" por padrão
+        # Has to be "updateFlakeLock.directory = gitSupport.directory" as said
         system.autoUpgrade.updateFlakeLock.directory = lib.mkDefault cfg_gs.directory;
 
         assertions = [
@@ -91,7 +93,7 @@
           path = with pkgs; [
             coreutils
             git
-            nixVersions.nix_2_19 # Apenas "Nix >= v2.19" permite incluir múltiplos inputs
+            nixVersions.nix_2_19 # Only "Nix >= v2.19" allows multiple "nix flake update" inputs!
           ];
           script = ''
             # Interrompe se houver erro ou variável indefinida
@@ -110,7 +112,7 @@
           '';
         };
 
-        # Deve ocorrer entre 'git pull' e 'git push'
+        # Has to happen between Git-Pull and Git-Push
         systemd.services."nixos-upgrade-git-prepare" = {
           wants = lib.mkIf cfg_gs.enable [ "nixos-upgrade-update-flake-lock.service" ];
           before = lib.mkIf cfg_gs.enable [ "nixos-upgrade-update-flake-lock.service" ];
@@ -120,7 +122,7 @@
           before = lib.mkIf cfg_gs.enable [ "nixos-upgrade-git-conclude.service" ];
         };
 
-        # Upgrade deve iniciar apenas após este
+        # NixOS-Upgrade starts only after this one
         systemd.services."nixos-upgrade" = {
           wants = [ "nixos-upgrade-update-flake-lock.service" ];
           after = [ "nixos-upgrade-update-flake-lock.service" ];

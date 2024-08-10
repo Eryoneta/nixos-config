@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
   let
-    # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_ap = config.system.autoUpgrade.alterProfile;
   in {
@@ -40,12 +40,12 @@
         '';
       }];
 
-      # Flag para executar 'nixos-rebuild' com '--profile-name'
+      # Flag to execute "nixos-rebuild" with "--profile-name"
       system.autoUpgrade.flags = [ "--profile-name ${cfg_ap.name}" ];
       systemd.services."nixos-upgrade" = {
         serviceConfig.User = "root";
         path = [ pkgs.nix ];
-        # O serviço 'nixos-upgrade' deve executar apenas após este! Isso evita deadSymlink no submenu
+        # The service "nixos-upgrade" has to run only after this one! That avoids dead symlinks in the boot menu
         preStart = ''
           nix-env --delete-generations +${toString (cfg_ap.configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${cfg_ap.name}
         '';
