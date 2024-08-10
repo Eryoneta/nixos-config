@@ -3,7 +3,7 @@
     # Depende de "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;
-    hasHomeManager = (builtins.hasAttr "home-manager" options);
+    configuration = config;
   in {
 
     options = {
@@ -63,12 +63,20 @@
       ];
 
       # Safe Directory
-      home-manager.users.root.home = {
+      # Infelizmente, não há forma de evitar a opção 'home-manager'!
+      # Se 'Home-Manager' não existir, há um erro!
+      home-manager.users.root.home = lib.mkIf (cfg_gs.markDirectoryAsSafe) {
         file.".gitconfig".text = lib.mkAfter ''
           [safe]
             directory = ${cfg_gs.directory}/.git
         '';
-        stateVersion = lib.mkIf (cfg_gs.systemUser != "root") (lib.mkDefault config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion);
+        stateVersion = lib.mkDefault (
+          if (cfg_gs.systemUser != "root") then (
+            if (builtins.hasAttr "home-manager" configuration) then
+              config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion
+            else config.system.stateVersion
+          ) else config.system.stateVersion
+        );
       };
 
       # Git Pull & Git Commit
