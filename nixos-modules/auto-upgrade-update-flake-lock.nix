@@ -1,9 +1,14 @@
+# Upgrade Flake Lock for AutoUpgrade
+# Allows the update of multiple flake-inputs before a nixos-upgrade
+# Optionally, can commit such updates
+# The commit author can be set!
+# - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+# - Uses "flake"
+# - Uses "nix-commands" v2.19
+# - Uses "git"
+# - Optionally depends on "./auto-upgrade-git-support.nix"
 { config, options, pkgs, lib, ... }:
   let
-    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
-    # Depends of "flake"
-    # Depends of "nix-commands"
-    # Optionally depends of "./auto-upgrade-git-support.nix"
     cfg = config.system.autoUpgrade;
     cfg_ufl = config.system.autoUpgrade.updateFlakeLock;
   in {
@@ -96,17 +101,17 @@
             nixVersions.nix_2_19 # Only "Nix >= v2.19" allows multiple "nix flake update" inputs!
           ];
           script = ''
-            # Interrompe se houver erro ou variável indefinida
+            # Interrupts if there is an error or undefined variable
             set -eu
             # Nix Flake Update
             echo "Updating flake.lock..."
             nix flake update ${toString cfg_ufl.inputs} ${lib.optionalString cfg_ufl.commitLockFile "--commit-lock-file"} --flake "${cfg_ufl.directory}"
-            # Git deve ser usado para mudar o nome do autor
-            # Acessa pasta
+            # Git needs to be used to change the author name
+            # Access folder
             cd "${cfg_ufl.directory}"
-            # Se o arquivo modificado é o 'flake.lock', então 'git commit' para mudar o nome do autor
+            # If the modified file is 'flake.lock', then uses 'git commit' to change the author name
             if [[ $(git diff --name-only HEAD HEAD~1) == 'flake.lock' ]]; then
-              # Muda o nome do autor do commit
+              # changes the author name
               git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${config.networking.hostName}>";
             fi
           '';

@@ -1,3 +1,7 @@
+# Package-Bundle for AutoUpgrade
+# Defines a "pkgs-bundle" inside "specialArgs" or "extraSpecialArgs" that contains a set of packages
+# Allows for getting packages from multiple inputs(Ex: Stable and Unstable)
+# "packages" should be a set containing the ones from the flake-input(Ex.: packages = { inherit stable; inherit unstable; })
 flakePath: (
   let
 

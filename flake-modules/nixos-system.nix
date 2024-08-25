@@ -1,3 +1,6 @@
+# Basic NixOS Configuration
+# Returns a simple NixOS configuration
+# But it support modifiers(Other flake-modules) for extra features!
 flakePath: {
 
   # System Builder

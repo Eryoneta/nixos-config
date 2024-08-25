@@ -1,3 +1,6 @@
+# Home-Manager-Standalone Configuration
+# Returns a Home-Manager configuration
+# It support modifiers(Other flake-modules) for extra features
 flakePath: {
 
   # Home-Manager-Standalone Builder

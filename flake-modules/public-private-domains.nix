@@ -1,3 +1,15 @@
+# Public/Private Domains
+# Defines two domains: Public and Private
+# The folder content can be defined by a set "folders". Each atribute gets turned into a path for a folder
+# Some folders can be set as absolute, meaning its path doesn't point to "/nix/store"
+# All paths are available in "config-domain", inside "specialArgs" or "extraSpecialArgs"
+# Ex.: The input set "{
+#   configPath = "/home/user/nixos-config";
+#   folders = { subfolder1 = "./f1"; subfolder2 = "./f2"; };
+#   absolutePaths.subfolder2 = true;
+# }" results in "config-domain = {
+#   public = { subfolder1 = "/nix/store/.../f1"; subfolder2 = "/home/user/nixos-config/f2"; };
+# };" available in "specialArgs" or "extraSpecialArgs"
 flakePath: (
   let
 

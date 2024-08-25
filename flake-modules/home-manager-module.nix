@@ -1,3 +1,6 @@
+# Home-Manager-Module
+# Puts a home-manager-module inside a NixOS configuration
+# It support modifiers(Other flake-modules) for extra features
 flakePath: {
 
   # Home-Manager-Module Builder
