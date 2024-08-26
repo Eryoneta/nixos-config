@@ -1,12 +1,10 @@
-{ ... }: {
+{ config-domain, ... }: {
 
   # Default
-  imports = let
-    programsPath = ../../public-config/programs;
-  in [
-    (programsPath + /essential-programs.nix)
-    (programsPath + /store/nix.nix)
-    #(programsPath + /store/openssh.nix)
+  imports = with config-domain.public; [
+    "${programs}/essential-programs.nix"
+    "${programs}/store/nix.nix"
+    #"${programs}/store/openssh.nix"
   ];
 
   # Pacotes

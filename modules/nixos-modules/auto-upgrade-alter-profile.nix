@@ -1,6 +1,11 @@
+# Alter Profile for AutoUpgrade
+# Makes all generation created by nixos-upgrade be in a defined profile
+# Great for separating system upgrades from manual rebuilds!
+# It also runs nix-env to delete older generations from that profile
+# - Uses "nix"
+# - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
 { config, pkgs, lib, ... }:
   let
-    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_ap = config.system.autoUpgrade.alterProfile;
   in {

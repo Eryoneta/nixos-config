@@ -1,3 +1,9 @@
+# User & Host Scheme
+# Defines "user" OR "host" inside "specialArgs" or "extraSpecialArgs" (NixOS gets "host", Home-Manager gets "user")
+# "host" have a atribute "user", and "user" have a atribute "host". One points to the other (Ex.: User -> Host -> User -> void)
+# It can carry useful atributes like "system" or "username", and custom atributes if necessary
+# (The "user" or "host" passed in the arguments can have extra atributes!)
+# Also, is expected some folders to exist (Ex.: User = "me", then "/nix/store/.../users/me/home.nix" have to exist)
 flakePath: (
   let
 
@@ -62,7 +68,7 @@ flakePath: (
       })
     );
 
-    # User-Host-Scheme Builder
+    # Builder
     buildFor = {
 
       # Override Home-Manager-Module Configuration
@@ -72,7 +78,6 @@ flakePath: (
         in {
           home-manager = {
             users.${pair.user.username} = (import "${flakePath}/users/${pair.user.username}/home.nix");
-            sharedModules = [];
             extraSpecialArgs = {
               user = pair.user;
             };

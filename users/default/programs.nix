@@ -1,12 +1,10 @@
-{ ... }: {
+{ config-domain, ... }: {
     
   # Default
-  imports = let
-    programsPath = ../../public-config/programs;
-  in [
-    (programsPath + /basic-programs.nix)
-    (programsPath + /store/firefox.nix)
-    (programsPath + /store/vscodium.nix)
+  imports = with config-domain.public; [
+    "${programs}/basic-programs.nix"
+    "${programs}/store/firefox.nix"
+    "${programs}/store/vscodium.nix"
   ];
 
 }

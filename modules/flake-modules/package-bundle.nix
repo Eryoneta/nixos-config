@@ -1,3 +1,7 @@
+# Package-Bundle
+# Defines a "pkgs-bundle" inside "specialArgs" or "extraSpecialArgs" that contains a set of packages
+# Allows for accessing packages from a single atribute(Ex: pkgs-bundle.stable and pkgs-bundle.unstable)
+# "packages" should be a set containing the ones from the flake-input(Ex.: packages = { inherit stable; inherit unstable; })
 flakePath: (
   let
 
@@ -12,7 +16,7 @@ flakePath: (
     };
 
   in {
-    # Package-Bundle Builder
+    # Builder
     buildFor = (
       let
         specialArg = architecture: packages: {
@@ -23,20 +27,17 @@ flakePath: (
         # Override Home-Manager-Module Configuration
         homeManagerModule = { architecture ? "x86_64-linux", packages }: {
           home-manager = {
-            sharedModules = [];
             extraSpecialArgs = (specialArg architecture packages);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
         homeManagerStandalone = { architecture ? "x86_64-linux", packages }: {
-          modules = [];
           extraSpecialArgs = (specialArg architecture packages);
         };
 
         # Override System Configuration
         nixosSystem = { architecture ? "x86_64-linux", packages }: {
-          modules = [];
           specialArgs = (specialArg architecture packages);
         };
 

@@ -1,6 +1,13 @@
+# GitSupport for AutoUpgrade
+# Executes git commands before and after a nixos-upgrade.
+# "git pull": Pull changes from remote before the upgrade
+# "git add & git commit": Commits the changes before the upgrade
+# "git push": Pushes any commits to remote
+# - Uses "git"
+# - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+# - Depends on "home-manager" (Error is thrown without it)
 { config, options, pkgs, lib, ... }:
   let
-    # Depends of "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;
     configuration = config;
@@ -89,9 +96,9 @@
           git
         ];
         script = ''
-          # Interrompe se houver erro ou variável indefinida
+          # Interrupts if there is an error or undefined variable
           set -eu
-          # Acessa pasta
+          # Access folder
           cd "${cfg_gs.directory}"
           # Git Pull
           ${lib.optionalString cfg_gs.pull ''
@@ -118,9 +125,9 @@
         ];
         script = ''
           ${lib.optionalString cfg_gs.push ''
-            # Interrompe se houver erro ou variável indefinida
+          # Interrupts if there is an error or undefined variable
             set -eu
-            # Acessa pasta
+            # Access folder
             cd "${cfg_gs.directory}"
             # Git Push
             echo "Pushing changes..."

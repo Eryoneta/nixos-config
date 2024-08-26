@@ -1,8 +1,14 @@
+# Home-Manager-Module
+# Puts a home-manager-module inside a NixOS configuration
+# It support modifiers(Other flake-modules) for extra features
 flakePath: {
 
-  # Home-Manager-Module Builder
+  # Builder
   build = { username ? "nixos", package, modifiers ? [] }: (
     let
+    
+      # Utils
+      utils = (import ../nix-modules/collapseAttrs.nix);
 
       # Basic Home-Manager Configuration
       homeManagerConfig = {
@@ -22,17 +28,12 @@ flakePath: {
 
       # Home-Manager Configuration With Modifiers
       homeManagerConfigWithModifiers = (
-        # Foldl': [ { ... } { ... } ] -> { ... }
-        builtins.foldl' (
-          accumulator: modifier: (
-            accumulator // (modifier // {
-              home-manager = (accumulator.home-manager // (modifier.home-manager // {
-                sharedModules = (accumulator.home-manager.sharedModules ++ modifier.home-manager.sharedModules);
-                extraSpecialArgs = (accumulator.home-manager.extraSpecialArgs // modifier.home-manager.extraSpecialArgs);
-              }));
-            })
-          )
-        ) homeManagerConfig modifiers
+        utils.collapseAttrs homeManagerConfig modifiers {
+          home-manager = {
+            sharedModules = [];
+            extraSpecialArgs = {};
+          };
+        }
       );
 
     # Override System Configuration
@@ -41,7 +42,6 @@ flakePath: {
         # IT'S TWO SEPARATE THINGS??? NOT A FUNCTION CALL???
         package.nixosModules.home-manager homeManagerConfigWithModifiers
       ];
-      specialArgs = {};
     }
   );
 

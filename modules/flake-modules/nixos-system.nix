@@ -1,8 +1,14 @@
+# Basic NixOS Configuration
+# Returns a simple NixOS configuration
+# But it support modifiers(Other flake-modules) for extra features!
 flakePath: {
 
-  # System Builder
+  # Builder
   build = { architecture ? "x86_64-linux", package, modifiers ? [] }: (
     let
+
+      # Utils
+      utils = (import ../nix-modules/collapseAttrs.nix);
 
       # Basic System Configuration
       systemConfig = {
@@ -18,15 +24,10 @@ flakePath: {
 
       # System Configuration With Modifiers
       systemConfigWithModifiers = (
-        # Foldl': [ { ... } { ... } ] -> { ... }
-        builtins.foldl' (
-          accumulator: modifier: (
-            accumulator // (modifier // {
-              modules = (accumulator.modules ++ modifier.modules);
-              specialArgs = (accumulator.specialArgs // modifier.specialArgs);
-            })
-          )
-        ) systemConfig modifiers
+        utils.collapseAttrs systemConfig modifiers {
+          modules = [];
+          specialArgs = {};
+        }
       );
 
     in (

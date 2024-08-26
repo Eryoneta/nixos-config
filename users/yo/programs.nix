@@ -1,11 +1,15 @@
-{ ... }: {
+{ config-domain, ... }: {
     
   # Yo
-  imports = let
-    programsPath = ../../public-config/programs;
-  in [
-    (programsPath + /store/git.nix)
-    (programsPath + /store/calibre.nix)
-  ];
+  imports = (
+    (with config-domain.public; [
+      "${programs}/store/git.nix"
+      "${programs}/store/calibre.nix"
+    ])
+    ++
+    (with config-domain.private; [
+      "${programs}/other-programs.nix"
+    ])
+  );
 
 }
