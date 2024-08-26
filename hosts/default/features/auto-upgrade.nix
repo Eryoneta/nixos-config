@@ -1,12 +1,12 @@
-{ config, host, lib, auto-upgrade-pkgs, ... }:
+{ config, host, lib, auto-upgrade-pkgs, modules, ... }:
   let
-      mkDefault = value: lib.mkDefault value;
+    mkDefault = value: lib.mkDefault value;
   in {
 
-    imports = [
-      ../../../modules/nixos-modules/auto-upgrade-git-support.nix
-      ../../../modules/nixos-modules/auto-upgrade-update-flake-lock.nix
-      ../../../modules/nixos-modules/auto-upgrade-alter-profile.nix
+    imports = with modules; [
+      nixos-modules."auto-upgrade-git-support.nix"
+      nixos-modules."auto-upgrade-update-flake-lock.nix"
+      nixos-modules."auto-upgrade-alter-profile.nix"
     ];
 
     config = {

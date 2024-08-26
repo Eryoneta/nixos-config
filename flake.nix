@@ -28,34 +28,34 @@
     let
 
       # Imports
-      nixosSystem = (import ./modules/flake-modules/nixos-system.nix self.outPath);
-      homeManagerModule = (import ./modules/flake-modules/home-manager-module.nix self.outPath);
-      homeManagerStandalone = (import ./modules/flake-modules/home-manager-standalone.nix self.outPath);
-      userHostScheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
-      packageBundle = (import ./modules/flake-modules/package-bundle.nix self.outPath);
-      pubPrivDomains = (import ./modules/flake-modules/public-private-domains.nix self.outPath);
-      autoUpgradeList = (import ./modules/flake-modules/auto-upgrade-list.nix self.outPath);
+      nix-utils = (import ./modules/nix-modules/mapDir.nix);
+      flake-modules = (
+        # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
+        builtins.mapAttrs (
+          name: value: (import value self.outPath)
+        ) (nix-utils.mapDir ./modules/flake-modules)
+      );
 
       # Hosts
-      LiCo = userHostScheme.buildHost {
+      LiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = "Flake:_Nix-Modules"; #[a-zA-Z0-9:_.-]*
+        system.label = "Flake:_Modules"; #[a-zA-Z0-9:_.-]*
       };
-      NeLiCo = userHostScheme.buildHost {
+      NeLiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "nelico";
         name = "NeLiCo";
         system.label = ""; #[a-zA-Z0-9:_.-]*
       };
 
       # Users
-      Yo = userHostScheme.buildUser {
+      Yo = flake-modules."user-host-scheme.nix".buildUser {
         username = "yo";
         name = "Yo";
         configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
         configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev";
       };
-      Eryoneta = userHostScheme.buildUser {
+      Eryoneta = flake-modules."user-host-scheme.nix".buildUser {
         username = "eryoneta";
         name = "Eryoneta";
         configFolder = "/home/eryoneta/.nixos-config";
@@ -97,35 +97,42 @@
           # inherit nixpkgs-unstable-fixed;
         });
       };
+      mapModulesDirConfig = {
+        directory = ./modules;
+      };
 
       # Common NixOS Configuration
       buildCommonConfig = user: host: (
         # NixOS-System
-        nixosSystem.build {
+        flake-modules."nixos-system.nix".build {
           architecture = host.system.architecture;
           package = extraArgs.nixpkgs;
           modifiers = [
             # User-Host-Scheme
-            (userHostScheme.buildFor.nixosSystem (userHostSchemeConfig user host))
+            (flake-modules."user-host-scheme.nix".buildFor.nixosSystem (userHostSchemeConfig user host))
             # Home-Manager-Module
-            (homeManagerModule.build {
+            (flake-modules."home-manager-module.nix".build {
               username = user.username;
               package = extraArgs.home-manager;
               modifiers = [
                 # User-Host-Scheme
-                (userHostScheme.buildFor.homeManagerModule (userHostSchemeConfig user host))
+                (flake-modules."user-host-scheme.nix".buildFor.homeManagerModule (userHostSchemeConfig user host))
                 # Pkgs-Bundle
-                (packageBundle.buildFor.homeManagerModule (packageBundleConfig host))
+                (flake-modules."package-bundle.nix".buildFor.homeManagerModule (packageBundleConfig host))
                 # Public-Private-Zones
-                (pubPrivDomains.buildFor.homeManagerModule (pubPrivDomainsConfig user))
+                (flake-modules."public-private-domains.nix".buildFor.homeManagerModule (pubPrivDomainsConfig user))
+                # Map-Modules-Dir
+                (flake-modules."map-modules-directory.nix".buildFor.homeManagerModule (mapModulesDirConfig))
               ];
             })
             # Pkgs-Bundle
-            (packageBundle.buildFor.nixosSystem (packageBundleConfig host))
+            (flake-modules."package-bundle.nix".buildFor.nixosSystem (packageBundleConfig host))
             # Public-Private-Zones
-            (pubPrivDomains.buildFor.nixosSystem (pubPrivDomainsConfig user))
+            (flake-modules."public-private-domains.nix".buildFor.nixosSystem (pubPrivDomainsConfig user))
             # Auto-Upgrade-List
-            (autoUpgradeList.buildFor.nixosSystem (autoUpgradeListConfig))
+            (flake-modules."auto-upgrade-list.nix".buildFor.nixosSystem (autoUpgradeListConfig))
+            # Map-Modules-Dir
+            (flake-modules."map-modules-directory.nix".buildFor.nixosSystem (mapModulesDirConfig))
           ];
         }
       );
@@ -133,17 +140,19 @@
       # Common Home-Manager Configuration
       buildCommonHMConfig = user: host: (
         # Home-Manager-Standalone
-        homeManagerStandalone.build {
+        flake-modules."home-manager-standalone.nix".build {
           package = extraArgs.home-manager;
           systemPackage = extraArgs.nixpkgs;
           username = user.username;
           modifiers = [
             # User-Host-Scheme
-            (userHostScheme.buildFor.homeManagerStandalone (userHostSchemeConfig user host))
+            (flake-modules."user-host-scheme.nix".buildFor.homeManagerStandalone (userHostSchemeConfig user host))
             # Pkgs-Bundle
-            (packageBundle.buildFor.homeManagerStandalone (packageBundleConfig host))
+            (flake-modules."package-bundle.nix".buildFor.homeManagerStandalone (packageBundleConfig host))
             # Public-Private-Zones
-            (pubPrivDomains.buildFor.homeManagerStandalone (pubPrivDomainsConfig user))
+            (flake-modules."public-private-domains.nix".buildFor.homeManagerStandalone (pubPrivDomainsConfig user))
+            # Map-Modules-Dir
+            (flake-modules."map-modules-directory.nix".buildFor.homeManagerStandalone (mapModulesDirConfig))
           ];
         }
       );
