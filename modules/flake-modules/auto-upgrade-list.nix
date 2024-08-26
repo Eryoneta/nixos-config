@@ -13,7 +13,7 @@ flakePath: (
     );
 
   in {
-    # Auto-Upgrade-List Builder
+    # Builder
     buildFor = (
       let
         specialArg = packages: {

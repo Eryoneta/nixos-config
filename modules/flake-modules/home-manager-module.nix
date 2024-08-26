@@ -3,7 +3,7 @@
 # It support modifiers(Other flake-modules) for extra features
 flakePath: {
 
-  # Home-Manager-Module Builder
+  # Builder
   build = { username ? "nixos", package, modifiers ? [] }: (
     let
     

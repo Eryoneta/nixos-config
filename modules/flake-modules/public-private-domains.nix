@@ -22,7 +22,7 @@ flakePath: (
     );
 
   in {
-    # Public-Private-Domains Builder
+    # Builder
     buildFor = (
       let
         specialArg = configPath: folders: absolutePaths: {

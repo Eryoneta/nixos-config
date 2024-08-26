@@ -3,7 +3,7 @@
 # But it support modifiers(Other flake-modules) for extra features!
 flakePath: {
 
-  # System Builder
+  # Builder
   build = { architecture ? "x86_64-linux", package, modifiers ? [] }: (
     let
 

@@ -68,7 +68,7 @@ flakePath: (
       })
     );
 
-    # User-Host-Scheme Builder
+    # Builder
     buildFor = {
 
       # Override Home-Manager-Module Configuration

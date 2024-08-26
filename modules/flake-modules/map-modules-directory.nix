@@ -9,7 +9,7 @@ flakePath: (
     utils = (import ../nix-modules/mapDir.nix);
     
   in {
-    # Package-Bundle Builder
+    # Builder
     buildFor = (
       let
         specialArg = directory: {
