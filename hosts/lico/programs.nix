@@ -1,10 +1,8 @@
-{ ... }: {
+{ config-domain, ... }: {
 
   # LiCo
-  imports = let
-    programsPath = ../../public-config/programs;
-  in [
-    (programsPath + /store/nix.delayed.nix)
+  imports = with config-domain.public; [
+    "${programs}/store/nix.delayed.nix"
   ];
 
 }
