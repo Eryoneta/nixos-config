@@ -78,7 +78,6 @@ flakePath: (
         in {
           home-manager = {
             users.${pair.user.username} = (import "${flakePath}/users/${pair.user.username}/home.nix");
-            sharedModules = [];
             extraSpecialArgs = {
               user = pair.user;
             };

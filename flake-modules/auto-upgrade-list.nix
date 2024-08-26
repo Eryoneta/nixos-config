@@ -24,20 +24,17 @@ flakePath: (
         # Override Home-Manager-Module Configuration
         homeManagerModule = { packages }: {
           home-manager = {
-            sharedModules = [];
             extraSpecialArgs = (specialArg packages);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
         homeManagerStandalone = { packages }: {
-          modules = [];
           extraSpecialArgs = (specialArg packages);
         };
 
         # Override System Configuration
         nixosSystem = { packages }: {
-          modules = [];
           specialArgs = (specialArg packages);
         };
 

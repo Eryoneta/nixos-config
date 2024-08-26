@@ -36,20 +36,17 @@ flakePath: (
         # Override Home-Manager-Module Configuration
         homeManagerModule = { configPath, folders, absolutePaths ? [] }: {
           home-manager = {
-            sharedModules = [];
             extraSpecialArgs = (specialArg configPath folders absolutePaths);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
         homeManagerStandalone = { configPath, folders, absolutePaths ? [] }: {
-          modules = [];
           extraSpecialArgs = (specialArg configPath folders absolutePaths);
         };
 
         # Override System Configuration
         nixosSystem = { configPath, folders, absolutePaths ? [] }: {
-          modules = [];
           specialArgs = (specialArg configPath folders absolutePaths);
         };
 

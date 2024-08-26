@@ -6,6 +6,9 @@ flakePath: {
   # Home-Manager-Standalone Builder
   build = { username ? "nixos", package, systemPackage, architecture ? "x86_64-linux", modifiers ? [] }: (
     let
+    
+      # Utils
+      utils = (import ../nix-modules/collapseAttrs.nix);
 
       # Basic Home-Manager Configuration
       homeManagerConfig = {
@@ -21,15 +24,10 @@ flakePath: {
 
       # Home-Manager Configuration With Modifiers
       homeManagerConfigWithModifiers = (
-        # Foldl': [ { ... } { ... } ] -> { ... }
-        builtins.foldl' (
-          accumulator: modifier: (
-            accumulator // (modifier // {
-              modules = (accumulator.modules ++ modifier.modules);
-              extraSpecialArgs = (accumulator.extraSpecialArgs // modifier.extraSpecialArgs);
-            })
-          )
-        ) homeManagerConfig modifiers
+        utils.collapseAttrs homeManagerConfig modifiers {
+          modules = [];
+          extraSpecialArgs = {};
+        }
       );
 
     in (

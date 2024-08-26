@@ -27,20 +27,17 @@ flakePath: (
         # Override Home-Manager-Module Configuration
         homeManagerModule = { architecture ? "x86_64-linux", packages }: {
           home-manager = {
-            sharedModules = [];
             extraSpecialArgs = (specialArg architecture packages);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
         homeManagerStandalone = { architecture ? "x86_64-linux", packages }: {
-          modules = [];
           extraSpecialArgs = (specialArg architecture packages);
         };
 
         # Override System Configuration
         nixosSystem = { architecture ? "x86_64-linux", packages }: {
-          modules = [];
           specialArgs = (specialArg architecture packages);
         };
 
