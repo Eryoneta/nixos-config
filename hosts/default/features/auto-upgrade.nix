@@ -4,9 +4,9 @@
   in {
 
     imports = [
-      ../../../nixos-modules/auto-upgrade-git-support.nix
-      ../../../nixos-modules/auto-upgrade-update-flake-lock.nix
-      ../../../nixos-modules/auto-upgrade-alter-profile.nix
+      ../../../modules/nixos-modules/auto-upgrade-git-support.nix
+      ../../../modules/nixos-modules/auto-upgrade-update-flake-lock.nix
+      ../../../modules/nixos-modules/auto-upgrade-alter-profile.nix
     ];
 
     config = {

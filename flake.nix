@@ -28,13 +28,13 @@
     let
 
       # Imports
-      nixosSystem = (import ./flake-modules/nixos-system.nix self.outPath);
-      homeManagerModule = (import ./flake-modules/home-manager-module.nix self.outPath);
-      homeManagerStandalone = (import ./flake-modules/home-manager-standalone.nix self.outPath);
-      userHostScheme = (import ./flake-modules/user-host-scheme.nix self.outPath);
-      packageBundle = (import ./flake-modules/package-bundle.nix self.outPath);
-      pubPrivDomains = (import ./flake-modules/public-private-domains.nix self.outPath);
-      autoUpgradeList = (import ./flake-modules/auto-upgrade-list.nix self.outPath);
+      nixosSystem = (import ./modules/flake-modules/nixos-system.nix self.outPath);
+      homeManagerModule = (import ./modules/flake-modules/home-manager-module.nix self.outPath);
+      homeManagerStandalone = (import ./modules/flake-modules/home-manager-standalone.nix self.outPath);
+      userHostScheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
+      packageBundle = (import ./modules/flake-modules/package-bundle.nix self.outPath);
+      pubPrivDomains = (import ./modules/flake-modules/public-private-domains.nix self.outPath);
+      autoUpgradeList = (import ./modules/flake-modules/auto-upgrade-list.nix self.outPath);
 
       # Hosts
       LiCo = userHostScheme.buildHost {
