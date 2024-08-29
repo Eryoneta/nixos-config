@@ -47,6 +47,11 @@
         name = "NeLiCo";
         system.label = ""; #[a-zA-Z0-9:_.-]*
       };
+      HyperV_VM = flake-modules."user-host-scheme.nix".buildHost {
+        hostname = "hyper-v_vm";
+        name = "HyperV_VM";
+        system.label = ""; #[a-zA-Z0-9:_.-]*
+      };
 
       # Users
       Yo = flake-modules."user-host-scheme.nix".buildUser {
@@ -162,6 +167,7 @@
       # NixOS + Home Manager
       nixosConfigurations = {
         "Yo@LiCo" = (buildCommonConfig Yo LiCo);
+        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM);
         #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo);
         #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo);
       };
@@ -169,6 +175,7 @@
       # Home Manager
       homeConfigurations = {
         "Yo@LiCo" = (buildCommonHMConfig Yo LiCo);
+        "Yo@HyperV_VM" = (buildCommonHMConfig Yo HyperV_VM);
         #"Yo@NeLiCo" = (buildCommonHMConfig Yo NeLiCo);
         #"Eryoneta@NeLiCo" = (buildCommonHMConfig Eryoneta NeLiCo);
       };
