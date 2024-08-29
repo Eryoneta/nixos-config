@@ -21,6 +21,27 @@
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Submodules
+    # So ugly! Please let it be temporary!
+    # "?submodules=1" is too limited! It doesn't support "git worktree"!
+    # Flakes should be able to find submodules by default!
+    private-config-dotfiles = {
+      url = "git+file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/dotfiles";
+      flake = false;
+    };
+    private-config-programs = {
+      url = "git+file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/programs";
+      flake = false;
+    };
+    private-config-resources = {
+      url = "git+file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/resources";
+      flake = false;
+    };
+    private-config-secrets = {
+      url = "git+file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/secrets";
+      flake = false;
+    };
+
   };
 
   # Outputs
@@ -85,6 +106,12 @@
         # So, all changes happens in 'develop', and 'main' only gets occasional system upgrades
         configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
         # configPath = user.configFolder;
+        subSubModules = {
+          dotfiles = extraArgs.private-config-dotfiles;
+          programs = extraArgs.private-config-programs;
+          resources = extraArgs.private-config-resources;
+          secrets = extraArgs.private-config-secrets;
+        };
         folders = {
           dotfiles = "/dotfiles";
           programs = "/programs";

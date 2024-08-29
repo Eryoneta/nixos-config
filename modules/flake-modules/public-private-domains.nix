@@ -20,34 +20,40 @@ flakePath: (
         (if (builtins.hasAttr name absolutePaths) then configPath else flakePath) + subfolder + value
       )) folders
     );
+    buildPrivateDomain = configPath: subSubModules: folders: absolutePaths: subfolder: (
+      # MapAttr: { folder = ./folder; } -> { folder = basePath/folder; }
+      builtins.mapAttrs (name: value: (
+        if (builtins.hasAttr name absolutePaths) then (configPath + subfolder + value) else subSubModules.${name}
+      )) folders
+    );
 
   in {
     # Builder
     buildFor = (
       let
-        specialArg = configPath: folders: absolutePaths: {
+        specialArg = configPath: subSubModules: folders: absolutePaths: {
           config-domain = {
             public = (buildDomain configPath folders absolutePaths "/public-config");
-            private = (buildDomain configPath folders absolutePaths "/private-config");
+            private = (buildPrivateDomain configPath subSubModules folders absolutePaths "/private-config");
           };
         };
       in {
 
         # Override Home-Manager-Module Configuration
-        homeManagerModule = { configPath, folders, absolutePaths ? [] }: {
+        homeManagerModule = { configPath, subSubModules, folders, absolutePaths ? [] }: {
           home-manager = {
-            extraSpecialArgs = (specialArg configPath folders absolutePaths);
+            extraSpecialArgs = (specialArg configPath subSubModules folders absolutePaths);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { configPath, folders, absolutePaths ? [] }: {
-          extraSpecialArgs = (specialArg configPath folders absolutePaths);
+        homeManagerStandalone = { configPath, subSubModules, folders, absolutePaths ? [] }: {
+          extraSpecialArgs = (specialArg configPath subSubModules folders absolutePaths);
         };
 
         # Override System Configuration
-        nixosSystem = { configPath, folders, absolutePaths ? [] }: {
-          specialArgs = (specialArg configPath folders absolutePaths);
+        nixosSystem = { configPath, subSubModules, folders, absolutePaths ? [] }: {
+          specialArgs = (specialArg configPath subSubModules folders absolutePaths);
         };
 
       }
