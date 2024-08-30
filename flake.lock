@@ -1,22 +1,5 @@
 {
   "nodes": {
-    "complete-config-dev": {
-      "flake": false,
-      "locked": {
-        "dirtyRev": "fbb03ec6418445cd0041c6994681ae0cb2c91d36-dirty",
-        "dirtyShortRev": "fbb03ec-dirty",
-        "lastModified": 1725039723,
-        "narHash": "sha256-am3xviWhm4J1XCplCOAgPOKxWB2TrxnMb074dpZCi7o=",
-        "submodules": true,
-        "type": "git",
-        "url": "file:///home/yo/Utilities/SystemConfig/nixos-config-dev"
-      },
-      "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "file:///home/yo/Utilities/SystemConfig/nixos-config-dev"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -104,7 +87,6 @@
     },
     "root": {
       "inputs": {
-        "complete-config-dev": "complete-config-dev",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
