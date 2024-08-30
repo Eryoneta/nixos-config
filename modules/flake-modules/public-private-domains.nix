@@ -20,10 +20,10 @@ flakePath: (
         (if (builtins.hasAttr name absolutePaths) then configPath else flakePath) + subfolder + value
       )) folders
     );
-    buildPrivateDomain = configPath: subSubModules: folders: absolutePaths: subfolder: (
+    buildPrivateDomain = configPath: folders: privateDirPath: absolutePaths: subfolder: (
       # MapAttr: { folder = ./folder; } -> { folder = basePath/folder; }
       builtins.mapAttrs (name: value: (
-        if (builtins.hasAttr name absolutePaths) then (configPath + subfolder + value) else subSubModules.${name}
+        (if (builtins.hasAttr name absolutePaths) then (configPath + subfolder) else privateDirPath) + value
       )) folders
     );
 
@@ -31,33 +31,33 @@ flakePath: (
     # Builder
     buildFor = (
       let
-        specialArg = configPath: subSubModules: folders: absolutePaths: {
+        specialArg = configPath: folders: privateDirPath: absolutePaths: {
           config-domain = {
             public = (buildDomain configPath folders absolutePaths "/public-config");
-            private = (buildPrivateDomain configPath subSubModules folders absolutePaths "/private-config");
+            private = (buildPrivateDomain configPath folders privateDirPath absolutePaths "/private-config");
           };
         };
       in {
 
         # Override Home-Manager-Module Configuration
-        homeManagerModule = { configPath, subSubModules, folders, absolutePaths ? [] }: {
+        homeManagerModule = { configPath, folders, privateDirPath, absolutePaths ? [] }: {
           home-manager = {
-            extraSpecialArgs = (specialArg configPath subSubModules folders absolutePaths);
+            extraSpecialArgs = (specialArg configPath folders privateDirPath absolutePaths);
           };
         };
 
         # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { configPath, subSubModules, folders, absolutePaths ? [] }: {
-          extraSpecialArgs = (specialArg configPath subSubModules folders absolutePaths);
+        homeManagerStandalone = { configPath, folders, privateDirPath, absolutePaths ? [] }: {
+          extraSpecialArgs = (specialArg configPath folders privateDirPath absolutePaths);
         };
 
         # Override System Configuration
-        nixosSystem = { configPath, subSubModules, folders, absolutePaths ? [] }: {
-          specialArgs = (specialArg configPath subSubModules folders absolutePaths);
+        nixosSystem = { configPath, folders, privateDirPath, absolutePaths ? [] }: {
+          specialArgs = (specialArg configPath folders privateDirPath absolutePaths);
         };
 
       }
     );
 
-}
+  }
 )

@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "complete-config-dev": {
+      "flake": false,
+      "locked": {
+        "dirtyRev": "b70aa0283f478f1dfa7cbd0b2da777c41e4b192f-dirty",
+        "dirtyShortRev": "b70aa02-dirty",
+        "lastModified": 1724974828,
+        "narHash": "sha256-JFZG/VOQXG4AfdufQFXP9eDXk7ecmagoz3Mqp7OrO24=",
+        "submodules": true,
+        "type": "git",
+        "url": "file:///home/yo/Utilities/SystemConfig/nixos-config-dev"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "file:///home/yo/Utilities/SystemConfig/nixos-config-dev"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -85,81 +102,14 @@
         "type": "github"
       }
     },
-    "private-config-dotfiles": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722620332,
-        "narHash": "sha256-JAdlIY9HC5lNET+ikXy23zbzJZOVdl15JACIlypxmkY=",
-        "ref": "refs/heads/main",
-        "rev": "7b01d51495999a118ad415e252f0bdaa15daee7f",
-        "revCount": 4,
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/dotfiles"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/dotfiles"
-      }
-    },
-    "private-config-programs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1724641766,
-        "narHash": "sha256-E5Eoieq4N9PAd59n7l5/JPstm2ISxFuhJWsabuYB07o=",
-        "ref": "refs/heads/main",
-        "rev": "de292dff341a69729a23c342a4b33ce9703e82e2",
-        "revCount": 2,
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/programs"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/programs"
-      }
-    },
-    "private-config-resources": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722612438,
-        "narHash": "sha256-BeBAh/6p7Z7kJKzqZBFifekn264yHcAoY3vnIrQaoWM=",
-        "ref": "refs/heads/main",
-        "rev": "fb15563416b80c7de92c7e4140a9fbbdcf22dc3c",
-        "revCount": 1,
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/resources"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/resources"
-      }
-    },
-    "private-config-secrets": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722611992,
-        "narHash": "sha256-2xhz7tyeGUFYwWCpKN57XGW8S85h4OjKiYCDWaoPJHY=",
-        "ref": "refs/heads/main",
-        "rev": "13ef37bd2873062cb5c6ae40d9cb4a7d7020c9ab",
-        "revCount": 1,
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/secrets"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:/home/yo/Utilities/SystemConfig/nixos-config-dev/private-config/secrets"
-      }
-    },
     "root": {
       "inputs": {
+        "complete-config-dev": "complete-config-dev",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
-        "private-config-dotfiles": "private-config-dotfiles",
-        "private-config-programs": "private-config-programs",
-        "private-config-resources": "private-config-resources",
-        "private-config-secrets": "private-config-secrets"
+        "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed"
       }
     }
   },
