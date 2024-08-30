@@ -3,10 +3,10 @@
     "complete-config-dev": {
       "flake": false,
       "locked": {
-        "dirtyRev": "b70aa0283f478f1dfa7cbd0b2da777c41e4b192f-dirty",
-        "dirtyShortRev": "b70aa02-dirty",
-        "lastModified": 1724974828,
-        "narHash": "sha256-JFZG/VOQXG4AfdufQFXP9eDXk7ecmagoz3Mqp7OrO24=",
+        "dirtyRev": "fbb03ec6418445cd0041c6994681ae0cb2c91d36-dirty",
+        "dirtyShortRev": "fbb03ec-dirty",
+        "lastModified": 1725039723,
+        "narHash": "sha256-am3xviWhm4J1XCplCOAgPOKxWB2TrxnMb074dpZCi7o=",
         "submodules": true,
         "type": "git",
         "url": "file:///home/yo/Utilities/SystemConfig/nixos-config-dev"
