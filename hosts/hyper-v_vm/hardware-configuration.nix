@@ -8,6 +8,10 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  # Hibernation
+  boot.resumeDevice = "/dev/disk/by-partlabel/root";
+  boot.kernelParams = [ "resume_offset=3848192" ];
+
   # Root Partition
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/5f91f6e8-4ebd-41ea-93b7-d75b44aa4bf0";
@@ -24,7 +28,7 @@
   # Swap
   swapDevices = [
     {
-      device = "/swap/swapfile";
+      device = "/var/swapfile";
       size = (4 * 1024) + (2 * 1024);
     }
   ];

@@ -7,35 +7,33 @@ flakePath: (
 
     # Utils
     utils = (import ../nix-modules/mapDir.nix);
+
+    # SpecialArg
+    specialArg = directory: {
+      modules = (utils.mapDir directory);
+    };
     
   in {
     # Builder
-    buildFor = (
-      let
-        specialArg = directory: {
-          modules = (utils.mapDir directory);
-        };
-      in {
+    build = { directory }: {
 
-        # Override Home-Manager-Module Configuration
-        homeManagerModule = { directory }: {
-          home-manager = {
-            extraSpecialArgs = (specialArg directory);
-          };
-        };
-
-        # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { directory }: {
+      # Override Home-Manager-Module Configuration
+      homeManagerModule = {
+        home-manager = {
           extraSpecialArgs = (specialArg directory);
         };
+      };
 
-        # Override System Configuration
-        nixosSystem = { directory }: {
-          specialArgs = (specialArg directory);
-        };
+      # Override Home-Manager-Standalone Configuration
+      homeManagerStandalone = {
+        extraSpecialArgs = (specialArg directory);
+      };
 
-      }
-    );
+      # Override System Configuration
+      nixosSystem = {
+        specialArgs = (specialArg directory);
+      };
 
+    };
   }
 )

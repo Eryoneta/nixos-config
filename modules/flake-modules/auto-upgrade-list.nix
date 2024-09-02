@@ -12,34 +12,32 @@ flakePath: (
       builtins.attrNames packages
     );
 
+    # SpecialArg
+    specialArg = packages: {
+      auto-upgrade-pkgs = (buildList packages);
+    };
+
   in {
     # Builder
-    buildFor = (
-      let
-        specialArg = packages: {
-          auto-upgrade-pkgs = (buildList packages);
-        };
-      in {
+    build = { packages }: {
 
-        # Override Home-Manager-Module Configuration
-        homeManagerModule = { packages }: {
-          home-manager = {
-            extraSpecialArgs = (specialArg packages);
-          };
-        };
-
-        # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { packages }: {
+      # Override Home-Manager-Module Configuration
+      homeManagerModule = {
+        home-manager = {
           extraSpecialArgs = (specialArg packages);
         };
+      };
 
-        # Override System Configuration
-        nixosSystem = { packages }: {
-          specialArgs = (specialArg packages);
-        };
+      # Override Home-Manager-Standalone Configuration
+      homeManagerStandalone = {
+        extraSpecialArgs = (specialArg packages);
+      };
 
-      }
-    );
+      # Override System Configuration
+      nixosSystem = {
+        specialArgs = (specialArg packages);
+      };
 
+    };
   }
 )
