@@ -28,11 +28,15 @@
     let
 
       # Imports
+      nix-lib = extraArgs.nixpkgs.lib;
       nix-utils = (import ./modules/nix-modules/mapDir.nix);
       flake-modules = (
         # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
         builtins.mapAttrs (
-          name: value: (import value self.outPath)
+          name: value: (
+            # Import only .nix files!
+            if (nix-lib.strings.hasSuffix ".nix" value) then (import value self.outPath) else value
+          )
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
 
@@ -67,117 +71,105 @@
       };
 
       # Common Configurations
-      userHostSchemeConfig = user: host: {
-        inherit user;
-        inherit host;
-      };
-      packageBundleConfig = host: {
-        architecture = host.system.architecture;
-        packages = (with extraArgs; {
-          stable = nixpkgs-stable;
-          unstable = nixpkgs-unstable;
-          unstable-fixed = nixpkgs-unstable-fixed;
-        });
-      };
-      pubPrivDomainsConfig = user: {
-        # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
-        # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
-        # So, all changes happens in 'develop', and 'main' only gets occasional system upgrades
-        configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
-        # configPath = user.configFolder;
-        folders = {
-          dotfiles = "/dotfiles";
-          programs = "/programs";
-          resources = "/resources";
-          secrets = "/secrets";
-        };
-        absolutePaths.dotfiles = true;
-      };
-      autoUpgradeListConfig = {
-        packages = (with extraArgs; {
-          inherit nixpkgs;
-          inherit home-manager;
-          inherit nixpkgs-stable;
-          inherit nixpkgs-unstable;
-          # inherit nixpkgs-unstable-fixed;
-        });
-      };
-      mapModulesDirConfig = {
-        directory = ./modules;
-      };
-
-      # Common NixOS Configuration
       buildCommonConfig = user: host: (
-        # NixOS-System
-        flake-modules."nixos-system.nix".build {
-          architecture = host.system.architecture;
-          package = extraArgs.nixpkgs;
-          modifiers = [
+        let
+
+          # Common Modifiers
+          commonModifiers = [
             # User-Host-Scheme
-            (flake-modules."user-host-scheme.nix".buildFor.nixosSystem (userHostSchemeConfig user host))
-            # Home-Manager-Module
-            (flake-modules."home-manager-module.nix".build {
-              username = user.username;
-              package = extraArgs.home-manager;
-              modifiers = [
-                # User-Host-Scheme
-                (flake-modules."user-host-scheme.nix".buildFor.homeManagerModule (userHostSchemeConfig user host))
-                # Pkgs-Bundle
-                (flake-modules."package-bundle.nix".buildFor.homeManagerModule (packageBundleConfig host))
-                # Public-Private-Zones
-                (flake-modules."public-private-domains.nix".buildFor.homeManagerModule (pubPrivDomainsConfig user))
-                # Map-Modules-Dir
-                (flake-modules."map-modules-directory.nix".buildFor.homeManagerModule (mapModulesDirConfig))
-              ];
+            (flake-modules."user-host-scheme.nix".build {
+              inherit user;
+              inherit host;
             })
             # Pkgs-Bundle
-            (flake-modules."package-bundle.nix".buildFor.nixosSystem (packageBundleConfig host))
+            (flake-modules."package-bundle.nix".build {
+              architecture = host.system.architecture;
+              packages = (with extraArgs; {
+                stable = nixpkgs-stable;
+                unstable = nixpkgs-unstable;
+                unstable-fixed = nixpkgs-unstable-fixed;
+              });
+            })
             # Public-Private-Zones
-            (flake-modules."public-private-domains.nix".buildFor.nixosSystem (pubPrivDomainsConfig user))
-            # Auto-Upgrade-List
-            (flake-modules."auto-upgrade-list.nix".buildFor.nixosSystem (autoUpgradeListConfig))
+            (flake-modules."public-private-domains.nix".build {
+              # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
+              # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
+              # So, all changes happens in 'develop', and 'main' only gets occasional system upgrades
+              configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
+              # configPath = user.configFolder;
+              folders = {
+                dotfiles = "/dotfiles";
+                programs = "/programs";
+                resources = "/resources";
+                secrets = "/secrets";
+              };
+              absolutePaths.dotfiles = true;
+            })
             # Map-Modules-Dir
-            (flake-modules."map-modules-directory.nix".buildFor.nixosSystem (mapModulesDirConfig))
+            (flake-modules."map-modules-directory.nix".build {
+              directory = ./modules;
+            })
           ];
-        }
-      );
 
-      # Common Home-Manager Configuration
-      buildCommonHMConfig = user: host: (
-        # Home-Manager-Standalone
-        flake-modules."home-manager-standalone.nix".build {
-          package = extraArgs.home-manager;
-          systemPackage = extraArgs.nixpkgs;
-          username = user.username;
-          modifiers = [
-            # User-Host-Scheme
-            (flake-modules."user-host-scheme.nix".buildFor.homeManagerStandalone (userHostSchemeConfig user host))
-            # Pkgs-Bundle
-            (flake-modules."package-bundle.nix".buildFor.homeManagerStandalone (packageBundleConfig host))
-            # Public-Private-Zones
-            (flake-modules."public-private-domains.nix".buildFor.homeManagerStandalone (pubPrivDomainsConfig user))
-            # Map-Modules-Dir
-            (flake-modules."map-modules-directory.nix".buildFor.homeManagerStandalone (mapModulesDirConfig))
-          ];
+        in {
+
+          # Common NixOS Configuration
+          nixosSystemConfig = (
+            # NixOS-System
+            flake-modules."nixos-system.nix".build {
+              architecture = host.system.architecture;
+              package = extraArgs.nixpkgs;
+              modifiers = commonModifiers ++ [
+                # Home-Manager-Module
+                (flake-modules."home-manager-module.nix".build {
+                  username = user.username;
+                  package = extraArgs.home-manager;
+                  modifiers = commonModifiers;
+                })
+                # Auto-Upgrade-List
+                (flake-modules."auto-upgrade-list.nix".build {
+                  packages = (with extraArgs; {
+                    inherit nixpkgs;
+                    inherit home-manager;
+                    inherit nixpkgs-stable;
+                    inherit nixpkgs-unstable;
+                    # inherit nixpkgs-unstable-fixed;
+                  });
+                })
+              ];
+            }
+          );
+
+          # Common Home-Manager Configuration
+          homeManagerConfig = (
+            # Home-Manager-Standalone
+            flake-modules."home-manager-standalone.nix".build {
+              package = extraArgs.home-manager;
+              systemPackage = extraArgs.nixpkgs;
+              username = user.username;
+              modifiers = commonModifiers;
+            }
+          );
+
         }
       );
       
     in {
 
-      # NixOS + Home Manager
+      # NixOS + Home-Manager
       nixosConfigurations = {
-        "Yo@LiCo" = (buildCommonConfig Yo LiCo);
-        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM);
-        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo);
-        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo);
+        "Yo@LiCo" = (buildCommonConfig Yo LiCo).nixosSystemConfig;
+        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).nixosSystemConfig;
+        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo).nixosSystemConfig;
+        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo).nixosSystemConfig;
       };
       
-      # Home Manager
+      # Home-Manager
       homeConfigurations = {
-        "Yo@LiCo" = (buildCommonHMConfig Yo LiCo);
-        "Yo@HyperV_VM" = (buildCommonHMConfig Yo HyperV_VM);
-        #"Yo@NeLiCo" = (buildCommonHMConfig Yo NeLiCo);
-        #"Eryoneta@NeLiCo" = (buildCommonHMConfig Eryoneta NeLiCo);
+        "Yo@LiCo" = (buildCommonConfig Yo LiCo).homeManagerConfig;
+        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).homeManagerConfig;
+        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo).homeManagerConfig;
+        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo).homeManagerConfig;
       };
 
     }

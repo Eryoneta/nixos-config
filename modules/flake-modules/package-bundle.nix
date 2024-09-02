@@ -15,34 +15,32 @@ flakePath: (
       config.allowUnfree = true;
     };
 
+    # SpecialArg
+    specialArg = architecture: packages: {
+      pkgs-bundle = (buildPkgsBundle architecture packages);
+    };
+
   in {
     # Builder
-    buildFor = (
-      let
-        specialArg = architecture: packages: {
-          pkgs-bundle = (buildPkgsBundle architecture packages);
-        };
-      in {
+    build = { architecture ? "x86_64-linux", packages }: {
 
-        # Override Home-Manager-Module Configuration
-        homeManagerModule = { architecture ? "x86_64-linux", packages }: {
-          home-manager = {
-            extraSpecialArgs = (specialArg architecture packages);
-          };
-        };
-
-        # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { architecture ? "x86_64-linux", packages }: {
+      # Override Home-Manager-Module Configuration
+      homeManagerModule = {
+        home-manager = {
           extraSpecialArgs = (specialArg architecture packages);
         };
+      };
 
-        # Override System Configuration
-        nixosSystem = { architecture ? "x86_64-linux", packages }: {
-          specialArgs = (specialArg architecture packages);
-        };
+      # Override Home-Manager-Standalone Configuration
+      homeManagerStandalone = {
+        extraSpecialArgs = (specialArg architecture packages);
+      };
 
-      }
-    );
+      # Override System Configuration
+      nixosSystem = {
+        specialArgs = (specialArg architecture packages);
+      };
 
+    };
   }
 )

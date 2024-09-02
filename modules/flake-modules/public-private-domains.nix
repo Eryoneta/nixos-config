@@ -21,37 +21,35 @@ flakePath: (
       )) folders
     );
 
+    # SpecialArg
+    specialArg = configPath: folders: absolutePaths: {
+      config-domain = {
+        public = (buildDomain configPath folders absolutePaths "/public-config");
+        private = (buildDomain configPath folders absolutePaths "/private-config");
+      };
+    };
+
   in {
     # Builder
-    buildFor = (
-      let
-        specialArg = configPath: folders: absolutePaths: {
-          config-domain = {
-            public = (buildDomain configPath folders absolutePaths "/public-config");
-            private = (buildDomain configPath folders absolutePaths "/private-config");
-          };
-        };
-      in {
+    build = { configPath, folders, absolutePaths ? [] }: {
 
-        # Override Home-Manager-Module Configuration
-        homeManagerModule = { configPath, folders, absolutePaths ? [] }: {
-          home-manager = {
-            extraSpecialArgs = (specialArg configPath folders absolutePaths);
-          };
-        };
-
-        # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = { configPath, folders, absolutePaths ? [] }: {
+      # Override Home-Manager-Module Configuration
+      homeManagerModule = {
+        home-manager = {
           extraSpecialArgs = (specialArg configPath folders absolutePaths);
         };
+      };
 
-        # Override System Configuration
-        nixosSystem = { configPath, folders, absolutePaths ? [] }: {
-          specialArgs = (specialArg configPath folders absolutePaths);
-        };
+      # Override Home-Manager-Standalone Configuration
+      homeManagerStandalone = {
+        extraSpecialArgs = (specialArg configPath folders absolutePaths);
+      };
 
-      }
-    );
+      # Override System Configuration
+      nixosSystem = {
+        specialArgs = (specialArg configPath folders absolutePaths);
+      };
 
+    };
   }
 )

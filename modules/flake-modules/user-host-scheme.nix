@@ -69,51 +69,43 @@ flakePath: (
     );
 
     # Builder
-    buildFor = {
+    build = { user ? default.user, host ? default.host }: (
+      let
+        pair = (buildPair user host);
+      in {
 
-      # Override Home-Manager-Module Configuration
-      homeManagerModule = { user ? default.user, host ? default.host }: (
-        let
-          pair = (buildPair user host);
-        in {
+        # Override Home-Manager-Module Configuration
+        homeManagerModule = {
           home-manager = {
             users.${pair.user.username} = (import "${flakePath}/users/${pair.user.username}/home.nix");
             extraSpecialArgs = {
               user = pair.user;
             };
           };
-        }
-      );
+        };
 
-      # Override Home-Manager-Standalone Configuration
-      homeManagerStandalone = { user ? default.user, host ? default.host }: (
-        let
-          pair = (buildPair user host);
-        in {
+        # Override Home-Manager-Standalone Configuration
+        homeManagerStandalone = {
           modules = [
             "${flakePath}/users/${pair.user.username}/home.nix"
           ];
           extraSpecialArgs = {
             user = pair.user;
           };
-        }
-      );
+        };
 
-      # Override System Configuration
-      nixosSystem = { user ? default.user, host ? default.host }: (
-        let
-          pair = (buildPair user host);
-        in {
+        # Override System Configuration
+        nixosSystem = {
           modules = [
             "${flakePath}/hosts/${pair.host.hostname}/configuration.nix"
           ];
           specialArgs = {
             host = pair.host;
           };
-        }
-      );
+        };
 
-    };
+      }
+    );
 
   }
 )
