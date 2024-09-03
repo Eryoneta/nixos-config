@@ -20,6 +20,7 @@ flakePath: (
           label = "";
         };
         configFolder = /etc/nixos;
+        configFolderNixStore = flakePath;
       };
 
       # Default User

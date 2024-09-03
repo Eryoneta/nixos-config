@@ -13,4 +13,8 @@
       autoLogin.user = host.user.username;
     };
 
+    # Source Code
+    system.extraSystemBuilderCmds = "ln -s ${host.configFolderNixStore} $out/src";
+    # "/run/current-system/src" is a link to the current flake source-code!
+
   }
