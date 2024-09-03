@@ -16,9 +16,11 @@
         operation = "boot";
         allowReboot = false;
         persistent = true;
-        dates = mkDefault "Fri *-*-* 16:00:00"; # Toda sexta, 16h00
-        randomizedDelaySec = mkDefault "30min"; # Varia em 30min(Para não iniciar imediatamente, se atrasado(persistent))
-        flake = "git+file://${host.configFolder}#${host.user.name}@${host.name}";
+        dates = mkDefault "Fri *-*-* 16:00:00"; # Every friday, 16h00
+        randomizedDelaySec = mkDefault "30min"; # Varies by 30min(Its best to not update right after booting)
+        # Notice: The flake ignores submodules! The flag "submodules=1" is necessary
+        # TODO: Remove once submodules are supported by default
+        flake = "git+file://${host.configFolder}?submodules=1#${host.user.name}@${host.name}";
 
         gitSupport = {
           enable = mkDefault true;
@@ -31,7 +33,7 @@
         updateFlakeLock = {
           enable = mkDefault true;
           inputs = auto-upgrade-pkgs;
-          commitLockFile = mkDefault true; # Grava "flake.lock"
+          commitLockFile = mkDefault true; # Commits "flake.lock"
         };
 
         alterProfile = {
