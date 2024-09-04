@@ -12,13 +12,13 @@
 
     # Root Partition
     fileSystems."/" = {
-      device = "/dev/disk/by-uuid/5f91f6e8-4ebd-41ea-93b7-d75b44aa4bf0";
+      device = "/dev/disk/by-label/NixOS";
       fsType = "ext4";
     };
 
     # Boot Partition
     fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/16D2-48AB";
+      device = "/dev/disk/by-label/BOOT";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };

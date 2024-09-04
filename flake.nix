@@ -21,6 +21,10 @@
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Agenix
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   # Outputs
@@ -136,6 +140,11 @@
                     # inherit nixpkgs-unstable-fixed;
                   });
                 })
+                # Agenix
+                (flake-modules."agenix.nix".build {
+                  architecture = host.system.architecture;
+                  package = extraArgs.agenix;
+                })
               ];
             }
           );
@@ -147,7 +156,13 @@
               package = extraArgs.home-manager;
               systemPackage = extraArgs.nixpkgs;
               username = user.username;
-              modifiers = commonModifiers;
+              modifiers = commonModifiers ++ [
+                # Agenix
+                (flake-modules."agenix.nix".build {
+                  architecture = host.system.architecture;
+                  package = extraArgs.agenix;
+                })
+              ];
             }
           );
 
