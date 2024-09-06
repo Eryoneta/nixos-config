@@ -37,10 +37,7 @@
       flake-modules = (
         # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
         builtins.mapAttrs (
-          name: value: (
-            # Import only .nix files!
-            if (nix-lib.strings.hasSuffix ".nix" value) then (import value self.outPath) else value
-          )
+          name: value: (import value self.outPath)
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
 
