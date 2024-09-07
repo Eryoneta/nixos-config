@@ -1,8 +1,18 @@
-{ config-domain, ... }: {
-
-  # LiCo
-  imports = with config-domain.public; [
-    "${programs}/store/nixos.nix.delayed.nix"
-  ];
+{ config-domain, modules, host, lib, ... }: {
+    
+  # Programss
+  imports = (
+    let
+      listFiles = (import modules.nix-modules."listFiles.nix" lib).listFiles;
+      prefix = "nixos.";
+      infix = ".${host.hostname}.";
+      suffix = ".nix";
+    in with config-domain;(
+      (listFiles "${public.programs}" prefix infix suffix)
+      ++ (listFiles "${private.programs}" prefix infix suffix)
+      ++ (listFiles "${public.programs}/store" prefix infix suffix)
+      ++ (listFiles "${private.programs}/store" prefix infix suffix)
+    )
+  );
 
 }

@@ -1,4 +1,10 @@
-{ lib, ... }: (import ./nixos.nix.nix { inherit lib; }) // {
+{ lib, ... }: {
+
+  # Import Default
+  imports = [
+    ./nixos.default.nix.nix
+  ];
+
   config = {
 
     # Nix: Gerenciador de pacotes do sistema
@@ -10,4 +16,5 @@
     };
 
   };
+
 }

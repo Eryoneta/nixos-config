@@ -1,16 +1,18 @@
-{ config-domain, ... }: {
+{ config-domain, modules, user, lib, ... }: {
     
-  # Yo
+  # Programs
   imports = (
-    (with config-domain.public; [
-      "${programs}/store/home.git.nix"
-      "${programs}/store/home.calibre.nix"
-    ])
-    ++
-    (with config-domain.private; [
-      "${programs}/home.other-programs.nix"
-      "${programs}/store/home.ssh.personal.nix"
-    ])
+    let
+      listFiles = (import modules.nix-modules."listFiles.nix" lib).listFiles;
+      prefix = "home.";
+      infix = ".${user.username}.";
+      suffix = ".nix";
+    in with config-domain; (
+      (listFiles "${public.programs}" prefix infix suffix)
+      ++ (listFiles "${private.programs}" prefix infix suffix)
+      ++ (listFiles "${public.programs}/store" prefix infix suffix)
+      ++ (listFiles "${private.programs}/store" prefix infix suffix)
+    )
   );
 
 }
