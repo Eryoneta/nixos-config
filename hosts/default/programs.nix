@@ -2,9 +2,9 @@
 
   # Default
   imports = with config-domain.public; [
-    "${programs}/essential-programs.nix"
-    "${programs}/store/nix.nix"
-    #"${programs}/store/openssh.nix"
+    "${programs}/nixos.essential-programs.nix"
+    "${programs}/store/nixos.nix.nix"
+    #"${programs}/store/nixos.openssh.nix"
   ];
 
   # Pacotes
