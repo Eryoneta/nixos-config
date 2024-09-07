@@ -33,32 +33,36 @@
 
       # Imports
       nix-lib = extraArgs.nixpkgs.lib;
-      nix-utils = (import ./modules/nix-modules/mapDir.nix);
+      nix-utils = (
+        let
+          path = ./modules/nix-modules;
+        in (import "${path}/mapDir.nix") // (import "${path}/formatStr.nix" nix-lib)
+      );
       flake-modules = (
         # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
         builtins.mapAttrs (
-          name: value: (
-            # Import only .nix files!
-            if (nix-lib.strings.hasSuffix ".nix" value) then (import value self.outPath) else value
-          )
+          name: value: (import value self.outPath)
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
+
+      # System_Label
+      systemLabel = (nix-utils.formatStr (builtins.readFile ./NIXOS_LABEL.txt));
 
       # Hosts
       LiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = "Flake:_Modules"; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
       };
       NeLiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "nelico";
         name = "NeLiCo";
-        system.label = ""; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
       };
       HyperV_VM = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "hyper-v_vm";
         name = "HyperV_VM";
-        system.label = ""; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
       };
 
       # Users

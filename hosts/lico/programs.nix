@@ -2,7 +2,7 @@
 
   # LiCo
   imports = with config-domain.public; [
-    "${programs}/store/nix.delayed.nix"
+    "${programs}/store/nixos.nix.delayed.nix"
   ];
 
 }

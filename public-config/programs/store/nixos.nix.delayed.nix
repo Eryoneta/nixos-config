@@ -1,4 +1,4 @@
-{ lib, ... }: (import ./nix.nix { inherit lib; }) // {
+{ lib, ... }: (import ./nixos.nix.nix { inherit lib; }) // {
   config = {
 
     # Nix: Gerenciador de pacotes do sistema

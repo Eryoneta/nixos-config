@@ -2,9 +2,10 @@
     
   # Default
   imports = with config-domain.public; [
-    "${programs}/basic-programs.nix"
-    "${programs}/store/firefox.nix"
-    "${programs}/store/vscodium.nix"
+    "${programs}/home.basic-programs.nix"
+    "${programs}/store/home.firefox.nix"
+    "${programs}/store/home.vscodium.nix"
+    "${programs}/store/home.ssh.nix"
   ];
 
 }
