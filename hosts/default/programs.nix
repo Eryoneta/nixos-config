@@ -25,7 +25,4 @@
     )
   );
 
-  # Pacotes
-  config.nixpkgs.config.allowUnfree = true; # Precaução
-
 }
