@@ -1,15 +1,16 @@
-{ config, pkgs-bundle, user, ... }:
+{ config, pkgs-bundle, user, lib, ... }:
   let
+    mkDefault = value: lib.mkDefault value;
     mkOutOfStoreSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
   in {
     config = {
 
-      # SSH: Agente SSH para conexão segura
+      # SSH: Secure connection
       programs.ssh = {
-        enable = true;
-        package = pkgs-bundle.stable.openssh;
+        enable = mkDefault true;
+        package = mkDefault pkgs-bundle.stable.openssh;
       };
-      services.ssh-agent.enable = true;
+      services.ssh-agent.enable = mkDefault true;
 
     };
   }

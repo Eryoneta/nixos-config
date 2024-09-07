@@ -9,6 +9,7 @@
     ++
     (with config-domain.private; [
       "${programs}/home.other-programs.nix"
+      "${programs}/store/home.ssh.personal.nix"
     ])
   );
 
