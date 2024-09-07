@@ -4,14 +4,24 @@
   imports = (
     let
       listFiles = (import modules.nix-modules."listFiles.nix" lib).listFiles;
-      prefix = "nixos.";
-      infix = ".default.";
-      suffix = ".nix";
+      onlySystemConfig = "nixos.";
+      onlyDefault = ".default.";
+      onlyHost = ".${host.hostname}.";
+      onlyNixFile = ".nix";
     in with config-domain; (
-      (listFiles "${public.programs}" prefix infix suffix)
-      ++ (listFiles "${private.programs}" prefix infix suffix)
-      ++ (listFiles "${public.programs}/store" prefix infix suffix)
-      ++ (listFiles "${private.programs}/store" prefix infix suffix)
+      []
+      # Public, default
+      ++ (listFiles "${public.programs}" onlySystemConfig onlyDefault onlyNixFile)
+      ++ (listFiles "${public.programs}/store" onlySystemConfig onlyDefault onlyNixFile)
+      # Private, default
+      ++ (listFiles "${private.programs}" onlySystemConfig onlyDefault onlyNixFile)
+      ++ (listFiles "${private.programs}/store" onlySystemConfig onlyDefault onlyNixFile)
+      # Public, hostname
+      ++ (listFiles "${public.programs}" onlySystemConfig onlyHost onlyNixFile)
+      ++ (listFiles "${public.programs}/store" onlySystemConfig onlyHost onlyNixFile)
+      # Private, hostname
+      ++ (listFiles "${private.programs}" onlySystemConfig onlyHost onlyNixFile)
+      ++ (listFiles "${private.programs}/store" onlySystemConfig onlyHost onlyNixFile)
     )
   );
 
