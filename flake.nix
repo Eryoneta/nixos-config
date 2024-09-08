@@ -46,7 +46,7 @@
       );
 
       # System_Label
-      systemLabel = (nix-utils.formatStr (builtins.readFile ./NIXOS_LABEL.txt));
+      systemLabel = (nix-utils.formatStr (builtins.readFile ./private-config/NIXOS_LABEL.txt));
 
       # Hosts
       LiCo = flake-modules."user-host-scheme.nix".buildHost {
