@@ -1,1 +1,1 @@
-Testes: Update boot menu
+Testes: Config Git
