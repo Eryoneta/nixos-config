@@ -1,10 +1,10 @@
-{ config, host, lib, ... }:
+{ lib, ... }:
   let
     mkDefault = value: lib.mkDefault value;
   in {
     config = {
 
-      # Server X11(Antigo)
+      # Server X11(Legacy)
       services.xserver.enable = mkDefault true;
 
       # Display Manager

@@ -1,4 +1,4 @@
-{ config, host, lib, auto-upgrade-pkgs, modules, ... }:
+{ host, lib, auto-upgrade-pkgs, modules, ... }:
   let
     mkDefault = value: lib.mkDefault value;
   in {

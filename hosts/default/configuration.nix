@@ -18,7 +18,7 @@
     # Default
     config = {
 
-      # Current-Configuration Label
+      # Current-Configuration label
       system.nixos.label = host.system.label; #[a-zA-Z0-9:_.-]*
 
       # Users
@@ -34,9 +34,10 @@
         };
       };
 
-      # Start Version
+      # Start version
       system.stateVersion = "24.05"; # NixOS start version. (Default options).
       # (More with "man configuration.nix" or "https://nixos.org/nixos/options.html").
+      
     };
 
   }

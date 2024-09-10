@@ -1,23 +1,23 @@
-{ config, pkgs-bundle, user, ... }: {
+{ pkgs-bundle, ... }: {
   config = {
 
-    # Pacotes do sistema
-    environment.systemPackages = []
-    # Pacotes: Stable, AutoUpgrade
-    ++ (with pkgs-bundle.stable; [
-      gparted       # GParted: Gerencia partições
-      neofetch      # NeoFetch: Exibe informações do sistema (Deprecated)
-      home-manager  # Home Manager: Gerencia home
-      git           # Git: Versionamento
-    ])
-    # Pacotes: Unstable, AutoUpgrade
-    ++ (with pkgs-bundle.unstable; [
+    # System programs
+    environment.systemPackages = with pkgs-bundle; (
+      (with unstable; [
 
-    ])
-    # Pacotes: Unstable, Manual Upgrade
-    ++ (with pkgs-bundle.unstable-fixed; [
+      ])
+      ++
+      (with stable; [
+        gparted # GParted: Manages partitions
+        fastfetch # FastFetch: Shows general system information
+        home-manager # Home-Manager: Manages home configuration
+        git # Git: Versioning
+      ])
+      ++
+      (with unstable-fixed; [
 
-    ]);
-
+      ])
+    );
+    
   };
 }

@@ -1,7 +1,8 @@
 # Package-Bundle
 # Defines a "pkgs-bundle" inside "specialArgs" or "extraSpecialArgs" that contains a set of packages
-# Allows for accessing packages from a single atribute(Ex: pkgs-bundle.stable and pkgs-bundle.unstable)
+#   Allows for accessing packages from a single atribute(Ex: pkgs-bundle.stable and pkgs-bundle.unstable)
 # "packages" should be a set containing the ones from the flake-input(Ex.: packages = { inherit stable; inherit unstable; })
+#   All that matters is the names
 flakePath: (
   let
 

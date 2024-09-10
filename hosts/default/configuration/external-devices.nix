@@ -1,20 +1,20 @@
-{ config, host, lib, ... }:
+{ lib, ... }:
   let
     mkDefault = value: lib.mkDefault value;
   in {
     config = {
 
-      # Layout do Teclado
+      # Keyboard layout
       services.xserver.xkb = {
         layout = "br";
-        variant = ""; # Lista de todos: "man xkeyboard-config"
+        variant = ""; # All available at: "man xkeyboard-config"
       };
       console.keyMap = "br-abnt2";
 
-      # Impressoras
+      # Printers
       services.printing.enable = true;
 
-      # Som
+      # Sound
       hardware.pulseaudio.enable = false;
       security.rtkit.enable = true;
       services.pipewire = {

@@ -20,9 +20,11 @@ flakePath: (
           configPath = "${flakePath}/configuration.nix";
         in (
           (if (builtins.pathExists configPath) then [ configPath ] else []) ++ [
-            ({ lib, ... }: {
-              config.nixpkgs.config.allowUnfree = lib.mkDefault true;
-            })
+            {
+              config = {
+                nixpkgs.config.allowUnfree = true;
+              };
+            }
           ]
         )
       );

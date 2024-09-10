@@ -1,30 +1,21 @@
-{ config, host, lib, ... }:
+{ host, lib, ... }:
   let
     mkDefault = value: lib.mkDefault value;
   in {
     config = {
 
-      # Computador na Rede
+      # Hostname
       networking.hostName = host.name;
 
       # Internet
       networking.networkmanager.enable = mkDefault true;
 
-      # Proxy
-      #networking.proxy.default = "http://user:password@proxy:port/";
-      #networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+      # Time zone
+      time.timeZone = mkDefault "America/Sao_Paulo";
 
-      # Firewall
-      networking.firewall.enable = true;
-      networking.firewall.allowedTCPPorts = [ ];
-      networking.firewall.allowedUDPPorts = [ ];
-
-      # Fuso Horário
-      time.timeZone = "America/Sao_Paulo";
-
-      # Localização
-      i18n.defaultLocale = "pt_BR.UTF-8";
-      i18n.extraLocaleSettings = {
+      # Locale
+      i18n.defaultLocale = mkDefault "pt_BR.UTF-8";
+      i18n.extraLocaleSettings = mkDefault {
         LC_ADDRESS = "pt_BR.UTF-8";
         LC_IDENTIFICATION = "pt_BR.UTF-8";
         LC_MEASUREMENT = "pt_BR.UTF-8";

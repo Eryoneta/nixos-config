@@ -16,10 +16,10 @@
       # Private, default
       ++ (listFiles "${private.programs}" onlyHomeConfig onlyDefault onlyNixFile)
       ++ (listFiles "${private.programs}/store" onlyHomeConfig onlyDefault onlyNixFile)
-      # Public, hostname
+      # Public, username
       ++ (listFiles "${public.programs}" onlyHomeConfig onlyUser onlyNixFile)
       ++ (listFiles "${public.programs}/store" onlyHomeConfig onlyUser onlyNixFile)
-      # Private, hostname
+      # Private, username
       ++ (listFiles "${private.programs}" onlyHomeConfig onlyUser onlyNixFile)
       ++ (listFiles "${private.programs}/store" onlyHomeConfig onlyUser onlyNixFile)
     )

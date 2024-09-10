@@ -1,4 +1,4 @@
-{ config, host, lib, ... }:
+{ host, lib, ... }:
   let
       mkDefault = value: lib.mkDefault value;
   in {
