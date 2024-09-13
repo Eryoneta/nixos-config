@@ -150,6 +150,10 @@
                     # inherit nixpkgs-unstable-fixed;
                   });
                 })
+                # Inputs-As-Args
+                (flake-modules."inputs-as-args.nix".build {
+                  inputs = extraArgs;
+                })
               ];
             }
           );
