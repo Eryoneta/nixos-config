@@ -1,13 +1,14 @@
-{ config, pkgs-bundle, user, ... }:
+{ config, pkgs-bundle, user, lib, ... }:
   let
+    mkDefault = value: lib.mkDefault value;
     mkOutOfStoreSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
   in {
     config = {
 
-      # Firefox: Navegador
+      # Firefox: Browser
       programs.firefox = {
-        enable = true;
-        package = pkgs-bundle.stable.firefox; # Pacote: Stable, AutoUpgrade
+        enable = mkDefault true;
+        package = mkDefault pkgs-bundle.stable.firefox;
       };
 
     };

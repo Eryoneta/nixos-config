@@ -1,4 +1,4 @@
-{ config, host, lib, ... }:
+{ lib, ... }:
   let
     mkDefault = value: lib.mkDefault value;
   in {
@@ -12,13 +12,13 @@
           efiSysMountPoint = "/boot";
         };
 
-        timeout = mkDefault 10; # 10 segundos
+        timeout = mkDefault 10; # 10 seconds before selecting default option
 
         grub = {
           enable = true;
           efiSupport = true;
           device = "nodev";
-          useOSProber = mkDefault true; # Localiza Windows 10
+          useOSProber = mkDefault true; # Finds Windows bootloader
           extraEntries = ''
             menuentry "Firmware" {
               fwsetup
@@ -29,10 +29,10 @@
             menuentry "Reboot" {
               reboot
             }
-          ''; # Menus extras
-          extraEntriesBeforeNixOS = true; # Menus-extras não ficam no fim da lista! Então melhor encima
-          default = 3; # Menu seleciona NixOS como padrão
-          configurationLimit = mkDefault 100; # Quantidade máxima de gerações exibidas
+          ''; # Extra menus
+          extraEntriesBeforeNixOS = true; # Extra menus are not placed at the end, so its better above
+          default = 3; # Selects NixOS entry as default
+          configurationLimit = mkDefault 100; # Max itens shown
         };
         
       };

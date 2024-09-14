@@ -8,7 +8,13 @@ flakePath: (
     build = { architecture ? "x86_64-linux", package }: {
 
       # Override Home-Manager-Module Configuration
-      homeManagerModule = {};
+      homeManagerModule = {
+        home-manager = {
+          sharedModules = [
+            package.homeManagerModules.default
+          ];
+        };
+      };
 
       # Override Home-Manager-Standalone Configuration
       homeManagerStandalone = {

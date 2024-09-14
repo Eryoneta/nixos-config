@@ -6,7 +6,7 @@
 # - Uses "git"
 # - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
 # - Depends on "home-manager" (Error is thrown without it)
-{ config, options, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
   let
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;

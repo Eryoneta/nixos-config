@@ -1,11 +1,8 @@
-{ config, host, lib, ... }:
-  let
-    mkDefault = value: lib.mkDefault value;
-  in {
-    config = {
+{ ... }: {
+  config = {
 
-      # Default Text Editor
-      environment.variables.EDITOR = "kwrite";
+    # Default Text Editor
+    environment.variables.EDITOR = "kwrite";
 
-    };
-  }
+  };
+}

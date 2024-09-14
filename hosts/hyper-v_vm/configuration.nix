@@ -1,4 +1,4 @@
-{ config, host, ... }: {
+{ ... }: {
 
   imports = [
     ../default/configuration.nix # Default

@@ -1,16 +1,19 @@
-{ ... }: {
-  config = {
+{ lib, ... }: 
+  let
+    mkDefault = value: lib.mkDefault value;
+  in {
+    config = {
 
-    # OpenSSH: Server SSH para conexão remota
-    services.openssh = {
-      enable = true;
-      ports = [ 22 ];
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
+      # OpenSSH: Remote connection
+      services.openssh = {
+        enable = mkDefault false; # Disabled by default!
+        ports = [ 22 ];
+        openFirewall = true;
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+        };
       };
-    };
 
-  };
-}
+    };
+  }

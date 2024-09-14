@@ -12,6 +12,10 @@
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Agenix (AutoUpgrade)
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Stable Packages (AutoUpgrade)
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
@@ -20,10 +24,6 @@
 
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    # Agenix
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 
@@ -45,24 +45,24 @@
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
 
-      # System_Label
+      # System_Label ([a-zA-Z0-9:_.-]*)
       systemLabel = (nix-utils.formatStr (builtins.readFile ./private-config/NIXOS_LABEL.txt));
 
       # Hosts
       LiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel; 
       };
       NeLiCo = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "nelico";
         name = "NeLiCo";
-        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel;
       };
       HyperV_VM = flake-modules."user-host-scheme.nix".buildHost {
         hostname = "hyper-v_vm";
         name = "HyperV_VM";
-        system.label = systemLabel; #[a-zA-Z0-9:_.-]*
+        system.label = systemLabel;
       };
 
       # Users
@@ -117,6 +117,15 @@
             (flake-modules."map-modules-directory.nix".build {
               directory = ./modules;
             })
+            # Agenix
+            (flake-modules."agenix.nix".build {
+              architecture = host.system.architecture;
+              package = extraArgs.agenix;
+            })
+            # Inputs-As-Args
+            (flake-modules."inputs-as-args.nix".build {
+              inputs = extraArgs;
+            })
           ];
 
         in {
@@ -139,15 +148,11 @@
                   packages = (with extraArgs; {
                     inherit nixpkgs;
                     inherit home-manager;
+                    inherit agenix;
                     inherit nixpkgs-stable;
                     inherit nixpkgs-unstable;
                     # inherit nixpkgs-unstable-fixed;
                   });
-                })
-                # Agenix
-                (flake-modules."agenix.nix".build {
-                  architecture = host.system.architecture;
-                  package = extraArgs.agenix;
                 })
               ];
             }
@@ -160,13 +165,7 @@
               package = extraArgs.home-manager;
               systemPackage = extraArgs.nixpkgs;
               username = user.username;
-              modifiers = commonModifiers ++ [
-                # Agenix
-                (flake-modules."agenix.nix".build {
-                  architecture = host.system.architecture;
-                  package = extraArgs.agenix;
-                })
-              ];
+              modifiers = commonModifiers;
             }
           );
 
@@ -175,7 +174,7 @@
       
     in {
 
-      # NixOS + Home-Manager
+      # NixOS + Home-Manager + Agenix
       nixosConfigurations = {
         "Yo@LiCo" = (buildCommonConfig Yo LiCo).nixosSystemConfig;
         "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).nixosSystemConfig;
@@ -183,7 +182,7 @@
         #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo).nixosSystemConfig;
       };
       
-      # Home-Manager
+      # Home-Manager + Agenix
       homeConfigurations = {
         "Yo@LiCo" = (buildCommonConfig Yo LiCo).homeManagerConfig;
         "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).homeManagerConfig;

@@ -1,21 +1,23 @@
-{ config, pkgs-bundle, user, ... }: {
+{ pkgs-bundle, ... }: {
   config = {
 
-    # Pacotes do usuário
-    home.packages = []
-    # Pacotes: Stable, AutoUpgrade
-    ++ (with pkgs-bundle.stable; [
-      #kdePackages.kwrite # KWrite: Editor de texto simples (Incluso com KDE Plasma)
-      kdePackages.kate # Kate: Editor de código simples
-    ])
-    # Pacotes: Unstable, AutoUpgrade
-    ++ (with pkgs-bundle.unstable; [
+    # Programs
+    home = {
+      packages = with pkgs-bundle; (
+        (with unstable; [
 
-    ])
-    # Pacotes: Unstable, Manual Upgrade
-    ++ (with pkgs-bundle.unstable-fixed; [
+        ])
+        ++
+        (with stable; [
+          #kdePackages.kwrite # KWrite: (Light) Text editor (Included with KDE Plasma)
+          kdePackages.kate # Kate: (Light) Code editor
+        ])
+        ++
+        (with unstable-fixed; [
 
-    ]);
-
+        ])
+      );
+    };
+    
   };
 }

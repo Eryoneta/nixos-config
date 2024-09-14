@@ -1,7 +1,7 @@
-{ config, pkgs, host, ... }: {
+{ ... }: {
   config = {
 
-    # Hyper-V não funciona com KDE Plasma. O gráfico deve ser básico
+    # "Hyper-V" does NOT like "KDE Plasma". Only "NoModeSet" works...
     boot.kernelParams = ["nomodeset"];
 
   };

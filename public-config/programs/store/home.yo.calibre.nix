@@ -4,11 +4,12 @@
   in {
     config = {
 
-      # Calibre: Biblioteca de livros
+      # Calibre: E-Book manager
       home = {
-        packages = with pkgs-bundle.unstable-fixed; [ calibre ]; # Pacote: Unstable, Manual Upgrade
-        file.".config/calibre".source = mkOutOfStoreSymlink "${config-domain.private.dotfiles}/calibre/.config/calibre";
+        packages = with pkgs-bundle.unstable-fixed; [ calibre ];
       };
+
+      home.file.".config/calibre".source = (mkOutOfStoreSymlink "${config-domain.private.dotfiles}/calibre/.config/calibre");
 
     };
   }

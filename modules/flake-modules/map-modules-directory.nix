@@ -1,6 +1,7 @@
 # Map Modules Directory
 # Defines a "modules" inside "specialArgs" or "extraSpecialArgs" that contains a set of paths
-# Is meant to be used as a easy way of setting paths for files inside a given directory
+#   Is meant to be used as a easy way of setting paths for files inside a given directory
+#   Its better than using relative paths
 # (Ex.: Given a folder "./modules/feat.nix", then "modules" contains "{ "feat.nix" = /nix/store/.../modules/feat.nix; }")
 flakePath: (
   let
