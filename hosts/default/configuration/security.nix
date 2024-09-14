@@ -6,6 +6,7 @@
 
       # Firewall
       networking.firewall.enable = true;
+      networking.firewall.allowPing = true;
 
       # Immutable Users (Once created, never change)
       users.mutableUsers = false;
