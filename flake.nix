@@ -122,6 +122,10 @@
               architecture = host.system.architecture;
               package = extraArgs.agenix;
             })
+            # Inputs-As-Args
+            (flake-modules."inputs-as-args.nix".build {
+              inputs = extraArgs;
+            })
           ];
 
         in {
@@ -149,10 +153,6 @@
                     inherit nixpkgs-unstable;
                     # inherit nixpkgs-unstable-fixed;
                   });
-                })
-                # Inputs-As-Args
-                (flake-modules."inputs-as-args.nix".build {
-                  inputs = extraArgs;
                 })
               ];
             }
