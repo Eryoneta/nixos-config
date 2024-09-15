@@ -1,15 +1,14 @@
-{ pkgs-bundle, lib, ... }:
+{ lib, pkgs-bundle, ... }: 
   let
     mkDefault = value: lib.mkDefault value;
   in {
     config = {
 
       # SSH: Secure connection
-      programs.ssh = {
-        enable = mkDefault true;
+      programs.ssh = { # Its always enabled
         package = mkDefault pkgs-bundle.stable.openssh;
+        startAgent = mkDefault true; # SSH Agent
       };
-      services.ssh-agent.enable = false; # The system already starts the agent
 
     };
   }
