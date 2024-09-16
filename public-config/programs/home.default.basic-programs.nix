@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }: {
+{ tools, pkgs-bundle, ... }: with tools; {
   config = {
 
     # Programs

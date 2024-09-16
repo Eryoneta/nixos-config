@@ -1,4 +1,4 @@
-{ config, lib, ... }: {
+{ tools, config, ... }: with tools; {
 
   imports = [ ];
 
@@ -36,10 +36,10 @@
     boot.kernelParams = [ "resume_offset=3848192" ];
 
     # DHCP
-    networking.useDHCP = lib.mkDefault true;
+    networking.useDHCP = mkDefault true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+    nixpkgs.hostPlatform = mkDefault "x86_64-linux";
 
     # Firmware
     virtualisation.hypervGuest.enable = true;

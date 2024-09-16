@@ -1,9 +1,8 @@
-{ config-domain, modules, user, lib, ... }: {
+{ tools, config-domain, user, ... }: with tools; {
     
   # Programs
   imports = (
     let
-      searchFiles = (import modules.nix-modules."searchFiles.nix" lib).searchFiles;
       onlyHomeConfig = "home.";
       onlyDefault = ".default.";
       onlyUser = ".${user.username}.";

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ tools, pkgs, ... }: with tools; {
   config = {
 
     # Atrasa Grub para que seu video carregue

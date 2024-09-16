@@ -1,4 +1,4 @@
-{ ... }: {
+{ tools, ... }: with tools; {
   config = {
 
     # Default Text Editor
