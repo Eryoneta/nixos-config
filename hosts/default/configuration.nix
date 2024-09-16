@@ -1,7 +1,4 @@
-{ config, host, lib, ... }:
-  let
-    mkDefault = value: lib.mkDefault value;
-  in {
+{ tools, config, host, ... }: with tools; {
 
     imports = [
       ./configuration/boot-loader.nix

@@ -1,4 +1,4 @@
-{ ... }: {
+{ tools, ... }: with tools; {
 
   imports = [
     ../default/configuration.nix # Default

@@ -1,9 +1,8 @@
-{ config-domain, modules, host, lib, ... }: {
+{ tools, config-domain, modules, host, lib, ... }: with tools; {
     
   # Programs
   imports = (
     let
-      searchFiles = (import modules.nix-modules."searchFiles.nix" lib).searchFiles;
       onlySystemConfig = "nixos.";
       onlyDefault = ".default.";
       onlyHost = ".${host.hostname}.";

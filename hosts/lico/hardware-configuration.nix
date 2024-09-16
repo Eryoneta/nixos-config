@@ -1,4 +1,4 @@
-{ config, lib, modulesPath, ... }: {
+{ tools, config, modulesPath, ... }: with tools; {
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -34,13 +34,13 @@
     ];
 
     # DHCP
-    networking.useDHCP = lib.mkDefault true;
+    networking.useDHCP = mkDefault true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+    nixpkgs.hostPlatform = mkDefault "x86_64-linux";
 
     # Firmware
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.intel.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
     
   };
 

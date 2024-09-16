@@ -1,5 +1,4 @@
-{ ... }: {
-
+{ tools, ... }: with tools; {
   config = {
 
     # Nix: System package manager
@@ -11,5 +10,4 @@
     };
 
   };
-
 }

@@ -1,4 +1,4 @@
-{ user, ... }: {
+{ tools, user, ... }: with tools; {
 
   imports = [
     ./programs.nix

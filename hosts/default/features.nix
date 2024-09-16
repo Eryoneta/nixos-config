@@ -1,27 +1,24 @@
-{ host, lib, modules, ... }:
-  let
-      mkDefault = value: lib.mkDefault value;
-  in {
+{ tools, modules, host, ... }: with tools; {
 
-    imports = [
-      ./features/auto-upgrade.nix # Auto-Upgrade
-      modules.nixos-modules."link-to-source-config.nix"
-    ];
+  imports = with modules; [
+    ./features/auto-upgrade.nix
+    nixos-modules."link-to-source-config.nix"
+  ];
 
-    config = {
-      
-      # Auto-login
-      services.displayManager = {
-        autoLogin.enable = mkDefault false;
-        autoLogin.user = host.user.username;
-      };
-
-      # Link to source configuration
-      system.linkToSourceConfiguration = {
-        enable = true;
-        configurationPath = host.configFolderNixStore;
-      };
-
+  config = {
+    
+    # Auto-login
+    services.displayManager = {
+      autoLogin.enable = mkDefault false;
+      autoLogin.user = host.user.username;
     };
 
-  }
+    # Link to source configuration
+    system.linkToSourceConfiguration = {
+      enable = true;
+      configurationPath = host.configFolderNixStore;
+    };
+
+  };
+
+}

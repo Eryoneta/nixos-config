@@ -1,7 +1,4 @@
-{ lib, pkgs, inputs,  ... }:
-  let
-    mkDefault = value: lib.mkDefault value;
-  in {
+{ tools, pkgs, inputs,  ... }: with tools; {
     config = {
 
       # Nix: System package manager
