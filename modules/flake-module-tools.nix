@@ -1,38 +1,33 @@
-# Inputs as Arguments
-# Defines a "inputs" inside "specialArgs" or "extraSpecialArgs" that contains "flake.inputs"
-#   Allows for accessing inputs wherever necessary
-
-
-
-
-
+# Tools
+# Defines a "tools" inside "specialArgs" or "extraSpecialArgs" that contains useful functions
+#   Allows for easier coding
 flakePath: (
   let
 
     # SpecialArg
-    specialArg = nix-lib: pkgs: hm-lib: {
-      tools = (import ./tools.nix nix-lib pkgs hm-lib);
+    specialArg = nix-lib: hm-pkgs: hm-lib: {
+      tools = (import ./tools.nix nix-lib hm-pkgs hm-lib);
     };
 
   in {
     # Builder
-    build = { nixpkgs-lib, pkgs, home-manager-lib }: {
+    build = { nixpkgs-lib, home-manager-pkgs, home-manager-lib }: {
 
       # Override Home-Manager-Module Configuration
       homeManagerModule = {
         home-manager = {
-          extraSpecialArgs = (specialArg nixpkgs-lib pkgs home-manager-lib);
+          extraSpecialArgs = (specialArg nixpkgs-lib home-manager-pkgs home-manager-lib);
         };
       };
 
       # Override Home-Manager-Standalone Configuration
       homeManagerStandalone = {
-        extraSpecialArgs = (specialArg nixpkgs-lib pkgs home-manager-lib);
+        extraSpecialArgs = (specialArg nixpkgs-lib home-manager-pkgs home-manager-lib);
       };
 
       # Override System Configuration
       nixosSystem = {
-        specialArgs = (specialArg nixpkgs-lib pkgs home-manager-lib);
+        specialArgs = (specialArg nixpkgs-lib home-manager-pkgs home-manager-lib);
       };
 
     };

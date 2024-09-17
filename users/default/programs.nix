@@ -10,11 +10,11 @@
     in with config-domain; (
       []
       # Default
-      ++ (searchFiles "${public.programs}" onlyHomeConfig onlyDefault onlyNixFile)
-      ++ (searchFiles "${private.programs}" onlyHomeConfig onlyDefault onlyNixFile)
+      ++ (mkFunc.searchFiles "${public.programs}" onlyHomeConfig onlyDefault onlyNixFile)
+      ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyDefault onlyNixFile)
       # User specific
-      ++ (searchFiles "${public.programs}" onlyHomeConfig onlyUser onlyNixFile)
-      ++ (searchFiles "${private.programs}" onlyHomeConfig onlyUser onlyNixFile)
+      ++ (mkFunc.searchFiles "${public.programs}" onlyHomeConfig onlyUser onlyNixFile)
+      ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyUser onlyNixFile)
     )
   );
 

@@ -36,7 +36,7 @@
       nix-utils = (
         let
           path = ./modules/nix-modules;
-        in (import "${path}/mapDir.nix") // (import "${path}/formatStr.nix" nix-lib)
+        in (import "${path}/mapDir.nix")
       );
       flake-modules = (
         # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
@@ -44,10 +44,10 @@
           name: value: (import value self.outPath)
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
-      utils-flake-module = (import ./modules/flake-module-tools.nix self.outPath);
+      tools = (import ./modules/flake-module-tools.nix self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
-      systemLabel = (nix-utils.formatStr (builtins.readFile ./private-config/NIXOS_LABEL.txt));
+      systemLabel = (builtins.readFile ./private-config/NIXOS_LABEL.txt);
 
       # Hosts
       LiCo = flake-modules."user-host-scheme.nix".buildHost {
@@ -86,9 +86,9 @@
           # Common Modifiers
           commonModifiers = [
             # Utilities
-            (utils-flake-module.build {
+            (tools.build {
               nixpkgs-lib = extraArgs.nixpkgs.lib;
-              pkgs = extraArgs.nixpkgs.legacyPackages."x86_64-linux";
+              home-manager-pkgs = extraArgs.nixpkgs.legacyPackages."x86_64-linux";
               home-manager-lib = extraArgs.home-manager.lib;
             })
             # User-Host-Scheme

@@ -16,7 +16,7 @@
     config = {
 
       # Current-Configuration label
-      system.nixos.label = host.system.label; #[a-zA-Z0-9:_.-]*
+      system.nixos.label = (mkFunc.formatStr host.system.label); #[a-zA-Z0-9:_.-]*
 
       # Users
       users.users = {

@@ -1,8 +1,8 @@
 # Tools: My toolkit for conveniences
 #   "nix-lib": From "inputs.nixpkgs.lib"
-#   "pkgs": From ''inputs.nixpkgs.legacyPackages."x86_64-linux"''
+#   "hm-pkgs": From ''inputs.nixpkgs.legacyPackages."x86_64-linux"''
 #   "hm-lib": From "inputs.home-manager.lib"
-nix-lib: pkgs: hm-lib: (
+nix-lib: hm-pkgs: hm-lib: (
   let
 
     # Import
@@ -32,9 +32,12 @@ nix-lib: pkgs: hm-lib: (
           pathStr = toString absolutePath;
           name = hm-lib.hm.strings.storeFileName (baseNameOf pathStr);
         in (
-          pkgs.runCommandLocal name {} ''ln -s ${nix-lib.strings.escapeShellArg pathStr} $out''
+          hm-pkgs.runCommandLocal name {} ''ln -s ${nix-lib.strings.escapeShellArg pathStr} $out''
         )
       );
+
+      # All my "nix-modules"
+      mkFunc = {};
 
     };
 
@@ -55,12 +58,16 @@ nix-lib: pkgs: hm-lib: (
     );
 
   in (
-    # Foldl': ( { ... }, [ { ... } { ... } ] ) -> { ... }
-    builtins.foldl' (
-      accumulator: modifier: (
-        # Merges everything into one huge set
-        accumulator // modifier
-      )
-    ) firstAttrSet attrSets
+    firstAttrSet // {
+      mkFunc = (
+        # Foldl': ( { ... }, [ { ... } { ... } ] ) -> { ... }
+        builtins.foldl' (
+          accumulator: modifier: (
+            # Merges everything into one huge set
+            accumulator // modifier
+          )
+        ) firstAttrSet.mkFunc attrSets
+      );
+    }
   )
 )
