@@ -1,4 +1,4 @@
-{ tools, modules, host, ... }: with tools; {
+{ modules, host, ... }@args: with args.config-utils; {
 
   imports = with modules; [
     ./features/auto-upgrade.nix

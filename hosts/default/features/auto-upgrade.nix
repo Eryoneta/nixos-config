@@ -1,4 +1,4 @@
-{ tools, auto-upgrade-pkgs, modules, host, ... }: with tools; {
+{ auto-upgrade-pkgs, modules, host, ... }@args: with args.config-utils; {
 
   imports = with modules; [
     nixos-modules."auto-upgrade-git-support.nix"

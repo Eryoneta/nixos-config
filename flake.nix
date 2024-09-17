@@ -44,7 +44,7 @@
           name: value: (import value self.outPath)
         ) (nix-utils.mapDir ./modules/flake-modules)
       );
-      tools = (import ./modules/flake-module-tools.nix self.outPath);
+      config-utils = (import ./modules/flake-module-config-utils.nix self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
       systemLabel = (builtins.readFile ./private-config/NIXOS_LABEL.txt);
@@ -85,8 +85,8 @@
 
           # Common Modifiers
           commonModifiers = [
-            # Utilities
-            (tools.build {
+            # Configuration-Utilities
+            (config-utils.build {
               nixpkgs-lib = extraArgs.nixpkgs.lib;
               home-manager-pkgs = extraArgs.nixpkgs.legacyPackages."x86_64-linux";
               home-manager-lib = extraArgs.home-manager.lib;

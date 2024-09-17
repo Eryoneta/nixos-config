@@ -1,4 +1,4 @@
-{ tools, config-domain, host, ... }: with tools; {
+{ config-domain, host, ... }@args: with args.config-utils; {
   config = {
 
     # Firewall

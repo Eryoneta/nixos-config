@@ -1,4 +1,4 @@
-{ tools, config-domain, modules, host, lib, ... }: with tools; {
+{ config-domain, modules, host, lib, ... }@args: with args.config-utils; {
     
   # Programs
   imports = (

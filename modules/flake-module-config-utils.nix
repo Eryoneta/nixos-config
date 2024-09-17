@@ -1,12 +1,12 @@
-# Tools
-# Defines a "tools" inside "specialArgs" or "extraSpecialArgs" that contains useful functions
+# Configuration-Utilities
+# Defines a "config-utils" inside "specialArgs" or "extraSpecialArgs" that contains useful functions
 #   Allows for easier coding
 flakePath: (
   let
 
     # SpecialArg
     specialArg = nix-lib: hm-pkgs: hm-lib: {
-      tools = (import ./tools.nix nix-lib hm-pkgs hm-lib);
+      config-utils = (import ./config-utils.nix nix-lib hm-pkgs hm-lib);
     };
 
   in {

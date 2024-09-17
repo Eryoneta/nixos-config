@@ -1,4 +1,4 @@
-{ tools, ... }: with tools; {
+{ ... }@args: with args.config-utils; {
     
   imports = [
     ../default/home.nix # Default

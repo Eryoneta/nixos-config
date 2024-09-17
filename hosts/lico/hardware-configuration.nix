@@ -1,4 +1,4 @@
-{ tools, config, modulesPath, ... }: with tools; {
+{ config, modulesPath, ... }@args: with args.config-utils; {
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")

@@ -1,4 +1,4 @@
-# Tools: My toolkit for conveniences
+# Configuration-Utilities: My toolkit for conveniences
 #   "nix-lib": From "inputs.nixpkgs.lib"
 #   "hm-pkgs": From ''inputs.nixpkgs.legacyPackages."x86_64-linux"''
 #   "hm-lib": From "inputs.home-manager.lib"

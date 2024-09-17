@@ -1,4 +1,4 @@
-{ tools, pkgs-bundle, config-domain, ... }: with tools; {
+{ pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
   config = {
 
     # Calibre: E-Book manager

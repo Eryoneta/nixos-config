@@ -1,4 +1,4 @@
-{ tools, config, host, ... }: with tools; {
+{ config, host, ... }@args: with args.config-utils; {
 
     imports = [
       ./configuration/boot-loader.nix
