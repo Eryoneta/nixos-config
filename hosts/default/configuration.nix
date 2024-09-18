@@ -6,7 +6,6 @@
       ./configuration/networking.nix
       ./configuration/gui.nix
       ./configuration/security.nix
-      ./configuration/variables.nix
     ] ++ [
       ./features.nix
       ./programs.nix
