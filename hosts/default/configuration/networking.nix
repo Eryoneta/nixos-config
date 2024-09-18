@@ -1,4 +1,4 @@
-{ tools, host, ... }: with tools; {
+{ host, ... }@args: with args.config-utils; {
   config = {
 
     # Hostname

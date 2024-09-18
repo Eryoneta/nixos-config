@@ -1,4 +1,4 @@
-{ tools, config, ... }: with tools; {
+{ config, ... }@args: with args.config-utils; {
 
   imports = [ ];
 

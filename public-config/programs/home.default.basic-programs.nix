@@ -1,4 +1,4 @@
-{ tools, pkgs-bundle, ... }: with tools; {
+{ pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # Programs
@@ -11,6 +11,7 @@
         (with stable; [
           #kdePackages.kwrite # KWrite: (Light) Text editor (Included with KDE Plasma)
           kdePackages.kate # Kate: (Light) Code editor
+          keepassxc # KeePassXC: Password manager
         ])
         ++
         (with unstable-fixed; [

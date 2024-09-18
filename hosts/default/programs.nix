@@ -1,4 +1,4 @@
-{ tools, config-domain, modules, host, lib, ... }: with tools; {
+{ config-domain, host, ... }@args: with args.config-utils; {
     
   # Programs
   imports = (
@@ -10,11 +10,19 @@
     in with config-domain; (
       []
       # Default
-      ++ (searchFiles "${public.programs}" onlySystemConfig onlyDefault onlyNixFile)
-      ++ (searchFiles "${private.programs}" onlySystemConfig onlyDefault onlyNixFile)
+      ++ (mkFunc.searchFiles "${public.programs}" onlySystemConfig onlyDefault onlyNixFile)
       # Host specific
-      ++ (searchFiles "${public.programs}" onlySystemConfig onlyHost onlyNixFile)
-      ++ (searchFiles "${private.programs}" onlySystemConfig onlyHost onlyNixFile)
+      ++ (mkFunc.searchFiles "${public.programs}" onlySystemConfig onlyHost onlyNixFile)
+      ++ (
+        # Private
+        if (mkFunc.pathExists private.programs) then
+          []
+          # Default
+          ++ (mkFunc.searchFiles "${private.programs}" onlySystemConfig onlyDefault onlyNixFile)
+          # Host specific
+          ++ (mkFunc.searchFiles "${private.programs}" onlySystemConfig onlyHost onlyNixFile)
+        else []
+      )
     )
   );
 

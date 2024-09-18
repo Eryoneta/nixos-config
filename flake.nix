@@ -32,169 +32,66 @@
     let
 
       # Imports
-      nix-lib = extraArgs.nixpkgs.lib;
-      nix-utils = (
-        let
-          path = ./modules/nix-modules;
-        in (import "${path}/mapDir.nix") // (import "${path}/formatStr.nix" nix-lib)
-      );
-      flake-modules = (
-        # MapAttrs: { "feat.nix" = ./.../feat.nix; } -> { "feat.nix" = (import ./.../feat.nix self.outPath); }
-        builtins.mapAttrs (
-          name: value: (import value self.outPath)
-        ) (nix-utils.mapDir ./modules/flake-modules)
-      );
-      utils-flake-module = (import ./modules/flake-module-tools.nix self.outPath);
+      buildConfiguration = (import ./configurationBuilder.nix extraArgs self.outPath);
+      user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
-      systemLabel = (nix-utils.formatStr (builtins.readFile ./private-config/NIXOS_LABEL.txt));
+      # I change it at every rebuild. Very convenient for marking generations!
+      # But it might contain sensitive information, so its hidden
+      systemLabel = (
+        let
+          filePath = ./private-config/NIXOS_LABEL.txt;
+        in if (builtins.pathExists filePath) then (
+          builtins.readFile filePath
+        ) else "Initial Configuration: Requires private-config to be complete"
+      );
 
       # Hosts
-      LiCo = flake-modules."user-host-scheme.nix".buildHost {
+      LiCo = user-host-scheme.buildHost {
         hostname = "lico";
         name = "LiCo";
         system.label = systemLabel; 
       };
-      NeLiCo = flake-modules."user-host-scheme.nix".buildHost {
+      NeLiCo = user-host-scheme.buildHost {
         hostname = "nelico";
         name = "NeLiCo";
         system.label = systemLabel;
       };
-      HyperV_VM = flake-modules."user-host-scheme.nix".buildHost {
+      HyperV_VM = user-host-scheme.buildHost {
         hostname = "hyper-v_vm";
         name = "HyperV_VM";
         system.label = systemLabel;
       };
 
       # Users
-      Yo = flake-modules."user-host-scheme.nix".buildUser {
+      Yo = user-host-scheme.buildUser {
         username = "yo";
         name = "Yo";
         configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
         configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev"; # Dev folder
       };
-      Eryoneta = flake-modules."user-host-scheme.nix".buildUser {
+      Eryoneta = user-host-scheme.buildUser {
         username = "eryoneta";
         name = "Eryoneta";
         configFolder = "/home/eryoneta/.nixos-config";
       };
-
-      # Common Configurations
-      buildCommonConfig = user: host: (
-        let
-
-          # Common Modifiers
-          commonModifiers = [
-            # Utilities
-            (utils-flake-module.build {
-              nixpkgs-lib = extraArgs.nixpkgs.lib;
-              pkgs = extraArgs.nixpkgs.legacyPackages."x86_64-linux";
-              home-manager-lib = extraArgs.home-manager.lib;
-            })
-            # User-Host-Scheme
-            (flake-modules."user-host-scheme.nix".build {
-              inherit user;
-              inherit host;
-            })
-            # Pkgs-Bundle
-            (flake-modules."package-bundle.nix".build {
-              architecture = host.system.architecture;
-              packages = (with extraArgs; {
-                stable = nixpkgs-stable;
-                unstable = nixpkgs-unstable;
-                unstable-fixed = nixpkgs-unstable-fixed;
-              });
-            })
-            # Public-Private-Zones
-            (flake-modules."public-private-domains.nix".build {
-              # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
-              # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
-              # Important: That only affects dotfiles! Only absolute paths notices the dev folder
-              configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
-              # configPath = user.configFolder;
-              folders = {
-                dotfiles = "/dotfiles";
-                programs = "/programs";
-                resources = "/resources";
-                secrets = "/secrets";
-              };
-              absolutePaths.dotfiles = true;
-            })
-            # Map-Modules-Dir
-            (flake-modules."map-modules-directory.nix".build {
-              directory = ./modules;
-            })
-            # Agenix
-            (flake-modules."agenix.nix".build {
-              architecture = host.system.architecture;
-              package = extraArgs.agenix;
-            })
-            # Inputs-As-Args
-            (flake-modules."inputs-as-args.nix".build {
-              inputs = extraArgs;
-            })
-          ];
-
-        in {
-
-          # Common NixOS Configuration
-          nixosSystemConfig = (
-            # NixOS-System
-            flake-modules."nixos-system.nix".build {
-              architecture = host.system.architecture;
-              package = extraArgs.nixpkgs;
-              modifiers = commonModifiers ++ [
-                # Home-Manager-Module
-                (flake-modules."home-manager-module.nix".build {
-                  username = user.username;
-                  package = extraArgs.home-manager;
-                  modifiers = commonModifiers;
-                })
-                # Auto-Upgrade-List
-                (flake-modules."auto-upgrade-list.nix".build {
-                  packages = (with extraArgs; {
-                    inherit nixpkgs;
-                    inherit home-manager;
-                    inherit agenix;
-                    inherit nixpkgs-stable;
-                    inherit nixpkgs-unstable;
-                    # inherit nixpkgs-unstable-fixed;
-                  });
-                })
-              ];
-            }
-          );
-
-          # Common Home-Manager Configuration
-          homeManagerConfig = (
-            # Home-Manager-Standalone
-            flake-modules."home-manager-standalone.nix".build {
-              package = extraArgs.home-manager;
-              systemPackage = extraArgs.nixpkgs;
-              username = user.username;
-              modifiers = commonModifiers;
-            }
-          );
-
-        }
-      );
       
     in {
 
       # NixOS + Home-Manager + Agenix
       nixosConfigurations = {
-        "Yo@LiCo" = (buildCommonConfig Yo LiCo).nixosSystemConfig;
-        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).nixosSystemConfig;
-        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo).nixosSystemConfig;
-        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo).nixosSystemConfig;
+        "Yo@LiCo" = (buildConfiguration Yo LiCo).nixosSystemConfig;
+        "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).nixosSystemConfig;
+        #"Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).nixosSystemConfig;
+        #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).nixosSystemConfig;
       };
       
       # Home-Manager + Agenix
       homeConfigurations = {
-        "Yo@LiCo" = (buildCommonConfig Yo LiCo).homeManagerConfig;
-        "Yo@HyperV_VM" = (buildCommonConfig Yo HyperV_VM).homeManagerConfig;
-        #"Yo@NeLiCo" = (buildCommonConfig Yo NeLiCo).homeManagerConfig;
-        #"Eryoneta@NeLiCo" = (buildCommonConfig Eryoneta NeLiCo).homeManagerConfig;
+        "Yo@LiCo" = (buildConfiguration Yo LiCo).homeManagerConfig;
+        "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).homeManagerConfig;
+        #"Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).homeManagerConfig;
+        #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).homeManagerConfig;
       };
 
     }

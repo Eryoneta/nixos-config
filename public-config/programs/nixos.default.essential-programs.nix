@@ -1,4 +1,4 @@
-{ tools, pkgs-bundle, ... }: with tools; {
+{ pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # System programs

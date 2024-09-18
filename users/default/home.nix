@@ -1,4 +1,4 @@
-{ tools, user, ... }: with tools; {
+{ user, ... }@args: with args.config-utils; {
 
   imports = [
     ./programs.nix

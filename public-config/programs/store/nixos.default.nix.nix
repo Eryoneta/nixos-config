@@ -1,4 +1,4 @@
-{ tools, pkgs, inputs,  ... }: with tools; {
+{ pkgs, inputs,  ... }@args: with args.config-utils; {
     config = {
 
       # Nix: System package manager

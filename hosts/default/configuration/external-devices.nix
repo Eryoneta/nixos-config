@@ -1,4 +1,4 @@
-{ tools, ... }: with tools; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Keyboard layout
