@@ -1,4 +1,4 @@
-{ config, host, ... }@args: with args.config-utils; {
+{ config, config-domain, host, ... }@args: with args.config-utils; {
 
     imports = [
       ./configuration/boot-loader.nix
@@ -21,12 +21,30 @@
       # Users
       users.users = {
         root = {
-          hashedPasswordFile = config.age.secrets."root-userPassword".path;
+          password = with config-domain; (
+            mkIf (!(mkFunc.pathExists private.secrets)) (
+              "nixos"
+            )
+          );
+          hashedPasswordFile = with config-domain; (
+            mkIf (mkFunc.pathExists private.secrets) (
+              config.age.secrets."root-userPassword".path
+            )
+          );
         };
         ${host.user.username} = {
           description = host.user.name;
           isNormalUser = true;
-          hashedPasswordFile = config.age.secrets."${host.user.username}-userPassword".path;
+          password = with config-domain; (
+            mkIf (!(mkFunc.pathExists private.secrets)) (
+              "nixos"
+            )
+          );
+          hashedPasswordFile = with config-domain; (
+            mkIf (mkFunc.pathExists private.secrets) (
+              config.age.secrets."${host.user.username}-userPassword".path
+            )
+          );
           extraGroups = [ "wheel" "networkmanager" ];
         };
       };

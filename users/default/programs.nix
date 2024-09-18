@@ -11,10 +11,18 @@
       []
       # Default
       ++ (mkFunc.searchFiles "${public.programs}" onlyHomeConfig onlyDefault onlyNixFile)
-      ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyDefault onlyNixFile)
-      # User specific
+      # Host specific
       ++ (mkFunc.searchFiles "${public.programs}" onlyHomeConfig onlyUser onlyNixFile)
-      ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyUser onlyNixFile)
+      ++ (
+        # Private
+        if (mkFunc.pathExists private.programs) then
+          []
+          # Default
+          ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyDefault onlyNixFile)
+          # Host specific
+          ++ (mkFunc.searchFiles "${private.programs}" onlyHomeConfig onlyUser onlyNixFile)
+        else []
+      )
     )
   );
 

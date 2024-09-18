@@ -6,8 +6,10 @@
       packages = with pkgs-bundle.unstable-fixed; [ calibre ];
     };
 
-    home.file.".config/calibre".source = (
-      mkOutOfStoreSymlink "${config-domain.private.dotfiles}/calibre/.config/calibre"
+    home.file.".config/calibre" = with config-domain; (
+      mkIf (mkFunc.pathExists private.dotfiles) {
+        source = mkOutOfStoreSymlink "${private.dotfiles}/calibre/.config/calibre";
+      }
     );
 
   };

@@ -38,7 +38,13 @@
       # System_Label ([a-zA-Z0-9:_.-]*)
       # I change it at every rebuild. Very convenient for marking generations!
       # But it might contain sensitive information, so its hidden
-      systemLabel = (builtins.readFile ./private-config/NIXOS_LABEL.txt);
+      systemLabel = (
+        let
+          filePath = ./private-config/NIXOS_LABEL.txt;
+        in if (builtins.pathExists filePath) then (
+          builtins.readFile filePath
+        ) else "Initial Configuration: Requires private-config to be complete"
+      );
 
       # Hosts
       LiCo = user-host-scheme.buildHost {

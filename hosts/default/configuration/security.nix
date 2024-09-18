@@ -9,16 +9,18 @@
     users.mutableUsers = false;
 
     # Agenix
-    age = (
-      let
-        username = host.user.username;
-      in {
-        identityPaths = [ "/home/${username}/.ssh/id_ed25519_agenix" ];
-        secrets = with config-domain.private; {
-          "root-userPassword".file = "${secrets}/root_user_password.age";
-          "${username}-userPassword".file = "${secrets}/${username}_user_password.age";
-        };
-      }
+    age = with config-domain; (
+      mkIf (mkFunc.pathExists private.secrets) (
+        let
+          username = host.user.username;
+        in {
+          identityPaths = [ "/home/${username}/.ssh/id_ed25519_agenix" ];
+          secrets = {
+            "root-userPassword".file = "${private.secrets}/root_user_password.age";
+            "${username}-userPassword".file = "${private.secrets}/${username}_user_password.age";
+          };
+        }
+      )
     );
     
   };
