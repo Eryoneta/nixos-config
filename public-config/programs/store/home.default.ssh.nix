@@ -3,8 +3,8 @@
 
     # SSH: Secure connection
     programs.ssh = {
-      enable = mkDefault true;
-      package = mkDefault pkgs-bundle.stable.openssh;
+      enable = true; # Always enabled
+      package = pkgs-bundle.stable.openssh; # Stable
     };
     services.ssh-agent.enable = false; # The system already starts the agent
 

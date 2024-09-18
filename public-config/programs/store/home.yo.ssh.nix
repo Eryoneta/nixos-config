@@ -3,8 +3,6 @@
 
     # SSH: Secure connection
     programs.ssh = {
-      enable = true;
-      package = pkgs-bundle.stable.openssh;
       matchBlocks = {
         "public" = {
           hostname = "github.com";
