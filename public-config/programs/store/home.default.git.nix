@@ -169,8 +169,8 @@
             fi; \
             \
             if [[ -n $titulo || -n $amend || -n $reamend ]]; then \
-              echo \">> git log -1\"; \
-              git log -1; \
+              echo \">> git status\"; \
+              git status; \
               echo \"\"; \
             else \
               echo \"fatal: no commit message provided!\"; \
