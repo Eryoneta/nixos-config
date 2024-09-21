@@ -5,7 +5,7 @@
     home = {
       packages = with pkgs-bundle; (
         (with unstable; [
-
+          xdg-ninja # xdg-ninja: Scans $HOME for uncompliant XDG files (Very convenient!)
         ])
         ++
         (with stable; [
