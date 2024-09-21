@@ -95,7 +95,7 @@
     # To change it, delete the file(Should be a HM symlink-outOfStore)
     #   The wizard can overwrite ".p10k.zsh", but it cannot edit ".zshrc"(A HM Symlink)
     #   The file is already imported(If present) at the theme above
-    home.file.".config/zsh/.p10k.zsh" = with config-domain; {
+    xdg.configFile."zsh/.p10k.zsh" = with config-domain; {
       source = mkOutOfStoreSymlink "${public.dotfiles}/zsh/.config/zsh/.p10k.zsh";
     };
 

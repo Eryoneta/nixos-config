@@ -29,7 +29,7 @@
     };
 
     # "git loglist"
-    home.file.".config/git/aliases/loglist".text = ''
+    xdg.configFile."git/aliases/loglist".text = ''
       [alias]
         # Basically 'git log --graph --oneline', but pretty
         #   Tip: It accepts '--all'
@@ -41,7 +41,7 @@
     '';
 
     # "git save"
-    home.file.".config/git/aliases/save".text = ''
+    xdg.configFile."git/aliases/save".text = ''
       [alias]
         # A shortcut for creating fast and simple commits
         #   Merges 'git add', 'git commit', and 'git push' into a single command!
@@ -181,7 +181,7 @@
     '';
 
     # "git quicksave"
-    home.file.".config/git/aliases/quicksave".text = ''
+    xdg.configFile."git/aliases/quicksave".text = ''
       [alias]
         # Quick commit
         #   Executes 'git save' with title defined as the current date
