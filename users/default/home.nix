@@ -2,8 +2,8 @@
 
   imports = [
     ./programs.nix
-    ./xdg-base-directory.nix
     ./variables.nix
+    ./xdg-base-directory.nix
   ];
 
   config = {
@@ -24,29 +24,6 @@
     # Only works for standalone!
     # As a module, it needs to be included at "environment.systemPackages"
     programs.home-manager.enable = true;
-
-    # XDG Base Directory
-    xdg = {
-      enable = true;
-      userDirs = {
-        enable = true;
-        createDirectories = true;
-      } // (
-        let
-          homePath = config.home.homeDirectory;
-        in {
-          desktop = "${homePath}/Área de Trabalho";
-          documents = "${homePath}/Documentos";
-          download = "${homePath}/Downloads";
-          music = "${homePath}/Músicas";
-          pictures = "${homePath}/Imagens";
-          videos = "${homePath}/Vídeos";
-          publicShare = "${homePath}/Público";
-          templates = "${homePath}/Modelos";
-        }
-      );
-
-    };
 
   };
 }

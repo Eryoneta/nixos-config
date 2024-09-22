@@ -40,7 +40,7 @@
           syntaxHighlighting = {
             enable = mkDefault true;
             package = mkDefault package.zsh-syntax-highlighting;
-            highlighters = mkDefault [ "root" "brackets" "cursor" ];
+            highlighters = [ "root" "brackets" "cursor" ];
           };
 
           # History
@@ -48,7 +48,7 @@
             ignoreDups = false; # Include duplicates
             expireDuplicatesFirst = true; # Expires duplicates first
             extended = true; # Entries with timestamp
-            ignorePatterns = mkDefault [
+            ignorePatterns = [
               "rm *"
               "cd *"
             ];
@@ -63,7 +63,7 @@
 
             # Plugins
             # More at: https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
-            plugins = mkDefault [
+            plugins = [
               "git"
               "sudo"
             ];

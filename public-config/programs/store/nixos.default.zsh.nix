@@ -3,12 +3,12 @@
 
     # ZSH: Shell
     programs.zsh = {
-      enable = true;
-      # package = package.zsh; # Option does not exist
+      enable = mkDefault true;
+      #package = mkDefault pkgs-bundle.stable.zsh; # Option does not exist
     };
-    users.defaultUserShell = pkgs-bundle.stable.zsh;
+    users.defaultUserShell = pkgs-bundle.stable.zsh; # Cannot be "mkDefault"
 
-    # Allows for autocompletion for system packages
+    # Allows autocompletion for system packages
     environment.pathsToLink = [ "/share/zsh" ];
 
   };

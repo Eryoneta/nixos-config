@@ -3,10 +3,14 @@
 
     # Firewall
     networking.firewall.enable = true;
-    networking.firewall.allowPing = true;
+    networking.firewall.allowPing = true; # Responds for echo requests
 
-    # Immutable Users (Once created, never change)
+    # Immutable users (Once created, never change)
     users.mutableUsers = false;
+
+    # Real-time scheduling can be used by normal users
+    # Required for sound
+    security.rtkit.enable = true;
 
     # Agenix
     age = with config-domain; (

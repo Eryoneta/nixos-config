@@ -6,7 +6,6 @@
     ./hardware-fixes.nix # Hardware fixes
   ];
 
-  # LiCo
   config = {
 
     # Autologin

@@ -1,7 +1,9 @@
 { pkgs, ... }@args: with args.config-utils; {
   config = {
 
-    # Atrasa Grub para que seu video carregue
+    # Delays Grub to load the display
+    # That bug only affects slow computers (Race condition)
+    # https://askubuntu.com/questions/182248/why-is-grub-menu-not-shown-when-starting-my-computer
     boot.loader.grub.extraInstallCommands = ''
       TEMP_FILE="/boot/grub/grubTEMP.tmp"
       GRUB_FILE="/boot/grub/grub.cfg"
