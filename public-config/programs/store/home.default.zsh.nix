@@ -20,9 +20,20 @@
           #strategy = [ "history" ]; # Suggests based on history
         };
 
-        # Integration
+        # Configuration
+        dotDir = (
+          let
+            homePath = config.home.homeDirectory;
+            configPath = config.xdg.configHome;
+            # Warning: It replaces all instances of "/home/USER/"!
+            # That might affect weird XDG-configHome paths like "/home/USER/something/home/USER/my-config"
+            # But, "xdg.configHome" is almost always "/home/USER/.config", so... eh
+            configRelPath = (builtins.replaceStrings [ "${homePath}/" ] [ "" ] configPath);
+          in (
+            "${configRelPath}/zsh" # Does not accept absolute paths
+          )
+        );
         enableVteIntegration = true;
-        dotDir = ".config/zsh"; # Does not accept absolute paths
 
         # Syntax Highlight
         # More at: https://github.com/zsh-users/zsh-syntax-highlighting/tree/master/docs/highlighters

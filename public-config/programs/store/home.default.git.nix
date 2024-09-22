@@ -1,4 +1,4 @@
-{ pkgs-bundle, user, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
   config = {
 
     # Git: File versioning
@@ -17,13 +17,13 @@
       };
       includes = [
         {
-          path = "~/.config/git/aliases/loglist";
+          path = "${config.xdg.configHome}/git/aliases/loglist";
         }
         {
-          path = "~/.config/git/aliases/save";
+          path = "${config.xdg.configHome}/git/aliases/save";
         }
         {
-          path = "~/.config/git/aliases/quicksave";
+          path = "${config.xdg.configHome}/git/aliases/quicksave";
         }
       ];
     };
