@@ -9,16 +9,15 @@
     console.keyMap = "br-abnt2";
 
     # Printers
-    services.printing.enable = true;
+    services.printing.enable = mkDefault true;
 
     # Sound
     hardware.pulseaudio.enable = false;
-    security.rtkit.enable = true;
     services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
+      enable = mkDefault true;
+      alsa.enable = mkDefault true;
+      alsa.support32Bit = mkDefault true;
+      pulse.enable = mkDefault true;
     };
 
   };

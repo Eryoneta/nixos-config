@@ -1,7 +1,9 @@
-{ user, ... }@args: with args.config-utils; {
+{ config, user, ... }@args: with args.config-utils; {
 
   imports = [
     ./programs.nix
+    ./variables.nix
+    ./xdg-base-directory.nix
   ];
 
   config = {

@@ -6,11 +6,13 @@
     ./hardware-fixes.nix # Hardware fixes
   ];
 
-  # Hyper-V_VM
   config = {
 
     # Autologin
     services.displayManager.autoLogin.enable = true;
+
+    # No need for OS probing
+    boot.loader.grub.useOSProber = false;
 
   };
 

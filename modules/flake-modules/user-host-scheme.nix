@@ -35,20 +35,20 @@ flakePath: (
     };
 
     # Host-User-Pair Builder
-    buildPair = user: host: {
-      user = user // {
-        host = host // {
-          user = user; # User -> Host -> User -> void
+    buildPair = user: host: (
+      let
+        userPair = user // {
+          host = hostPair;
+        };
+        hostPair = host // {
+          user = userPair;
           configFolder = user.configFolder;
         };
-      };
-      host = host // {
-        user = user // {
-          host = host; # Host -> User -> Host -> void
-        };
-        configFolder = user.configFolder;
-      };
-    };
+      in {
+        user = userPair;
+        host = hostPair;
+      }
+    );
 
   in {
 

@@ -1,4 +1,4 @@
-{ pkgs-bundle, user, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
   config = {
 
     # Git: File versioning
@@ -17,19 +17,19 @@
       };
       includes = [
         {
-          path = "~/.config/git/aliases/loglist";
+          path = "${config.xdg.configHome}/git/aliases/loglist";
         }
         {
-          path = "~/.config/git/aliases/save";
+          path = "${config.xdg.configHome}/git/aliases/save";
         }
         {
-          path = "~/.config/git/aliases/quicksave";
+          path = "${config.xdg.configHome}/git/aliases/quicksave";
         }
       ];
     };
 
     # "git loglist"
-    home.file.".config/git/aliases/loglist".text = ''
+    xdg.configFile."git/aliases/loglist".text = ''
       [alias]
         # Basically 'git log --graph --oneline', but pretty
         #   Tip: It accepts '--all'
@@ -41,7 +41,7 @@
     '';
 
     # "git save"
-    home.file.".config/git/aliases/save".text = ''
+    xdg.configFile."git/aliases/save".text = ''
       [alias]
         # A shortcut for creating fast and simple commits
         #   Merges 'git add', 'git commit', and 'git push' into a single command!
@@ -169,8 +169,8 @@
             fi; \
             \
             if [[ -n $titulo || -n $amend || -n $reamend ]]; then \
-              echo \">> git log -1\"; \
-              git log -1; \
+              echo \">> git status\"; \
+              git status; \
               echo \"\"; \
             else \
               echo \"fatal: no commit message provided!\"; \
@@ -181,7 +181,7 @@
     '';
 
     # "git quicksave"
-    home.file.".config/git/aliases/quicksave".text = ''
+    xdg.configFile."git/aliases/quicksave".text = ''
       [alias]
         # Quick commit
         #   Executes 'git save' with title defined as the current date
