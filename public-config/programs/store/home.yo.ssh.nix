@@ -26,7 +26,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKwDO7ottElr2R+o/R7l4rJ7sPhyTuMJwybqi0Syryb+"
     );
 
-    home.file.".ssh/known_hosts" = with config-domain; (
+    home.file.".ssh/known_hosts" = with config-domain.outOfStore; (
       mkIf (mkFunc.pathExists private.dotfiles) {
         source = mkOutOfStoreSymlink "${private.dotfiles}/ssh/.ssh/known_hosts";
       }

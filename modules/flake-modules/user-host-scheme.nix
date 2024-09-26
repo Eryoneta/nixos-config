@@ -1,10 +1,50 @@
 # User & Host Scheme
-# Defines "user" OR "host" inside "specialArgs" or "extraSpecialArgs"
-#   NixOS gets "host" and Home-Manager gets "user"
-# "host" have a atribute "user", and "user" have a atribute "host". One points to the other (Ex.: User -> Host -> User -> void)
-# It can carry useful atributes like "system" or "username", and custom atributes if necessary
-#   The "user" or "host" passed in the arguments can have extra atributes!
-# Also, is expected some folders to exist (Ex.: User = "me", then "/nix/store/.../users/me/home.nix" have to exist)
+/*
+  - A flake-module modifier
+  - Defines "host" inside "specialArgs" and "user" inside "extraSpecialArgs"
+    - Basically, NixOS gets "host" and Home-Manager gets "user"
+  - "host" have a atribute "user", and "user" have a atribute "host"
+    - One points to the other recursively
+      - Ex.: "host.user.host.user.host.user.username" is totally valid
+  - Both "user" and "host" need to be created before
+    - "buildHost" returns a valid "host"
+    - "buildUser" returns a valid "user"
+    - Then, both need to be passed to "build" to be used
+  - It can carry useful atributes like "system" or "username", and even custom atributes
+  - Ex.: At "flake.nix": ''
+    # ...
+    let
+      user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
+      Machine1 = user-host-scheme.buildHost {
+        hostname = "machine1";
+        name = "Machine 1";
+      };
+      User1 = user-host-scheme.buildUser {
+        username = "user1";
+        name = "User 1";
+        configFolder = "/home/user1/.nixos-config";
+      };
+    in {
+      nixosConfigurations = {
+        flake-modules."nixos-system.nix".build {
+          architecture = Machine1.system.architecture;
+          package = inputs.nixpkgs;
+          modifiers = [
+            # ...
+            (user-host-scheme.build {
+              inherit User1;
+              inherit Machine1;
+            })
+          ];
+        }
+      };
+    }
+    # ...
+  ''
+  - Also, is expected some folders to exist
+    - Ex.: "./users/user1/home.nix" must exist
+    - Ex.: "./hosts/machine1/configuration.nix" must exist
+*/
 flakePath: (
   let
 

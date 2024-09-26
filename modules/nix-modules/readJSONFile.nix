@@ -1,7 +1,9 @@
 {
-  # readJSONFile: ./path -> { fileField1 = "A"; fileField2 = "B"; }
-  #   ./path: A path that points to a JSON file
-  # Reads a JSON file and return its contents
+  # ReadJSONFile: ./path -> { fileField1 = "A"; fileField2 = "B"; }
+  /*
+    - Reads a JSON file and return its contents
+      - "filePath": A path to a JSON file
+  */
   readJSONFile = filePath: (
     builtins.fromJSON (builtins.readFile filePath)
   );

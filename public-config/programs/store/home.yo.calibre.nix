@@ -6,7 +6,7 @@
       packages = with pkgs-bundle.unstable-fixed; [ calibre ];
     };
 
-    xdg.configFile."calibre" = with config-domain; (
+    xdg.configFile."calibre" = with config-domain.outOfStore; (
       mkIf (mkFunc.pathExists private.dotfiles) {
         source = mkOutOfStoreSymlink "${private.dotfiles}/calibre/.config/calibre";
       }

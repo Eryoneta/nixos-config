@@ -8,7 +8,7 @@
 
   config = {
 
-    # Autologin
+    # Feature: Autologin
     services.displayManager.autoLogin.enable = true;
 
   };

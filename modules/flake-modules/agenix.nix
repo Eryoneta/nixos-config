@@ -1,5 +1,9 @@
 # Agenix
-# Imports Agenix
+/*
+  - A flake-module modifier
+  - Imports Agenix
+    - At system level, it also includes "Agenix CLI"
+*/
 flakePath: (
   let
 

@@ -1,11 +1,13 @@
 # GitSupport for AutoUpgrade
-# Executes git commands before and after a nixos-upgrade.
-# "git pull": Pull changes from remote before the upgrade
-# "git add & git commit": Commits the changes before the upgrade
-# "git push": Pushes any commits to remote
-# - Uses "git"
-# - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
-# - Depends on "home-manager" (Error is thrown without it)
+/*
+  - Executes git commands before and after a nixos-upgrade
+    - "pull": Pull changes from remote before the upgrade
+    - "commit": Adds and commits changes before the upgrade
+    - "push": Pushes any commits to remote
+  - Uses "git"
+  - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+  - Depends on "home-manager" (Error is thrown without it)
+*/
 { config, pkgs, lib, ... }:
   let
     cfg = config.system.autoUpgrade;

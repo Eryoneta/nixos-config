@@ -1,11 +1,14 @@
 nix-lib: rec {
-  # searchFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/subDir/pre-mytext.ext" ]
-  #   dirPath: A path that points to a folder
-  #   withPrefix: A text prefix
-  #   withInFix: A text infix
-  #   withSuffix: A text suffix
-  # List all files that matches all filters
-  #   Its the same as "listFiles", but it also includes sub-folders!
+  # SearchFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/subDir/pre-mytext.ext" ]
+  /*
+    - List files that matches all filters
+      - "dirPath": A path to a directory
+      - "withPrefix": A text prefix
+      - "withInFix": A text infix
+      - "withSuffix": A text suffix
+    - Is the same as "listFiles", but it also includes sub-directories!
+  */
+  #   
   searchFiles = dirPath: withPrefix: withInFix: withSuffix: (
     let
 
@@ -28,6 +31,7 @@ nix-lib: rec {
         builtins.map (value:
           if (directory.${value} == "directory") then (
             # [ "dirPath/subDir/file2.ext" ]
+            # Recursive
             searchFiles ("${dirPath}/${value}") withPrefix withInFix withSuffix
           ) else (
             # [ "dirPath/file1.ext" ]

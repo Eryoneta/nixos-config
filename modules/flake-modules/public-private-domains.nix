@@ -1,63 +1,84 @@
 # Public/Private Domains
-# Defines two "domains": Public and Private
-#   Requires two folders at the "flake.nix" level: "private-config" and "public-config"
-#   The folder content can be defined by the set "folders". Each atribute gets turned into a path for a folder
-# Some folders can be set as absolute, meaning its path does not point to "/nix/store", but to "configPath"
-# All paths are available in "config-domain", inside "specialArgs" or "extraSpecialArgs"
-# Ex.: The input set ```
-#   {
-#     configPath = "/home/user/nixos-config";
-#     folders = { subfolder1 = "./f1"; subfolder2 = "./f2"; };
-#     absolutePaths.subfolder2 = true;
-#   }
-# ``` results in ```
-#   config-domain = {
-#     public = { subfolder1 = "/nix/store/.../f1"; subfolder2 = "/home/user/nixos-config/f2"; };
-#     private = { subfolder1 = "/nix/store/.../f1"; subfolder2 = "/home/user/nixos-config/f2"; };
-#   };
-# ```, available in "specialArgs" or "extraSpecialArgs":  ```
-#   { config-domain, ... }: {
-#     imports = [ "${config-domain.public.subfolder1}/my-file.nix" ];
-#   }
-# ```
+/*
+  - A flake-module modifier
+  - Defines a "config-domain" inside "specialArgs" or "extraSpecialArgs"
+    - It contains paths
+  - The configuration is separated into two "domains": Public and Private
+    - That requires two directories at the "flake.nix" level: "./private-config" and "./public-config"
+    - The content can be defined by the set "directories". Each atribute gets turned into a path for a directory
+  - Absolute paths can be read from the "outOfStore" set
+  - Ex.: ''
+    (public-private-domains.build {
+      configPath = "/home/user/.nixos-config";
+      directories = {
+        dotfiles = "/dotfiles"; # All paths are strings!
+        programs = "/programs";
+      };
+    })
+  ''
+    - Ex.: ''
+      { config-domain, ... }: {
+        imports = [
+          "${config-domain.public.programs}/my-file.nix"
+          "${config-domain.private.programs}/my-private-file.nix"
+        ];
+        # ...
+      }
+    ''
+    - Ex.: "mkOutOfStoreSymlink" requires absolute paths: ''
+      { config, config-domain, ... }: {
+        # ...
+        home.file."random-program".source = (
+          config.lib.file.mkOutOfStoreSymlink "${config-domain.outOfStore.private.dotfiles}/random-program"
+        );
+        # ...
+      }
+    ''
+  - With this configuration, "./private-config" can be a private git submodule, only loaded with the right credentials
+    - But this requires checking if the wanted directory is present before using it, or the unloaded sudmodule can break the configuration!
+*/
 flakePath: (
   let
 
     # Domain Builder
-    buildDomain = configPath: folders: absolutePaths: subfolder: (
-      # MapAttr: { folder = ./folder; } -> { folder = basePath/folder; }
+    buildDomain = configPath: directories: outOfStore: subdirectory: (
+      # MapAttr: { directory = "/directory"; } -> { directory = "basePath/directory"; }
       builtins.mapAttrs (name: value: (
-        (if (builtins.hasAttr name absolutePaths) then configPath else flakePath) + subfolder + value
-      )) folders
+        (if (outOfStore) then configPath else flakePath) + subdirectory + value
+      )) directories
     );
 
     # SpecialArg
-    specialArg = configPath: folders: absolutePaths: {
+    specialArg = configPath: directories: {
       config-domain = {
-        public = (buildDomain configPath folders absolutePaths "/public-config");
-        private = (buildDomain configPath folders absolutePaths "/private-config");
+        public = (buildDomain configPath directories false "/public-config");
+        private = (buildDomain configPath directories false "/private-config");
+        outOfStore = {
+          public = (buildDomain configPath directories true "/public-config");
+          private = (buildDomain configPath directories true "/private-config");
+        };
       };
     };
 
   in {
     # Builder
-    build = { configPath, folders, absolutePaths ? [] }: {
+    build = { configPath, directories }: {
 
       # Override Home-Manager-Module Configuration
       homeManagerModule = {
         home-manager = {
-          extraSpecialArgs = (specialArg configPath folders absolutePaths);
+          extraSpecialArgs = (specialArg configPath directories);
         };
       };
 
       # Override Home-Manager-Standalone Configuration
       homeManagerStandalone = {
-        extraSpecialArgs = (specialArg configPath folders absolutePaths);
+        extraSpecialArgs = (specialArg configPath directories);
       };
 
       # Override System Configuration
       nixosSystem = {
-        specialArgs = (specialArg configPath folders absolutePaths);
+        specialArgs = (specialArg configPath directories);
       };
 
     };

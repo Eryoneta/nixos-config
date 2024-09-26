@@ -1,8 +1,13 @@
 # AutoUpgrade List
-# Defines a "auto-upgrade-list" inside "specialArgs" or "extraSpecialArgs" that contains a list of inputs to autoupgrade
-#   It's a convenience! The "flake.nix" itself can set what inputs should be autoupgraded and "config.system.autoUpgrade" just uses the list
-# "packages" should be a set containing the ones from the flake-input(Ex.: packages = { inherit stable; inherit unstable; })
-#   All that matters is the names
+/*
+  - A flake-module modifier
+  - Defines a "auto-upgrade-list" inside "specialArgs" or "extraSpecialArgs"
+    - It contains a list of inputs to autoupgrade
+    - It's a convenience! The "flake.nix" itself can set which inputs should be autoupgraded and "config.system.autoUpgrade" just uses the list
+  - "packages" should be a set containing the ones from the flake-input
+    - Ex.: "packages = { inherit nixpkgs-stable; inherit nixpkgs-unstable; }"
+    - All that matters are its names
+*/
 flakePath: (
   let
 

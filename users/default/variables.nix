@@ -3,7 +3,7 @@
 
     # Variables
     home.sessionVariables = {
-      EDITOR = "kwrite"; # Default Text Editor
+      EDITOR = mkDefault "kwrite"; # Default Text Editor
     };
 
   };

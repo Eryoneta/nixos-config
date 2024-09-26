@@ -38,7 +38,7 @@ nix-lib: hm-pkgs: hm-lib: (
       # Creates a symlink to files outside Nix Store
       # It's a recreation from: https://github.com/nix-community/home-manager/blob/master/modules/files.nix#L64-L69
       # Scary! I hope it doesn't break...!
-      # All that to avoid requiring "config.lib.file" from home-manager modules
+      # All that to avoid requiring "config.lib.file" from every home-manager module that needs this
       mkOutOfStoreSymlink = absolutePath: (
         let
           pathStr = toString absolutePath;

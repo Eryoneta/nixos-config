@@ -1,13 +1,15 @@
 nix-lib: {
-  # formatStr: "Configuration of João, today" -> "Configuration_of_Joao._today"
-  #   text: The text to be formatted
-  # Formats a text so that it can be used safely
-  #   Very useful for the option "config.system.nixos.label"!
+  # FormatStr: "Configuration of João, today" -> "Configuration_of_Joao._today"
+  /*
+    - Formats a text so that it can be used safely
+      - "text": The text to be formatted
+    - Very useful for the option "config.system.nixos.label"!
+  */
   formatStr = text: (
     let
 
       # All accepted characters and their respective valid counterparts
-      # Ex.: " " -> "_", as space is not allowed
+      # Ex.: " " -> "_", since space is not allowed
       characterMap = {
         " " = "_";
         "_" = "_";
@@ -105,7 +107,7 @@ nix-lib: {
           accentedCharsList = (builtins.attrNames characterMap.accentedChars);
           validCharsList = (builtins.map (char: characterMap.accentedChars."${char}") accentedCharsList);
         in (
-          # ReplaceStrings: [ "ã" ] [ "a" ] "cão" -> "cao"
+          # ReplaceStrings: ([ "ã" ] [ "a" ] "cão") -> "cao"
           builtins.replaceStrings accentedCharsList validCharsList text
         )
       );
