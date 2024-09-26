@@ -41,16 +41,15 @@ inputs: flakePath: (
           (flake-modules."public-private-domains.nix".build {
             # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
             # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
-            # Important: That only affects dotfiles! Only absolute paths notices the dev folder
+            # Important: Only absolute paths notices the dev folder
             configPath = if (user.username == "yo") then user.configDevFolder else user.configFolder;
             # configPath = user.configFolder;
-            folders = {
+            directories = {
               dotfiles = "/dotfiles";
               programs = "/programs";
               resources = "/resources";
               secrets = "/secrets";
             };
-            absolutePaths.dotfiles = true;
           })
           # Map-Modules-Dir
           (flake-modules."map-modules-directory.nix".build {
