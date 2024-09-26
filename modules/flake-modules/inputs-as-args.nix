@@ -1,6 +1,10 @@
 # Inputs as Arguments
-# Defines a "inputs" inside "specialArgs" or "extraSpecialArgs" that contains "flake.inputs"
-#   Allows for accessing inputs wherever necessary
+/*
+  - A flake-module modifier
+  - Defines a "inputs" inside "specialArgs" or "extraSpecialArgs"
+    - It contains "flake.inputs"
+    - Allows for accessing inputs wherever necessary
+*/
 flakePath: (
   let
 

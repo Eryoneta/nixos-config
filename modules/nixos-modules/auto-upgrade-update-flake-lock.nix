@@ -1,12 +1,14 @@
 # Upgrade Flake Lock for AutoUpgrade
-# Allows the update of multiple flake-inputs before a nixos-upgrade
-# Optionally, can commit such updates
-# The commit author can be set!
-# - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
-# - Uses "flake"
-# - Uses "nix-commands" v2.19
-# - Uses "git"
-# - Optionally depends on "./auto-upgrade-git-support.nix"
+/*
+  - Allows the update of multiple flake-inputs before a nixos-upgrade
+  - Optionally, can commit such updates
+    - The commit author can be set!
+  - Depends on "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+  - Uses "flake"
+  - Uses "nix-commands"
+  - Uses "git"
+  - Optionally depends on "./auto-upgrade-git-support.nix"
+*/
 { config, options, pkgs, lib, ... }:
   let
     cfg = config.system.autoUpgrade;
@@ -98,6 +100,7 @@
           path = with pkgs; [
             coreutils
             git
+            # TODO: Remove once nix is upgraded
             nixVersions.nix_2_19 # Only "Nix >= v2.19" allows multiple "nix flake update" inputs!
           ];
           script = ''

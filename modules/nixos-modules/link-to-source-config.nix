@@ -1,7 +1,9 @@
 # Link to Source-Configuration
-# Creates a symlink for the configuration present inside "/nix/store"
-#   Its named "src"
-#   It can be accessed at "/run/current-system/src"
+/*
+  - Creates a symlink for the configuration present inside "/nix/store"
+    - Its named "src"
+    - It can be accessed at "/run/current-system/src"
+*/
 { config, lib, ... }:
   let
     cfg = config.system.linkToSourceConfiguration;

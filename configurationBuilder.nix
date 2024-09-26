@@ -37,7 +37,7 @@ inputs: flakePath: (
               unstable-fixed = nixpkgs-unstable-fixed;
             });
           })
-          # Public-Private-Zones
+          # Public-Private-Domains
           (flake-modules."public-private-domains.nix".build {
             # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
             # But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)

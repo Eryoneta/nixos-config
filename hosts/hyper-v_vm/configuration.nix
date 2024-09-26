@@ -8,10 +8,10 @@
 
   config = {
 
-    # Autologin
+    # Feature: Autologin
     services.displayManager.autoLogin.enable = true;
 
-    # No need for OS probing
+    # Boot-Loader: No need for OS probing
     boot.loader.grub.useOSProber = false;
 
   };

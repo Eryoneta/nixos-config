@@ -1,10 +1,12 @@
 nix-lib: {
-  # listFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/pre-mytext.ext" ]
-  #   dirPath: A path that points to a folder
-  #   withPrefix: A text prefix
-  #   withInFix: A text infix
-  #   withSuffix: A text suffix
-  # List files that matches all filters
+  # ListFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/pre-mytext.ext" ]
+  /*
+    - List files that matches all filters
+      - "dirPath": A path to a directory
+      - "withPrefix": A text prefix
+      - "withInFix": A text infix
+      - "withSuffix": A text suffix
+  */
   listFiles = dirPath: withPrefix: withInFix: withSuffix: (
     builtins.map (
       value: "${dirPath}/${value}"
@@ -29,7 +31,11 @@ nix-lib: {
           ) else false
         )
       ) (
-        builtins.attrNames (builtins.readDir dirPath)
+        # AttrNames: { "file1.ext" = "regular"; subDir = "directory"; } -> [ "file1.ext" "subDir" ]
+        builtins.attrNames (
+          # ReadDir: dirPath -> { "file1.ext" = "regular"; subDir = "directory"; }
+          builtins.readDir dirPath
+        )
       )
     )
   );

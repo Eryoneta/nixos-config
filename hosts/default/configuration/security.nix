@@ -3,7 +3,7 @@
 
     # Firewall
     networking.firewall.enable = true;
-    networking.firewall.allowPing = true; # Responds for echo requests
+    networking.firewall.allowPing = true; # Responds to echo requests
 
     # Immutable users (Once created, never change)
     users.mutableUsers = false;

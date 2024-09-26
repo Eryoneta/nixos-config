@@ -1,25 +1,45 @@
 # Public/Private Domains
-# Defines two "domains": Public and Private
-#   Requires two folders at the "flake.nix" level: "private-config" and "public-config"
-#   The folder content can be defined by the set "folders". Each atribute gets turned into a path for a folder
-# Some folders can be set as absolute, meaning its path does not point to "/nix/store", but to "configPath"
-# All paths are available in "config-domain", inside "specialArgs" or "extraSpecialArgs"
-# Ex.: The input set ```
-#   {
-#     configPath = "/home/user/nixos-config";
-#     folders = { subfolder1 = "./f1"; subfolder2 = "./f2"; };
-#     absolutePaths.subfolder2 = true;
-#   }
-# ``` results in ```
-#   config-domain = {
-#     public = { subfolder1 = "/nix/store/.../f1"; subfolder2 = "/home/user/nixos-config/f2"; };
-#     private = { subfolder1 = "/nix/store/.../f1"; subfolder2 = "/home/user/nixos-config/f2"; };
-#   };
-# ```, available in "specialArgs" or "extraSpecialArgs":  ```
-#   { config-domain, ... }: {
-#     imports = [ "${config-domain.public.subfolder1}/my-file.nix" ];
-#   }
-# ```
+/*
+  - A flake-module modifier
+  - Defines a "config-domain" inside "specialArgs" or "extraSpecialArgs"
+    - It contains paths
+  - The configuration is separated into two "domains": Public and Private
+    - That requires two folders at the "flake.nix" level: "private-config" and "public-config"
+    - The content can be defined by the set "folders". Each atribute gets turned into a path for a folder
+  - Some folders can be set as absolute, meaning its path does not point to "/nix/store", but to "configPath"
+  - Ex.: ''
+    (public-private-domains.build {
+      configPath = "/home/user/.nixos-config";
+      folders = {
+        dotfiles = "/dotfiles"; # All paths are strings!
+        resources = "/resources";
+        programs = "/programs";
+      };
+      absolutePaths.dotfiles = true;
+      absolutePaths.resources = true;
+    })
+  ''
+    - Ex.: ''
+      { config-domain, ... }: {
+        imports = [
+          "${config-domain.public.programs}/my-file.nix"
+          "${config-domain.private.programs}/my-private-file.nix"
+        ];
+        # ...
+      }
+    ''
+    - Ex.: "mkOutOfStoreSymlink" requires absolute paths: ''
+      { config, config-domain, ... }: {
+        # ...
+        home.file."program".source = with config-domain; (
+          config.lib.file.mkOutOfStoreSymlink "${private.dotfiles}/program"
+        );
+        # ...
+      }
+    ''
+  - With this configuration, "private-config" can be a private git submodule, only loaded with the right credentials
+    - But this requires checking if the wanted folder is present before using it, or the unloaded sudmodule can break the configuration
+*/
 flakePath: (
   let
 

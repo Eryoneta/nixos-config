@@ -1,8 +1,23 @@
 # Package-Bundle
-# Defines a "pkgs-bundle" inside "specialArgs" or "extraSpecialArgs" that contains a set of packages
-#   Allows for accessing packages from a single atribute(Ex: pkgs-bundle.stable and pkgs-bundle.unstable)
-# "packages" should be a set containing the ones from the flake-input(Ex.: packages = { inherit stable; inherit unstable; })
-#   All that matters is the names
+/*
+  - A flake-module modifier
+  - Defines a "pkgs-bundle" inside "specialArgs" or "extraSpecialArgs"
+    - It contains a set of packages
+    - Its convenient as all packages can be taken from one single atribute
+      - Ex: ''
+        { pkgs-bundle, ...}: {
+          # ...
+          environment.systemPackages = with pkgs-bundle; [
+            unstable.home-manager
+            stable.git
+          ];
+          # ...
+        }
+      ''
+  - "packages" should be a set containing the ones from "inputs"
+    - Ex.: "packages = { stable = nixpkgs-stable; unstable = nixpkgs-unstable; }"
+    - They should not be imported! All that matters are its names
+*/
 flakePath: (
   let
 

@@ -1,6 +1,9 @@
 # Home-Manager-Module
-# Puts a home-manager-module inside a NixOS configuration
-# It support modifiers(Other flake-modules) for extra features
+/*
+  - A flake-module modifier
+    - It also supports other modifiers(Other flake-modules) for extra features!
+  - Imports Home-Manager as a NixOS module
+*/
 flakePath: (
   let
 
