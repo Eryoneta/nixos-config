@@ -6,7 +6,7 @@
       enable = true;
       userDirs = {
         enable = true;
-        createDirectories = true;
+        createDirectories = true; # Auto-create directories
       } // (
         let
           homePath = config.home.homeDirectory;
