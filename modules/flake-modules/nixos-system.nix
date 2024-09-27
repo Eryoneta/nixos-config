@@ -6,8 +6,8 @@
 flakePath: (
   let
 
-    # Utils
-    utils = (import ../nix-modules/collapseAttrs.nix);
+    # CollapseAttrs
+    collapseAttrs = (import ../nix-modules/collapseAttrs.nix).collapseAttrs;
 
     # Gets Only NixOS Modifiers
     nixosSystemModifiers = modifiers: (
@@ -35,7 +35,7 @@ flakePath: (
 
     # System Configuration With Modifiers
     systemConfigWithModifiers = architecture: modifiers: (
-      utils.collapseAttrs (systemConfig architecture) (nixosSystemModifiers modifiers) {
+      collapseAttrs (systemConfig architecture) (nixosSystemModifiers modifiers) {
         modules = [];
         specialArgs = {};
       }

@@ -26,12 +26,12 @@
 flakePath: (
   let
 
-    # Utils
-    utils = (import ../nix-modules/mapDir.nix);
+    # MapDir
+    mapDir = (import ../nix-modules/mapDir.nix).mapDir;
 
     # SpecialArg
     specialArg = directory: {
-      modules = (utils.mapDir directory);
+      modules = (mapDir directory);
     };
     
   in {

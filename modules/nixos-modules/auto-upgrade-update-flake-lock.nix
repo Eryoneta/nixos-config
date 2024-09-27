@@ -15,7 +15,11 @@
     cfg_ufl = config.system.autoUpgrade.updateFlakeLock;
   in {
 
-    imports = [ ] ++ (lib.optional (builtins.pathExists ./auto-upgrade-git-support.nix) ./auto-upgrade-git-support.nix);
+    imports = (
+      let
+        gs_path = ./auto-upgrade-git-support.nix;
+      in (lib.optional (builtins.pathExists gs_path) gs_path)
+    );
 
     options = {
       system.autoUpgrade.updateFlakeLock = {

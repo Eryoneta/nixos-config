@@ -1,4 +1,4 @@
-{ config-domain, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, config-domain, pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # SSH: Secure connection
@@ -10,7 +10,10 @@
 
     # Adds GitHub's public keys
     home.file.".ssh/known_hosts" = mkDefault (with config-domain; {
-      source = mkOutOfStoreSymlink "${public.dotfiles}/ssh/.ssh/known_hosts";
+      enable = (config.programs.ssh.enable);
+      source = with outOfStore.public; (
+        mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
+      );
     });
 
   };

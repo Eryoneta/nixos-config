@@ -7,7 +7,7 @@
         # Garbage Collector
         gc = {
           automatic = mkDefault true;
-          dates = mkDefault "Fri *-*-* 18:00:00"; # Every friday, 18h00
+          dates = mkDefault "*-*-* 18:00:00"; # Every day, 18h00
         };
 
         # Nix Store
