@@ -7,8 +7,8 @@
 flakePath: (
   let
 
-    # Utils
-    utils = (import ../nix-modules/collapseAttrs.nix);
+    # CollapseAttrs
+    collapseAttrs = (import ../nix-modules/collapseAttrs.nix).collapseAttrs;
 
     # Gets Only Home-Manager-Module Modifiers
     homeManagerModuleModifiers = modifiers: (
@@ -33,7 +33,7 @@ flakePath: (
 
     # Home-Manager Configuration With Modifiers
     homeManagerConfigWithModifiers = username: modifiers: (
-      utils.collapseAttrs (homeManagerConfig username) (homeManagerModuleModifiers modifiers) {
+      collapseAttrs (homeManagerConfig username) (homeManagerModuleModifiers modifiers) {
         home-manager = {
           sharedModules = [];
           extraSpecialArgs = {};

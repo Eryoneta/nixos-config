@@ -7,7 +7,7 @@ rec {
     - Each atribute represents a file, and contains a path value for it
   */
   mapDir = dirPath: (
-    # mapAttr: { "file.nix" = "regular"; } -> { "file.nix" = ./path/file.nix; }
+    # MapAttr: { "file.nix" = "regular"; } -> { "file.nix" = ./path/file.nix; }
     builtins.mapAttrs (
       name: value: (
         if (value == "directory") then (

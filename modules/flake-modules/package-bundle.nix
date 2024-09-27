@@ -24,7 +24,11 @@ flakePath: (
     # Bundle Builder
     buildPkgsBundle = architecture: packages: (
       # MapAttrs: { pkgs = pkgs; } -> { pkgs = (import pkgs { ... }); }
-      builtins.mapAttrs (name: value: (import value (pkgsConfig architecture))) packages
+      builtins.mapAttrs (
+        name: value: (
+          import value (pkgsConfig architecture)
+        )
+      ) packages
     );
     pkgsConfig = architecture: {
       system = architecture;

@@ -6,8 +6,8 @@
 flakePath: (
   let
 
-    # Utils
-    utils = (import ../nix-modules/collapseAttrs.nix);
+    # CollapseAttrs
+    collapseAttrs = (import ../nix-modules/collapseAttrs.nix).collapseAttrs;
 
     # Gets Only Home-Manager-Standalone Modifiers
     homeManagerStandaloneModifiers = modifiers: (
@@ -28,7 +28,7 @@ flakePath: (
 
     # Home-Manager Configuration With Modifiers
     homeManagerConfigWithModifiers = systemPackage: architecture: modifiers: (
-      utils.collapseAttrs (homeManagerConfig systemPackage architecture) (homeManagerStandaloneModifiers modifiers) {
+      collapseAttrs (homeManagerConfig systemPackage architecture) (homeManagerStandaloneModifiers modifiers) {
         modules = [];
         extraSpecialArgs = {};
       }

@@ -23,7 +23,7 @@
   collapseAttrs = firstAttrSet: attrSets: attrsToOverride: (
     let
 
-      # mergeAttrs
+      # MergeAttrs
       mergeAttrs = (import ./mergeAttrs.nix).mergeAttrs;
 
     in
