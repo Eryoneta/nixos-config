@@ -1,4 +1,4 @@
-{ pkgs-bundle, user, ... }@args: with args.config-utils; {
+{ pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # Firefox: Browser
