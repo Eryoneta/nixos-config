@@ -4,6 +4,7 @@
     ./programs.nix
     ./variables.nix
     ./xdg-base-directory.nix
+    ./xdg-mime-apps.nix
   ];
 
   config = {
