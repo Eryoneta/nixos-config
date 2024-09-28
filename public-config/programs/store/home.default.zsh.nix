@@ -74,6 +74,20 @@
 
         };
 
+        # Plugins
+        plugins = [
+          # ZSH-No-PS2: Enter with a incomplete command produces a newline instead of a PS2(Secondary prompt)
+          {
+            name = "zsh-no-ps2";
+            src = package.fetchFromGitHub {
+              owner = "romkatv";
+              repo = "zsh-no-ps2";
+              rev = "v1.0.0";
+              sha256 = "sha256-blu8KEdF4IYEI3VgIkSYsd0RZsAHErj9KnC67MN5Jsw=";
+            };
+          }
+        ];
+
         # Theme: Powerlevel10k
         initExtra = (
           let
