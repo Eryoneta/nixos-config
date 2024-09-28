@@ -1,4 +1,4 @@
-{ config, user, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; {
   config = {
     
     # XDG Base Directory

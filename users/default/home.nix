@@ -4,6 +4,7 @@
     ./programs.nix
     ./variables.nix
     ./xdg-base-directory.nix
+    ./xdg-mime-apps.nix
   ];
 
   config = {
@@ -24,6 +25,18 @@
     # Only works for standalone!
     # As a module, it needs to be included at "environment.systemPackages"
     programs.home-manager.enable = true;
+
+    # Home-Manager News
+    # A necessary file to run "home-manager news"
+    xdg.configFile."home-manager/home.nix" = {
+      text = ''
+        {
+          home.username = "${config.home.username}";
+          home.homeDirectory = "${config.home.homeDirectory}";
+          home.stateVersion = "${config.home.stateVersion}";
+        }
+      '';
+    };
 
   };
 }
