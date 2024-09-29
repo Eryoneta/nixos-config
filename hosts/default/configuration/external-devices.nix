@@ -8,9 +8,6 @@
     };
     console.keyMap = "br-abnt2";
 
-    # Printers
-    services.printing.enable = mkDefault true;
-
     # Sound
     hardware.pulseaudio.enable = false;
     services.pipewire = {
