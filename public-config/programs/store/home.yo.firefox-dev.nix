@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, user, pkgs, ... }@args: with args.config-utils; {
   config = {
 
     # Firefox Developer Edition: Browser
@@ -16,11 +16,12 @@
 
       # Personal profile
       # This profile is personal. Customization without limits!
-      profiles.dev-edition-default = {
+      profiles."dev-edition-default" = {
         # It NEEDS to be "dev-edition-default"!
         #   This way "firefox-devedition" doesn't complain about "missing profiles"
         #   If it doesn't find it, then it creates a new one, but it can't edit "profiles.ini", throws an error
         id = 1;
+        #name = "Yo"; # HAS to be "dev-edition-default"
         isDefault = false;  # Only one can be the default
 
         # Search engines
@@ -63,15 +64,16 @@
 
         # Extensions
         extensions = (
-          config.programs.firefox.profiles.template-profile.extensions
+          config.programs.firefox.profiles."template-profile".extensions
           ++
-          [
-            
-          ]
+          (with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+            tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
+            sidebery # Sidebery: Sidebar with vertical tabs
+          ])
         );
 
         # Settings
-        settings = (config.programs.firefox.profiles.template-profile.settings // {
+        settings = (config.programs.firefox.profiles."template-profile".settings // {
 
           # UI (User Interface)
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Can change UI with a css file
@@ -100,50 +102,64 @@
             "version" = 1;
           };
           # User interface
-          "browser.uiCustomization.state" = {
-            "placements" = {
-              "toolbar-menubar" = [ # The bar at the top(Alt)
-                "menubar-items"
+          "browser.uiCustomization.state" = (
+            let
+              # "Ublock-Origin" extension
+              ublock-origin-id = "ublock0_raymondhill_net-browser-action";
+              # "Tab Stash" extension
+              tab-stash-id = "tab-stash_condordes_net-browser-action";
+              # "Sidebery" extension
+              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
+            in {
+              "placements" = {
+                "toolbar-menubar" = [ # The bar at the top(Alt)
+                  "menubar-items"
+                ];
+                "TabsToolbar" = [ # The bar that contains tabs
+                  "firefox-view-button" # Firefox View Button(Top-left)
+                  "alltabs-button" # All-tabs button
+                  "tabbrowser-tabs" # Tabs
+                  "new-tab-button" # New-tab button
+                ];
+                "nav-bar" = [ # The bar that contains URLbar
+                  "back-button" # Go-back button
+                  "forward-button" # Go-forward button
+                  "stop-reload-button" # Reload button
+                  "customizableui-special-spring1" # Stretch space
+                  tab-stash-id
+                  "urlbar-container" # URLbar
+                  "customizableui-special-spring2" # Stretch space
+                  "downloads-button" # Downloads button
+                  "history-panelmenu" # History button
+                  "unified-extensions-button" # Extensions button
+                  "developer-button" # Developer tools button
+                ];
+                "widget-overflow-fixed-list" = [];
+                "unified-extensions-area" = [ # List of extensions not in the bars
+                  ublock-origin-id
+                ];
+                "PersonalToolbar" = [ # The bar that contains bookmars
+                  "sidebar-button" # Sidebar button
+                  sidebery-id
+                  "customizableui-special-spring3"# Stretch space
+                  "personal-bookmarks" # Bookmarks
+                ];
+              };
+              "seen" = [ # Stuff that are not included
+                "save-to-pocket-button" # Pocket
+                "profiler-button" # Profiler button
               ];
-              "TabsToolbar" = [ # The bar that contains tabs
-                "firefox-view-button" # Firefox View Button(Top-left)
-                "alltabs-button" # All-tabs button
-                "tabbrowser-tabs" # Tabs
-                "new-tab-button" # New-tab button
+              "dirtyAreaCache" = [ # All bars that were modified
+                "nav-bar"
+                "TabsToolbar"
+                "PersonalToolbar"
+                "toolbar-menubar"
+                "unified-extensions-area"
               ];
-              "nav-bar" = [ # The bar that contains URLbar
-                "back-button" # Go-back button
-                "forward-button" # Go-forward button
-                "stop-reload-button" # Reload button
-                "customizableui-special-spring1" # Stretch space
-                "urlbar-container" # URLbar
-                "customizableui-special-spring2" # Stretch space
-                "downloads-button" # Downloads button
-                "history-panelmenu" # History button
-                "unified-extensions-button" # Extensions button
-                "developer-button" # Developer tools button
-              ];
-              "widget-overflow-fixed-list" = [];
-              "unified-extensions-area" = [];
-              "PersonalToolbar" = [ # The bar that contains bookmars
-                "sidebar-button" # Sidebar button
-                "customizableui-special-spring3"# Stretch space
-                "personal-bookmarks" # Bookmarks
-              ];
-            };
-            "seen" = [ # Stuff that are not included
-              "save-to-pocket-button" # Pocket
-              "profiler-button" # Profiler button
-            ];
-            "dirtyAreaCache" = [ # All bars that were modified
-              "nav-bar"
-              "TabsToolbar"
-              "PersonalToolbar"
-              "toolbar-menubar"
-            ];
-            "currentVersion" = 20;
-            "newElementCount" = 5;
-          };
+              "currentVersion" = 20;
+              "newElementCount" = 3 + 3; # Springs + extensions
+            }
+          );
 
           # UX (User experience)
           "browser.aboutConfig.showWarning" = false; # Do not warn at "about:config"

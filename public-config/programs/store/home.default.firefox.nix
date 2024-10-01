@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; {
+{ pkgs-bundle, user, ... }@args: with args.config-utils; {
   config = {
 
     # Firefox: Browser
@@ -25,12 +25,15 @@
 
       # Template profile
       # This profile should carry a basic, reasonable configuration. Its a template for others
-      profiles.template-profile = {
+      profiles."template-profile" = {
         id = 2;
+        name = "Template";
         isDefault = false;
 
         # Extensions
-        extensions = [];
+        extensions = with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+          ublock-origin # UBlock-Origin: Adblocker
+        ];
 
         # Default Settings
         settings = {

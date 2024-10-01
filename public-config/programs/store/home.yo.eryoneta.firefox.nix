@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
   config = {
 
     # Firefox: Browser
@@ -6,8 +6,9 @@
 
       # Public profile
       # This profile should be as "vanilla" as possible, the "new user experience"
-      profiles.default = {
+      profiles."default" = {
         id = 0;
+        #name = "Eryoneta"; # HAS to be "default"
         isDefault = true;
 
         # Search engines
@@ -23,17 +24,18 @@
 
         # Extensions
         extensions = (
-          config.programs.firefox.profiles.template-profile.extensions
+          config.programs.firefox.profiles."template-profile".extensions
           ++
-          [
-            
-          ]
+          (with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+            tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
+          ])
         );
 
         # Settings
-        settings = (config.programs.firefox.profiles.template-profile.settings // {
+        settings = (config.programs.firefox.profiles."template-profile".settings // {
 
           # UI (User Interface)
+          "browser.toolbars.bookmarks.visibility" = "always"; # Always show bookmark-toolbar
           # Theme
           "extensions.activeThemeID" = "dreamer-bold-colorway@mozilla.org"; # Purple theme!
 
