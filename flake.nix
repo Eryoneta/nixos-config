@@ -25,6 +25,10 @@
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Firefox Addons (AutoUpgrade)
+    nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   # Outputs

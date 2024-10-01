@@ -26,14 +26,24 @@ flakePath: (
       # MapAttrs: { pkgs = pkgs; } -> { pkgs = (import pkgs { ... }); }
       builtins.mapAttrs (
         name: value: (
-          import value (pkgsConfig architecture)
+          if ((builtins.hasAttr "pkgs" value) && (builtins.hasAttr "importPkgs" value)) then (
+            # If it has extra atributes
+            if (value.importPkgs) then (
+              importPkgs value.pkgs architecture
+            ) else value.pkgs
+          ) else (
+            # If it's only the input
+            importPkgs value architecture
+          )
         )
       ) packages
     );
-    pkgsConfig = architecture: {
-      system = architecture;
-      config.allowUnfree = true;
-    };
+    importPkgs = input: architecture: (
+      import input {
+        system = architecture;
+        config.allowUnfree = true;
+      }
+    );
 
     # SpecialArg
     specialArg = architecture: packages: {

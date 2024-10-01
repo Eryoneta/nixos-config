@@ -35,6 +35,10 @@ inputs: flakePath: (
               stable = nixpkgs-stable;
               unstable = nixpkgs-unstable;
               unstable-fixed = nixpkgs-unstable-fixed;
+              firefox-addons = {
+                pkgs = nurpkgs-firefox-addons;
+                importPkgs = false;
+              };
             });
           })
           # Public-Private-Domains
@@ -90,6 +94,7 @@ inputs: flakePath: (
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   # inherit nixpkgs-unstable-fixed;
+                  inherit nurpkgs-firefox-addons;
                 });
               })
             ];
