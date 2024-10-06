@@ -14,14 +14,14 @@
       # Host specific
       ++ (mkFunc.searchFiles "${public.programs}" onlySystemConfig onlyHost onlyNixFile)
       ++ (
-        # Private
-        if (mkFunc.pathExists private.programs) then
+        # Check for "./private-config/programs"
+        if (mkFunc.pathExists private.programs) then (
           []
           # Default
           ++ (mkFunc.searchFiles "${private.programs}" onlySystemConfig onlyDefault onlyNixFile)
           # Host specific
           ++ (mkFunc.searchFiles "${private.programs}" onlySystemConfig onlyHost onlyNixFile)
-        else []
+        ) else []
       )
     )
   );

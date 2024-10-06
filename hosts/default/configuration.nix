@@ -1,4 +1,4 @@
-{ config, config-domain, host, ... }@args: with args.config-utils; {
+{ host, ... }@args: with args.config-utils; {
 
     imports = [
       ./configuration/boot-loader.nix

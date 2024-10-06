@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, user, ... }@args: with args.config-utils; {
+{ config, config-domain, user, ... }@args: with args.config-utils; {
   config = {
 
     # SSH: Secure connection
@@ -29,6 +29,7 @@
     };
 
     home.file.".ssh/known_hosts" = with config-domain; {
+      # Check for "./private-config/dotfiles"
       enable = (config.programs.ssh.enable && (mkFunc.pathExists private.dotfiles));
       source = with outOfStore.private; (
         mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
