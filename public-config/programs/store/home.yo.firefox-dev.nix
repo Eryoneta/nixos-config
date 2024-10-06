@@ -91,16 +91,28 @@
           "browser.tabs.tabMinWidth" = 32; # Tab minimum size
           "browser.tabs.tabClipWidth" = 64; # Tab minimum size before hiding details
           # Icons actions at URLbar
-          "browser.pageActions.persistedActions" = {
-            "ids" = [ # Lists ids of icons
-              "bookmark" # Bookmark star
-            ];
-            "idsInUrlbar" = [ # Lists icons in the URLbar
-              "bookmark"
-            ];
-            "idsInUrlbarPreProton" = [];
-            "version" = 1;
-          };
+          "browser.pageActions.persistedActions" = (
+            let
+              # "Tab Stash" extension
+              tab-stash-id = "tab-stash_condordes_net";
+              # "Sidebery" extension
+              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+            in {
+              "ids" = [ # Lists ids of icons
+                "bookmark" # Bookmark star
+                tab-stash-id
+                sidebery-id
+              ];
+              "idsInUrlbar" = [ # Lists icons in the URLbar
+                "bookmark"
+                #tab-stash-id # NOT included in the bar!
+                #sidebery-id # Not included in the bar
+                # ...But it doesn't work. Both are still included
+              ];
+              "idsInUrlbarPreProton" = [];
+              "version" = 1;
+            }
+          );
           # User interface
           "browser.uiCustomization.state" = (
             let
@@ -130,9 +142,9 @@
                   "urlbar-container" # URLbar
                   "customizableui-special-spring2" # Stretch space
                   "downloads-button" # Downloads button
+                  "developer-button" # Developer tools button
                   "history-panelmenu" # History button
                   "unified-extensions-button" # Extensions button
-                  "developer-button" # Developer tools button
                 ];
                 "widget-overflow-fixed-list" = [];
                 "unified-extensions-area" = [ # List of extensions not in the bars
