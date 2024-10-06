@@ -36,7 +36,7 @@ inputs: flakePath: (
               unstable = nixpkgs-unstable;
               unstable-fixed = nixpkgs-unstable-fixed;
               firefox-addons = {
-                pkgs = nurpkgs-firefox-addons;
+                pkgs = nurpkgs-firefox-addons.packages.${host.system.architecture};
                 importPkgs = false;
               };
             });
