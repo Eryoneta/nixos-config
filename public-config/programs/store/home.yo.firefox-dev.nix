@@ -9,7 +9,9 @@
     #   Pray that the two packages are "far away" from eachother(Different versions)
     #   If not, there is a conflict and the rebuild fails
     # TODO: Fix? How?
-    home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
+
+    # Note: Added with override below (With FX-AutoConfig)
+    #home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
 
     # The profiles configuration are shared with regular "Firefox" (Convenient!)
     programs.firefox = {
@@ -66,7 +68,7 @@
         extensions = (
           config.programs.firefox.profiles."template-profile".extensions
           ++
-          (with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+          (with pkgs-bundle.firefox-addons; [
             tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
             sidebery # Sidebery: Sidebar with vertical tabs
           ])
@@ -91,16 +93,28 @@
           "browser.tabs.tabMinWidth" = 32; # Tab minimum size
           "browser.tabs.tabClipWidth" = 64; # Tab minimum size before hiding details
           # Icons actions at URLbar
-          "browser.pageActions.persistedActions" = {
-            "ids" = [ # Lists ids of icons
-              "bookmark" # Bookmark star
-            ];
-            "idsInUrlbar" = [ # Lists icons in the URLbar
-              "bookmark"
-            ];
-            "idsInUrlbarPreProton" = [];
-            "version" = 1;
-          };
+          "browser.pageActions.persistedActions" = (
+            let
+              # "Tab Stash" extension
+              tab-stash-id = "tab-stash_condordes_net";
+              # "Sidebery" extension
+              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+            in {
+              "ids" = [ # Lists ids of icons
+                "bookmark" # Bookmark star
+                tab-stash-id
+                sidebery-id
+              ];
+              "idsInUrlbar" = [ # Lists icons in the URLbar
+                "bookmark"
+                #tab-stash-id # NOT included in the bar!
+                #sidebery-id # Not included in the bar
+                # ...But it doesn't work. Both are still included
+              ];
+              "idsInUrlbarPreProton" = [];
+              "version" = 1;
+            }
+          );
           # User interface
           "browser.uiCustomization.state" = (
             let
@@ -130,9 +144,9 @@
                   "urlbar-container" # URLbar
                   "customizableui-special-spring2" # Stretch space
                   "downloads-button" # Downloads button
+                  "developer-button" # Developer tools button
                   "history-panelmenu" # History button
                   "unified-extensions-button" # Extensions button
-                  "developer-button" # Developer tools button
                 ];
                 "widget-overflow-fixed-list" = [];
                 "unified-extensions-area" = [ # List of extensions not in the bars
@@ -258,6 +272,32 @@
       };
       
     };
+
+    # FX-AutoConfig: Custom JavaScript loader
+    home = (
+      let
+        fx-autoconfig = pkgs-bundle.fx-autoconfig;
+        profilePath = ".mozilla/firefox/dev-edition-default";
+      in {
+        packages = with pkgs-bundle.unstable; [
+          (firefox-devedition.override {
+            extraPrefsFiles = [
+              # Enable "userChromeJS"
+              "${fx-autoconfig}/program/config.js"
+            ];
+          })
+        ];
+        # Load scripts and styles
+        file."${profilePath}/chrome/utils" = {
+          source = "${fx-autoconfig}/profile/chrome/utils";
+        };
+        # Small example
+        file."${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
+          source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
+        };
+        # TODO: Add my firefox scripts and styles
+      }
+    );
 
   };
 

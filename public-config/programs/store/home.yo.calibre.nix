@@ -7,6 +7,7 @@
     };
 
     xdg.configFile."calibre" = with config-domain; {
+      # Check for "./private-config/dotfiles"
       enable = ((true) && (mkFunc.pathExists private.dotfiles));
       source = with outOfStore.private; (
         mkOutOfStoreSymlink "${dotfiles}/calibre/.config/calibre"

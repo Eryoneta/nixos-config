@@ -31,14 +31,14 @@ inputs: flakePath: (
           # Pkgs-Bundle
           (flake-modules."package-bundle.nix".build {
             architecture = host.system.architecture;
-            packages = (with inputs; {
+            autoImportPackages = (with inputs; {
               stable = nixpkgs-stable;
               unstable = nixpkgs-unstable;
               unstable-fixed = nixpkgs-unstable-fixed;
-              firefox-addons = {
-                pkgs = nurpkgs-firefox-addons;
-                importPkgs = false;
-              };
+            });
+            packages = (with inputs; {
+              firefox-addons = nurpkgs-firefox-addons.packages.${host.system.architecture};
+              fx-autoconfig = fx-autoconfig;
             });
           })
           # Public-Private-Domains
@@ -93,8 +93,9 @@ inputs: flakePath: (
                   inherit agenix;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
-                  # inherit nixpkgs-unstable-fixed;
+                  #inherit nixpkgs-unstable-fixed;
                   inherit nurpkgs-firefox-addons;
+                  #inherit fx-autoconfig;
                 });
               })
             ];

@@ -29,6 +29,10 @@
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Firefox: FX-AutoConfig (Manual Upgrade)
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/master";
+    fx-autoconfig.flake = false;
+
   };
 
   # Outputs

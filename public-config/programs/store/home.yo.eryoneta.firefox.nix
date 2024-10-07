@@ -26,7 +26,7 @@
         extensions = (
           config.programs.firefox.profiles."template-profile".extensions
           ++
-          (with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+          (with pkgs-bundle.firefox-addons; [
             tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
           ])
         );

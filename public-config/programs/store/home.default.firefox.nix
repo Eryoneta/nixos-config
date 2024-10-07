@@ -31,7 +31,7 @@
         isDefault = false;
 
         # Extensions
-        extensions = with pkgs-bundle.firefox-addons.packages.${user.host.system.architecture}; [
+        extensions = with pkgs-bundle.firefox-addons; [
           ublock-origin # UBlock-Origin: Adblocker
         ];
 
