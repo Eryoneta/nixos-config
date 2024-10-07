@@ -22,23 +22,17 @@ flakePath: (
   let
 
     # Bundle Builder
-    buildPkgsBundle = architecture: packages: (
-      # MapAttrs: { pkgs = pkgs; } -> { pkgs = (import pkgs { ... }); }
-      builtins.mapAttrs (
-        name: value: (
-          if ((builtins.hasAttr "pkgs" value) && (builtins.hasAttr "importPkgs" value)) then (
-            # If it has extra atributes
-            if (value.importPkgs) then (
-              importPkgs value.pkgs architecture
-            ) else value.pkgs
-          ) else (
-            # If it's only the input
-            importPkgs value architecture
+    buildPkgsBundle = architecture: autoImportPackages: packages: (
+      packages // (
+        # MapAttrs: { pkgs = pkgs; } -> { pkgs = (import pkgs { ... }); }
+        builtins.mapAttrs (
+          name: value: (
+            autoImportPkgs value architecture
           )
-        )
-      ) packages
+        ) autoImportPackages
+      )
     );
-    importPkgs = input: architecture: (
+    autoImportPkgs = input: architecture: (
       import input {
         system = architecture;
         config.allowUnfree = true;
@@ -46,29 +40,29 @@ flakePath: (
     );
 
     # SpecialArg
-    specialArg = architecture: packages: {
-      pkgs-bundle = (buildPkgsBundle architecture packages);
+    specialArg = architecture: autoImportPackages: packages: {
+      pkgs-bundle = (buildPkgsBundle architecture autoImportPackages packages);
     };
 
   in {
     # Builder
-    build = { architecture ? "x86_64-linux", packages }: {
+    build = { architecture ? "x86_64-linux", autoImportPackages, packages }: {
 
       # Override Home-Manager-Module Configuration
       homeManagerModule = {
         home-manager = {
-          extraSpecialArgs = (specialArg architecture packages);
+          extraSpecialArgs = (specialArg architecture autoImportPackages packages);
         };
       };
 
       # Override Home-Manager-Standalone Configuration
       homeManagerStandalone = {
-        extraSpecialArgs = (specialArg architecture packages);
+        extraSpecialArgs = (specialArg architecture autoImportPackages packages);
       };
 
       # Override System Configuration
       nixosSystem = {
-        specialArgs = (specialArg architecture packages);
+        specialArgs = (specialArg architecture autoImportPackages packages);
       };
 
     };
