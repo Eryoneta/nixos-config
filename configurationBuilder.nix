@@ -39,6 +39,10 @@ inputs: flakePath: (
                 pkgs = nurpkgs-firefox-addons.packages.${host.system.architecture};
                 importPkgs = false;
               };
+              fx-autoconfig = {
+                pkgs = fx-autoconfig;
+                importPkgs = false;
+              };
             });
           })
           # Public-Private-Domains
@@ -93,8 +97,9 @@ inputs: flakePath: (
                   inherit agenix;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
-                  # inherit nixpkgs-unstable-fixed;
+                  #inherit nixpkgs-unstable-fixed;
                   inherit nurpkgs-firefox-addons;
+                  #inherit fx-autoconfig;
                 });
               })
             ];

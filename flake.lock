@@ -60,6 +60,23 @@
         "type": "github"
       }
     },
+    "fx-autoconfig": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726991943,
+        "narHash": "sha256-baoPhJuHkM/8yfM7lStSEu/AW0ea0s/j2t+aSq+nhGE=",
+        "owner": "MrOtherGuy",
+        "repo": "fx-autoconfig",
+        "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MrOtherGuy",
+        "ref": "master",
+        "repo": "fx-autoconfig",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -192,6 +209,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "fx-autoconfig": "fx-autoconfig",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",

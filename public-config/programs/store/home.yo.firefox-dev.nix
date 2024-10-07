@@ -9,7 +9,9 @@
     #   Pray that the two packages are "far away" from eachother(Different versions)
     #   If not, there is a conflict and the rebuild fails
     # TODO: Fix? How?
-    home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
+
+    # Note: Added with override below (With FX-AutoConfig)
+    #home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
 
     # The profiles configuration are shared with regular "Firefox" (Convenient!)
     programs.firefox = {
@@ -270,6 +272,32 @@
       };
       
     };
+
+    # FX-AutoConfig: Custom JavaScript loader
+    home = (
+      let
+        fx-autoconfig = pkgs-bundle.fx-autoconfig;
+        profilePath = ".mozilla/firefox/dev-edition-default";
+      in {
+        packages = with pkgs-bundle.unstable; [
+          (firefox-devedition.override {
+            extraPrefsFiles = [
+              # Enable "userChromeJS"
+              "${fx-autoconfig}/program/config.js"
+            ];
+          })
+        ];
+        # Load scripts and styles
+        file."${profilePath}/chrome/utils" = {
+          source = "${fx-autoconfig}/profile/chrome/utils";
+        };
+        # Small example
+        file."${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
+          source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
+        };
+        # TODO: Add my firefox scripts and styles
+      }
+    );
 
   };
 
