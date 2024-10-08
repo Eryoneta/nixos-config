@@ -64,10 +64,6 @@ inputs: flakePath: (
             architecture = host.system.architecture;
             package = inputs.agenix;
           })
-          # Inputs-As-Args
-          (flake-modules."inputs-as-args.nix".build {
-            inputs = inputs;
-          })
         ];
 
       in {

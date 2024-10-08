@@ -78,7 +78,7 @@
         settings = (config.programs.firefox.profiles."template-profile".settings // {
 
           # UI (User Interface)
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Can change UI with a css file
+          #"toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Can change UI with a css file
           "browser.toolbars.bookmarks.visibility" = "always"; # Always show bookmark-toolbar
           "browser.compactmode.show" = true; # Allows to use compact-view
           "browser.uidensity" = 1; # Use compact-view
