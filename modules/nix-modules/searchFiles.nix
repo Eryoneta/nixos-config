@@ -4,19 +4,32 @@ nix-lib: rec {
     - List files that matches all filters
       - "dirPath": A path to a directory
       - "withPrefix": A text prefix
-      - "withInFix": A text infix
+      - "withInfix": A text infix. Can be also a list of texts
       - "withSuffix": A text suffix
     - Is the same as "listFiles", but it also includes sub-directories!
   */
   #   
-  searchFiles = dirPath: withPrefix: withInFix: withSuffix: (
+  searchFiles = dirPath: withPrefix: withInfix: withSuffix: (
     let
 
       # HasPrefix: ("text" "pre-text.ext") -> true
       hasPrefix = value: (nix-lib.strings.hasPrefix withPrefix value);
 
       # HasInfix: ("pre" "pre-text") -> true
-      hasInfix = value: (nix-lib.strings.hasInfix withInFix value);
+      hasInfix = value: (
+        if (builtins.isString withInfix) then (
+          # HasInfix: ("pre" "pre-text") -> true
+          nix-lib.strings.hasInfix withInfix value
+        ) else if (builtins.isList withInfix) then (
+            # All: [ true true ] -> true
+            builtins.all (
+              infixValue: (
+                # HasInfix: ("pre" "pre-text") -> true
+                nix-lib.strings.hasInfix infixValue value
+              )
+            ) withInfix
+        ) else false
+      );
 
       # HasSuffix: (".ext" "text.ext") -> true
       hasSuffix = value: (nix-lib.strings.hasSuffix withSuffix value);
@@ -32,7 +45,7 @@ nix-lib: rec {
           if (directory.${value} == "directory") then (
             # [ "dirPath/subDir/file2.ext" ]
             # Recursive
-            searchFiles ("${dirPath}/${value}") withPrefix withInFix withSuffix
+            searchFiles ("${dirPath}/${value}") withPrefix withInfix withSuffix
           ) else (
             # [ "dirPath/file1.ext" ]
             if ((hasPrefix value) && (hasInfix value) && (hasSuffix value)) then (
