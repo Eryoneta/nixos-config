@@ -2,31 +2,51 @@
   config = {
 
     # Git: File versioning
-    programs.git = {
-      enable = mkDefault true;
-      package = mkDefault pkgs-bundle.stable.git;
-      userName = mkDefault "${user.name}";
-      userEmail = mkDefault "${user.username}@${user.host.hostname}";
-      extraConfig = {
-        init = {
-          defaultBranch = "main";
+    programs.git = (
+      let
+        package = pkgs-bundle.stable;
+      in {
+        enable = mkDefault true;
+        package = mkDefault package.git;
+        userName = mkDefault "${user.name}";
+        userEmail = mkDefault "${user.username}@${user.host.hostname}";
+        extraConfig = {
+          init = {
+            defaultBranch = "main";
+          };
+          merge = {
+            conflictstyle = "diff3"; # diff with Delta
+          };
         };
-      };
-      aliases = {
-        work = "checkout"; # "git work"
-      };
-      includes = [
-        {
-          path = "${config.xdg.configHome}/git/aliases/loglist";
-        }
-        {
-          path = "${config.xdg.configHome}/git/aliases/save";
-        }
-        {
-          path = "${config.xdg.configHome}/git/aliases/quicksave";
-        }
-      ];
-    };
+        aliases = {
+          work = "checkout"; # "git work"
+        };
+        includes = [
+          {
+            path = "${config.xdg.configHome}/git/aliases/loglist";
+          }
+          {
+            path = "${config.xdg.configHome}/git/aliases/save";
+          }
+          {
+            path = "${config.xdg.configHome}/git/aliases/quicksave";
+          }
+        ];
+
+        # Delta: Git diff highlighter
+        delta = {
+          enable = mkDefault true;
+          package = mkDefault package.delta;
+          options = mkDefault {
+            line-numbers = true; # Show numbers
+            side-by-side = true; # git diff shows changes side-by-side
+            #hyperlinks = true; # Clickable links
+            #hyperlinks-file-link-format = "vscode://file/{path}:{line}";
+          };
+        };
+
+      }
+    );
 
     # "git loglist"
     xdg.configFile."git/aliases/loglist" = {
