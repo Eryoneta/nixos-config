@@ -54,6 +54,9 @@ nix-lib: hm-pkgs: hm-lib: (
         # Check if a path exists
         pathExists = path: (builtins.pathExists path);
 
+        # Build a INI format from a set
+        toINI = content: (nix-lib.generators.toINI {} content);
+
       };
 
     };
