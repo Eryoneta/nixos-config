@@ -23,6 +23,11 @@
         DontCheckDefaultBrowser = true; # Do not check if the browser is the default
       };
 
+      # Messaging Hosts
+      nativeMessagingHosts = with pkgs-bundle.stable; [
+        kdePackages.plasma-browser-integration # Plasma Browser Integration: Integrate browsers into Plasma Desktop
+      ];
+
       # Template profile
       # This profile should carry a basic, reasonable configuration. Its a template for others
       profiles."template-profile" = {
@@ -33,6 +38,7 @@
         # Extensions
         extensions = with pkgs-bundle.firefox-addons; [
           ublock-origin # UBlock-Origin: Adblocker
+          plasma-integration # Plasma Integration: Integrates Plasma Desktop
         ];
 
         # Default Settings
@@ -67,6 +73,9 @@
       };
 
     };
+
+    # Plasma Browser Integration: Integrate browsers into Plasma Desktop
+    home.packages = with pkgs-bundle.stable; [ kdePackages.plasma-browser-integration ];
 
   };
 }
