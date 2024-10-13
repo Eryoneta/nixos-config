@@ -88,15 +88,21 @@
           }
         ];
 
-        # Theme: Powerlevel10k
         initExtra = (
-          let
+          # Powerlevel10k: Custom theme
+          (let
             p10kConfigPath = "${config.xdg.configHome}/zsh/.p10k.zsh";
           in ''
             # Powerlevel10k Theme
             source "${package.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
             test -f "${p10kConfigPath}" && source "${p10kConfigPath}"
-          ''
+          '')
+          +
+          # Any-Nix-Shell: "nix-shell", "nix run", and "nix develop" with ZSH instead of bash
+          (''
+            # Any-Nix-Shell
+            ${package.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
+          '')
         );
         
       };
