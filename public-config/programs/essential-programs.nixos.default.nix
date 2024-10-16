@@ -8,10 +8,11 @@
       ])
       ++
       (with stable; [
-        gparted # GParted: Manages partitions
-        fastfetch # FastFetch: Shows general system information
         home-manager # Home-Manager: Manages home configuration
+        fastfetch # FastFetch: Shows general system information
+        gparted # GParted: Manages partitions
         git # Git: Versioning
+        htop # HTop: Terminal-based process viewer
       ])
       ++
       (with unstable-fixed; [
