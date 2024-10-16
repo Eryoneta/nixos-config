@@ -1,20 +1,29 @@
 { config, config-domain, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = {
+
+  options = {
+    profile.programs.ssh = {
+      options.enabled = (mkBoolOption true);
+      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+    };
+  };
+
+  config = with config.profile.programs.ssh; {
 
     # SSH: Secure connection
     programs.ssh = {
-      enable = true; # Always enabled
-      package = pkgs-bundle.stable.openssh; # Stable
+      enable = options.enabled; # Always enabled
+      package = options.packageChannel.openssh; # Stable channel
     };
     services.ssh-agent.enable = false; # The system already starts the agent
 
-    # Adds GitHub's public keys
+    # Dotfiles: Adds GitHub's public keys
     home.file.".ssh/known_hosts" = mkDefault (with config-domain; {
-      enable = (config.programs.ssh.enable);
-      source = with outOfStore.public; (
-        mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
+      enable = options.enabled;
+      source = with public; (
+        "${dotfiles}/ssh/.ssh/known_hosts"
       );
     });
 
   };
+
 }

@@ -1,5 +1,5 @@
-{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
-  config = {
+{ config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.firefox; {
 
     # Firefox: Browser
     programs.firefox = {
@@ -55,5 +55,6 @@
       };
       
     };
+
   };
 }

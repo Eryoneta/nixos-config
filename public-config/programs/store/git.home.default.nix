@@ -1,56 +1,61 @@
-{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
-  config = {
+{ config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+
+  options = {
+    profile.programs.git = {
+      options.enabled = (mkBoolOption true);
+      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+    };
+  };
+
+  config = with config.profile.programs.git; {
 
     # Git: File versioning
-    programs.git = (
-      let
-        package = pkgs-bundle.stable;
-      in {
+    programs.git = {
+      enable = mkDefault options.enabled;
+      package = mkDefault options.packageChannel.git;
+      userName = mkDefault "${user.name}";
+      userEmail = mkDefault "${user.username}@${user.host.hostname}";
+      extraConfig = {
+        init = {
+          defaultBranch = "main";
+        };
+        merge = {
+          conflictstyle = "diff3"; # diff with Delta
+        };
+      };
+      aliases = {
+        work = "checkout"; # "git work"
+      };
+      includes = [
+        {
+          path = "${config.xdg.configHome}/git/aliases/loglist";
+        }
+        {
+          path = "${config.xdg.configHome}/git/aliases/save";
+        }
+        {
+          path = "${config.xdg.configHome}/git/aliases/quicksave";
+        }
+      ];
+
+      # Delta: Git diff highlighter
+      delta = {
         enable = mkDefault true;
-        package = mkDefault package.git;
-        userName = mkDefault "${user.name}";
-        userEmail = mkDefault "${user.username}@${user.host.hostname}";
-        extraConfig = {
-          init = {
-            defaultBranch = "main";
-          };
-          merge = {
-            conflictstyle = "diff3"; # diff with Delta
-          };
+        package = mkDefault options.packageChannel.delta;
+        options = mkDefault {
+          line-numbers = true; # Show numbers
+          side-by-side = true; # git diff shows changes side-by-side
+          #hyperlinks = true; # Clickable links
+          #hyperlinks-file-link-format = "vscode://file/{path}:{line}";
+          # TODO: Git.Delta: Check hyperlinks
         };
-        aliases = {
-          work = "checkout"; # "git work"
-        };
-        includes = [
-          {
-            path = "${config.xdg.configHome}/git/aliases/loglist";
-          }
-          {
-            path = "${config.xdg.configHome}/git/aliases/save";
-          }
-          {
-            path = "${config.xdg.configHome}/git/aliases/quicksave";
-          }
-        ];
+      };
 
-        # Delta: Git diff highlighter
-        delta = {
-          enable = mkDefault true;
-          package = mkDefault package.delta;
-          options = mkDefault {
-            line-numbers = true; # Show numbers
-            side-by-side = true; # git diff shows changes side-by-side
-            #hyperlinks = true; # Clickable links
-            #hyperlinks-file-link-format = "vscode://file/{path}:{line}";
-          };
-        };
+    };
 
-      }
-    );
-
-    # "git loglist"
+    # Dotfile: "git loglist"
     xdg.configFile."git/aliases/loglist" = {
-      enable = (config.programs.git.enable);
+      enable = options.enabled;
       text = ''
         [alias]
           # Basically 'git log --graph --oneline', but pretty
@@ -63,9 +68,9 @@
       '';
     };
 
-    # "git save"
+    # Dotfile: "git save"
     xdg.configFile."git/aliases/save" = {
-      enable = (config.programs.git.enable);
+      enable = options.enabled;
       text = ''
         [alias]
           # A shortcut for creating fast and simple commits
@@ -206,9 +211,9 @@
       '';
     };
 
-    # "git quicksave"
+    # Dotfile: "git quicksave"
     xdg.configFile."git/aliases/quicksave" = {
-      enable = (config.programs.git.enable);
+      enable = options.enabled;
       text = ''
         [alias]
           # Quick commit
@@ -225,4 +230,5 @@
     };
 
   };
+
 }
