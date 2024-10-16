@@ -1,13 +1,22 @@
-{ pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
-  config = {
+{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+
+  options = {
+    profile.programs.yakuake = {
+      options.enabled = (mkBoolOption true);
+      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+    };
+  };
+
+  config = with config.profile.programs.yakuake; {
 
     # Yakuake: Drop-down terminal
-    home = {
-      packages = with pkgs-bundle.stable; [ kdePackages.yakuake ];
-    };
+    home.packages = mkIf (options.enabled) (
+      with options.packageChannel; [ kdePackages.yakuake ]
+    );
 
+    # Dotfiles
     xdg.configFile."yakuakerc" = {
-      enable = (true);
+      enable = options.enabled;
       text = mkFunc.toINI {
         Dialogs = {
           FirstRun = false; # Do not show welcome-popup
@@ -27,21 +36,22 @@
       };
     };
     xdg.configFile."autostart/org.kde.yakuake.desktop" = { # Autostart
-      enable = (true);
+      enable = options.enabled;
       text = mkFunc.toINI {
         "Desktop Entry" = {
           Name = "Yakuake";
           Icon = "yakuake";
           Type = "Application";
           Exec = "yakuake";
-          Terminal = "false";
-          DBusActivatable = "true";
+          Terminal = false;
+          DBusActivatable = true;
           X-DBUS-ServiceName = "org.kde.yakuake";
           X-DBUS-StartupType = "Unique";
-          X-KDE-StartupNotify = "false";
+          X-KDE-StartupNotify = false;
         };
       };
     };
 
   };
+
 }

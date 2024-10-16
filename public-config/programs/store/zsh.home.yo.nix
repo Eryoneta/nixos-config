@@ -1,5 +1,5 @@
-{ ... }@args: with args.config-utils; {
-  config = {
+{ config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.zsh; {
 
     # ZSH: Shell
     programs.zsh = {

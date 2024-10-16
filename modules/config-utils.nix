@@ -48,6 +48,18 @@ nix-lib: hm-pkgs: hm-lib: (
         )
       );
 
+      # Creates a bool option for "options"
+      mkBoolOption = default: nix-lib.mkOption {
+        inherit default;
+        type = nix-lib.types.bool;
+      };
+
+      # Creates a package option for "options"
+      mkPackageOption = default: nix-lib.mkOption {
+        inherit default;
+        type = nix-lib.types.attrs;
+      };
+
       # Functions
       mkFunc = {
         

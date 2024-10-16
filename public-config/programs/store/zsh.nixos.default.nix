@@ -1,23 +1,34 @@
 { config, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = {
+
+  options = {
+    profile.programs.zsh = {
+      options.enabled = (mkBoolOption true);
+      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+    };
+  };
+
+  config = with config.profile.programs.zsh; {
 
     # ZSH: Shell
     programs.zsh = {
-      enable = mkDefault true;
-      #package = mkDefault pkgs-bundle.stable.zsh; # Option does not exist
+      enable = mkDefault options.enabled;
+      #package = mkDefault options.packageChannel.zsh; # Option does not exist
     };
-    users.defaultUserShell = ( # Cannot be "mkDefault" (Conflicts)
-      mkIf (config.programs.zsh.enable) (
-        pkgs-bundle.stable.zsh
+
+    # Default user shell
+    users.defaultUserShell = ( # Cannot be "mkDefault" (Conflicts with bash)
+      mkIf (options.enabled) (
+        options.packageChannel.zsh
       )
     );
 
     # Allows autocompletion for system packages
     environment.pathsToLink = (
-      mkIf (config.programs.zsh.enable) (
+      mkIf (options.enabled) (
         [ "/share/zsh" ]
       )
     );
 
   };
+
 }

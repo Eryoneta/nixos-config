@@ -1,5 +1,5 @@
-{ config, pkgs-bundle, user, ... }@args: with args.config-utils; {
-  config = {
+{ config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.git; {
 
     # Git: File versioning
     programs.git = {

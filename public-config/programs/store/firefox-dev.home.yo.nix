@@ -1,5 +1,13 @@
-{ config, pkgs-bundle, user, pkgs, ... }@args: with args.config-utils; {
-  config = {
+{ config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+
+  options = {
+    profile.programs.firefox-devedition = {
+      options.enabled = (mkBoolOption true);
+      options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
+    };
+  };
+
+  config = with config.profile.programs.firefox-devedition; {
 
     # Firefox Developer Edition: Browser
     # Can be used alonside regular "Firefox"
@@ -18,7 +26,7 @@
 
       # Personal profile
       # This profile is personal. Customization without limits!
-      profiles."dev-edition-default" = {
+      profiles."dev-edition-default" = mkIf (options.enabled) {
         # It NEEDS to be "dev-edition-default"!
         #   This way "firefox-devedition" doesn't complain about "missing profiles"
         #   If it doesn't find it, then it creates a new one, but it can't edit "profiles.ini", throws an error
@@ -279,23 +287,31 @@
         fx-autoconfig = pkgs-bundle.fx-autoconfig;
         profilePath = ".mozilla/firefox/dev-edition-default";
       in {
-        packages = with pkgs-bundle.unstable; [
-          (firefox-devedition.override {
-            extraPrefsFiles = [
-              # Enable "userChromeJS"
-              "${fx-autoconfig}/program/config.js"
-            ];
-          })
-        ];
-        # Load scripts and styles
+
+        # Firefox Developer Edition: Browser
+        packages = mkIf (options.enabled) (
+          with options.packageChannel; [
+            (firefox-devedition.override {
+              extraPrefsFiles = [
+                # Enable "userChromeJS"
+                "${fx-autoconfig}/program/config.js"
+              ];
+            })
+          ]
+        );
+
+        # Dotfile: Load scripts and styles
         file."${profilePath}/chrome/utils" = {
+          enable = options.enabled;
           source = "${fx-autoconfig}/profile/chrome/utils";
         };
-        # Small example
+        # Dotfile: Small example
         file."${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
+          enable = options.enabled;
           source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
         };
         # TODO: Add my firefox scripts and styles
+
       }
     );
 
