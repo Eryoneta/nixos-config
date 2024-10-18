@@ -8,8 +8,11 @@
 
   config = {
 
-    # Feature: Autologin
+    # Feature/Autologin
     services.displayManager.autoLogin.enable = true;
+
+    # Feature/AlterProfile: Keep only 2 generations
+    system.autoUpgrade.alterProfile.configurationLimit = 2;
 
     # Boot-Loader: No need for OS probing
     boot.loader.grub.useOSProber = false;

@@ -2,7 +2,7 @@
 
   options = {
     profile.programs.mpc-qt = {
-      options.enabled = (mkBoolOption true);
+      options.enabled = (mkBoolOption false);
       options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
     };
   };
