@@ -12,6 +12,7 @@
           #kdePackages.kwrite # KWrite: (Light) Text editor (Included with KDE Plasma)
           kdePackages.kate # Kate: (Light) Code editor
           keepassxc # KeePassXC: Password manager
+          yt-dlp # yt-dlp: YouTube downloader script
         ])
         ++
         (with unstable-fixed; [

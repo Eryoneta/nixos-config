@@ -9,6 +9,20 @@
 
   config = with config.profile.programs.mpv; {
 
+    home.packages = mkIf (options.enabled) (
+      with options.packageChannel; [
+
+        # Trash-Cli: Interface for Freedesktop.org Trash
+        # UOSC uses this to delete files(A menu option), moving them to the trash
+        trash-cli
+
+        # yt-dlp: YouTube downloader script
+        # MPV uses this to open online videos
+        yt-dlp
+
+      ]
+    );
+
     # MPV: Multimidia player
     programs.mpv = {
       enable = mkDefault options.enabled;
@@ -32,17 +46,36 @@
         mpvScripts.mpris # MPRIS: Protocol for media control(Ex.: Media start/pause)
         mpvScripts.thumbfast # Thumbafast: Previews in the trackbar
         #mpvScripts.mpv-notify-send # Notify-Send: Inform about the media
-        #mpvScripts.quality-menu # Quality-Menu: Menu for selecting ytdl video quality
       ];
 
     } // (
-      let 
+      let
+
+        # UOSC
+        uosc-flash-pause-indicator = "script-binding uosc/flash-pause-indicator"; # Flashes a big pause icon
+        uosc-flash-timeline = "script-binding uosc/flash-timeline"; # Flashes the timeline bar
+        uosc-flash-volume = "script-binding uosc/flash-volume"; # Flashes the volume bar
+        uosc-next = "script-binding uosc/next"; # Load the next file
+        uosc-prev = "script-binding uosc/prev"; # Load the previous file
+        uosc-open-file = "script-binding uosc/open-file"; # Open file menu
+        uosc-paste = "script-binding uosc/paste"; # Load file path/URL in the clipboard
+
+        # UI
+        osc-duration = "1000";
+
+        # Volume
         volumeStep = "5"; # Volume: 5%
+
+        # Seek
         seekStepSmall = "2"; # Seek: +-2s
         seekStepMedium = "10"; # Seek: +-10s
         seekStepBig = "20"; # Seek: +-20s
+
+        # Speed
         speeds = [ # All available speeds
-          "0.03125" "0.0625" "0.125" "0.25" "0.5" "0.75" "1" "1.25" "1.75" "2" "4" "8" "16" 
+          "0.03125" "0.0625" "0.125" "0.25" "0.5" "0.75"
+          "1"
+          "1.25" "1.75" "2" "4" "8" "16"
         ];
         speedMinBoundary = "0.03124"; # Smaller than the smallest speed, triggers the limit
         speedMaxBoundary = "16.00001"; # Bigger than the biggest speed, triggers the limit
@@ -51,23 +84,48 @@
           speeds
           [ speedMaxBoundary ]
         ]));
+
+        # Zoom
+        zoomStep = "0.05"; # Zoom: +-5%
+        moveStep = "0.01"; # Move screen: +-1%
+
+        # Rotation
+        rotationList = (builtins.toString [
+          "0" "90" "180" "270"
+        ]);
+
       in {
 
         # Configurations
+        # Doc: https://mpv.io/manual/stable
         config = {
 
           # Behaviour
           "keep-open" = "yes"; # Do not close when finished
+          "keep-open-pause" = "yes"; # Pause once the end is reached
           "loop-file" = "inf"; # Always loop videos
           "loop-playlist" = "no"; # Do not loop playlists
-          "volume-max" = 200; # Maximum volume: 200%
+          "volume-max" = 200; # Maximum volume in %
+          "stop-screensaver" = "yes"; # Do not sleep when playing video
+          "cursor-autohide" = osc-duration; # Time in ms before hiding the cursor
+          "drag-and-drop" = "auto"; # Drop to replace current video
+          "autocreate-playlist" = "filter"; # Create playlist with files from the same folder
+          "directory-filter-types" = "video,audio"; # Accept only videos and audios
+          "window-dragging" = "yes"; # Dragging moves the window
+
+          "vo" = "wlshm"; # Video output
+          # TODO: UOSC: Change to another "vo" later?
+
+          # URLs
+          "ytdl" = "yes"; # Uses "youtube-dl" or similars to open URLs
+          "ytdl_path" = "yt-dlp"; # Uses "yt-dlp" to open URLs
           
           # OSD (On-Screen Display)
-          "osd" = "yes"; # Messages on screen
+          "osc" = "yes"; # Controll on screen
           "osd-bar" = "no"; # Do not show volume/time bar
-          "osd-duration" = 1000; # Duration on screen
+          "osd-duration" = osc-duration; # Duration in ms on screen
           "osd-playing-msg" = "\${filename}"; # Display filename on start
-          "osd-playing-msg-duration" = 3000; # Duration of the start message
+          "osd-playing-msg-duration" = 3000; # Duration in ms of the start message
 
           # Screenshot
           "screenshot-format" = "png"; # Save screenshots as ".png"
@@ -85,6 +143,8 @@
 
         # Script configurations
         scriptOpts = {
+          # UOSC configuration
+          # Defaults: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf
           uosc = {
 
             # Progress bar (Expanded)
@@ -102,78 +162,65 @@
             "progress_line_width" = 10; # Width
 
             # Control bar
-  # A comma delimited list of controls above the timeline. Set to `never` to disable.
-  # Parameter spec: enclosed in `{}` means value, enclosed in `[]` means optional
-  # Full item syntax: `[<[!]{disposition1}[,[!]{dispositionN}]>]{element}[:{paramN}][#{badge}[>{limit}]][?{tooltip}]`
-  # Common properties:
-  #   `{icon}` - parameter used to specify an icon name (example: `face`)
-  #            - pick here: https://fonts.google.com/icons?icon.platform=web&icon.set=Material+Icons&icon.style=Rounded
-  # `{element}`s and their parameters:
-  #   `{shorthand}` - preconfigured shorthands:
-  #        `play-pause`, `menu`, `subtitles`, `audio`, `video`, `playlist`,
-  #        `chapters`, `editions`, `stream-quality`, `open-file`, `items`,
-  #        `next`, `prev`, `first`, `last`, `audio-device`, `fullscreen`,
-  #        `loop-playlist`, `loop-file`, `shuffle`
-  #   `speed[:{scale}]` - display speed slider, [{scale}] - factor of controls_size, default: 1.3
-  #   `command:{icon}:{command}` - button that executes a {command} when pressed
-  #   `toggle:{icon}:{prop}[@{owner}]` - button that toggles mpv property. shorthand for yes/no cycle below
-  #   `cycle:{default_icon}:{prop}[@{owner}]:{value1}[={icon1}][!]/{valueN}[={iconN}][!]`
-  #       - button that cycles mpv property between values, each optionally having different icon and active flag
-  #       - presence of `!` at the end will style the button as active
-  #       - `{owner}` is the name of a script that manages this property if any. Set to `uosc` to tap into uosc options.
-  #   `gap[:{scale}]` - display an empty gap
-  #       {scale} - factor of controls_size, default: 0.3
-  #   `space` - fills all available space between previous and next item, useful to align items to the right
-  #           - multiple spaces divide the available space among themselves, which can be used for centering
-  #   `button:{name}` - button whose state, look, and click action are managed by external script
-  # Item visibility control:
-  #   `<[!]{disposition1}[,[!]{dispositionN}]>` - optional prefix to control element's visibility
-  #   - `{disposition}` can be one of:
-  #     - `idle` - true if mpv is in idle mode (no file loaded)
-  #     - `image` - true if current file is a single image
-  #     - `audio` - true for audio only files
-  #     - `video` - true for files with a video track
-  #     - `has_many_video` - true for files with more than one video track
-  #     - `has_image` - true for files with a cover or other image track
-  #     - `has_audio` - true for files with an audio track
-  #     - `has_many_audio` - true for files with more than one audio track
-  #     - `has_sub` - true for files with an subtitle track
-  #     - `has_many_sub` - true for files with more than one subtitle track
-  #     - `has_many_edition` - true for files with more than one edition
-  #     - `has_chapter` - true for files with chapter list
-  #     - `stream` - true if current file is read from a stream
-  #     - `has_playlist` - true if current playlist has 2 or more items in it
-  #   - prefix with `!` to negate the required disposition
-  #   Examples:
-  #     - `<stream>stream-quality` - show stream quality button only for streams
-  #     - `<has_audio,!audio>audio` - show audio tracks button for all files that have
-  #                                   an audio track, but are not exclusively audio only files
-  # Place `#{badge}[>{limit}]` after the element params to give it a badge. Available badges:
-  #   `sub`, `audio`, `video` - track type counters
-  #   `{mpv_prop}` - any mpv prop that makes sense to you: https://mpv.io/manual/master/#property-list
-  #                - if prop value is an array it'll display its size
-  #   `>{limit}` will display the badge only if it's numerical value is above this threshold.
-  #   Example: `#audio>1`
-  # Place `?{tooltip}` after the element config to give it a tooltip.
-  # Example implementations:
-  #   menu = command:menu:script-binding uosc/menu-blurred?Menu
-  #   subtitles = command:subtitles:script-binding uosc/subtitles#sub?Subtitles
-  #   fullscreen = cycle:crop_free:fullscreen:no/yes=fullscreen_exit!?Fullscreen
-  #   loop-playlist = cycle:repeat:loop-playlist:no/inf!?Loop playlist
-  #   toggle:{icon}:{prop} = cycle:{icon}:{prop}:no/yes!
-            "controls" = "menu,gap,<has_many_sub>subtitles,<has_many_audio>audio,<has_many_video>video,<stream>stream-quality,gap,space,shuffle,loop-playlist,loop-file,gap,prev,items,next,gap,fullscreen";
+            # Doc: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf#L24-L82
+            "controls" = (builtins.concatStringsSep "," [
+              "menu" # UOSC menu button
+              "gap:0.5"
+              (builtins.concatStringsSep "" [ # Speed-up button
+                "cycle" # Type
+                ":rotate_left" # Icon
+                ":play-direction" # Property
+                ":forward=rotate_left" # Value 1 & Icon
+                "/backward=close" # Value 2 & Icon
+                "?Play backwards" # Tooltip
+              ])
+              "gap:0.5"
+              "loop-file" # Loop button
+              "gap"
+              "loop-playlist" # Loop playlist button
+              "shuffle" # Shuffle button
+              "gap"
+              "prev" # Playlist-previous button
+              "items" # Playlist menu button
+              "next" # Playlist-next button
+              "space"
+              (builtins.concatStringsSep "" [ # Speed-up button
+                "command" # Type
+                ":fast_rewind" # Icon
+                ":cycle-values !reverse speed ${speedsList}" # Command
+                "?Decrease speed" # Tooltip
+              ])
+              (builtins.concatStringsSep "" [ # Reset speed button
+                "command" # Type
+                ":speed" # Icon
+                ":set speed 1" # Command
+                "?Reset speed" # Tooltip
+              ])
+              (builtins.concatStringsSep "" [ # Speed-down button
+                "command" # Type
+                ":fast_forward" # Icon
+                ":cycle-values speed ${speedsList}" # Command
+                "?Increase speed" # Tooltip
+              ])
+              "space"
+              "<has_sub>subtitles" # Subtitle selector menu button
+              "<has_many_audio>audio" # Audio selector menu button
+              "<has_many_video>video" # Video selector menu button
+              "<stream>stream-quality" # Quality selector menu button
+              "gap"
+              "fullscreen" # Fullscreen button
+            ]);
             "controls_size" = 30; # Height
             "controls_margin" = 8; # Margin
             "controls_spacing" = 2; # Space between
-            "controls_persistency" = "paused, idle"; # When to not hide
-            # TODO: Config controls more
+            "controls_persistency" = "idle"; # When to not hide
 
             # Volume
-            "volume" = "right"; # Where to show
+            "volume" = "left"; # Where to show
             "volume_size" = 30; # Width
             "volume_border" = 1; # Border thickness
             "volume_step" = volumeStep; # Step in %, when scrolling
-            "volume_persistency" = "paused, idle"; # When to not hide
+            "volume_persistency" = ""; # When to not hide
 
             # Playback speed
             "speed_step" = 0; # Step in %, when scrolling
@@ -187,7 +234,7 @@
             "menu_type_to_search" = "no"; # Type anything to search options
 
             # Top bar
-            "top_bar" = "no-border"; # How to show
+            "top_bar" = "never"; # How to show
             "top_bar_size" = 30; # Height
             "top_bar_controls" = "right"; # Buttons position
             "top_bar_title" = "yes"; # Show title
@@ -203,37 +250,38 @@
             "autoload" = "yes"; # No playlist and file ends = Load next file in the directory
             "autoload_types" = "video,audio"; # What to autoload
             "shuffle" = "no"; # Shuffle
+            # "click_command"= "cycle pause;${uosc-flash-pause-indicator}"; # Command executed by mouse click
+            # "click_threshold" = 500; # Execute only for clicks shorter than this
 
             # Interface
             "scale" = 1; # UI scale
             "scale_fullscreen" = 1.3; # UI scale when fullscreen
             "font_scale" = 1; # Font scale
+            "font_bold" = "no"; # Use bold font
             "text_border" = 1.2; # Border of text and icons
             "border_radius" = 4; # Border radius of elements
-            "color" = ""; # Colors
-            "opacity" = ""; # Opacities
-            "refine" = ""; # Refinements
-            "animation_duration" = 100; # Animation duration in milliseconds
-
-  # Execute command for background clicks shorter than this number of milliseconds, 0 to disable
-  # Execution always waits for `input-doubleclick-time` to filter out double-clicks
-            "click_threshold" = 0;
-            "click_command"= "cycle pause; script-binding uosc/flash-pause-indicator";
-            # TODO: Understand this
-
-            "flash_duration" = 1000; # Flash duration of elements in milliseconds
-            "proximity_in" = 40; # Distance in pixels before the element is fully visible
-            "proximity_out" = 120; # Distance in pixels before the element is fully invisible
-            "font_bold" = "no"; # Use bold font
+            "autohide" = "no"; # Hide UI when mpv autohides the cursor
             "destination_time" = "time-remaining"; # How to show the remaining time
             "time_precision" = 3; # Timestamp precision after the second
             "buffered_time_threshold" = 120; # When streaming content, time in seconds before hiding the buffered parts(Ex. >60s)
-            "autohide" = "no"; # Hide UI when mpv autohides the cursor
+            "adjust_osd_margins" = "yes"; # Adjust margins
+            "color" = ""; # Colors
+            "opacity" = ""; # Opacities
+            "refine" = ""; # Refinements
 
-  # Can be: flash, static, manual (controlled by flash-pause-indicator and decide-pause-indicator commands)
-            "pause_indicator" = "flash"; # TODO: Understand
+            # Animations
+            "animation_duration" = 200; # Animation duration in ms
+            "proximity_in" = 40; # Distance in pixels before the element is fully visible
+            "proximity_out" = 120; # Distance in pixels before the element is fully invisible
+            "pause_indicator" = "static"; # How to animate the pause indicator
+            "flash_duration" = osc-duration; # Duration in ms of the flash
 
+            # Extras
             "stream_quality_options" = "1440,1080,720,480,360,240"; # Options offered when streaming
+            "chapter_ranges" = "intros:30abf964,outros:30abf964,ads:c54e4e80"; # Colors for each chapter type (RRGGBBAA)
+            "chapter_range_patterns" = ""; # Lua patterns to identify chapters
+            "languages" = "slang,en"; # Prority of languages of the UI
+            "disable_elements" = ""; # Elements to disable
 
             # Files
             "video_types" = "3g2,3gp,asf,avi,f4v,flv,h264,h265,m2ts,m4v,mkv,mov,mp4,mp4v,mpeg,mpg,ogm,ogv,rm,rmvb,ts,vob,webm,wmv,y4m";
@@ -243,34 +291,7 @@
             "playlist_types" = "m3u,m3u8,pls,url,cue";
             "default_directory" = "~/"; # Default open-file menu directory
             "show_hidden_files" = "yes"; # Show hidden files
-
-  # Move files to trash (recycle bin) when deleting files. Dependencies:
-  # - Linux: `sudo apt install trash-cli`
-  # - MacOS: `brew install trash`
-            "use_trash" = "no";
-            # TODO: Check trash-cli
-
-  # Adjusted osd margins based on the visibility of UI elements
-            "adjust_osd_margins" = "yes"; #TODO: Understand
-
-  # Adds chapter range indicators to some common chapter types.
-  # Additionally to displaying the start of the chapter as a diamond icon on top of the timeline,
-  # the portion of the timeline of that chapter range is also colored based on the config below.
-  #
-  # The syntax is a comma-delimited list of `{type}:{color}` pairs, where:
-  # `{type}` => range type. Currently supported ones are:
-  #   - `openings`, `endings` => anime openings/endings
-  #   - `intros`, `outros` => video intros/outros
-  #   - `ads` => segments created by sponsor-block software like https://github.com/po5/mpv_sponsorblock
-  # `{color}` => an RGB(A) HEX color code (`rrggbb`, or `rrggbbaa`)
-  #
-  # To exclude marking any of the range types, simply remove them from the list.
-            "chapter_ranges" = "openings:30abf964,endings:30abf964,ads:c54e4e80"; # Markings for types of chapters
-            # TODO: Check
-
-            "chapter_range_patterns" = ""; # Lua patterns to identify chapters
-            "languages" = "slang,en"; # Prority of languages of the UI
-            "disable_elements" = ""; # Elements to disable
+            "use_trash" = "yes"; # Uses "trash-cli" to "delete files"
 
           };
         };
@@ -284,24 +305,26 @@
           };
           "max_speed_limit" = {
             "profile-desc" = "Limits the maximum speed";
-            "profile-cond" = "speed => ${speedMaxBoundary}"; # If the boundary is reached
+            "profile-cond" = "speed >= ${speedMaxBoundary}"; # If the boundary is reached
             "speed" = (lib.lists.last speeds); # Limit the speed to a maximum
           };
         };
 
         # Shortcuts
+        # Doc: https://mpv.io/manual/stable/#command-interface
+        # Defaults: https://github.com/mpv-player/mpv/blob/master/etc/input.conf
         # "mpv --input-keylist" lists all special keys!
         # "mpv --input-test --force-window --idle" shows all actions for a given input!
         bindings = {
 
           # Basic
-          "MBTN_LEFT" = "cycle pause"; # "mouse_left" = Play/Pause
-          "SPACE" = "cycle pause"; # "space" = Play/Pause
-          "PLAY" = "cycle pause"; # "media_play" = Play/Pause
-          "PAUSE" = "cycle pause"; # "media_play" = Play/Pause
-          "PLAYPAUSE" = "cycle pause"; # "media_playpause" = Play/Pause
-          "PLAYONLY" = "set pause no"; # "media_playonly" = Play
-          "PAUSEONLY" = "set pause yes"; # "media_playonly" = Pause
+          "MBTN_LEFT" = "cycle pause;${uosc-flash-pause-indicator}"; # "mouse_left" = Play/Pause
+          "SPACE" = "cycle pause;${uosc-flash-pause-indicator}"; # "space" = Play/Pause
+          "PLAY" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
+          "PAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
+          "PLAYPAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_playpause" = Play/Pause
+          "PLAYONLY" = "set pause no;${uosc-flash-pause-indicator}"; # "media_playonly" = Play
+          "PAUSEONLY" = "set pause yes;${uosc-flash-pause-indicator}"; # "media_playonly" = Pause
 
           #"MBTN_RIGHT" = "context-menu"; # "mouse_right" = Menu # TODO: Create menu?
 
@@ -316,71 +339,101 @@
           "CLOSE_WIN" = "quit"; # "close window" = Exit
 
           # Seek
-          "RIGHT" = "seek ${seekStepSmall}"; # "right" = Go forward (Small)
-          "LEFT" = "seek -${seekStepSmall}"; # "left" = Go back (Small)
+          "RIGHT" = "seek ${seekStepSmall};${uosc-flash-timeline}"; # "right" = Go forward (Small)
+          "LEFT" = "seek -${seekStepSmall};${uosc-flash-timeline}"; # "left" = Go back (Small)
 
-          "Ctrl+RIGHT" = "seek ${seekStepMedium}"; # "ctrl+right" = Go forward (Medium)
-          "FORWARD" = "seek ${seekStepMedium}"; # "media_forward" = Go forward (Medium)
-          "Ctrl+LEFT" = "seek -${seekStepMedium}"; # "ctrl+left" = Go back (Medium)
-          "REWIND" = "seek -${seekStepMedium}"; # "media_rewind" = Go back (Medium)
+          "Ctrl+RIGHT" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Medium)
+          "FORWARD" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "media_forward" = Go forward (Medium)
+          "Ctrl+LEFT" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Medium)
+          "REWIND" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "media_rewind" = Go back (Medium)
 
-          "Ctrl+Shift+RIGHT" = "seek ${seekStepBig}"; # "ctrl+right" = Go forward (Big)
-          "Ctrl+Shift+LEFT" = "seek -${seekStepBig}"; # "ctrl+left" = Go back (Big)
+          "Ctrl+Shift+RIGHT" = "seek ${seekStepBig};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Big)
+          "Ctrl+Shift+LEFT" = "seek -${seekStepBig};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Big)
 
           "." = "frame-step"; # "." = Seek +1 frame and pause
           "," = "frame-back-step"; # "." = Seek -1 frame and pause
 
-          "HOME" = "seek 0 absolute"; # "home" = Start of video
+          "HOME" = "seek 0 absolute-percent;${uosc-flash-timeline}"; # "home" = Start of video
+          "END" = "seek 100 absolute-percent;${uosc-flash-timeline}"; # "end" = End of video
+
+          # Volume
+          "m" = "cycle mute;${uosc-flash-volume}"; # "m" = Mute/Unmute
+          "MUTE" = "cycle mute;${uosc-flash-volume}"; # "media_mute" = Mute/Unmute
+
+          "WHEEL_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "wheel_up" = Increase volume
+          "UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "up" = Increase volume
+          "VOLUME_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "media_volume_up" = Increase volume
+
+          "WHEEL_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "wheel_down" = Decrease volume
+          "DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "down" = Decrease volume
+          "VOLUME_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "media_volume_down" = Decrease volume
+
+          # Audios
+          "a" = "cycle audio up"; # "a" = Next audio
+          "Shift+a" = "cycle audio down"; # "shift+a" = Previous audio
+
+          # Subtitles
+          "s" = "cycle sub up"; # "a" = Next subtitle
+          "Shift+s" = "cycle sub down"; # "shift+s" = Previous subtitle
+          "Ctrl+s" = "cycle sub-visibility"; # "ctrl+s" = Disable/Enable subtitle
+
+          # Playlist
+          "NEXT" = "${uosc-next}"; # "media_next" = Next on the playlist
+          "PGDWN" = "${uosc-next}"; # "page_down" = Next on the playlist
+
+          "PREV" = "${uosc-prev}"; # "media_prev" = Previous on the playlist
+          "PGUP" = "${uosc-prev}"; # "page_up" = Next on the playlist
 
           # Playback speed
           "Ctrl+UP" = "cycle-values speed ${speedsList}"; # "ctrl+up" = Increase speed
           "Ctrl+DOWN" = "cycle-values !reverse speed ${speedsList}"; # "ctrl+down" = Decrease speed
 
+          # Zoom
+          "Alt+f" = "add video-zoom ${zoomStep}"; # "ctrl+f" = Zoom
+          "Shift+f" = "add video-zoom -${zoomStep}"; # "shift+f" = UnZoom
+          "Alt+Shift+f" = "set video-zoom 0;set video-pan-x 0;set video-pan-y 0"; # "ctrl+shift+f" = Reset zoom and offsets
+
+          "Alt+a" = "add video-pan-x ${moveStep}"; # "alt+a" = Move left
+          "Alt+d" = "add video-pan-x -${moveStep}"; # "alt+d" = Move right
+          "Alt+w" = "add video-pan-y ${moveStep}"; # "alt+w" = Move up
+          "Alt+s" = "add video-pan-y -${moveStep}"; # "alt+s" = Move down
+
+          # Rotate
+          "Ctrl+r" = "cycle-values video-rotate ${rotationList}"; # "ctrl+r" = Rotate video clockwise
+          "Shift+r" = "cycle-values !reverse video-rotate ${rotationList}"; # "shift+r" = Rotate video anti-clockwise
+          "Ctrl+Shift+r" = "set video-rotate 0"; # "ctrl+shift+r" = Reset rotation
+
           # After end
-          #"Ctrl+Alt+s" = ""; # "ctrl+alt+s" = Suspend after video end
-          #"Ctrl+Alt+h" = ""; # "ctrl+alt+h" = Hibernate after video end
-          #"Ctrl+Alt+d" = ""; # "ctrl+alt+d" = Shutdown after video end
-          # TODO: Shutdown after video end
-          # "Ctrl+Alt+d" = ''
-          #   run "${pkgs.bash}/bin/sh" "-c" "$MPV_AFTER_SHUTDOWN=true"
-          # '';
+          "Ctrl+Alt+d" = ''
+            run "${pkgs.bash}/bin/sh" "-c" "systemctl shutdown";show-text "After playing: Shutdown"
+          ''; # "ctrl+alt+d" = Shutdown after video end
+          "Ctrl+Alt+s" = ''
+            run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend";show-text "After playing: Suspend"
+          ''; # "ctrl+alt+s" = Suspend after video end
+          "Ctrl+Alt+h" = ''
+            run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate";show-text "After playing: Hibernate"
+          ''; # "ctrl+alt+h" = Hibernate after video end
+          # TODO: Make it work at the end, somehow...
           # "shutdown" = ""; # TODO: Act by event?
 
-          # Volume
-          "m" = "cycle mute"; # "m" = Mute/Unmute
-          "MUTE" = "cycle mute"; # "media_mute" = Mute/Unmute
-
-          "WHEEL_UP" = "add volume ${volumeStep}"; # "wheel_up" = Increase volume
-          "UP" = "add volume ${volumeStep}"; # "up" = Increase volume
-          "VOLUME_UP" = "add volume ${volumeStep}"; # "media_volume_up" = Increase volume
-
-          "WHEEL_DOWN" = "add volume -${volumeStep}"; # "wheel_down" = Decrease volume
-          "DOWN" = "add volume -${volumeStep}"; # "down" = Decrease volume
-          "VOLUME_DOWN" = "add volume -${volumeStep}"; # "media_volume_down" = Decrease volume
-
-          # Audios
-          "a" = "cycle audio up"; # "a" = Next audio
-          "A" = "cycle audio down"; # "shift+a" = Previous audio
-
-          # Subtitles
-          "s" = "cycle sub up"; # "a" = Next subtitle
-          "S" = "cycle sub down"; # "shift+s" = Previous subtitle
-          "Ctrl+s" = "cycle sub-visibility"; # "ctrl+s" = Disable/Enable subtitle
-
-          # Playlist
-          "NEXT" = "playlist-next"; # "media_next" = Next on the playlist
-          "PGUP" = "playlist-next"; # "page_up" = Next on the playlist
-
-          "PREV" = "playlist-prev"; # "media_prev" = Previous on the playlist
-          "PGDOWN" = "playlist-prev"; # "page_down" = Next on the playlist
-
-          # Extras
+          # Loop
           "r" = "cycle-values loop-file inf no"; # "r" = Loop/Do nothing
-          "p" = "cycle ontop"; # "p" = Toggle pin-on-top # TODO: Broken. Check if its working later
+
+          # Reverse
+          "Alt+r" = "cycle-values play-direction forward backward;${uosc-flash-timeline}"; # "alt+r" = Reverse video
+
+          # Pin
+          "p" = "cycle ontop"; # "p" = Toggle pin-on-top # TODO: Broken. Check if is working later
+
+          # Screenshot
           "F5" = "screenshot video"; # "f5" = Screenshot without subtitles
-          "Ctrl+r" = "cycle-values video-rotate 90 180 270 0"; # "ctrl+r" = Rotate video clockwise
-          #"Ctrl+f" = ""; # "ctrl+f" = Zoom # TODO: Zoom
+
+          # Info
           "i" = "script-binding stats/display-stats-toggle"; # "i" = Toggle info on screen
+
+          # File
+          "Ctrl+o" = "${uosc-open-file}"; # "ctrl+o" = Open UOSC file menu
+          "Ctrl+v" = "${uosc-paste}";
 
         };
 

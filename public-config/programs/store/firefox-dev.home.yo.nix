@@ -57,18 +57,18 @@
             "NixOS Wiki" = {
               urls = [
                 {
-                  template = "https://wiki.nixos.org/index.php?search={searchTerms}";
+                  template = "https://nixos.wiki/index.php?search={searchTerms}";
                 }
               ];
-              iconUpdateURL = "https://wiki.nixos.org/favicon.png";
+              iconUpdateURL = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # Every day
               definedAlias = [ "@nw" ];
             };
           };
-          default = "Google"; # For now
+          default = "DuckDuckGo"; # Is more reliable than Google
           order = [
-            "Google" # TODO: Change?
             "DuckDuckGo"
+            "Google"
           ];
         };
 
