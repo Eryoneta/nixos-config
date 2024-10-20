@@ -2,7 +2,7 @@
 
   options = {
     profile.programs.mpc-qt = {
-      options.enabled = (mkBoolOption false);
+      options.enabled = (mkBoolOption false); # DISABLED (Replaced by MPV)
       options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
     };
   };
