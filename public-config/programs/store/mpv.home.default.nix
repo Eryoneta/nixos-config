@@ -20,6 +20,10 @@
         # MPV uses this to open online videos
         yt-dlp
 
+        # xclip: Simple clipboard manager
+        # MPV uses this to copy a file path
+        xclip
+
       ]
     );
 
@@ -57,6 +61,10 @@
         uosc-flash-volume = "script-binding uosc/flash-volume"; # Flashes the volume bar
         uosc-next = "script-binding uosc/next"; # Load the next file
         uosc-prev = "script-binding uosc/prev"; # Load the previous file
+        uosc-open-menu = "script-binding uosc/menu-blurred"; # Open menu
+        uosc-open-playlist = "script-binding uosc/playlist"; # Open playlist
+        uosc-open-subtitles = "script-binding uosc/subtitles"; # Open subtitles
+        uosc-open-audio = "script-binding uosc/audio"; # Open audios
         uosc-open-file = "script-binding uosc/open-file"; # Open file menu
         uosc-paste = "script-binding uosc/paste"; # Load file path/URL in the clipboard
 
@@ -326,6 +334,7 @@
           "PLAYONLY" = "set pause no;${uosc-flash-pause-indicator}"; # "media_playonly" = Play
           "PAUSEONLY" = "set pause yes;${uosc-flash-pause-indicator}"; # "media_playonly" = Pause
 
+          "MBTN_RIGHT" = "${uosc-open-menu}"; # "mouse_right" = Open menu
           #"MBTN_RIGHT" = "context-menu"; # "mouse_right" = Menu # TODO: Create menu?
 
           "MBTN_LEFT_DBL" = "cycle fullscreen"; # "mouse_left x2" = Toggle fullscreen
@@ -369,15 +378,19 @@
           "VOLUME_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "media_volume_down" = Decrease volume
 
           # Audios
+          "Ctrl+Shift+a" = "${uosc-open-audio}"; # "ctrl+shift+a" = Open audios menu
           "a" = "cycle audio up"; # "a" = Next audio
           "Shift+a" = "cycle audio down"; # "shift+a" = Previous audio
 
           # Subtitles
+          "Ctrl+Shift+s" = "${uosc-open-subtitles}"; # "ctrl+shift+s" = Open subtitles menu
           "s" = "cycle sub up"; # "a" = Next subtitle
           "Shift+s" = "cycle sub down"; # "shift+s" = Previous subtitle
           "Ctrl+s" = "cycle sub-visibility"; # "ctrl+s" = Disable/Enable subtitle
 
           # Playlist
+          "l" = "${uosc-open-playlist}"; # "l" = Open playlist menu
+
           "NEXT" = "${uosc-next}"; # "media_next" = Next on the playlist
           "PGDWN" = "${uosc-next}"; # "page_down" = Next on the playlist
 
@@ -387,6 +400,7 @@
           # Playback speed
           "Ctrl+UP" = "cycle-values speed ${speedsList}"; # "ctrl+up" = Increase speed
           "Ctrl+DOWN" = "cycle-values !reverse speed ${speedsList}"; # "ctrl+down" = Decrease speed
+          "Ctrl+0" = "set speed 1"; # "ctrl+0" = Reset speed
 
           # Zoom
           "Alt+f" = "add video-zoom ${zoomStep}"; # "ctrl+f" = Zoom
@@ -404,8 +418,10 @@
           "Ctrl+Shift+r" = "set video-rotate 0"; # "ctrl+shift+r" = Reset rotation
 
           # After end
+          #"t" = ""; # "t" = Exit/Do nothing after video end
+          #"g" = ""; # "g" = Play next/Do nothing after video end
           "Ctrl+Alt+d" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl shutdown";show-text "After playing: Shutdown"
+            run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff";show-text "After playing: Shutdown"
           ''; # "ctrl+alt+d" = Shutdown after video end
           "Ctrl+Alt+s" = ''
             run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend";show-text "After playing: Suspend"
@@ -433,7 +449,13 @@
 
           # File
           "Ctrl+o" = "${uosc-open-file}"; # "ctrl+o" = Open UOSC file menu
-          "Ctrl+v" = "${uosc-paste}";
+          "Ctrl+c" = ''
+            run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard";show-text "Copied File Path to Clipboard";
+          ''; # "ctrl+c" = Copy file path
+          "Ctrl+v" = "${uosc-paste}"; # "ctrl+v" = Paste file path to play
+
+          # Menu
+          "o" = "${uosc-open-menu}"; # "o" = Open menu
 
         };
 
