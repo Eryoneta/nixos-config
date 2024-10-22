@@ -210,8 +210,9 @@
           "browser.urlbar.trimHttps" = false; # Do not trim "https://"
           "browser.urlbar.autoFill" = false; # Do not auto-complete urls
           "browser.urlbar.quicksuggest.enabled" = false; # Do not suggest stuff
-          "browser.search.suggest.enabled" = false; # Do not suggest search stuff
           "browser.urlbar.suggest.searches" = false; # Do not suggest searches
+          "browser.search.suggest.enabled" = false; # Do not suggest search stuff
+          "browser.search.hiddenOneOffs" = "Yahoo,Bing,Amazon.com,eBay"; # Do not suggest these search engines
           # Unwanted stuff
           "extensions.pocket.enabled" = false; # Disable "Pocket"
           "browser.discovery.enabled" = false; # Do not recommend extensions
