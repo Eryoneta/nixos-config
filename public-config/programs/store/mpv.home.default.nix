@@ -54,6 +54,7 @@
 
     } // (
       let
+        joinStr = str: list: (builtins.concatStringsSep str list);
 
         # UOSC
         uosc-flash-pause-indicator = "script-binding uosc/flash-pause-indicator"; # Flashes a big pause icon
@@ -171,10 +172,10 @@
 
             # Control bar
             # Doc: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf#L24-L82
-            "controls" = (builtins.concatStringsSep "," [
+            "controls" = (joinStr "," [
               "menu" # UOSC menu button
               "gap:0.5"
-              (builtins.concatStringsSep "" [ # Speed-up button
+              (joinStr "" [ # Speed-up button
                 "cycle" # Type
                 ":rotate_left" # Icon
                 ":play-direction" # Property
@@ -192,19 +193,19 @@
               "items" # Playlist menu button
               "next" # Playlist-next button
               "space"
-              (builtins.concatStringsSep "" [ # Speed-up button
+              (joinStr "" [ # Speed-up button
                 "command" # Type
                 ":fast_rewind" # Icon
                 ":cycle-values !reverse speed ${speedsList}" # Command
                 "?Decrease speed" # Tooltip
               ])
-              (builtins.concatStringsSep "" [ # Reset speed button
+              (joinStr "" [ # Reset speed button
                 "command" # Type
                 ":speed" # Icon
                 ":set speed 1" # Command
                 "?Reset speed" # Tooltip
               ])
-              (builtins.concatStringsSep "" [ # Speed-down button
+              (joinStr "" [ # Speed-down button
                 "command" # Type
                 ":fast_forward" # Icon
                 ":cycle-values speed ${speedsList}" # Command
@@ -325,137 +326,333 @@
         # "mpv --input-test --force-window --idle" shows all actions for a given input!
         bindings = {
 
-          # Basic
-          "MBTN_LEFT" = "cycle pause;${uosc-flash-pause-indicator}"; # "mouse_left" = Play/Pause
-          "SPACE" = "cycle pause;${uosc-flash-pause-indicator}"; # "space" = Play/Pause
-          "PLAY" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
-          "PAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
-          "PLAYPAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_playpause" = Play/Pause
-          "PLAYONLY" = "set pause no;${uosc-flash-pause-indicator}"; # "media_playonly" = Play
-          "PAUSEONLY" = "set pause yes;${uosc-flash-pause-indicator}"; # "media_playonly" = Pause
+          # Play/Pause
+          "MBTN_LEFT" = (joinStr ";" [ # "mouse_left" = Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          "SPACE" = (joinStr ";" [ # "space" = Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          "PLAY" = (joinStr ";" [ # "media_play" = Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          "PAUSE" = (joinStr ";" [ # "media_pause" = Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          "PLAYPAUSE" = (joinStr ";" [ # "media_playpause" = Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          "PLAYONLY" = (joinStr ";" [ # "media_playonly" = Play
+            "set pause no"
+            uosc-flash-pause-indicator
+          ]);
+          "PAUSEONLY" = (joinStr ";" [ # "media_pauseonly" = Pause
+            "set pause yes"
+            uosc-flash-pause-indicator
+          ]);
+          
+          # Menu
+          "MBTN_RIGHT" = (joinStr ";" [ # "mouse_right" = Open menu
+            uosc-open-menu
+          ]);
+          # "MBTN_RIGHT" = (joinStr ";" [ # "mouse_right" = Menu
+          #   context-menu
+          # ]); # TODO: Create menu?
+          "o" = (joinStr ";" [ # "o" = Open menu
+            uosc-open-menu
+          ]);
 
-          "MBTN_RIGHT" = "${uosc-open-menu}"; # "mouse_right" = Open menu
-          #"MBTN_RIGHT" = "context-menu"; # "mouse_right" = Menu # TODO: Create menu?
+          # Fullscreen
+          "MBTN_LEFT_DBL" = (joinStr ";" [ # "mouse_left_x2" = Toggle fullscreen
+            "cycle fullscreen"
+          ]);
+          "ENTER" = (joinStr ";" [ # "enter" = Toggle fullscreen
+            "cycle fullscreen"
+          ]);
+          "ESC" = (joinStr ";" [ # "esc" = Exit fullscreen
+            "set fullscreen no"
+          ]);
 
-          "MBTN_LEFT_DBL" = "cycle fullscreen"; # "mouse_left x2" = Toggle fullscreen
-          "ENTER" = "cycle fullscreen"; # "enter" = Toggle fullscreen
-          "ESC" = "set fullscreen no"; # "esc" = Exit fullscreen
-
-          "Shift+ESC" = "quit"; # "shift+esc" = Exit
-          "MBTN_MID" = "quit"; # "mouse_middle" = Exit
-          "STOP" = "quit"; # "media_stop" = Exit
-          "POWER" = "quit"; # "power" = Exit
-          "CLOSE_WIN" = "quit"; # "close window" = Exit
+          # Exit
+          "Shift+ESC" = (joinStr ";" [ # "shift+esc" = Exit
+            "quit"
+          ]);
+          "MBTN_MID" = (joinStr ";" [ # "mouse_middle" = Exit
+            "quit"
+          ]);
+          "STOP" = (joinStr ";" [ # "media_stop" = Exit
+            "quit"
+          ]);
+          "POWER" = (joinStr ";" [ # "power" = Exit
+            "quit"
+          ]);
+          "CLOSE_WIN" = (joinStr ";" [ # "close-window" = Exit
+            "quit"
+          ]);
 
           # Seek
-          "RIGHT" = "seek ${seekStepSmall};${uosc-flash-timeline}"; # "right" = Go forward (Small)
-          "LEFT" = "seek -${seekStepSmall};${uosc-flash-timeline}"; # "left" = Go back (Small)
-
-          "Ctrl+RIGHT" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Medium)
-          "FORWARD" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "media_forward" = Go forward (Medium)
-          "Ctrl+LEFT" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Medium)
-          "REWIND" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "media_rewind" = Go back (Medium)
-
-          "Ctrl+Shift+RIGHT" = "seek ${seekStepBig};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Big)
-          "Ctrl+Shift+LEFT" = "seek -${seekStepBig};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Big)
-
-          "." = "frame-step"; # "." = Seek +1 frame and pause
-          "," = "frame-back-step"; # "." = Seek -1 frame and pause
-
-          "HOME" = "seek 0 absolute-percent;${uosc-flash-timeline}"; # "home" = Start of video
-          "END" = "seek 100 absolute-percent;${uosc-flash-timeline}"; # "end" = End of video
+          "RIGHT" = (joinStr ";" [ # "right" = Go forward (Small)
+            "seek ${seekStepSmall}"
+            uosc-flash-timeline
+          ]);
+          "LEFT" = (joinStr ";" [ # "left" = Go back (Small)
+            "seek -${seekStepSmall}"
+            uosc-flash-timeline
+          ]);
+          "Ctrl+RIGHT" = (joinStr ";" [ # "ctrl+right" = Go forward (Medium)
+            "seek ${seekStepMedium}"
+            uosc-flash-timeline
+          ]);
+          "Ctrl+LEFT" = (joinStr ";" [ # "ctrl+left" = Go back (Medium)
+            "seek -${seekStepMedium}"
+            uosc-flash-timeline
+          ]);
+          "FORWARD" = (joinStr ";" [ # "media_forward" = Go forward (Medium)
+            "seek ${seekStepMedium}"
+            uosc-flash-timeline
+          ]);
+          "REWIND" = (joinStr ";" [ # "media_rewind" = Go back (Medium)
+            "seek -${seekStepMedium}"
+            uosc-flash-timeline
+          ]);
+          "Ctrl+Shift+RIGHT" = (joinStr ";" [ # "ctrl+shift+right" = Go forward (Big)
+            "seek ${seekStepBig}"
+            uosc-flash-timeline
+          ]);
+          "Ctrl+Shift+LEFT" = (joinStr ";" [ # "ctrl+shift+left" = Go back (Big)
+            "seek -${seekStepBig}"
+            uosc-flash-timeline
+          ]);
+          "." = (joinStr ";" [ # "." = Seek +1 frame and pause
+            "frame-step"
+            ''show-text "Step +1 frame"''
+          ]);
+          "," = (joinStr ";" [ # "," = Seek -1 frame and pause
+            "frame-back-step"
+            ''show-text "Step -1 frame"''
+          ]);
+          "HOME" = (joinStr ";" [ # "home" = Start of video
+            "seek 0 absolute-percent"
+            uosc-flash-timeline
+          ]);
+          "END" = (joinStr ";" [ # "end" = End of video
+            "seek 100 absolute-percent"
+            uosc-flash-timeline
+          ]);
 
           # Volume
-          "m" = "cycle mute;${uosc-flash-volume}"; # "m" = Mute/Unmute
-          "MUTE" = "cycle mute;${uosc-flash-volume}"; # "media_mute" = Mute/Unmute
-
-          "WHEEL_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "wheel_up" = Increase volume
-          "UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "up" = Increase volume
-          "VOLUME_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "media_volume_up" = Increase volume
-
-          "WHEEL_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "wheel_down" = Decrease volume
-          "DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "down" = Decrease volume
-          "VOLUME_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "media_volume_down" = Decrease volume
+          "m" = (joinStr ";" [ # "m" = Mute/Unmute
+            "cycle mute"
+            uosc-flash-volume
+          ]);
+          "MUTE" = (joinStr ";" [ # "media_mute" = Mute/Unmute
+            "cycle mute"
+            uosc-flash-volume
+          ]);
+          "WHEEL_UP" = (joinStr ";" [ # "wheel_up" = Increase volume
+            "add volume ${volumeStep}"
+            uosc-flash-volume
+          ]);
+          "WHEEL_DOWN" = (joinStr ";" [ # "wheel_down" = Decrease volume
+            "add volume -${volumeStep}"
+            uosc-flash-volume
+          ]);
+          "UP" = (joinStr ";" [ # "up" = Increase volume
+            "add volume ${volumeStep}"
+            uosc-flash-volume
+          ]);
+          "DOWN" = (joinStr ";" [ # "down" = Decrease volume
+            "add volume -${volumeStep}"
+            uosc-flash-volume
+          ]);
+          "VOLUME_UP" = (joinStr ";" [ # "media_volume_up" = Increase volume
+            "add volume ${volumeStep}"
+            uosc-flash-volume
+          ]);
+          "VOLUME_DOWN" = (joinStr ";" [ # "media_volume_down" = Decrease volume
+            "add volume -${volumeStep}"
+            uosc-flash-volume
+          ]);
 
           # Audios
-          "Ctrl+Shift+a" = "${uosc-open-audio}"; # "ctrl+shift+a" = Open audios menu
-          "a" = "cycle audio up"; # "a" = Next audio
-          "Shift+a" = "cycle audio down"; # "shift+a" = Previous audio
+          "Ctrl+Shift+a" = (joinStr ";" [ # "ctrl+shift+a" = Open audios menu
+            uosc-open-audio
+          ]);
+          "a" = (joinStr ";" [ # "a" = Next audio
+            "cycle audio up"
+            ''show-text ""''
+          ]);
+          "Shift+a" = (joinStr ";" [ # "shift+a" = Previous audio
+            "cycle audio down"
+            ''show-text ""''
+          ]);
 
           # Subtitles
-          "Ctrl+Shift+s" = "${uosc-open-subtitles}"; # "ctrl+shift+s" = Open subtitles menu
-          "s" = "cycle sub up"; # "a" = Next subtitle
-          "Shift+s" = "cycle sub down"; # "shift+s" = Previous subtitle
-          "Ctrl+s" = "cycle sub-visibility"; # "ctrl+s" = Disable/Enable subtitle
+          "Ctrl+Shift+s" = (joinStr ";" [ # "ctrl+shift+s" = Open subtitles menu
+            uosc-open-subtitles
+          ]);
+          "s" = (joinStr ";" [ # "s" = Next subtitle
+            "cycle sub up"
+            ''show-text ""''
+          ]);
+          "Shift+s" = (joinStr ";" [ # "shift+s" = Previous subtitle
+            "cycle sub down"
+            ''show-text ""''
+          ]);
+          "Ctrl+s" = (joinStr ";" [ # "ctrl+s" = Disable/Enable subtitle
+            "cycle sub-visibility"
+            ''show-text ""''
+          ]);
 
           # Playlist
-          "l" = "${uosc-open-playlist}"; # "l" = Open playlist menu
-
-          "NEXT" = "${uosc-next}"; # "media_next" = Next on the playlist
-          "PGDWN" = "${uosc-next}"; # "page_down" = Next on the playlist
-
-          "PREV" = "${uosc-prev}"; # "media_prev" = Previous on the playlist
-          "PGUP" = "${uosc-prev}"; # "page_up" = Next on the playlist
+          "l" = (joinStr ";" [ # "l" = Open playlist menu
+            uosc-open-playlist
+          ]);
+          "PGDWN" = (joinStr ";" [ # "page_down" = Next on the playlist
+            uosc-next
+          ]);
+          "PGUP" = (joinStr ";" [ # "page_up" = Previous on the playlist
+            uosc-prev
+          ]);
+          "NEXT" = (joinStr ";" [ # "media_next" = Next on the playlist
+            uosc-next
+          ]);
+          "PREV" = (joinStr ";" [ # "media_prev" = Previous on the playlist
+            uosc-prev
+          ]);
 
           # Playback speed
-          "Ctrl+UP" = "cycle-values speed ${speedsList}"; # "ctrl+up" = Increase speed
-          "Ctrl+DOWN" = "cycle-values !reverse speed ${speedsList}"; # "ctrl+down" = Decrease speed
-          "Ctrl+0" = "set speed 1"; # "ctrl+0" = Reset speed
+          "Ctrl+UP" = (joinStr ";" [ # "ctrl+up" = Increase speed
+            "cycle-values speed ${speedsList}"
+            ''show-text ""''
+          ]);
+          "Ctrl+DOWN" = (joinStr ";" [ # "ctrl+down" = Decrease speed
+            "cycle-values !reverse speed ${speedsList}"
+            ''show-text ""''
+          ]);
+          "Ctrl+0" = (joinStr ";" [ # "ctrl+0" = Reset speed
+            "set speed 1"
+            ''show-text ""''
+          ]);
 
           # Zoom
-          "Alt+f" = "add video-zoom ${zoomStep}"; # "ctrl+f" = Zoom
-          "Shift+f" = "add video-zoom -${zoomStep}"; # "shift+f" = UnZoom
-          "Alt+Shift+f" = "set video-zoom 0;set video-pan-x 0;set video-pan-y 0"; # "ctrl+shift+f" = Reset zoom and offsets
-
-          "Alt+a" = "add video-pan-x ${moveStep}"; # "alt+a" = Move left
-          "Alt+d" = "add video-pan-x -${moveStep}"; # "alt+d" = Move right
-          "Alt+w" = "add video-pan-y ${moveStep}"; # "alt+w" = Move up
-          "Alt+s" = "add video-pan-y -${moveStep}"; # "alt+s" = Move down
+          "Alt+f" = (joinStr ";" [ # "ctrl+f" = Zoom
+            "add video-zoom ${zoomStep}"
+            ''show-text ""''
+          ]);
+          "Shift+f" = (joinStr ";" [ # "shift+f" = UnZoom
+            "add video-zoom -${zoomStep}"
+            ''show-text ""''
+          ]);
+          "Alt+Shift+f" = (joinStr ";" [ # "ctrl+shift+f" = Reset zoom and offsets
+            "set video-zoom 0"
+            "set video-pan-x 0"
+            "set video-pan-y 0"
+            ''show-text ""''
+          ]);
+          "Alt+a" = (joinStr ";" [ # "alt+a" = Move left
+            "add video-pan-x ${moveStep}"
+            ''show-text ""''
+          ]);
+          "Alt+d" = (joinStr ";" [ # "alt+d" = Move right
+            "add video-pan-x -${moveStep}"
+            ''show-text ""''
+          ]);
+          "Alt+w" = (joinStr ";" [ # "alt+w" = Move up
+            "add video-pan-y ${moveStep}"
+            ''show-text ""''
+          ]);
+          "Alt+s" = (joinStr ";" [ # "alt+s" = Move down
+            "add video-pan-y -${moveStep}"
+            ''show-text ""''
+          ]);
 
           # Rotate
-          "Ctrl+r" = "cycle-values video-rotate ${rotationList}"; # "ctrl+r" = Rotate video clockwise
-          "Shift+r" = "cycle-values !reverse video-rotate ${rotationList}"; # "shift+r" = Rotate video anti-clockwise
-          "Ctrl+Shift+r" = "set video-rotate 0"; # "ctrl+shift+r" = Reset rotation
+          "Ctrl+r" = (joinStr ";" [ # "ctrl+r" = Rotate video clockwise
+            "cycle-values video-rotate ${rotationList}"
+            ''show-text ""''
+          ]);
+          "Shift+r" = (joinStr ";" [ # "shift+r" = Rotate video anti-clockwise
+            "cycle-values !reverse video-rotate ${rotationList}"
+            ''show-text ""''
+          ]);
+          "Ctrl+Shift+r" = (joinStr ";" [ # "ctrl+shift+r" = Reset rotation
+            "set video-rotate 0"
+            ''show-text ""''
+          ]);
 
           # After end
-          #"t" = ""; # "t" = Exit/Do nothing after video end
-          #"g" = ""; # "g" = Play next/Do nothing after video end
-          "Ctrl+Alt+d" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff";show-text "After playing: Shutdown"
-          ''; # "ctrl+alt+d" = Shutdown after video end
-          "Ctrl+Alt+s" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend";show-text "After playing: Suspend"
-          ''; # "ctrl+alt+s" = Suspend after video end
-          "Ctrl+Alt+h" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate";show-text "After playing: Hibernate"
-          ''; # "ctrl+alt+h" = Hibernate after video end
+          # "t" = (joinStr ";" [ # "t" = Exit/Do nothing after video end
+          #   ""
+          #   ''show-text ""''
+          # ]);
+          # "g" = (joinStr ";" [ # "g" = Play next/Do nothing after video end
+          #   ""
+          #   ''show-text ""''
+          # ]);
+          "Ctrl+Alt+d" = (joinStr ";" [ # "ctrl+alt+d" = Shutdown after video end
+            ''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"''
+            ''show-text "After playing: Shutdown"''
+          ]);
+          "Ctrl+Alt+s" = (joinStr ";" [ # "ctrl+alt+s" = Suspend after video end
+            ''run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend"''
+            ''show-text "After playing: Suspend"''
+          ]);
+          "Ctrl+Alt+h" = (joinStr ";" [ # "ctrl+alt+h" = Hibernate after video end
+            ''run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
+            ''show-text "After playing: Hibernate"''
+          ]);
           # TODO: Make it work at the end, somehow...
           # "shutdown" = ""; # TODO: Act by event?
 
           # Loop
-          "r" = "cycle-values loop-file inf no"; # "r" = Loop/Do nothing
+          "r" = (joinStr ";" [ # "r" = Loop/Do nothing
+            "cycle-values loop-file inf no"
+            ''show-text ""''
+            uosc-flash-timeline
+          ]);
 
           # Reverse
-          "Alt+r" = "cycle-values play-direction forward backward;${uosc-flash-timeline}"; # "alt+r" = Reverse video
+          "Alt+r" = (joinStr ";" [ # "alt+r" = Reverse video
+            "cycle-values play-direction forward backward"
+            ''show-text ""''
+            uosc-flash-timeline
+          ]);
 
           # Pin
-          "p" = "cycle ontop"; # "p" = Toggle pin-on-top # TODO: Broken. Check if is working later
+          "p" = (joinStr ";" [ # "p" = Toggle pin-on-top
+            "cycle ontop"
+            ''show-text ""''
+          ]);
+          # TODO: Broken. Check if it's working later
 
           # Screenshot
-          "F5" = "screenshot video"; # "f5" = Screenshot without subtitles
+          "F5" = (joinStr ";" [ # "f5" = Screenshot without subtitles
+            "screenshot video"
+            ''show-text ""''
+          ]);
 
           # Info
-          "i" = "script-binding stats/display-stats-toggle"; # "i" = Toggle info on screen
+          "i" = (joinStr ";" [ # "i" = Toggle info on screen
+            "script-binding stats/display-stats-toggle"
+          ]);
 
           # File
-          "Ctrl+o" = "${uosc-open-file}"; # "ctrl+o" = Open UOSC file menu
-          "Ctrl+c" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard";show-text "Copied File Path to Clipboard";
-          ''; # "ctrl+c" = Copy file path
-          "Ctrl+v" = "${uosc-paste}"; # "ctrl+v" = Paste file path to play
-
-          # Menu
-          "o" = "${uosc-open-menu}"; # "o" = Open menu
+          "Ctrl+o" = (joinStr ";" [ # "ctrl+o" = Open UOSC file menu
+            uosc-open-file
+          ]);
+          "Ctrl+c" = (joinStr ";" [ # "ctrl+c" = Copy file path
+            ''run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard"''
+            ''show-text "Copied File Path to Clipboard"''
+          ]);
+          "Ctrl+v" = (joinStr ";" [ # "ctrl+v" = Paste file path to play
+            uosc-paste
+          ]);
 
         };
 
