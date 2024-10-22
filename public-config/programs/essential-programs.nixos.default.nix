@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; {
+{ pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
   config = {
 
     # System programs
@@ -19,6 +19,11 @@
 
       ])
     );
+
+    # Do NOT include
+    environment.plasma6.excludePackages = with pkgs; [
+      kdePackages.elisa # Elisa: Music player # Not used
+    ];
     
   };
 }
