@@ -9,13 +9,13 @@
         efiSysMountPoint = "/boot";
       };
 
-      timeout = mkDefault 10; # 10 seconds before selecting default option
+      timeout = utils.mkDefault 10; # 10 seconds before selecting default option
 
       grub = {
         enable = true;
         efiSupport = true;
         device = "nodev";
-        useOSProber = mkDefault true; # Finds Windows bootloader
+        useOSProber = utils.mkDefault true; # Finds Windows bootloader
         extraEntries = ''
           menuentry "Firmware" {
             fwsetup
@@ -29,7 +29,7 @@
         ''; # Extra menus
         extraEntriesBeforeNixOS = true; # Extra menus are not placed at the end, so its better above
         default = 3; # Selects NixOS entry as default
-        configurationLimit = mkDefault 100; # Max itens shown
+        configurationLimit = utils.mkDefault 100; # Max itens shown
       };
       
     };

@@ -15,7 +15,7 @@
     # Agenix
     age = with config-domain; (
       # Check for "./private-config/secrets"
-      mkIf (mkFunc.pathExists private.secrets) (
+      utils.mkIf (utils.pathExists private.secrets) (
         let
           username = host.user.username;
         in {

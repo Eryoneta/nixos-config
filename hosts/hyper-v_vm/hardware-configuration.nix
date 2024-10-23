@@ -36,10 +36,10 @@
     boot.kernelParams = [ "resume_offset=3848192" ];
 
     # DHCP
-    networking.useDHCP = mkDefault true;
+    networking.useDHCP = utils.mkDefault true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = mkDefault "x86_64-linux";
+    nixpkgs.hostPlatform = utils.mkDefault "x86_64-linux";
 
     # Firmware
     virtualisation.hypervGuest.enable = true;

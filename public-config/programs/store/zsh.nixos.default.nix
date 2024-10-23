@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.zsh = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
@@ -11,20 +11,20 @@
 
     # ZSH: Shell
     programs.zsh = {
-      enable = mkDefault options.enabled;
-      #package = mkDefault options.packageChannel.zsh; # Option does not exist
+      enable = utils.mkDefault options.enabled;
+      #package = utils.mkDefault options.packageChannel.zsh; # Option does not exist
     };
 
     # Default user shell
-    users.defaultUserShell = ( # Cannot be "mkDefault" (Conflicts with bash)
-      mkIf (options.enabled) (
+    users.defaultUserShell = ( # Cannot be "utils.mkDefault" (Conflicts with bash)
+      utils.mkIf (options.enabled) (
         options.packageChannel.zsh
       )
     );
 
     # Allows autocompletion for system packages
     environment.pathsToLink = (
-      mkIf (options.enabled) (
+      utils.mkIf (options.enabled) (
         [ "/share/zsh" ]
       )
     );

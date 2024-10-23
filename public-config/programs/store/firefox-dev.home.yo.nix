@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.firefox-devedition = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
     };
   };
 
@@ -26,7 +26,7 @@
 
       # Personal profile
       # This profile is personal. Customization without limits!
-      profiles."dev-edition-default" = mkIf (options.enabled) {
+      profiles."dev-edition-default" = utils.mkIf (options.enabled) {
         # It NEEDS to be "dev-edition-default"!
         #   This way "firefox-devedition" doesn't complain about "missing profiles"
         #   If it doesn't find it, then it creates a new one, but it can't edit "profiles.ini", throws an error
@@ -210,8 +210,9 @@
           "browser.urlbar.trimHttps" = false; # Do not trim "https://"
           "browser.urlbar.autoFill" = false; # Do not auto-complete urls
           "browser.urlbar.quicksuggest.enabled" = false; # Do not suggest stuff
-          "browser.search.suggest.enabled" = false; # Do not suggest search stuff
           "browser.urlbar.suggest.searches" = false; # Do not suggest searches
+          "browser.search.suggest.enabled" = false; # Do not suggest search stuff
+          "browser.search.hiddenOneOffs" = "Yahoo,Bing,Amazon.com,eBay"; # Do not suggest these search engines
           # Unwanted stuff
           "extensions.pocket.enabled" = false; # Disable "Pocket"
           "browser.discovery.enabled" = false; # Do not recommend extensions
@@ -289,7 +290,7 @@
       in {
 
         # Firefox Developer Edition: Browser
-        packages = mkIf (options.enabled) (
+        packages = utils.mkIf (options.enabled) (
           with options.packageChannel; [
             (firefox-devedition.override {
               extraPrefsFiles = [

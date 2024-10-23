@@ -79,7 +79,12 @@ inputs: flakePath: (
               (flake-modules."home-manager-module.nix".build {
                 username = user.username;
                 package = inputs.home-manager;
-                modifiers = commonModifiers;
+                modifiers = commonModifiers ++ [
+                  # Plasma-Manager
+                  (flake-modules."plasma-manager.nix".build {
+                    package = inputs.plasma-manager;
+                  })
+                ];
               })
               # Auto-Upgrade-List
               (flake-modules."auto-upgrade-list.nix".build {
@@ -87,6 +92,7 @@ inputs: flakePath: (
                   inherit nixpkgs;
                   inherit home-manager;
                   inherit agenix;
+                  inherit plasma-manager;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   #inherit nixpkgs-unstable-fixed;
@@ -105,7 +111,12 @@ inputs: flakePath: (
             package = inputs.home-manager;
             systemPackage = inputs.nixpkgs;
             username = user.username;
-            modifiers = commonModifiers;
+            modifiers = commonModifiers ++ [
+              # Plasma-Manager
+              (flake-modules."plasma-manager.nix".build {
+                package = inputs.plasma-manager;
+              })
+            ];
           }
         );
 

@@ -2,7 +2,7 @@
   config = with config.profile.programs.ssh; {
 
     # SSH: Secure connection
-    programs.ssh = mkIf (options.enabled) {
+    programs.ssh = utils.mkIf (options.enabled) {
       matchBlocks = {
         "public" = {
           hostname = "github.com";
@@ -30,9 +30,9 @@
     };
     home.file.".ssh/known_hosts" = with config-domain; {
       # Check for "./private-config/dotfiles"
-      enable = (options.enabled && (mkFunc.pathExists private.dotfiles));
+      enable = (options.enabled && (utils.pathExists private.dotfiles));
       source = with outOfStore.private; (
-        mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
+        utils.mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
       );
     };
 

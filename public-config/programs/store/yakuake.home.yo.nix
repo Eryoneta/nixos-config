@@ -2,22 +2,22 @@
 
   options = {
     profile.programs.yakuake = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
   config = with config.profile.programs.yakuake; {
 
     # Yakuake: Drop-down terminal
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [ kdePackages.yakuake ]
     );
 
     # Dotfiles
     xdg.configFile."yakuakerc" = {
       enable = options.enabled;
-      text = mkFunc.toINI {
+      text = utils.toINI {
         Dialogs = {
           FirstRun = false; # Do not show welcome-popup
         };
@@ -37,7 +37,7 @@
     };
     xdg.configFile."autostart/org.kde.yakuake.desktop" = { # Autostart
       enable = options.enabled;
-      text = mkFunc.toINI {
+      text = utils.toINI {
         "Desktop Entry" = {
           Name = "Yakuake";
           Icon = "yakuake";

@@ -2,24 +2,24 @@
 
   options = {
     profile.programs.calibre = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.unstable-fixed);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable-fixed);
     };
   };
 
   config = with config.profile.programs.calibre; {
 
     # Calibre: E-Book manager
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [ calibre ]
     );
 
     # Dotfiles
     xdg.configFile."calibre" = with config-domain; {
       # Check for "./private-config/dotfiles"
-      enable = (options.enabled && (mkFunc.pathExists private.dotfiles));
+      enable = (options.enabled && (utils.pathExists private.dotfiles));
       source = with outOfStore.private; (
-        mkOutOfStoreSymlink "${dotfiles}/calibre/.config/calibre"
+        utils.mkOutOfStoreSymlink "${dotfiles}/calibre/.config/calibre"
       );
     };
 

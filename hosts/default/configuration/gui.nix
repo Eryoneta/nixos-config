@@ -2,11 +2,11 @@
   config = {
 
     # Display Manager
-    services.displayManager.sddm.wayland.enable = mkDefault true;
-    services.displayManager.sddm.enable = mkDefault true;
+    services.displayManager.sddm.wayland.enable = utils.mkDefault true;
+    services.displayManager.sddm.enable = utils.mkDefault true;
 
     # Desktop Environment
-    services.desktopManager.plasma6.enable = mkDefault true;
+    services.desktopManager.plasma6.enable = utils.mkDefault true;
 
   };
 }

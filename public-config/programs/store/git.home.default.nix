@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.git = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
@@ -11,10 +11,10 @@
 
     # Git: File versioning
     programs.git = {
-      enable = mkDefault options.enabled;
-      package = mkDefault options.packageChannel.git;
-      userName = mkDefault "${user.name}";
-      userEmail = mkDefault "${user.username}@${user.host.hostname}";
+      enable = utils.mkDefault options.enabled;
+      package = utils.mkDefault options.packageChannel.git;
+      userName = utils.mkDefault "${user.name}";
+      userEmail = utils.mkDefault "${user.username}@${user.host.hostname}";
       extraConfig = {
         init = {
           defaultBranch = "main";
@@ -40,9 +40,9 @@
 
       # Delta: Git diff highlighter
       delta = {
-        enable = mkDefault true;
-        package = mkDefault options.packageChannel.delta;
-        options = mkDefault {
+        enable = utils.mkDefault true;
+        package = utils.mkDefault options.packageChannel.delta;
+        options = utils.mkDefault {
           line-numbers = true; # Show numbers
           side-by-side = true; # git diff shows changes side-by-side
           #hyperlinks = true; # Clickable links

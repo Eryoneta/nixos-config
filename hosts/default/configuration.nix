@@ -15,7 +15,7 @@
     config = {
 
       # Current-Configuration label
-      system.nixos.label = (mkFunc.formatStr host.system.label); #[a-zA-Z0-9:_.-]*
+      system.nixos.label = (utils.formatStr host.system.label); #[a-zA-Z0-9:_.-]*
 
       # Start version
       system.stateVersion = "24.05"; # NixOS start version. (Default options).

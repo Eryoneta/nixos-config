@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.nix = {
-      #options.enabled = (mkBoolOption true); # Always true
-      options.packageChannel = (mkPackageOption pkgs);
+      #options.enabled = (utils.mkBoolOption true); # Always true
+      options.packageChannel = (utils.mkPackageOption pkgs);
     };
   };
 
@@ -11,17 +11,17 @@
 
     # Nix: System package manager
     nix = {
-      package = mkDefault options.packageChannel.nix; # Same package as the system
+      package = utils.mkDefault options.packageChannel.nix; # Same package as the system
 
       # Garbage Collector
       gc = {
-        automatic = mkDefault true;
-        dates = mkDefault "*-*-* 18:00:00"; # Every day, 18h00
+        automatic = utils.mkDefault true;
+        dates = utils.mkDefault "*-*-* 18:00:00"; # Every day, 18h00
       };
 
       # Nix Store
       settings = {
-        auto-optimise-store = mkDefault true; # Remove duplicates and creates hardlinks
+        auto-optimise-store = utils.mkDefault true; # Remove duplicates and creates hardlinks
         # TODO: Remove once flakes are sorted out(Might take a while!)
         experimental-features = [ "nix-command" "flakes" ]; # Experimental features
       };

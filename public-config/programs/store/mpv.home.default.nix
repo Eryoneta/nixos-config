@@ -2,14 +2,14 @@
 
   options = {
     profile.programs.mpv = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
   config = with config.profile.programs.mpv; {
 
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [
 
         # Trash-Cli: Interface for Freedesktop.org Trash
@@ -20,14 +20,18 @@
         # MPV uses this to open online videos
         yt-dlp
 
+        # xclip: Simple clipboard manager
+        # MPV uses this to copy a file path
+        xclip
+
       ]
     );
 
     # MPV: Multimidia player
     programs.mpv = {
-      enable = mkDefault options.enabled;
-      package = mkDefault options.packageChannel.mpv;
-      # package = mkDefault (options.packageChannel.mpv.override {
+      enable = utils.mkDefault options.enabled;
+      package = utils.mkDefault options.packageChannel.mpv;
+      # package = utils.mkDefault (options.packageChannel.mpv.override {
       #   # Scripts
       #   scripts = with options.packageChannel; [
       #     mpvScripts.uosc # UOSC: MPV frontend
@@ -57,6 +61,10 @@
         uosc-flash-volume = "script-binding uosc/flash-volume"; # Flashes the volume bar
         uosc-next = "script-binding uosc/next"; # Load the next file
         uosc-prev = "script-binding uosc/prev"; # Load the previous file
+        uosc-open-menu = "script-binding uosc/menu-blurred"; # Open menu
+        uosc-open-playlist = "script-binding uosc/playlist"; # Open playlist
+        uosc-open-subtitles = "script-binding uosc/subtitles"; # Open subtitles
+        uosc-open-audio = "script-binding uosc/audio"; # Open audios
         uosc-open-file = "script-binding uosc/open-file"; # Open file menu
         uosc-paste = "script-binding uosc/paste"; # Load file path/URL in the clipboard
 
@@ -74,12 +82,12 @@
         # Speed
         speeds = [ # All available speeds
           "0.03125" "0.0625" "0.125" "0.25" "0.5" "0.75"
-          "1"
-          "1.25" "1.75" "2" "4" "8" "16"
+            "1"
+              "1.25" "1.75" "2" "4" "8" "16"
         ];
         speedMinBoundary = "0.03124"; # Smaller than the smallest speed, triggers the limit
         speedMaxBoundary = "16.00001"; # Bigger than the biggest speed, triggers the limit
-        speedsList = (builtins.toString (builtins.concatLists [
+        speedsList = (utils.joinStr " " (builtins.concatLists [
           [ speedMinBoundary ]
           speeds
           [ speedMaxBoundary ]
@@ -90,9 +98,286 @@
         moveStep = "0.01"; # Move screen: +-1%
 
         # Rotation
-        rotationList = (builtins.toString [
+        rotationList = (utils.joinStr " " [
           "0" "90" "180" "270"
         ]);
+
+        # Custom functions
+        action = {
+
+          # Play/Pause
+          togglePause = (utils.joinStr ";" [ # Play/Pause
+            "cycle pause"
+            uosc-flash-pause-indicator
+          ]);
+          play = (utils.joinStr ";" [ # Play
+            "set pause no"
+            uosc-flash-pause-indicator
+          ]);
+          pause = (utils.joinStr ";" [ # Pause
+            "set pause yes"
+            uosc-flash-pause-indicator
+          ]);
+
+          # Fullscreen
+          toggleFullscreen = (utils.joinStr ";" [ # Toggle fullscreen
+            "cycle fullscreen"
+          ]);
+          exitFullscreen = (utils.joinStr ";" [ # Exit fullscreen
+            "set fullscreen no"
+          ]);
+
+          # Menu
+          openMenu = (utils.joinStr ";" [ # Open menu
+            uosc-open-menu
+          ]);
+          # openContextMenu = (utils.joinStr ";" [ # Menu
+          #   "context-menu"
+          # ]); # TODO: Create menu?
+
+          # Exit
+          exit = (utils.joinStr ";" [ # = Exit
+            "quit"
+          ]);
+          
+          # Seek
+          goForward = {
+            frame = (utils.joinStr ";" [ # Go +1 frame and pause
+              "frame-step"
+              ''show-text "Step: +1 frame"''
+              uosc-flash-timeline
+            ]);
+            small = (utils.joinStr ";" [ # Go forward (Small)
+              "seek ${seekStepSmall}"
+              uosc-flash-timeline
+            ]);
+            medium = (utils.joinStr ";" [ # Go forward (Medium)
+              "seek ${seekStepMedium}"
+              uosc-flash-timeline
+            ]);
+            big = (utils.joinStr ";" [ # Go forward (Big)
+              "seek ${seekStepBig}"
+              uosc-flash-timeline
+            ]);
+            end = (utils.joinStr ";" [ # End of video
+              "seek 100 absolute-percent"
+              uosc-flash-timeline
+            ]);
+          };
+          goBack = {
+            frame = (utils.joinStr ";" [ # Go -1 frame and pause
+              "frame-back-step"
+              ''show-text "Step: -1 frame"''
+              uosc-flash-timeline
+            ]);
+            small = (utils.joinStr ";" [ # Go back (Small)
+              "seek -${seekStepSmall}"
+              uosc-flash-timeline
+            ]);
+            medium = (utils.joinStr ";" [ # Go back (Medium)
+              "seek -${seekStepMedium}"
+              uosc-flash-timeline
+            ]);
+            big = (utils.joinStr ";" [ # Go back (Big)
+              "seek -${seekStepBig}"
+              uosc-flash-timeline
+            ]);
+            start = (utils.joinStr ";" [ # Start of video
+              "seek 0 absolute-percent"
+              uosc-flash-timeline
+            ]);
+          };
+
+          # Volume
+          toggleMute = (utils.joinStr ";" [ # Mute/Unmute
+            "cycle mute"
+            uosc-flash-volume
+          ]);
+          volumeUp = (utils.joinStr ";" [ # Increase volume
+            "add volume ${volumeStep}"
+            uosc-flash-volume
+          ]);
+          volumeDown = (utils.joinStr ";" [ # Decrease volume
+            "add volume -${volumeStep}"
+            uosc-flash-volume
+          ]);
+
+          # Audios
+          openAudioMenu = (utils.joinStr ";" [ # Open audio menu
+            uosc-open-audio
+          ]);
+          nextAudio = (utils.joinStr ";" [ # Next audio
+            "cycle audio up"
+            ''show-text "Audio: ''${audio}"''
+          ]);
+          prevAudio = (utils.joinStr ";" [ # Previous audio
+            "cycle audio down"
+            ''show-text "Audio: ''${audio}"''
+          ]);
+
+          # Subtitles
+          openSubtitleMenu = (utils.joinStr ";" [ # Open subtitle menu
+            uosc-open-subtitles
+          ]);
+          nextSubtitle = (utils.joinStr ";" [ # Next subtitle
+            "cycle sub up"
+            ''show-text "Subtitle: ''${sub}"''
+          ]);
+          prevSubtitle = (utils.joinStr ";" [ # Previous subtitle
+            "cycle sub down"
+            ''show-text "Subtitle: ''${sub}"''
+          ]);
+          toggleSubtitle = (utils.joinStr ";" [ # Disable/Enable subtitle
+            "cycle sub-visibility"
+            ''show-text "Subtitle: ''${sub}"''
+          ]);
+
+          # Playlist
+          openPlaylistMenu = (utils.joinStr ";" [ # Open playlist menu
+            uosc-open-playlist
+          ]);
+          nextFile = (utils.joinStr ";" [ # Next on the playlist
+            uosc-next
+          ]);
+          prevFile = (utils.joinStr ";" [ # Previous on the playlist
+            uosc-prev
+          ]);
+
+          # Playback speed
+          speedUp = (utils.joinStr ";" [ # Increase speed
+            "cycle-values speed ${speedsList}"
+            # ''show-text "Speed: ''${speed}x"''
+          ]);
+          speedDown = (utils.joinStr ";" [ # Decrease speed
+            "cycle-values !reverse speed ${speedsList}"
+            # ''show-text "Speed: ''${speed}x"''
+          ]);
+          resetSpeed = (utils.joinStr ";" [ # Reset speed
+            "set speed 1"
+            # ''show-text "Speed: ''${speed}x"''
+          ]);
+          # TODO: "speed" var breaks UOSC. Fix?
+
+          # Zoom
+          zoomIn = (utils.joinStr ";" [ # Zoom in
+            "add video-zoom ${zoomStep}"
+            ''show-text "Zoom: ''${video-zoom}"''
+          ]);
+          zoomOut = (utils.joinStr ";" [ # Zoom out
+            "add video-zoom -${zoomStep}"
+            ''show-text "Zoom: ''${video-zoom}"''
+          ]);
+          resetZoom = (utils.joinStr ";" [ # Reset zoom and offsets
+            "set video-zoom 0"
+            "set video-pan-x 0"
+            "set video-pan-y 0"
+            ''show-text "Zoom: Reset"''
+          ]);
+          moveLeft = (utils.joinStr ";" [ # Move left
+            "add video-pan-x ${moveStep}"
+            ''show-text "Move left"''
+          ]);
+          moveRight = (utils.joinStr ";" [ # Move right
+            "add video-pan-x -${moveStep}"
+            ''show-text "Move right"''
+          ]);
+          moveUp = (utils.joinStr ";" [ # Move up
+            "add video-pan-y ${moveStep}"
+            ''show-text "Move up"''
+          ]);
+          moveDown = (utils.joinStr ";" [ # Move down
+            "add video-pan-y -${moveStep}"
+            ''show-text "Move down"''
+          ]);
+
+          # Rotate
+          rotateClockwise = (utils.joinStr ";" [ # Rotate video clockwise
+            "cycle-values video-rotate ${rotationList}"
+            ''show-text "Rotation: ''${video-rotate}°"''
+          ]);
+          rotateAntiClockwise = (utils.joinStr ";" [ # Rotate video anti-clockwise
+            "cycle-values !reverse video-rotate ${rotationList}"
+            ''show-text "Rotation: ''${video-rotate}°"''
+          ]);
+          resetRotation = (utils.joinStr ";" [ # Reset rotation
+            "set video-rotate 0"
+            ''show-text "Rotation: Reset"''
+          ]);
+
+          # After Playing
+          afterPlaying = {
+            exit = (utils.joinStr ";" [ # Exit/Do nothing after video end
+              ""
+              ''show-text "After playing: Exit"''
+            ]);
+            playNext = (utils.joinStr ";" [ # Play next/Do nothing after video end
+              ""
+              ''show-text "After playing: Load next file"''
+            ]);
+            shutdown = (utils.joinStr ";" [ # Shutdown after video end
+              # Note: It's good practice to ask KDE Plasma to shutdown
+              #''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
+              ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
+              # ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
+              ''show-text "After playing: Shutdown"''
+            ]);
+            suspend = (utils.joinStr ";" [ # Suspend after video end
+              ''run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend"''
+              ''show-text "After playing: Suspend"''
+            ]);
+            hibernate = (utils.joinStr ";" [ # Hibernate after video end
+              ''run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
+              ''show-text "After playing: Hibernate"''
+            ]);
+            # TODO: Make it work at the end, somehow...
+            # "shutdown" = ""; # TODO: Act by event?
+          };
+
+          # Loop
+          toggleLoop = (utils.joinStr ";" [ # Loop/Do nothing
+            "cycle-values loop-file inf no"
+            ''show-text "Loop: ''${loop-file}"''
+            uosc-flash-timeline
+          ]);
+
+          # Reverse
+          toggleReverse = (utils.joinStr ";" [ # Toggle Reverse video
+            "cycle-values play-direction forward backward"
+            ''show-text "Play direction: ''${play-direction}"''
+            uosc-flash-timeline
+          ]);
+
+          # Pin
+          togglePin = (utils.joinStr ";" [ # Toggle pin-on-top
+            "cycle ontop"
+            ''show-text "Pinned: ''${ontop}"''
+          ]);
+          # TODO: Broken. Check if it's working later
+
+          # Screenshot
+          takeScreenshot = (utils.joinStr ";" [ # Screenshot without subtitles
+            "screenshot video"
+            ''show-text "Screenshot taken"''
+          ]);
+
+          # Info
+          toggleInfo = (utils.joinStr ";" [ # Toggle info on screen
+            "script-binding stats/display-stats-toggle"
+          ]);
+
+          # File
+          openFileMenu = (utils.joinStr ";" [ # Open UOSC file menu
+            uosc-open-file
+          ]);
+          copyFilePath = (utils.joinStr ";" [ # Copy file path
+            ''run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard"''
+            ''show-text "Copied file path to clipboard"''
+          ]);
+          openFileInClipboard = (utils.joinStr ";" [ # Paste file path to play
+            uosc-paste
+          ]);
+
+        };
 
       in {
 
@@ -108,10 +393,10 @@
           "volume-max" = 200; # Maximum volume in %
           "stop-screensaver" = "yes"; # Do not sleep when playing video
           "cursor-autohide" = osc-duration; # Time in ms before hiding the cursor
+          "window-dragging" = "yes"; # Dragging moves the window
           "drag-and-drop" = "auto"; # Drop to replace current video
           "autocreate-playlist" = "filter"; # Create playlist with files from the same folder
           "directory-filter-types" = "video,audio"; # Accept only videos and audios
-          "window-dragging" = "yes"; # Dragging moves the window
 
           "vo" = "wlshm"; # Video output
           # TODO: UOSC: Change to another "vo" later?
@@ -121,7 +406,7 @@
           "ytdl_path" = "yt-dlp"; # Uses "yt-dlp" to open URLs
           
           # OSD (On-Screen Display)
-          "osc" = "yes"; # Controll on screen
+          "osc" = "no"; # Control on screen
           "osd-bar" = "no"; # Do not show volume/time bar
           "osd-duration" = osc-duration; # Duration in ms on screen
           "osd-playing-msg" = "\${filename}"; # Display filename on start
@@ -154,7 +439,7 @@
             "timeline_border" = 1; # Top border thickness
             "timeline_step" = "-${seekStepSmall}"; # Step in seconds, when scrolling
             "timeline_cache" = "yes"; # For stream content, show loaded parts
-            "timeline_persistency" = "paused, idle"; # When to not hide
+            "timeline_persistency" = "paused,idle"; # When to not hide
 
             # Progress bar (Minimized)
             "progress" = "windowed"; # When to always show the minimized bar
@@ -163,15 +448,17 @@
 
             # Control bar
             # Doc: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf#L24-L82
-            "controls" = (builtins.concatStringsSep "," [
+            "controls" = (utils.joinStr "," [
               "menu" # UOSC menu button
               "gap:0.5"
-              (builtins.concatStringsSep "" [ # Speed-up button
+              (utils.joinStr "" [ # Speed-up button
                 "cycle" # Type
                 ":rotate_left" # Icon
                 ":play-direction" # Property
-                ":forward=rotate_left" # Value 1 & Icon
-                "/backward=close" # Value 2 & Icon
+                  ":forward" # Value 1
+                    "=rotate_left" # Icon 1
+                  "/backward" # Value 2
+                    "=close" # Icon 2
                 "?Play backwards" # Tooltip
               ])
               "gap:0.5"
@@ -184,22 +471,22 @@
               "items" # Playlist menu button
               "next" # Playlist-next button
               "space"
-              (builtins.concatStringsSep "" [ # Speed-up button
+              (utils.joinStr "" [ # Speed-down button
                 "command" # Type
                 ":fast_rewind" # Icon
-                ":cycle-values !reverse speed ${speedsList}" # Command
+                ":${action.speedDown}" # Command
                 "?Decrease speed" # Tooltip
               ])
-              (builtins.concatStringsSep "" [ # Reset speed button
+              (utils.joinStr "" [ # Reset speed button
                 "command" # Type
                 ":speed" # Icon
-                ":set speed 1" # Command
+                ":${action.resetSpeed}" # Command
                 "?Reset speed" # Tooltip
               ])
-              (builtins.concatStringsSep "" [ # Speed-down button
+              (utils.joinStr "" [ # Speed-up button
                 "command" # Type
                 ":fast_forward" # Icon
-                ":cycle-values speed ${speedsList}" # Command
+                ":${action.speedUp}" # Command
                 "?Increase speed" # Tooltip
               ])
               "space"
@@ -241,7 +528,7 @@
             "top_bar_alt_title" = ""; # Show alternative title
             "top_bar_alt_title_place" = "below"; # Alternative title position
             "top_bar_flash_on" = "video,audio"; # When to quickly show the top bar
-            "top_bar_persistency" = "paused, idle"; # When to not hide
+            "top_bar_persistency" = "paused,idle"; # When to not hide
 
             # Window
             "window_border_size" = 1; # Border thickness, when in no-border mode
@@ -284,10 +571,10 @@
             "disable_elements" = ""; # Elements to disable
 
             # Files
-            "video_types" = "3g2,3gp,asf,avi,f4v,flv,h264,h265,m2ts,m4v,mkv,mov,mp4,mp4v,mpeg,mpg,ogm,ogv,rm,rmvb,ts,vob,webm,wmv,y4m";
-            "audio_types" = "aac,ac3,aiff,ape,au,cue,dsf,dts,flac,m4a,mid,midi,mka,mp3,mp4a,oga,ogg,opus,spx,tak,tta,wav,weba,wma,wv";
+            "video_types" = "3g2,3gp,asf,avi,f4v,flv,h264,h265,m2ts,m4v,utils.mkv,mov,mp4,mp4v,mpeg,mpg,ogm,ogv,rm,rmvb,ts,vob,webm,wmv,y4m";
+            "audio_types" = "aac,ac3,aiff,ape,au,cue,dsf,dts,flac,m4a,mid,midi,utils.mka,mp3,mp4a,oga,ogg,opus,spx,tak,tta,wav,weba,wma,wv";
             "image_types" = "apng,avif,bmp,gif,j2k,jp2,jfif,jpeg,jpg,jxl,mj2,png,svg,tga,tif,tiff,webp";
-            "subtitle_types" = "aqt,ass,gsub,idx,jss,lrc,mks,pgs,pjs,psb,rt,sbv,slt,smi,sub,sup,srt,ssa,ssf,ttxt,txt,usf,vt,vtt";
+            "subtitle_types" = "aqt,ass,gsub,idx,jss,lrc,utils.mks,pgs,pjs,psb,rt,sbv,slt,smi,sub,sup,srt,ssa,ssf,ttxt,txt,usf,vt,vtt";
             "playlist_types" = "m3u,m3u8,pls,url,cue";
             "default_directory" = "~/"; # Default open-file menu directory
             "show_hidden_files" = "yes"; # Show hidden files
@@ -317,123 +604,139 @@
         # "mpv --input-test --force-window --idle" shows all actions for a given input!
         bindings = {
 
-          # Basic
-          "MBTN_LEFT" = "cycle pause;${uosc-flash-pause-indicator}"; # "mouse_left" = Play/Pause
-          "SPACE" = "cycle pause;${uosc-flash-pause-indicator}"; # "space" = Play/Pause
-          "PLAY" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
-          "PAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_play" = Play/Pause
-          "PLAYPAUSE" = "cycle pause;${uosc-flash-pause-indicator}"; # "media_playpause" = Play/Pause
-          "PLAYONLY" = "set pause no;${uosc-flash-pause-indicator}"; # "media_playonly" = Play
-          "PAUSEONLY" = "set pause yes;${uosc-flash-pause-indicator}"; # "media_playonly" = Pause
+          # Play/Pause
+          "MBTN_LEFT" = action.togglePause; # mouse_left
+          "Space" = action.togglePause; # space
+          "PLAY" = action.togglePause; # media_play
+          "PAUSE" = action.togglePause; # media_pause
+          "PLAYPAUSE" = action.togglePause; # media_play_pause
 
-          #"MBTN_RIGHT" = "context-menu"; # "mouse_right" = Menu # TODO: Create menu?
+          "PLAYONLY" = action.play; # media_play_only
+          "PAUSEONLY" = action.pause; # media_pause_only
 
-          "MBTN_LEFT_DBL" = "cycle fullscreen"; # "mouse_left x2" = Toggle fullscreen
-          "ENTER" = "cycle fullscreen"; # "enter" = Toggle fullscreen
-          "ESC" = "set fullscreen no"; # "esc" = Exit fullscreen
+          # Fullscreen
+          "MBTN_LEFT_DBL" = action.toggleFullscreen; # mouse_left_x2
+          "Enter" = action.toggleFullscreen; # enter
+          "Esc" = action.exitFullscreen; # esc
 
-          "Shift+ESC" = "quit"; # "shift+esc" = Exit
-          "MBTN_MID" = "quit"; # "mouse_middle" = Exit
-          "STOP" = "quit"; # "media_stop" = Exit
-          "POWER" = "quit"; # "power" = Exit
-          "CLOSE_WIN" = "quit"; # "close window" = Exit
+          # Menu
+          "MBTN_RIGHT" = action.openMenu; # mouse_right
+          "o" = action.openMenu; # o
+
+          # Exit
+          "Shift+Esc" = action.exit; # shift+esc
+          "MBTN_MID" = action.exit; # mouse_middle
+          "STOP" = action.exit; # media_stop
+          "POWER" = action.exit; # power
+          "CLOSE_WIN" = action.exit; # close-window
 
           # Seek
-          "RIGHT" = "seek ${seekStepSmall};${uosc-flash-timeline}"; # "right" = Go forward (Small)
-          "LEFT" = "seek -${seekStepSmall};${uosc-flash-timeline}"; # "left" = Go back (Small)
+          "Right" = action.goForward.small; # right
+          "Left" = action.goBack.small; # left
 
-          "Ctrl+RIGHT" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Medium)
-          "FORWARD" = "seek ${seekStepMedium};${uosc-flash-timeline}"; # "media_forward" = Go forward (Medium)
-          "Ctrl+LEFT" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Medium)
-          "REWIND" = "seek -${seekStepMedium};${uosc-flash-timeline}"; # "media_rewind" = Go back (Medium)
+          "Ctrl+Right" = action.goForward.medium; # ctrl+right
+          "Ctrl+Left" = action.goBack.medium; # ctrl+left
+          
+          "FORWARD" = action.goForward.medium; # media_forward
+          "REWIND" = action.goBack.medium; # media_rewind
 
-          "Ctrl+Shift+RIGHT" = "seek ${seekStepBig};${uosc-flash-timeline}"; # "ctrl+right" = Go forward (Big)
-          "Ctrl+Shift+LEFT" = "seek -${seekStepBig};${uosc-flash-timeline}"; # "ctrl+left" = Go back (Big)
+          "Ctrl+Shift+Right" = action.goForward.big; # ctrl+shift+right
+          "Ctrl+Shift+Left" = action.goBack.big; # ctrl+shift+left
 
-          "." = "frame-step"; # "." = Seek +1 frame and pause
-          "," = "frame-back-step"; # "." = Seek -1 frame and pause
-
-          "HOME" = "seek 0 absolute-percent;${uosc-flash-timeline}"; # "home" = Start of video
-          "END" = "seek 100 absolute-percent;${uosc-flash-timeline}"; # "end" = End of video
+          "." = action.goForward.frame; # .
+          "," = action.goBack.frame; # ,
+          
+          "End" = action.goForward.end; # end
+          "Home" = action.goBack.start; # home
 
           # Volume
-          "m" = "cycle mute;${uosc-flash-volume}"; # "m" = Mute/Unmute
-          "MUTE" = "cycle mute;${uosc-flash-volume}"; # "media_mute" = Mute/Unmute
+          "m" = action.toggleMute; # m
+          "MUTE" = action.toggleMute; # media_mute
 
-          "WHEEL_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "wheel_up" = Increase volume
-          "UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "up" = Increase volume
-          "VOLUME_UP" = "add volume ${volumeStep};${uosc-flash-volume}"; # "media_volume_up" = Increase volume
+          "WHEEL_UP" = action.volumeUp; # wheel_up
+          "WHEEL_DOWN" = action.volumeDown; # wheel_down
 
-          "WHEEL_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "wheel_down" = Decrease volume
-          "DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "down" = Decrease volume
-          "VOLUME_DOWN" = "add volume -${volumeStep};${uosc-flash-volume}"; # "media_volume_down" = Decrease volume
+          "up" = action.volumeUp; # up
+          "down" = action.volumeDown; # down
+
+          "VOLUME_UP" = action.volumeUp; # media_volume_up
+          "VOLUME_DOWN" = action.volumeDown; # media_volume_down
 
           # Audios
-          "a" = "cycle audio up"; # "a" = Next audio
-          "Shift+a" = "cycle audio down"; # "shift+a" = Previous audio
+          "Ctrl+Shift+a" = action.openAudioMenu; # ctrl+shift+a
+
+          "a" = action.nextAudio; # a
+          "Shift+a" = action.prevAudio; # shift+a
 
           # Subtitles
-          "s" = "cycle sub up"; # "a" = Next subtitle
-          "Shift+s" = "cycle sub down"; # "shift+s" = Previous subtitle
-          "Ctrl+s" = "cycle sub-visibility"; # "ctrl+s" = Disable/Enable subtitle
+          "Ctrl+Shift+s" = action.openSubtitleMenu; # ctrl+shift+s
+          "Ctrl+s" = action.toggleSubtitle; # ctrl+s
+
+          "s" = action.nextSubtitle; # s
+          "Shift+s" = action.prevSubtitle; # shift+s
 
           # Playlist
-          "NEXT" = "${uosc-next}"; # "media_next" = Next on the playlist
-          "PGDWN" = "${uosc-next}"; # "page_down" = Next on the playlist
+          "l" = action.openPlaylistMenu; # l
 
-          "PREV" = "${uosc-prev}"; # "media_prev" = Previous on the playlist
-          "PGUP" = "${uosc-prev}"; # "page_up" = Next on the playlist
+          "PgDwn" = action.nextFile; # page_down
+          "PgUp" = action.prevFile; # page_up
+
+          "NEXT" = action.nextFile; # media_next
+          "PREV" = action.prevFile; # media_prev
 
           # Playback speed
-          "Ctrl+UP" = "cycle-values speed ${speedsList}"; # "ctrl+up" = Increase speed
-          "Ctrl+DOWN" = "cycle-values !reverse speed ${speedsList}"; # "ctrl+down" = Decrease speed
+          "Ctrl+0" = action.resetSpeed; # ctrl+0
+
+          "Ctrl+Up" = action.speedUp; # ctrl+up
+          "Ctrl+Down" = action.speedDown; # ctrl+down
 
           # Zoom
-          "Alt+f" = "add video-zoom ${zoomStep}"; # "ctrl+f" = Zoom
-          "Shift+f" = "add video-zoom -${zoomStep}"; # "shift+f" = UnZoom
-          "Alt+Shift+f" = "set video-zoom 0;set video-pan-x 0;set video-pan-y 0"; # "ctrl+shift+f" = Reset zoom and offsets
+          "Alt+Shift+f" = action.resetZoom; # ctrl+shift+f
 
-          "Alt+a" = "add video-pan-x ${moveStep}"; # "alt+a" = Move left
-          "Alt+d" = "add video-pan-x -${moveStep}"; # "alt+d" = Move right
-          "Alt+w" = "add video-pan-y ${moveStep}"; # "alt+w" = Move up
-          "Alt+s" = "add video-pan-y -${moveStep}"; # "alt+s" = Move down
+          "Alt+f" = action.zoomIn; # ctrl+f
+          "Shift+f" = action.zoomOut; # shift+f
+
+          "Ctrl+WHEEL_UP" = action.zoomIn; # ctrl+wheel_up
+          "Ctrl+WHEEL_DOWN" = action.zoomOut; # ctrl+wheel_down
+
+          "Alt+a" = action.moveLeft; # alt+a
+          "Alt+d" = action.moveRight; # alt+d
+          "Alt+w" = action.moveUp; # alt+w
+          "Alt+s" = action.moveDown; # alt+s
 
           # Rotate
-          "Ctrl+r" = "cycle-values video-rotate ${rotationList}"; # "ctrl+r" = Rotate video clockwise
-          "Shift+r" = "cycle-values !reverse video-rotate ${rotationList}"; # "shift+r" = Rotate video anti-clockwise
-          "Ctrl+Shift+r" = "set video-rotate 0"; # "ctrl+shift+r" = Reset rotation
+          "Ctrl+Shift+r" = action.resetRotation; # ctrl+shift+r
+
+          "Ctrl+r" = action.rotateClockwise; # ctrl+r
+          "Shift+r" = action.rotateAntiClockwise; # shift+r
 
           # After end
-          "Ctrl+Alt+d" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl shutdown";show-text "After playing: Shutdown"
-          ''; # "ctrl+alt+d" = Shutdown after video end
-          "Ctrl+Alt+s" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend";show-text "After playing: Suspend"
-          ''; # "ctrl+alt+s" = Suspend after video end
-          "Ctrl+Alt+h" = ''
-            run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate";show-text "After playing: Hibernate"
-          ''; # "ctrl+alt+h" = Hibernate after video end
-          # TODO: Make it work at the end, somehow...
-          # "shutdown" = ""; # TODO: Act by event?
+          "t" = action.afterPlaying.exit; # t
+          "g" = action.afterPlaying.playNext; # g
+          "Ctrl+Alt+d" = action.afterPlaying.shutdown; # ctrl+alt+d
+          "Ctrl+Alt+s" = action.afterPlaying.suspend; # ctrl+alt+s
+          "Ctrl+Alt+h" = action.afterPlaying.hibernate; # ctrl+alt+h
 
           # Loop
-          "r" = "cycle-values loop-file inf no"; # "r" = Loop/Do nothing
+          "r" = action.toggleLoop; # r
 
           # Reverse
-          "Alt+r" = "cycle-values play-direction forward backward;${uosc-flash-timeline}"; # "alt+r" = Reverse video
+          "Alt+r" = action.toggleReverse; # alt+r
 
           # Pin
-          "p" = "cycle ontop"; # "p" = Toggle pin-on-top # TODO: Broken. Check if is working later
+          "p" = action.togglePin; # p
 
           # Screenshot
-          "F5" = "screenshot video"; # "f5" = Screenshot without subtitles
+          "F5" = action.takeScreenshot; # f5
 
           # Info
-          "i" = "script-binding stats/display-stats-toggle"; # "i" = Toggle info on screen
+          "i" = action.toggleInfo; # i
 
           # File
-          "Ctrl+o" = "${uosc-open-file}"; # "ctrl+o" = Open UOSC file menu
-          "Ctrl+v" = "${uosc-paste}";
+          "Ctrl+o" = action.openFileMenu; # ctrl+o
+
+          "Ctrl+c" = action.copyFilePath; # ctrl+c
+          "Ctrl+v" = action.openFileInClipboard; # ctrl+v
 
         };
 
