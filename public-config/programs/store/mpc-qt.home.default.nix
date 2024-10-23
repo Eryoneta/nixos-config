@@ -2,15 +2,15 @@
 
   options = {
     profile.programs.mpc-qt = {
-      options.enabled = (mkBoolOption false); # DISABLED (Replaced by MPV)
-      options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
+      options.enabled = (utils.mkBoolOption false); # DISABLED (Replaced by MPV)
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
     };
   };
 
   config = with config.profile.programs.mpc-qt; {
 
     # MPC-QT: Multimidia player (A MPC-HC clone)
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [ mpc-qt ]
     );
 

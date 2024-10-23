@@ -11,10 +11,10 @@
     # Sound
     hardware.pulseaudio.enable = false;
     services.pipewire = {
-      enable = mkDefault true;
-      alsa.enable = mkDefault true;
-      alsa.support32Bit = mkDefault true;
-      pulse.enable = mkDefault true;
+      enable = utils.mkDefault true;
+      alsa.enable = utils.mkDefault true;
+      alsa.support32Bit = utils.mkDefault true;
+      pulse.enable = utils.mkDefault true;
     };
 
   };

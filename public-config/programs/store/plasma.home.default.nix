@@ -2,9 +2,9 @@
 
   options = {
     profile.programs.plasma = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable); # Not used
-      options.defaults = (mkDefaultsOption {
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.defaults = (utils.mkDefaultsOption {
 
         # Panel: Default widgets
         mainPanel.widgets = {
@@ -49,11 +49,11 @@
               General = {
                 groupPopups = false; # NEVER group icons!
                 onlyGroupWhenFull = false; # NEVER group icons!
-                launchers = mkFunc.joinStr "," [ # Pinned apps
+                launchers = (utils.joinStr "," [ # Pinned apps
                   "applications:systemsettings.desktop" # Settings
                   "applications:org.kde.konsole.desktop" # Konsole
                   "applications:org.kde.dolphin.desktop" # Dolphin
-                ];
+                ]);
                 separateLaunchers = false; # When clicked, replace the icon with the app. Do not keep the icon reserved!
                 showOnlyCurrentScreen = true; # Show only apps on the current screen
               };
@@ -121,22 +121,22 @@
 
     # Plasma: The KDE Plasma Desktop
     programs.plasma = {
-      enable = mkDefault options.enabled;
+      enable = utils.mkDefault options.enabled;
 
       # Workspace
       workspace = {
         clickItemTo = "select"; # When clicking files or folders, select them
-        lookAndFeel = mkDefault "org.kde.breezedark.desktop"; # Theme
+        lookAndFeel = utils.mkDefault "org.kde.breezedark.desktop"; # Theme
         cursor = {
-          theme = mkDefault "Breeze"; # Cursor theme
-          size = mkDefault 32; # Cursor size
+          theme = utils.mkDefault "Breeze"; # Cursor theme
+          size = utils.mkDefault 32; # Cursor size
         };
-        #iconTheme = mkDefault ""; # TODO: Set default
-        #wallpaper = mkDefault ""; # TODO: Set default
+        #iconTheme = utils.mkDefault ""; # TODO: Set default
+        #wallpaper = utils.mkDefault ""; # TODO: Set default
       };
 
       # Panels
-      panels = mkDefault [
+      panels = utils.mkDefault [
         # Main
         {
           location = "bottom";

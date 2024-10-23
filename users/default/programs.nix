@@ -10,17 +10,17 @@
     in with config-domain; (
       []
       # Default
-      ++ (mkFunc.searchFiles "${public.programs}" "" [ onlyHomeConfig onlyDefault ] onlyNixFile)
+      ++ (utils.searchFiles "${public.programs}" "" [ onlyHomeConfig onlyDefault ] onlyNixFile)
       # Host specific
-      ++ (mkFunc.searchFiles "${public.programs}" "" [ onlyHomeConfig onlyUser ] onlyNixFile)
+      ++ (utils.searchFiles "${public.programs}" "" [ onlyHomeConfig onlyUser ] onlyNixFile)
       ++ (
         # Check for "./private-config/programs"
-        if (mkFunc.pathExists private.programs) then (
+        if (utils.pathExists private.programs) then (
           []
           # Default
-          ++ (mkFunc.searchFiles "${private.programs}" "" [ onlyHomeConfig onlyDefault ] onlyNixFile)
+          ++ (utils.searchFiles "${private.programs}" "" [ onlyHomeConfig onlyDefault ] onlyNixFile)
           # Host specific
-          ++ (mkFunc.searchFiles "${private.programs}" "" [ onlyHomeConfig onlyUser ] onlyNixFile)
+          ++ (utils.searchFiles "${private.programs}" "" [ onlyHomeConfig onlyUser ] onlyNixFile)
         ) else []
       )
     )

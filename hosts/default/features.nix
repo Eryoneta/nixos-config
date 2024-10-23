@@ -9,7 +9,7 @@
     
     # Auto-login
     services.displayManager = {
-      autoLogin.enable = mkDefault false;
+      autoLogin.enable = utils.mkDefault false;
       autoLogin.user = host.user.username;
     };
 

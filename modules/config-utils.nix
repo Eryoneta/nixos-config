@@ -41,8 +41,8 @@ nix-lib: hm-pkgs: hm-lib: (
       # All that to avoid requiring "config.lib.file" from every home-manager module that needs this
       mkOutOfStoreSymlink = absolutePath: (
         let
-          pathStr = toString absolutePath;
-          name = hm-lib.hm.strings.storeFileName (baseNameOf pathStr);
+          pathStr = builtins.toString absolutePath;
+          name = hm-lib.hm.strings.storeFileName (builtins.baseNameOf pathStr);
         in (
           hm-pkgs.runCommandLocal name {} ''ln -s ${nix-lib.strings.escapeShellArg pathStr} $out''
         )
@@ -66,19 +66,14 @@ nix-lib: hm-pkgs: hm-lib: (
         type = nix-lib.types.attrs;
       };
 
-      # Functions
-      mkFunc = {
-        
-        # Check if a path exists
-        pathExists = path: (builtins.pathExists path);
+      # Check if a path exists
+      pathExists = path: (builtins.pathExists path);
 
-        # Build a INI format from a set
-        toINI = content: (nix-lib.generators.toINI {} content);
+      # Build a INI format from a set
+      toINI = content: (nix-lib.generators.toINI {} content);
 
-        # Join strings from a list into one
-        joinStr = str: list: (builtins.concatStringsSep str list);
-
-      };
+      # Join strings from a list into one
+      joinStr = str: list: (builtins.concatStringsSep str list);
 
     };
 
@@ -98,18 +93,15 @@ nix-lib: hm-pkgs: hm-lib: (
       ) (builtins.attrNames (mapDir ./nix-modules))
     );
 
-  in (
-    firstAttrSet // {
-      # Puts all my "nix-modules" into "mkFunc"
-      mkFunc = (
-        # Foldl': ( { ... }, [ { ... } { ... } ] ) -> { ... }
-        builtins.foldl' (
-          accumulator: modifier: (
-            # Merges everything into one huge set
-            accumulator // modifier
-          )
-        ) firstAttrSet.mkFunc attrSets
-      );
-    }
-  )
+  in {
+    utils = (firstAttrSet // (
+      # Foldl': ( { ... }, [ { ... } { ... } ] ) -> { ... }
+      builtins.foldl' (
+        accumulator: modifier: (
+          # Merges everything into one huge set
+          accumulator // modifier
+        )
+      ) firstAttrSet attrSets
+    ));
+  }
 )

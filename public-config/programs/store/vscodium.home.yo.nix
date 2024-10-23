@@ -7,16 +7,16 @@
       # Settings
       userSettings = with config-domain; (
         # Check for "./private-config/dotfiles"
-        mkIf (mkFunc.pathExists private.dotfiles) (
-          mkFunc.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
+        utils.mkIf (utils.pathExists private.dotfiles) (
+          utils.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
         )
       );
 
       # Shortcuts
       keybindings = with config-domain; (
         # Check for "./private-config/dotfiles"
-        mkIf (mkFunc.pathExists private.dotfiles) (
-          mkFunc.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/keybindings.json"
+        utils.mkIf (utils.pathExists private.dotfiles) (
+          utils.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/keybindings.json"
         )
       );
 

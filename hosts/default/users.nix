@@ -6,13 +6,13 @@
         let
           defaultPassword = with config-domain; (
             # Check for "./private-config/secrets"
-            mkIf (!(mkFunc.pathExists private.secrets)) (
+            utils.mkIf (!(utils.pathExists private.secrets)) (
               "nixos"
             )
           );
           hashedPasswordFilePath = username: with config-domain; (
             # Check for "./private-config/secrets"
-            mkIf (mkFunc.pathExists private.secrets) (
+            utils.mkIf (utils.pathExists private.secrets) (
               config.age.secrets."${username}-userPassword".path
             )
           );

@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.firefox-devedition = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.unstable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
     };
   };
 
@@ -26,7 +26,7 @@
 
       # Personal profile
       # This profile is personal. Customization without limits!
-      profiles."dev-edition-default" = mkIf (options.enabled) {
+      profiles."dev-edition-default" = utils.mkIf (options.enabled) {
         # It NEEDS to be "dev-edition-default"!
         #   This way "firefox-devedition" doesn't complain about "missing profiles"
         #   If it doesn't find it, then it creates a new one, but it can't edit "profiles.ini", throws an error
@@ -290,7 +290,7 @@
       in {
 
         # Firefox Developer Edition: Browser
-        packages = mkIf (options.enabled) (
+        packages = utils.mkIf (options.enabled) (
           with options.packageChannel; [
             (firefox-devedition.override {
               extraPrefsFiles = [

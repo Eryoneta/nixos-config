@@ -34,13 +34,13 @@
     ];
 
     # DHCP
-    networking.useDHCP = mkDefault true;
+    networking.useDHCP = utils.mkDefault true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = mkDefault "x86_64-linux";
+    nixpkgs.hostPlatform = utils.mkDefault "x86_64-linux";
 
     # Firmware
-    hardware.cpu.intel.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.intel.updateMicrocode = utils.mkDefault config.hardware.enableRedistributableFirmware;
     
   };
 

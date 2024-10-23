@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.zsh = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
@@ -11,15 +11,15 @@
 
       # ZSH: Shell
       programs.zsh = {
-        enable = mkDefault options.enabled;
-        package = mkDefault options.packageChannel.zsh;
+        enable = utils.mkDefault options.enabled;
+        package = utils.mkDefault options.packageChannel.zsh;
 
         # AutoComplete
-        enableCompletion = mkDefault true;
+        enableCompletion = utils.mkDefault true;
 
         # AutoSuggest
         autosuggestion = {
-          enable = mkDefault true;
+          enable = utils.mkDefault true;
           # Only present at unstable branch
           # TODO: Enable once its included
           #strategy = [ "history" ]; # Suggests based on history
@@ -43,8 +43,8 @@
         # Syntax Highlight
         # More at: https://github.com/zsh-users/zsh-syntax-highlighting/tree/master/docs/highlighters
         syntaxHighlighting = {
-          enable = mkDefault true;
-          package = mkDefault options.packageChannel.zsh-syntax-highlighting;
+          enable = utils.mkDefault true;
+          package = utils.mkDefault options.packageChannel.zsh-syntax-highlighting;
           highlighters = [ "root" "brackets" "cursor" ];
         };
 
@@ -57,14 +57,14 @@
             "rm *"
             "cd *"
           ];
-          size = mkDefault 10000;
+          size = utils.mkDefault 10000;
           path = "${config.xdg.dataHome}/zsh/zsh_history";
         };
 
         # Oh-My-ZSH: Customize ZSH
         oh-my-zsh = {
-          enable = mkDefault true;
-          package = mkDefault options.packageChannel.oh-my-zsh;
+          enable = utils.mkDefault true;
+          package = utils.mkDefault options.packageChannel.oh-my-zsh;
 
           # Plugins
           # More at: https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
@@ -116,7 +116,7 @@
       };
 
       # Powerlevel10k packages
-      home.packages = mkIf (options.enabled) (
+      home.packages = utils.mkIf (options.enabled) (
         with options.packageChannel; [
           zsh-powerlevel10k # Powerlevel10k: A ZSH theme
           meslo-lgs-nf # Meslo Nerd Font: A font patched for Powerlevel10k

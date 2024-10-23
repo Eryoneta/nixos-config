@@ -2,14 +2,14 @@
 
   options = {
     profile.programs.mpv = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
   config = with config.profile.programs.mpv; {
 
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [
 
         # Trash-Cli: Interface for Freedesktop.org Trash
@@ -29,9 +29,9 @@
 
     # MPV: Multimidia player
     programs.mpv = {
-      enable = mkDefault options.enabled;
-      package = mkDefault options.packageChannel.mpv;
-      # package = mkDefault (options.packageChannel.mpv.override {
+      enable = utils.mkDefault options.enabled;
+      package = utils.mkDefault options.packageChannel.mpv;
+      # package = utils.mkDefault (options.packageChannel.mpv.override {
       #   # Scripts
       #   scripts = with options.packageChannel; [
       #     mpvScripts.uosc # UOSC: MPV frontend
@@ -87,7 +87,7 @@
         ];
         speedMinBoundary = "0.03124"; # Smaller than the smallest speed, triggers the limit
         speedMaxBoundary = "16.00001"; # Bigger than the biggest speed, triggers the limit
-        speedsList = (mkFunc.joinStr " " (builtins.concatLists [
+        speedsList = (utils.joinStr " " (builtins.concatLists [
           [ speedMinBoundary ]
           speeds
           [ speedMaxBoundary ]
@@ -98,7 +98,7 @@
         moveStep = "0.01"; # Move screen: +-1%
 
         # Rotation
-        rotationList = (mkFunc.joinStr " " [
+        rotationList = (utils.joinStr " " [
           "0" "90" "180" "270"
         ]);
 
@@ -106,226 +106,226 @@
         action = {
 
           # Play/Pause
-          togglePause = (mkFunc.joinStr ";" [ # Play/Pause
+          togglePause = (utils.joinStr ";" [ # Play/Pause
             "cycle pause"
             uosc-flash-pause-indicator
           ]);
-          play = (mkFunc.joinStr ";" [ # Play
+          play = (utils.joinStr ";" [ # Play
             "set pause no"
             uosc-flash-pause-indicator
           ]);
-          pause = (mkFunc.joinStr ";" [ # Pause
+          pause = (utils.joinStr ";" [ # Pause
             "set pause yes"
             uosc-flash-pause-indicator
           ]);
 
           # Fullscreen
-          toggleFullscreen = (mkFunc.joinStr ";" [ # Toggle fullscreen
+          toggleFullscreen = (utils.joinStr ";" [ # Toggle fullscreen
             "cycle fullscreen"
           ]);
-          exitFullscreen = (mkFunc.joinStr ";" [ # Exit fullscreen
+          exitFullscreen = (utils.joinStr ";" [ # Exit fullscreen
             "set fullscreen no"
           ]);
 
           # Menu
-          openMenu = (mkFunc.joinStr ";" [ # Open menu
+          openMenu = (utils.joinStr ";" [ # Open menu
             uosc-open-menu
           ]);
-          # openContextMenu = (mkFunc.joinStr ";" [ # Menu
+          # openContextMenu = (utils.joinStr ";" [ # Menu
           #   "context-menu"
           # ]); # TODO: Create menu?
 
           # Exit
-          exit = (mkFunc.joinStr ";" [ # = Exit
+          exit = (utils.joinStr ";" [ # = Exit
             "quit"
           ]);
           
           # Seek
           goForward = {
-            frame = (mkFunc.joinStr ";" [ # Go +1 frame and pause
+            frame = (utils.joinStr ";" [ # Go +1 frame and pause
               "frame-step"
               ''show-text "Step: +1 frame"''
               uosc-flash-timeline
             ]);
-            small = (mkFunc.joinStr ";" [ # Go forward (Small)
+            small = (utils.joinStr ";" [ # Go forward (Small)
               "seek ${seekStepSmall}"
               uosc-flash-timeline
             ]);
-            medium = (mkFunc.joinStr ";" [ # Go forward (Medium)
+            medium = (utils.joinStr ";" [ # Go forward (Medium)
               "seek ${seekStepMedium}"
               uosc-flash-timeline
             ]);
-            big = (mkFunc.joinStr ";" [ # Go forward (Big)
+            big = (utils.joinStr ";" [ # Go forward (Big)
               "seek ${seekStepBig}"
               uosc-flash-timeline
             ]);
-            end = (mkFunc.joinStr ";" [ # End of video
+            end = (utils.joinStr ";" [ # End of video
               "seek 100 absolute-percent"
               uosc-flash-timeline
             ]);
           };
           goBack = {
-            frame = (mkFunc.joinStr ";" [ # Go -1 frame and pause
+            frame = (utils.joinStr ";" [ # Go -1 frame and pause
               "frame-back-step"
               ''show-text "Step: -1 frame"''
               uosc-flash-timeline
             ]);
-            small = (mkFunc.joinStr ";" [ # Go back (Small)
+            small = (utils.joinStr ";" [ # Go back (Small)
               "seek -${seekStepSmall}"
               uosc-flash-timeline
             ]);
-            medium = (mkFunc.joinStr ";" [ # Go back (Medium)
+            medium = (utils.joinStr ";" [ # Go back (Medium)
               "seek -${seekStepMedium}"
               uosc-flash-timeline
             ]);
-            big = (mkFunc.joinStr ";" [ # Go back (Big)
+            big = (utils.joinStr ";" [ # Go back (Big)
               "seek -${seekStepBig}"
               uosc-flash-timeline
             ]);
-            start = (mkFunc.joinStr ";" [ # Start of video
+            start = (utils.joinStr ";" [ # Start of video
               "seek 0 absolute-percent"
               uosc-flash-timeline
             ]);
           };
 
           # Volume
-          toggleMute = (mkFunc.joinStr ";" [ # Mute/Unmute
+          toggleMute = (utils.joinStr ";" [ # Mute/Unmute
             "cycle mute"
             uosc-flash-volume
           ]);
-          volumeUp = (mkFunc.joinStr ";" [ # Increase volume
+          volumeUp = (utils.joinStr ";" [ # Increase volume
             "add volume ${volumeStep}"
             uosc-flash-volume
           ]);
-          volumeDown = (mkFunc.joinStr ";" [ # Decrease volume
+          volumeDown = (utils.joinStr ";" [ # Decrease volume
             "add volume -${volumeStep}"
             uosc-flash-volume
           ]);
 
           # Audios
-          openAudioMenu = (mkFunc.joinStr ";" [ # Open audio menu
+          openAudioMenu = (utils.joinStr ";" [ # Open audio menu
             uosc-open-audio
           ]);
-          nextAudio = (mkFunc.joinStr ";" [ # Next audio
+          nextAudio = (utils.joinStr ";" [ # Next audio
             "cycle audio up"
             ''show-text "Audio: ''${audio}"''
           ]);
-          prevAudio = (mkFunc.joinStr ";" [ # Previous audio
+          prevAudio = (utils.joinStr ";" [ # Previous audio
             "cycle audio down"
             ''show-text "Audio: ''${audio}"''
           ]);
 
           # Subtitles
-          openSubtitleMenu = (mkFunc.joinStr ";" [ # Open subtitle menu
+          openSubtitleMenu = (utils.joinStr ";" [ # Open subtitle menu
             uosc-open-subtitles
           ]);
-          nextSubtitle = (mkFunc.joinStr ";" [ # Next subtitle
+          nextSubtitle = (utils.joinStr ";" [ # Next subtitle
             "cycle sub up"
             ''show-text "Subtitle: ''${sub}"''
           ]);
-          prevSubtitle = (mkFunc.joinStr ";" [ # Previous subtitle
+          prevSubtitle = (utils.joinStr ";" [ # Previous subtitle
             "cycle sub down"
             ''show-text "Subtitle: ''${sub}"''
           ]);
-          toggleSubtitle = (mkFunc.joinStr ";" [ # Disable/Enable subtitle
+          toggleSubtitle = (utils.joinStr ";" [ # Disable/Enable subtitle
             "cycle sub-visibility"
             ''show-text "Subtitle: ''${sub}"''
           ]);
 
           # Playlist
-          openPlaylistMenu = (mkFunc.joinStr ";" [ # Open playlist menu
+          openPlaylistMenu = (utils.joinStr ";" [ # Open playlist menu
             uosc-open-playlist
           ]);
-          nextFile = (mkFunc.joinStr ";" [ # Next on the playlist
+          nextFile = (utils.joinStr ";" [ # Next on the playlist
             uosc-next
           ]);
-          prevFile = (mkFunc.joinStr ";" [ # Previous on the playlist
+          prevFile = (utils.joinStr ";" [ # Previous on the playlist
             uosc-prev
           ]);
 
           # Playback speed
-          speedUp = (mkFunc.joinStr ";" [ # Increase speed
+          speedUp = (utils.joinStr ";" [ # Increase speed
             "cycle-values speed ${speedsList}"
             # ''show-text "Speed: ''${speed}x"''
           ]);
-          speedDown = (mkFunc.joinStr ";" [ # Decrease speed
+          speedDown = (utils.joinStr ";" [ # Decrease speed
             "cycle-values !reverse speed ${speedsList}"
             # ''show-text "Speed: ''${speed}x"''
           ]);
-          resetSpeed = (mkFunc.joinStr ";" [ # Reset speed
+          resetSpeed = (utils.joinStr ";" [ # Reset speed
             "set speed 1"
             # ''show-text "Speed: ''${speed}x"''
           ]);
           # TODO: "speed" var breaks UOSC. Fix?
 
           # Zoom
-          zoomIn = (mkFunc.joinStr ";" [ # Zoom in
+          zoomIn = (utils.joinStr ";" [ # Zoom in
             "add video-zoom ${zoomStep}"
             ''show-text "Zoom: ''${video-zoom}"''
           ]);
-          zoomOut = (mkFunc.joinStr ";" [ # Zoom out
+          zoomOut = (utils.joinStr ";" [ # Zoom out
             "add video-zoom -${zoomStep}"
             ''show-text "Zoom: ''${video-zoom}"''
           ]);
-          resetZoom = (mkFunc.joinStr ";" [ # Reset zoom and offsets
+          resetZoom = (utils.joinStr ";" [ # Reset zoom and offsets
             "set video-zoom 0"
             "set video-pan-x 0"
             "set video-pan-y 0"
             ''show-text "Zoom: Reset"''
           ]);
-          moveLeft = (mkFunc.joinStr ";" [ # Move left
+          moveLeft = (utils.joinStr ";" [ # Move left
             "add video-pan-x ${moveStep}"
             ''show-text "Move left"''
           ]);
-          moveRight = (mkFunc.joinStr ";" [ # Move right
+          moveRight = (utils.joinStr ";" [ # Move right
             "add video-pan-x -${moveStep}"
             ''show-text "Move right"''
           ]);
-          moveUp = (mkFunc.joinStr ";" [ # Move up
+          moveUp = (utils.joinStr ";" [ # Move up
             "add video-pan-y ${moveStep}"
             ''show-text "Move up"''
           ]);
-          moveDown = (mkFunc.joinStr ";" [ # Move down
+          moveDown = (utils.joinStr ";" [ # Move down
             "add video-pan-y -${moveStep}"
             ''show-text "Move down"''
           ]);
 
           # Rotate
-          rotateClockwise = (mkFunc.joinStr ";" [ # Rotate video clockwise
+          rotateClockwise = (utils.joinStr ";" [ # Rotate video clockwise
             "cycle-values video-rotate ${rotationList}"
             ''show-text "Rotation: ''${video-rotate}°"''
           ]);
-          rotateAntiClockwise = (mkFunc.joinStr ";" [ # Rotate video anti-clockwise
+          rotateAntiClockwise = (utils.joinStr ";" [ # Rotate video anti-clockwise
             "cycle-values !reverse video-rotate ${rotationList}"
             ''show-text "Rotation: ''${video-rotate}°"''
           ]);
-          resetRotation = (mkFunc.joinStr ";" [ # Reset rotation
+          resetRotation = (utils.joinStr ";" [ # Reset rotation
             "set video-rotate 0"
             ''show-text "Rotation: Reset"''
           ]);
 
           # After Playing
           afterPlaying = {
-            exit = (mkFunc.joinStr ";" [ # Exit/Do nothing after video end
+            exit = (utils.joinStr ";" [ # Exit/Do nothing after video end
               ""
               ''show-text "After playing: Exit"''
             ]);
-            playNext = (mkFunc.joinStr ";" [ # Play next/Do nothing after video end
+            playNext = (utils.joinStr ";" [ # Play next/Do nothing after video end
               ""
               ''show-text "After playing: Load next file"''
             ]);
-            shutdown = (mkFunc.joinStr ";" [ # Shutdown after video end
+            shutdown = (utils.joinStr ";" [ # Shutdown after video end
               # Note: It's good practice to ask KDE Plasma to shutdown
               #''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
               ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
               # ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
               ''show-text "After playing: Shutdown"''
             ]);
-            suspend = (mkFunc.joinStr ";" [ # Suspend after video end
+            suspend = (utils.joinStr ";" [ # Suspend after video end
               ''run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend"''
               ''show-text "After playing: Suspend"''
             ]);
-            hibernate = (mkFunc.joinStr ";" [ # Hibernate after video end
+            hibernate = (utils.joinStr ";" [ # Hibernate after video end
               ''run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
               ''show-text "After playing: Hibernate"''
             ]);
@@ -334,46 +334,46 @@
           };
 
           # Loop
-          toggleLoop = (mkFunc.joinStr ";" [ # Loop/Do nothing
+          toggleLoop = (utils.joinStr ";" [ # Loop/Do nothing
             "cycle-values loop-file inf no"
             ''show-text "Loop: ''${loop-file}"''
             uosc-flash-timeline
           ]);
 
           # Reverse
-          toggleReverse = (mkFunc.joinStr ";" [ # Toggle Reverse video
+          toggleReverse = (utils.joinStr ";" [ # Toggle Reverse video
             "cycle-values play-direction forward backward"
             ''show-text "Play direction: ''${play-direction}"''
             uosc-flash-timeline
           ]);
 
           # Pin
-          togglePin = (mkFunc.joinStr ";" [ # Toggle pin-on-top
+          togglePin = (utils.joinStr ";" [ # Toggle pin-on-top
             "cycle ontop"
             ''show-text "Pinned: ''${ontop}"''
           ]);
           # TODO: Broken. Check if it's working later
 
           # Screenshot
-          takeScreenshot = (mkFunc.joinStr ";" [ # Screenshot without subtitles
+          takeScreenshot = (utils.joinStr ";" [ # Screenshot without subtitles
             "screenshot video"
             ''show-text "Screenshot taken"''
           ]);
 
           # Info
-          toggleInfo = (mkFunc.joinStr ";" [ # Toggle info on screen
+          toggleInfo = (utils.joinStr ";" [ # Toggle info on screen
             "script-binding stats/display-stats-toggle"
           ]);
 
           # File
-          openFileMenu = (mkFunc.joinStr ";" [ # Open UOSC file menu
+          openFileMenu = (utils.joinStr ";" [ # Open UOSC file menu
             uosc-open-file
           ]);
-          copyFilePath = (mkFunc.joinStr ";" [ # Copy file path
+          copyFilePath = (utils.joinStr ";" [ # Copy file path
             ''run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard"''
             ''show-text "Copied file path to clipboard"''
           ]);
-          openFileInClipboard = (mkFunc.joinStr ";" [ # Paste file path to play
+          openFileInClipboard = (utils.joinStr ";" [ # Paste file path to play
             uosc-paste
           ]);
 
@@ -448,10 +448,10 @@
 
             # Control bar
             # Doc: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf#L24-L82
-            "controls" = (mkFunc.joinStr "," [
+            "controls" = (utils.joinStr "," [
               "menu" # UOSC menu button
               "gap:0.5"
-              (mkFunc.joinStr "" [ # Speed-up button
+              (utils.joinStr "" [ # Speed-up button
                 "cycle" # Type
                 ":rotate_left" # Icon
                 ":play-direction" # Property
@@ -471,19 +471,19 @@
               "items" # Playlist menu button
               "next" # Playlist-next button
               "space"
-              (mkFunc.joinStr "" [ # Speed-down button
+              (utils.joinStr "" [ # Speed-down button
                 "command" # Type
                 ":fast_rewind" # Icon
                 ":${action.speedDown}" # Command
                 "?Decrease speed" # Tooltip
               ])
-              (mkFunc.joinStr "" [ # Reset speed button
+              (utils.joinStr "" [ # Reset speed button
                 "command" # Type
                 ":speed" # Icon
                 ":${action.resetSpeed}" # Command
                 "?Reset speed" # Tooltip
               ])
-              (mkFunc.joinStr "" [ # Speed-up button
+              (utils.joinStr "" [ # Speed-up button
                 "command" # Type
                 ":fast_forward" # Icon
                 ":${action.speedUp}" # Command
@@ -571,10 +571,10 @@
             "disable_elements" = ""; # Elements to disable
 
             # Files
-            "video_types" = "3g2,3gp,asf,avi,f4v,flv,h264,h265,m2ts,m4v,mkv,mov,mp4,mp4v,mpeg,mpg,ogm,ogv,rm,rmvb,ts,vob,webm,wmv,y4m";
-            "audio_types" = "aac,ac3,aiff,ape,au,cue,dsf,dts,flac,m4a,mid,midi,mka,mp3,mp4a,oga,ogg,opus,spx,tak,tta,wav,weba,wma,wv";
+            "video_types" = "3g2,3gp,asf,avi,f4v,flv,h264,h265,m2ts,m4v,utils.mkv,mov,mp4,mp4v,mpeg,mpg,ogm,ogv,rm,rmvb,ts,vob,webm,wmv,y4m";
+            "audio_types" = "aac,ac3,aiff,ape,au,cue,dsf,dts,flac,m4a,mid,midi,utils.mka,mp3,mp4a,oga,ogg,opus,spx,tak,tta,wav,weba,wma,wv";
             "image_types" = "apng,avif,bmp,gif,j2k,jp2,jfif,jpeg,jpg,jxl,mj2,png,svg,tga,tif,tiff,webp";
-            "subtitle_types" = "aqt,ass,gsub,idx,jss,lrc,mks,pgs,pjs,psb,rt,sbv,slt,smi,sub,sup,srt,ssa,ssf,ttxt,txt,usf,vt,vtt";
+            "subtitle_types" = "aqt,ass,gsub,idx,jss,lrc,utils.mks,pgs,pjs,psb,rt,sbv,slt,smi,sub,sup,srt,ssa,ssf,ttxt,txt,usf,vt,vtt";
             "playlist_types" = "m3u,m3u8,pls,url,cue";
             "default_directory" = "~/"; # Default open-file menu directory
             "show_hidden_files" = "yes"; # Show hidden files

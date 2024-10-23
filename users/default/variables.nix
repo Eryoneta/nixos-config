@@ -3,8 +3,8 @@
 
     # Variables
     home.sessionVariables = {
-      EDITOR = mkDefault "kwrite"; # Default Text Editor
-      DEFAULT_BROWSER = mkDefault "${config.programs.firefox.package}/bin/firefox"; # Default Browser
+      EDITOR = utils.mkDefault "kwrite"; # Default Text Editor
+      DEFAULT_BROWSER = utils.mkDefault "${config.programs.firefox.package}/bin/firefox"; # Default Browser
     };
 
   };

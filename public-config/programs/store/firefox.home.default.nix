@@ -2,8 +2,8 @@
 
   options = {
     profile.programs.firefox = {
-      options.enabled = (mkBoolOption true);
-      options.packageChannel = (mkPackageOption pkgs-bundle.stable);
+      options.enabled = (utils.mkBoolOption true);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 
@@ -11,8 +11,8 @@
 
     # Firefox: Browser
     programs.firefox = {
-      enable = mkDefault options.enabled;
-      package = mkDefault options.packageChannel.firefox;
+      enable = utils.mkDefault options.enabled;
+      package = utils.mkDefault options.packageChannel.firefox;
 
       # Language
       # TODO: Enable once the option is included
@@ -83,7 +83,7 @@
     };
 
     # Plasma Browser Integration: Integrate browsers into Plasma Desktop
-    home.packages = mkIf (options.enabled) (
+    home.packages = utils.mkIf (options.enabled) (
       with options.packageChannel; [ kdePackages.plasma-browser-integration ]
     );
 
