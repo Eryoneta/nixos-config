@@ -316,7 +316,10 @@
               ''show-text "After playing: Load next file"''
             ]);
             shutdown = (joinStr ";" [ # Shutdown after video end
-              ''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"''
+              # Note: It's good practice to ask KDE Plasma to shutdown
+              #''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
+              ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
+              # ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
               ''show-text "After playing: Shutdown"''
             ]);
             suspend = (joinStr ";" [ # Suspend after video end
