@@ -60,6 +60,12 @@ nix-lib: hm-pkgs: hm-lib: (
         type = nix-lib.types.attrs;
       };
 
+      # Creates a defaults option for "options"
+      mkDefaultsOption = default: nix-lib.mkOption {
+        inherit default;
+        type = nix-lib.types.attrs;
+      };
+
       # Functions
       mkFunc = {
         
