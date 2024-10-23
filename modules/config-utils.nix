@@ -75,6 +75,9 @@ nix-lib: hm-pkgs: hm-lib: (
         # Build a INI format from a set
         toINI = content: (nix-lib.generators.toINI {} content);
 
+        # Join strings from a list into one
+        joinStr = str: list: (builtins.concatStringsSep str list);
+
       };
 
     };

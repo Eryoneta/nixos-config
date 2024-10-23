@@ -31,7 +31,7 @@
                   icon = "nix-snowflake-white"; # Icon # TODO: Set another one?
                   # Sidebar
                   sidebarFollowsTheme = true; # Theme
-                  sidebarShortcuts = (builtins.concatStringsSep "," [ # Shortcuts # TODO: Not being written??? Fix
+                  sidebarShortcuts = (mkFunc.joinStr "," [ # Shortcuts # TODO: Not being written??? Fix
                     "org.kde.dolphin.desktop" # Dolphin
                     "systemsettings.desktop" # Settings
                   ]);
@@ -59,7 +59,7 @@
             widgets.virtualDesktopsPager
             (widgets.taskManager // {
               config.General = (widgets.taskManager.config.General // {
-                launchers = (builtins.concatStringsSep "," [ # Pinned apps # TODO: Change later
+                launchers = (mkFunc.joinStr "," [ # Pinned apps # TODO: Change later
                   "applications:systemsettings.desktop" # Settings
                   "applications:org.kde.dolphin.desktop" # Dolphin
                   "applications:codium.desktop" # VSCodium

@@ -49,7 +49,7 @@
               General = {
                 groupPopups = false; # NEVER group icons!
                 onlyGroupWhenFull = false; # NEVER group icons!
-                launchers = builtins.concatStringsSep "," [ # Pinned apps
+                launchers = mkFunc.joinStr "," [ # Pinned apps
                   "applications:systemsettings.desktop" # Settings
                   "applications:org.kde.konsole.desktop" # Konsole
                   "applications:org.kde.dolphin.desktop" # Dolphin
