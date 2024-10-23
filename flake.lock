@@ -206,6 +206,29 @@
         "type": "gitlab"
       }
     },
+    "plasma-manager": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1729372184,
+        "narHash": "sha256-Tb2/jJ74pt0nmfprkOW1g5zZphJTNbzLnyDENM+c5+I=",
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "rev": "9390dadadc58ffda8e494b31ef66a4ae041f6dd1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -215,7 +238,8 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
-        "nurpkgs-firefox-addons": "nurpkgs-firefox-addons"
+        "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
+        "plasma-manager": "plasma-manager"
       }
     },
     "systems": {
