@@ -42,13 +42,15 @@
   # User interface
   "browser.uiCustomization.state" = (
     let
-      extensionCount = 3;
+      extensionCount = 4;
       # "Ublock-Origin" extension
       ublock-origin-id = "ublock0_raymondhill_net-browser-action";
       # "Tab Stash" extension
       tab-stash-id = "tab-stash_condordes_net-browser-action";
       # "Sidebery" extension
       sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
+      # "Plasma Integration" extension
+      plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
     in {
       "placements" = {
         "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -75,6 +77,7 @@
         "widget-overflow-fixed-list" = [];
         "unified-extensions-area" = [ # List of extensions not in the bars
           ublock-origin-id
+          plasma-integration-id
         ];
         "PersonalToolbar" = [ # The bar that contains bookmars
           "sidebar-button" # Sidebar button
@@ -86,7 +89,7 @@
       "seen" = [ # Stuff that are not included
         "save-to-pocket-button" # Pocket
         "profiler-button" # Profiler button
-          "firefox-view-button" # Firefox View Button(Top-left)
+        "firefox-view-button" # Firefox View Button(Top-left)
       ];
       "dirtyAreaCache" = [ # All bars that were modified
         "nav-bar"

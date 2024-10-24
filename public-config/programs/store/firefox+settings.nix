@@ -6,11 +6,13 @@
   # User interface
   "browser.uiCustomization.state" = (
     let
-      extensionCount = 2;
+      extensionCount = 3;
       # "Ublock-Origin" extension
       ublock-origin-id = "ublock0_raymondhill_net-browser-action";
       # "Tab Stash" extension
       tab-stash-id = "tab-stash_condordes_net-browser-action";
+      # "Plasma Integration" extension
+      plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
     in {
       "placements" = {
         "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -37,6 +39,7 @@
         "widget-overflow-fixed-list" = [];
         "unified-extensions-area" = [ # List of extensions not in the bars
           ublock-origin-id
+          plasma-integration-id
         ];
         "PersonalToolbar" = [ # The bar that contains bookmars
           "sidebar-button" # Sidebar button
