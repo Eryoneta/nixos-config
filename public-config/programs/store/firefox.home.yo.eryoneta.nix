@@ -1,6 +1,12 @@
 { config, user, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.firefox; {
 
+    profile.programs.firefox = { # Load settings into my "firefox.options.defaults"
+      options.defaults = {
+        settings = (import ./firefox+settings.nix);
+      };
+    };
+
     # Firefox: Browser
     programs.firefox = {
 
@@ -32,25 +38,9 @@
         );
 
         # Settings
-        settings = (config.programs.firefox.profiles."template-profile".settings // {
-
-          # UI (User Interface)
-          "browser.toolbars.bookmarks.visibility" = "always"; # Always show bookmark-toolbar
-          # Theme
-          "extensions.activeThemeID" = "dreamer-bold-colorway@mozilla.org"; # Purple theme!
-
-          # UX (User experience)
-          # Cookies
-          "cookiebanners.ui.desktop.enabled" = true; # Enable cookie banner handling
-          "cookiebanners.service.mode" = 1; # Reject all coookies or do nothing
-          # Bookmarks
-          "browser.bookmarks.openInTabClosesMenu" = false; # Open bookmark(Middle click), but don't close the menu
-          "browser.tabs.loadBookmarksInBackground" = true; # Load open bookmark in background
-
-          # Privacy
-          "signon.rememberSignons" = false; # Do not ask to save passwords
-
-        });
+        settings = (config.programs.firefox.profiles."template-profile".settings // (
+          options.defaults.settings
+        ));
 
       };
       
