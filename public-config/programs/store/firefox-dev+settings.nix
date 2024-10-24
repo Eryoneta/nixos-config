@@ -55,7 +55,6 @@
           "menubar-items"
         ];
         "TabsToolbar" = [ # The bar that contains tabs
-          "firefox-view-button" # Firefox View Button(Top-left)
           "alltabs-button" # All-tabs button
           "tabbrowser-tabs" # Tabs
           "new-tab-button" # New-tab button
@@ -87,6 +86,7 @@
       "seen" = [ # Stuff that are not included
         "save-to-pocket-button" # Pocket
         "profiler-button" # Profiler button
+          "firefox-view-button" # Firefox View Button(Top-left)
       ];
       "dirtyAreaCache" = [ # All bars that were modified
         "nav-bar"
