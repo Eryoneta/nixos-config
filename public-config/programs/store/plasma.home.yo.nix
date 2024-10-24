@@ -19,9 +19,8 @@
       # Panels
       panels = [
         # Main
-        {
-          location = "bottom";
-          widgets = with options.defaults.mainPanel; [
+        (options.defaults.panels.main // {
+          widgets = with options.defaults.panels.main; [
             {
               name = "com.github.zren.tiledmenu"; # "TiledMenu": Start menu with tiled apps
               config = {
@@ -83,7 +82,7 @@
             widgets.clock
             widgets.showDesktop
           ];
-        }
+        })
       ];
 
     };
