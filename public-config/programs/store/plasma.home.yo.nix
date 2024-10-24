@@ -6,14 +6,21 @@
 
       # Workspace
       workspace = {
-        clickItemTo = "select"; # When clicking files or folders, select them
-        lookAndFeel = "org.kde.breezedark.desktop"; # Theme
+        # Behaviour
+        enableMiddleClickPaste = false; # Do not paste with middle-click (Too many accidents!)
+        # UI
         cursor = {
-          theme = "Breeze"; # Cursor theme # TODO: Change
+          theme = "Breeze"; # Cursor theme # TODO: Change to custom
           size = 22; # Cursor size
         };
-        #iconTheme = ""; # TODO: Set
-        #wallpaper = ""; # TODO: Set
+        #wallpaper = ""; # TODO: Set one
+        wallpaperFillMode = "preserveAspectCrop"; # Resize and cut excess
+        # Themes
+        theme = "breeze-dark"; # Global Theme
+        lookAndFeel = "org.kde.breezedark.desktop"; # Theme # TODO: Change?
+        colorScheme = "BreezeDark"; # Color theme
+        iconTheme = "Papirus-Colors-Dark"; # Icons theme
+        soundTheme = "Ocean"; # Sound theme
       };
 
       # Panels
@@ -58,10 +65,14 @@
             widgets.virtualDesktopsPager
             (widgets.taskManager // {
               config.General = (widgets.taskManager.config.General // {
-                launchers = (utils.joinStr "," [ # Pinned apps # TODO: Change later
+                launchers = (utils.joinStr "," [ # Pinned apps
                   "applications:systemsettings.desktop" # Settings
                   "applications:org.kde.dolphin.desktop" # Dolphin
                   "applications:codium.desktop" # VSCodium
+                  # "applications:org.kde.dolphin.desktop" # Dolphin
+                  # "applications:firefox.desktop" # Firefox
+                  # "applications:firefox-devedition.desktop" # Firefox-Dev
+                  # TODO: (Plasma/Taskbar/Apps) Change later
                 ]);
               });
             })
@@ -84,6 +95,13 @@
           ];
         })
       ];
+
+      # Shortcuts
+      shortcuts = {
+        "yakuake" = {
+          "toggle-window-state" = "Meta+T"; # "meta+t" = Show/Hide Yakuake
+        };
+      };
 
     };
 
