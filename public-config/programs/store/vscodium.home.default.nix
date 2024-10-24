@@ -3,7 +3,7 @@
   options = {
     profile.programs.vscodium = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
     };
   };
 
