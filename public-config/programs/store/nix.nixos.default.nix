@@ -22,7 +22,7 @@
       # Nix Store
       settings = {
         auto-optimise-store = (utils.mkDefault) true; # Remove duplicates and creates hardlinks
-        # TODO: Remove once flakes are sorted out(Might take a while!)
+        # TODO: (Nix) Remove once flakes are sorted out (Might take a while!)
         experimental-features = [ "nix-command" "flakes" ]; # Experimental features
       };
 

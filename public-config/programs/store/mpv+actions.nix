@@ -55,7 +55,8 @@
     ]);
     # openContextMenu = (utils.joinStr ";" [ # Menu
     #   "context-menu"
-    # ]); # TODO: Create menu?
+    # ]);
+    # TODO: (MPV) Create custom context menu?
 
     # Exit
     exit = (utils.joinStr ";" [ # = Exit
@@ -178,7 +179,7 @@
       "set speed 1"
       # ''show-text "Speed: ''${speed}x"''
     ]);
-    # TODO: "speed" var breaks UOSC. Fix?
+    # TODO: (MPV) "speed" var breaks UOSC. Fix?
 
     # Zoom
     zoomIn = (utils.joinStr ";" [ # Zoom in
@@ -251,8 +252,9 @@
         ''run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
         ''show-text "After playing: Hibernate"''
       ]);
-      # TODO: Make it work at the end, somehow...
-      # "shutdown" = ""; # TODO: Act by event?
+      # TODO: (MPV) Make "After playing" work, somehow...
+      # "shutdown" = "";
+      # TODO: (MPV) Act by event? Check
     };
 
     # Loop
@@ -274,7 +276,7 @@
       "cycle ontop"
       ''show-text "Pinned: ''${ontop}"''
     ]);
-    # TODO: Broken. Check if it's working later
+    # TODO: (MPV)(24.11) "Pinned" does not work. Check if it's working later
 
     # Screenshot
     takeScreenshot = (utils.joinStr ";" [ # Screenshot without subtitles

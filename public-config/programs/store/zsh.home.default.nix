@@ -20,9 +20,8 @@
         # AutoSuggest
         autosuggestion = {
           enable = (utils.mkDefault) true;
-          # Only present at unstable branch
-          # TODO: Enable once its included
           #strategy = [ "history" ]; # Suggests based on history
+          # TODO: (ZSH)(24.11) Enable "autosuggestion.strategy" once it's included
         };
 
         # Configuration

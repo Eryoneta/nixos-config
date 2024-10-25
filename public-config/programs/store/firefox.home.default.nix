@@ -16,8 +16,8 @@
       package = (utils.mkDefault) options.packageChannel.firefox;
 
       # Language
-      # TODO: Enable once the option is included
       #languagePacks = [ "pt-BR" "en-US" ];
+      # TODO: (Firefox)(24.11) Enable once the option is included
 
       # Policies
       # More at: "about:policies#documentaion"

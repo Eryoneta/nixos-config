@@ -20,7 +20,8 @@
     programs.plasma = {
       enable = (utils.mkDefault) options.enabled;
       immutableByDefault = (utils.mkDefault) false; # Options can be changed by the user
-      overrideConfig = (utils.mkDefault) false; # Do not delete configs set outside plasma-manager # TODO: Change?
+      overrideConfig = (utils.mkDefault) false; # Do not delete configs set outside plasma-manager
+      # TODO: (Plasma) Set to override all configs?
 
       # Workspace
       workspace = {

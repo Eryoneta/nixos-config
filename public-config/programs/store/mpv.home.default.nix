@@ -46,10 +46,10 @@
       # Scripts
       scripts = with options.packageChannel; [
         mpvScripts.uosc # UOSC: MPV frontend
-        #mpvScripts.modernx-zydezu # ModernX: MPV frontend # TODO: (24.11) Testar quando atualizar
         mpvScripts.mpris # MPRIS: Protocol for media control(Ex.: Media start/pause)
         mpvScripts.thumbfast # Thumbafast: Previews in the trackbar
         #mpvScripts.mpv-notify-send # Notify-Send: Inform about the media
+        # TODO: (MPV/Notify-Send)(24.11) Test if it works
       ];
 
     } // (
@@ -114,7 +114,7 @@
           "directory-filter-types" = "video,audio"; # Accept only videos and audios
 
           "vo" = "wlshm"; # Video output
-          # TODO: UOSC: Change to another "vo" later?
+          # TODO: (MPV/UOSC) Change to another "vo" later?
 
           # URLs
           "ytdl" = "yes"; # Uses "youtube-dl" or similars to open URLs

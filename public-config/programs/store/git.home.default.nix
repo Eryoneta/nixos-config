@@ -47,7 +47,7 @@
           side-by-side = true; # git diff shows changes side-by-side
           #hyperlinks = true; # Clickable links
           #hyperlinks-file-link-format = "vscode://file/{path}:{line}";
-          # TODO: Git.Delta: Check hyperlinks
+          # TODO: (ZSH/Delta) Check hyperlinks. Useful?
         };
       };
 

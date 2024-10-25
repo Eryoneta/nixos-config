@@ -19,7 +19,7 @@
     #   And "firefox-devedition" is using "pkgs-bundle.unstable"
     #   Pray that the two packages are "far away" from eachother(Different versions)
     #   If not, there is a conflict and the rebuild fails
-    # TODO: Fix? How?
+    # TODO: (Firefox-Dev) Firefox-Dev cannot have the same channel as Firefox. Fix? How?
 
     # Note: Added with override below (With FX-AutoConfig)
     #home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
@@ -125,7 +125,7 @@
           source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
         };
         
-        # TODO: Add my firefox scripts and styles
+        # TODO: (Firefox-Dev) Add my firefox scripts and styles
 
       }
     );
