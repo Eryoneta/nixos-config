@@ -1,0 +1,17 @@
+{
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "[plaintext]": {
+        "editor.inlineSuggest.suppressSuggestions": true,
+        "editor.quickSuggestions": {
+            "other": "off"
+        }
+    },
+    "git.confirmSync": false,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    }
+}
