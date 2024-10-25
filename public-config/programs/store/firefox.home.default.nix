@@ -12,8 +12,8 @@
 
     # Firefox: Browser
     programs.firefox = {
-      enable = utils.mkDefault options.enabled;
-      package = utils.mkDefault options.packageChannel.firefox;
+      enable = (utils.mkDefault) options.enabled;
+      package = (utils.mkDefault) options.packageChannel.firefox;
 
       # Language
       # TODO: Enable once the option is included

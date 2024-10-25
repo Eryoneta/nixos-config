@@ -5,14 +5,14 @@
     networking.hostName = host.name;
 
     # Internet
-    networking.networkmanager.enable = utils.mkDefault true;
+    networking.networkmanager.enable = (utils.mkDefault) true;
 
     # Time zone
-    time.timeZone = utils.mkDefault "America/Sao_Paulo";
+    time.timeZone = (utils.mkDefault) "America/Sao_Paulo";
 
     # Locale
-    i18n.defaultLocale = utils.mkDefault "pt_BR.UTF-8";
-    i18n.extraLocaleSettings = utils.mkDefault {
+    i18n.defaultLocale = (utils.mkDefault) "pt_BR.UTF-8";
+    i18n.extraLocaleSettings = (utils.mkDefault) {
       LC_ADDRESS = "pt_BR.UTF-8";
       LC_IDENTIFICATION = "pt_BR.UTF-8";
       LC_MEASUREMENT = "pt_BR.UTF-8";

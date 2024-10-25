@@ -15,6 +15,7 @@
             utils.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
           ) // {
             "editor.selectionClipboard" = false; # Allows for multiline selections!
+            "problems.decorations.enabled" = false; # Do not paint files and directories with warnings!
           } // ( 
             let
               flakeGetter = "(builtins.getFlake \"${user.configFolder}\")";

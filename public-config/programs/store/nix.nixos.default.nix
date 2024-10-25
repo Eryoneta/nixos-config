@@ -11,17 +11,17 @@
 
     # Nix: System package manager
     nix = {
-      package = utils.mkDefault options.packageChannel.nix; # Same package as the system
+      package = (utils.mkDefault) options.packageChannel.nix; # Same package as the system
 
       # Garbage Collector
       gc = {
-        automatic = utils.mkDefault true;
-        dates = utils.mkDefault "*-*-* 18:00:00"; # Every day, 18h00
+        automatic = (utils.mkDefault) true;
+        dates = (utils.mkDefault) "*-*-* 18:00:00"; # Every day, 18h00
       };
 
       # Nix Store
       settings = {
-        auto-optimise-store = utils.mkDefault true; # Remove duplicates and creates hardlinks
+        auto-optimise-store = (utils.mkDefault) true; # Remove duplicates and creates hardlinks
         # TODO: Remove once flakes are sorted out(Might take a while!)
         experimental-features = [ "nix-command" "flakes" ]; # Experimental features
       };
