@@ -1,5 +1,8 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, config-domain, user, ... }@args: with args.config-utils; {
   config = with config.profile.programs.vscodium; {
+
+    # Nixd: 
+    home.packages = with options.packageChannel; [ nixd ];
 
     # VSCodium: (Medium) Code editor
     programs.vscode = {
@@ -8,7 +11,55 @@
       userSettings = with config-domain; (
         # Check for "./private-config/dotfiles"
         utils.mkIf (utils.pathExists private.dotfiles) (
-          utils.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
+          (
+            utils.readJSONFile "${private.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
+          ) // {
+            "editor.selectionClipboard" = false; # Allows for multiline selections!
+            "problems.decorations.enabled" = false; # Do not paint files and directories with warnings!
+          } // ( 
+            let
+              flakeGetter = "(builtins.getFlake \"${user.configFolder}\")";
+              nixosConfigName = "\"${user.name}@${user.host.name}\"";
+              homeConfigName = "\"${user.name}@${user.host.name}\"";
+            in {
+              # VSCodium configuration: Nix autocompletion
+              "nix.serverPath" = "nixd";
+              "nix.enableLanguageServer" = true;
+              "nix.serverSettings" = {
+                # NixD configuration
+                "nixd" = {
+                  "nixpkgs" = { # Use "options" from NixOS
+                    "expr" = "import ${flakeGetter}.inputs.nixpkgs {}";
+                  };
+                  "formatting" = { # Auto-format
+                    "command" = [ "nixfmt" ];
+                  };
+                  "options" = { # Use "options" from my configurations
+                    # Note: The names are used to show where the suggestion came from
+                    "nixos-options" = {
+                      "expr" = "${flakeGetter}.nixosConfigurations.${nixosConfigName}.options";
+                    };
+                    "home_manager-options" = {
+                      "expr" = "${flakeGetter}.homeConfigurations.${homeConfigName}.options";
+                    };
+                  };
+                  "diagnostics" = {
+                    # Suppress warnings
+                    # In VSCodium, a popup shows the diagnostic name(After the warning)
+                    "suppress" = [
+                      # # Unused "with"
+                      # ("with" is used to import "utils" in all my modules, so sometimes it's unused)
+                      "sema-extra-with"
+                      # Variable escapes "with"
+                      # (A lot of variables do not use my "utils")
+                      "sema-escaping-with" 
+                    ];
+                    # TODO: (VsCodium/NixD) The warnings from "sema-extra-with" do not go away. Bug? Check later
+                  };
+                };
+              };
+            }
+          )
         )
       );
 

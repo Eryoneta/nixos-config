@@ -1,6 +1,12 @@
 # Content of "config.programs.plasma.panels.<1>" (home-manager+plasma-manager)
 { utils }: {
-  location = "bottom";
+  location = "bottom"; # Place at the bottom of screen
+  alignment = "center"; # Center the bar
+  height = 44; # Size
+  lengthMode = "fill"; # Cover the entire width
+  floating = false; # Do not float
+  hiding = "normalpanel"; # Stay on screen
+  screen = "all"; # Appear on all screens
   widgets = {
 
     # Start menu

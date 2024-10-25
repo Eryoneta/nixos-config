@@ -11,15 +11,15 @@
 
       # ZSH: Shell
       programs.zsh = {
-        enable = utils.mkDefault options.enabled;
-        package = utils.mkDefault options.packageChannel.zsh;
+        enable = (utils.mkDefault) options.enabled;
+        package = (utils.mkDefault) options.packageChannel.zsh;
 
         # AutoComplete
-        enableCompletion = utils.mkDefault true;
+        enableCompletion = (utils.mkDefault) true;
 
         # AutoSuggest
         autosuggestion = {
-          enable = utils.mkDefault true;
+          enable = (utils.mkDefault) true;
           # Only present at unstable branch
           # TODO: Enable once its included
           #strategy = [ "history" ]; # Suggests based on history
@@ -43,8 +43,8 @@
         # Syntax Highlight
         # More at: https://github.com/zsh-users/zsh-syntax-highlighting/tree/master/docs/highlighters
         syntaxHighlighting = {
-          enable = utils.mkDefault true;
-          package = utils.mkDefault options.packageChannel.zsh-syntax-highlighting;
+          enable = (utils.mkDefault) true;
+          package = (utils.mkDefault) options.packageChannel.zsh-syntax-highlighting;
           highlighters = [ "root" "brackets" "cursor" ];
         };
 
@@ -57,14 +57,14 @@
             "rm *"
             "cd *"
           ];
-          size = utils.mkDefault 10000;
+          size = (utils.mkDefault) 10000;
           path = "${config.xdg.dataHome}/zsh/zsh_history";
         };
 
         # Oh-My-ZSH: Customize ZSH
         oh-my-zsh = {
-          enable = utils.mkDefault true;
-          package = utils.mkDefault options.packageChannel.oh-my-zsh;
+          enable = (utils.mkDefault) true;
+          package = (utils.mkDefault) options.packageChannel.oh-my-zsh;
 
           # Plugins
           # More at: https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins

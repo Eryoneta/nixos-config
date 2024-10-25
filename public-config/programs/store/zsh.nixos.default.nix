@@ -11,8 +11,8 @@
 
     # ZSH: Shell
     programs.zsh = {
-      enable = utils.mkDefault options.enabled;
-      #package = utils.mkDefault options.packageChannel.zsh; # Option does not exist
+      enable = (utils.mkDefault) options.enabled;
+      #package = (utils.mkDefault) options.packageChannel.zsh; # Option does not exist
     };
 
     # Default user shell

@@ -45,8 +45,22 @@
     let
 
       # Imports
-      buildConfiguration = (import ./configurationBuilder.nix extraArgs self.outPath);
       user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
+      fetchgit = extraArgs.nixpkgs.legacyPackages."x86_64-linux".fetchgit;
+      inputsAndExtras = (extraArgs // {
+
+        # NixOS Artwork (Manual Fetch)
+        nixos-artwork = (fetchgit {
+          url = "https://github.com/NixOS/nixos-artwork.git";
+          rev = "766f10e0c93cb1236a85925a089d861b52ed2905";
+          hash = "sha256-1IcNRGJkDaoiYDE1PkAeCZQecDAHlCZ6ra+j5BrmtBQ=";
+          sparseCheckout = [ # Do NOT download entire repo!
+            "wallpapers/nix-wallpaper-simple-blue.png"
+          ];
+        });
+
+      });
+      buildConfiguration = (import ./configurationBuilder.nix inputsAndExtras self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
       # I change it at every rebuild. Very convenient for marking generations!
@@ -91,7 +105,7 @@
       
     in {
 
-      # NixOS + Home-Manager + Agenix
+      # NixOS + Home-Manager(+ Plasma-Manager + Agenix) + Agenix
       nixosConfigurations = {
         "Yo@LiCo" = (buildConfiguration Yo LiCo).nixosSystemConfig;
         "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).nixosSystemConfig;
@@ -99,7 +113,7 @@
         #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).nixosSystemConfig;
       };
       
-      # Home-Manager + Agenix
+      # Home-Manager + Plasma-Manager + Agenix
       homeConfigurations = {
         "Yo@LiCo" = (buildConfiguration Yo LiCo).homeManagerConfig;
         "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).homeManagerConfig;
