@@ -46,18 +46,17 @@
 
       # Imports
       user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
-      fetchgit = extraArgs.nixpkgs.legacyPackages."x86_64-linux".fetchgit;
       inputsAndExtras = (extraArgs // {
 
         # NixOS Artwork (Manual Fetch)
-        nixos-artwork = (fetchgit {
-          url = "https://github.com/NixOS/nixos-artwork.git";
-          rev = "766f10e0c93cb1236a85925a089d861b52ed2905";
-          hash = "sha256-1IcNRGJkDaoiYDE1PkAeCZQecDAHlCZ6ra+j5BrmtBQ=";
-          sparseCheckout = [ # Do NOT download entire repo!
-            "wallpapers/nix-wallpaper-simple-blue.png"
-          ];
-        });
+        nixos-artwork = architecture: {
+          "wallpaper/nix-wallpaper-simple-blue.png" = (
+            extraArgs.nixpkgs.legacyPackages.${architecture}.fetchurl {
+              url = "https://github.com/NixOS/nixos-artwork/blob/master/wallpapers/nix-wallpaper-simple-blue.png";
+              sha256 = "sha256-G9aDHhVFqqG1JNTlD3fb2xt4A0UR/ZX0gvIY4YqFPP8=";
+            }
+          );
+        };
 
       });
       buildConfiguration = (import ./configurationBuilder.nix inputsAndExtras self.outPath);
@@ -94,8 +93,8 @@
       Yo = user-host-scheme.buildUser {
         username = "yo";
         name = "Yo";
-        configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
-        configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev"; # Dev folder
+        configFolder = "/home/yo/Personal/System_Utilities/system-configuration/nixos-config";
+        configDevFolder = "/home/yo/Personal/System_Utilities/system-configuration/nixos-config-dev"; # Dev folder
       };
       Eryoneta = user-host-scheme.buildUser {
         username = "eryoneta";

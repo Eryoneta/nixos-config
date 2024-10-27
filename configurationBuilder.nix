@@ -39,7 +39,7 @@ inputs: flakePath: (
             packages = (with inputs; {
               firefox-addons = nurpkgs-firefox-addons.packages.${host.system.architecture};
               fx-autoconfig = fx-autoconfig;
-              nixos-artwork = nixos-artwork;
+              nixos-artwork = (nixos-artwork host.system.architecture);
             });
           })
           # Public-Private-Domains

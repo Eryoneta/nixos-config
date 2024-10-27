@@ -19,6 +19,9 @@
           videos = "${homePath}/Vídeos";
           publicShare = "${homePath}/Público";
           templates = "${homePath}/Modelos";
+          extraConfig = {
+            XDG_PERSONAL_DIR = "${homePath}/Personal";
+          };
         }
       );
     };
