@@ -34,7 +34,7 @@
           size = (utils.mkDefault) 32; # Cursor size
         };
         wallpaper = (utils.mkDefault) ( # Wallpaper
-          "${pkgs-bundle.nixos-artwork}/wallpapers/nix-wallpaper-simple-blue.png"
+          pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
         );
         wallpaperFillMode = (utils.mkDefault) "preserveAspectCrop"; # Resize and cut excess
         # TODO: (Plasma/Wallpaper)(24.11) Does not work(--fill-mode does not exist). Check later
