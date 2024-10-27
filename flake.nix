@@ -94,8 +94,8 @@
       Yo = user-host-scheme.buildUser {
         username = "yo";
         name = "Yo";
-        configFolder = "/home/yo/Utilities/SystemConfig/nixos-config";
-        configDevFolder = "/home/yo/Utilities/SystemConfig/nixos-config-dev"; # Dev folder
+        configFolder = "/home/yo/Personal/System_Utilities/system-configuration/nixos-config";
+        configDevFolder = "/home/yo/Personal/System_Utilities/system-configuration/nixos-config-dev"; # Dev folder
       };
       Eryoneta = user-host-scheme.buildUser {
         username = "eryoneta";
