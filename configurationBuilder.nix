@@ -85,10 +85,6 @@ inputs: flakePath: (
                   (flake-modules."plasma-manager.nix".build {
                     package = inputs.plasma-manager;
                   })
-                  # Stylix
-                  (flake-modules."stylix.nix".build {
-                    package = inputs.stylix;
-                  })
                 ];
               })
               # Auto-Upgrade-List
@@ -98,7 +94,6 @@ inputs: flakePath: (
                   inherit home-manager;
                   inherit agenix;
                   inherit plasma-manager;
-                  inherit stylix;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   #inherit nixpkgs-unstable-fixed;
@@ -121,10 +116,6 @@ inputs: flakePath: (
               # Plasma-Manager
               (flake-modules."plasma-manager.nix".build {
                 package = inputs.plasma-manager;
-              })
-              # Stylix
-              (flake-modules."stylix.nix".build {
-                package = inputs.stylix;
               })
             ];
           }

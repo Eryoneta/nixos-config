@@ -33,17 +33,17 @@
           theme = (utils.mkDefault) "Breeze"; # Cursor theme
           size = (utils.mkDefault) 32; # Cursor size
         };
-        # wallpaper = (utils.mkDefault) ( # Wallpaper
-        #   pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
-        # );
-        # wallpaperFillMode = (utils.mkDefault) "preserveAspectCrop"; # Resize and cut excess
+        wallpaper = (utils.mkDefault) ( # Wallpaper
+          pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+        );
+        wallpaperFillMode = (utils.mkDefault) "preserveAspectCrop"; # Resize and cut excess
         # TODO: (Plasma/Wallpaper)(24.11) Does not work(--fill-mode does not exist). Check later
         # Themes
-        # theme = (utils.mkDefault) "breeze-dark"; # Global Theme
+        theme = (utils.mkDefault) "breeze-dark"; # Global Theme
           # Run "plasma-apply-desktoptheme --list-themes" for options
-        # lookAndFeel = (utils.mkDefault) "org.kde.breezedark.desktop"; # Theme
+        lookAndFeel = (utils.mkDefault) "org.kde.breezedark.desktop"; # Theme
           # Run "plasma-apply-lookandfeel --list" for options
-        # colorScheme = (utils.mkDefault) "BreezeDark"; # Color theme
+        colorScheme = (utils.mkDefault) "BreezeDark"; # Color theme
           # Run "plasma-apply-colorscheme --list-schemes" for options
         iconTheme = (utils.mkDefault) "Breeze-Dark"; # Icons theme
         soundTheme = (utils.mkDefault) "Ocean"; # Sound theme

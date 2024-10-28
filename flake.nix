@@ -21,9 +21,6 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Stylix (AutoUpgrade)
-    stylix.url = "github:danth/stylix";
-
     # Stable Packages (AutoUpgrade)
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
