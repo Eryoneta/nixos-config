@@ -2,6 +2,7 @@
     
   imports = [
     ../default/home.nix # Default
+    ./stylix.nix
   ];
 
   config = {
