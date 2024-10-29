@@ -78,6 +78,14 @@
           # TODO: (Plasma/Shortcuts) Add shortcuts
       };
 
+      # Language
+      configFile = {
+        "plasma-localerc" = { # Language: PT-BR
+          "Formats"."LANG" = "pt_BR.UTF-8";
+          "Translations"."LANGUAGE" = "pt_BR";
+        };
+      };
+
     };
 
   };
