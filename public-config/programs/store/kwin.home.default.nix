@@ -42,12 +42,12 @@
         enable = (utils.mkDefault) true;
         mode = (utils.mkDefault) "times"; # Chenge by time
         temperature = {
-          day = (utils.mkDefault) 4500; # Day light temperature
-          night = (utils.mkDefault) 3500; # Night light temperature
+          day = (utils.mkDefault) 6500; # Day light temperature
+          night = (utils.mkDefault) 4500; # Night light temperature
         };
         time = {
-          morning = (utils.mkDefault) "08:00"; # Morning time
-          evening = (utils.mkDefault)  "20:00"; # Night time
+          morning = (utils.mkDefault) "07:45"; # Morning time
+          evening = (utils.mkDefault)  "19:45"; # Night time
         };
         transitionTime = (utils.mkDefault) 30; # Time in minutes for the transition
       };
