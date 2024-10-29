@@ -53,6 +53,28 @@
       };
 
     };
+    
+    programs.plasma.configFile = {
+
+      # Activities
+      "kactivitymanagerdrc" = ( # Note: Old activities are not deleted!
+        let
+          main-id = "main-activity-random-id";
+          secondary-id = "secondary-activity-random-id";
+        in {
+          "activities" = { # Note: It's alfabetically ordered
+            "${main-id}" = "Main Activity"; # Name
+            "${secondary-id}" = "Secondary Activity"; # Name
+          };
+          "activities-icons" = {
+            "${main-id}" = "nix-snowflake-white"; # Icon
+            "${secondary-id}" = "kde-symbolic"; # Icon
+          };
+          "main"."currentActivity" = main-id; # Start activity
+        }
+      );
+
+    };
 
   };
 }
