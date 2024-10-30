@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; {
 
     # KScreenLocker: Screen locker for Plasma
