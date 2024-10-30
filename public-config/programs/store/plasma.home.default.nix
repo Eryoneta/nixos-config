@@ -33,6 +33,7 @@
           theme = (utils.mkDefault) "Breeze"; # Cursor theme
           size = (utils.mkDefault) 32; # Cursor size
         };
+        # Wallpaper
         wallpaper = (utils.mkDefault) ( # Wallpaper
           pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
         );
@@ -76,6 +77,14 @@
       # Shortcuts
       shortcuts = {
           # TODO: (Plasma/Shortcuts) Add shortcuts
+      };
+
+      # Language
+      configFile = {
+        "plasma-localerc" = { # Language: PT-BR
+          "Formats"."LANG" = "pt_BR.UTF-8";
+          "Translations"."LANGUAGE" = "pt_BR";
+        };
       };
 
     };

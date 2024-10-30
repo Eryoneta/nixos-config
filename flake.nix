@@ -21,6 +21,11 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Stylix (AutoUpgrade)
+    stylix.url = "github:danth/stylix/release-24.05";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.home-manager.follows = "home-manager";
+
     # Stable Packages (AutoUpgrade)
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
@@ -52,8 +57,8 @@
         nixos-artwork = architecture: {
           "wallpaper/nix-wallpaper-simple-blue.png" = (
             extraArgs.nixpkgs.legacyPackages.${architecture}.fetchurl {
-              url = "https://github.com/NixOS/nixos-artwork/blob/master/wallpapers/nix-wallpaper-simple-blue.png";
-              sha256 = "sha256-G9aDHhVFqqG1JNTlD3fb2xt4A0UR/ZX0gvIY4YqFPP8=";
+              url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
+              sha256 = "sha256-utrcjzfeJoFOpUbFY2eIUNCKy5rjLt57xIoUUssJmdI=";
             }
           );
         };
