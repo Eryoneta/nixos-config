@@ -5,6 +5,7 @@
     ./variables.nix
     ./xdg-base-directory.nix
     ./xdg-mime-apps.nix
+    ./stylix.nix
   ];
 
   config = {

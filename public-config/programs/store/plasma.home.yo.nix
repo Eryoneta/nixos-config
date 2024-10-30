@@ -18,9 +18,9 @@
         # TODO: (Plasma/Wallpaper) Set a custom wallpaper
         wallpaperFillMode = "preserveAspectCrop"; # Resize and cut excess
         # Themes
-        theme = "breeze-dark"; # Global Theme
-        lookAndFeel = "org.kde.breezedark.desktop"; # Theme
-        colorScheme = "BreezeDark"; # Color theme
+        # theme = "breeze-dark"; # Global Theme
+        # lookAndFeel = "org.kde.breezedark.desktop"; # Theme
+        # colorScheme = "BreezeDark"; # Color theme
         iconTheme = "Papirus-Colors-Dark"; # Icons theme
         soundTheme = "Ocean"; # Sound theme
         # TODO: (Plasma/Themes) Test some other themes later
