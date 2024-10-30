@@ -14,7 +14,7 @@
       };
 
       # Behaviour
-      lockOnStartup = (utils.mkDefault) true; # Lock on startup
+      lockOnStartup = (utils.mkDefault) false; # Lock on startup
       lockOnResume = (utils.mkDefault) false; # Do not lock when resuming
       passwordRequired = (utils.mkDefault) true; # Requires password
 
