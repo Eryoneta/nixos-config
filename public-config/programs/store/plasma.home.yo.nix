@@ -10,20 +10,19 @@
         enableMiddleClickPaste = false; # Do not paste with middle-click (Too many accidents!)
         # UI
         cursor = {
-          theme = "Breeze"; # Cursor theme
-          # TODO: (Plasma/Cursor) Change cursor to custom
-          size = 22; # Cursor size
+          theme = null; # Managed by Stylix
+          size = null; # Managed by Stylix
         };
-        #wallpaper = "";
-        # TODO: (Plasma/Wallpaper) Set a custom wallpaper
-        wallpaperFillMode = "preserveAspectCrop"; # Resize and cut excess
+        # Wallpaper
+        wallpaper = null; # Managed by Stylix
+        wallpaperFillMode = null; # Managed by Stylix
         # Themes
-        # theme = "breeze-dark"; # Global Theme
-        # lookAndFeel = "org.kde.breezedark.desktop"; # Theme
-        # colorScheme = "BreezeDark"; # Color theme
+        theme = null; # Managed by Stylix
+        lookAndFeel = null; # Managed by Stylix
+        colorScheme = null; # Managed by Stylix
         iconTheme = "Papirus-Colors-Dark"; # Icons theme
         soundTheme = "Ocean"; # Sound theme
-        # TODO: (Plasma/Themes) Test some other themes later
+        # TODO: (Plasma/Themes/Sound) Test some other sound themes later
       };
 
       # Panels

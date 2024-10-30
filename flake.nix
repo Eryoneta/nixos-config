@@ -22,7 +22,9 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     # Stylix (AutoUpgrade)
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix/release-24.05";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.home-manager.follows = "home-manager";
 
     # Stable Packages (AutoUpgrade)
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";

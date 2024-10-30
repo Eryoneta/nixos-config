@@ -11,7 +11,13 @@ flakePath: (
     build = { package }: {
 
       # Override Home-Manager-Module Configuration
-      homeManagerModule = {};
+      homeManagerModule = {
+        home-manager = {
+          sharedModules = [
+            package.homeManagerModules.stylix
+          ];
+        };
+      };
 
       # Override Home-Manager-Standalone Configuration
       homeManagerStandalone = {
