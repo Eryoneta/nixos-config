@@ -4,7 +4,6 @@
       ./configuration/boot-loader.nix
       ./configuration/external-devices.nix
       ./configuration/networking.nix
-      ./configuration/gui.nix
       ./configuration/security.nix
     ] ++ [
       ./features.nix

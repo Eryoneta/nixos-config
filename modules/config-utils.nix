@@ -69,11 +69,22 @@ nix-lib: hm-pkgs: hm-lib: (
       # Check if a path exists
       pathExists = path: (builtins.pathExists path);
 
+      # Join strings from a list into one
+      joinStr = str: list: (builtins.concatStringsSep str list);
+
+      # Check if a path exists
+      toFile = fileName: content: (builtins.toFile fileName content);
+
       # Build a INI format from a set
       toINI = content: (nix-lib.generators.toINI {} content);
 
-      # Join strings from a list into one
-      joinStr = str: list: (builtins.concatStringsSep str list);
+      # Build a YAML format from a set
+      # Note: "nix-lib.generators.toYAML" is not real!
+      toYAML = content: (
+        builtins.readFile (
+          (hm-pkgs.formats.yaml {}).generate "toYAML_file.yaml" content
+        )
+      );
 
     };
 

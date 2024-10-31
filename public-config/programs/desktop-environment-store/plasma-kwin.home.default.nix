@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; {
 
     # KWin Window manager for Plasma
