@@ -2,7 +2,7 @@
 
   options = {
     profile.programs.spectacle = {
-      options.enabled = (utils.mkBoolOption true); # Not used
+      options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
     };
   };
@@ -10,7 +10,7 @@
   config = with config.profile.programs.spectacle; {
 
     # Spectacle: Print-screen tool
-    programs.plasma.spectacle = {
+    programs.plasma.spectacle = utils.mkIf (options.enabled) {
 
       # Shortcuts
       shortcuts = {
@@ -27,7 +27,7 @@
 
     };
 
-    programs.plasma.configFile = {
+    programs.plasma.configFile = utils.mkIf (options.enabled) {
 
       # Dotfile
       "spectaclerc" = {
