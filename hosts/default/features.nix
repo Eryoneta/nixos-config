@@ -19,6 +19,12 @@
       configurationPath = host.configFolderNixStore;
     };
 
+    # FSTrim
+    services.fstrim = {
+      enable = (utils.mkDefault) true;
+      interval = "weekly";
+    };
+
   };
 
 }
