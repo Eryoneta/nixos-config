@@ -74,6 +74,9 @@
       # Windows
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
+      # Window rules
+      window-rules = (import ./plasma+window-rules.nix);
+
       # Shortcuts
       shortcuts = {
           # TODO: (Plasma/Shortcuts) Add shortcuts
