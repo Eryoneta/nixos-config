@@ -14,6 +14,12 @@
       with options.packageChannel; [ kdePackages.yakuake ]
     );
 
+    # Shortcut
+    programs.plasma.shortcuts = utils.mkIf (options.enabled) {
+      # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
+      "yakuake"."toggle-window-state" = "Meta+T,F12,Abrir/Retrair o Yakuake"; # Toggle window view
+    };
+
     # Dotfiles
     xdg.configFile."yakuakerc" = {
       enable = options.enabled;

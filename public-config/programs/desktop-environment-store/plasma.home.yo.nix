@@ -102,11 +102,7 @@
       ];
 
       # Shortcuts
-      shortcuts = {
-        "yakuake" = {
-          "toggle-window-state" = "Meta+T"; # "meta+t" = Show/Hide Yakuake
-        };
-      };
+      shortcuts = {};
 
     };
 

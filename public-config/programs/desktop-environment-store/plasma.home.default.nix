@@ -17,6 +17,7 @@
   config = with config.profile.programs.plasma; {
 
     # Plasma: The KDE Plasma Desktop
+    # Get current configurations with rc2nix: "nix run github:nix-community/plasma-manager > ~/Downloads/config.txt"
     programs.plasma = {
       enable = (utils.mkDefault) options.enabled;
       immutableByDefault = (utils.mkDefault) false; # Options can be changed by the user
@@ -63,6 +64,16 @@
         widgets = (utils.mkDefault) [
           # TODO: (Plasma/Desktop) Add widgets?
         ];
+        mouseActions = {
+          rightClick = "contextMenu"; # RightClick = Context menu
+          middleClick = "applicationLauncher"; # MiddleClick = AppLauncher menu
+          verticalScroll = "switchActivity"; # Scroll = Switch activities
+        };
+      };
+      configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
+        "[ActionPlugins][0]" = { # Shift + Scroll = Switch virtual desktops
+          "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
+        };
       };
 
       # Panels
@@ -74,17 +85,16 @@
       # Windows
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
+      # Window rules
+      window-rules = (import ./plasma+window-rules.nix);
+
       # Shortcuts
-      shortcuts = {
-          # TODO: (Plasma/Shortcuts) Add shortcuts
-      };
+      shortcuts = (import ./plasma+shortcuts.nix);
 
       # Language
-      configFile = {
-        "plasma-localerc" = { # Language: PT-BR
-          "Formats"."LANG" = "pt_BR.UTF-8";
-          "Translations"."LANGUAGE" = "pt_BR";
-        };
+      configFile."plasma-localerc" = { # Language: PT-BR
+        "Formats"."LANG" = "pt_BR.UTF-8";
+        "Translations"."LANGUAGE" = "pt_BR";
       };
 
     };
