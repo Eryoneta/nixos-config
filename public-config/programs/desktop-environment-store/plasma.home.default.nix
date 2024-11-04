@@ -86,10 +86,10 @@
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.nix);
+      window-rules = (utils.mkDefault) (import ./plasma+window-rules.nix);
 
       # Shortcuts
-      shortcuts = (import ./plasma+shortcuts.nix);
+      shortcuts = (utils.mkDefault) (import ./plasma+shortcuts.nix);
 
       # Language
       configFile."plasma-localerc" = { # Language: PT-BR

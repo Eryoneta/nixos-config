@@ -17,7 +17,9 @@
     # Shortcut
     programs.plasma.shortcuts = utils.mkIf (options.enabled) {
       # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
-      "yakuake"."toggle-window-state" = "Meta+T,F12,Abrir/Retrair o Yakuake"; # Toggle window view
+      "yakuake" = {
+        "toggle-window-state" = "Meta+T"; # Toggle window view
+      };
     };
 
     # Dotfiles

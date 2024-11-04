@@ -1,6 +1,11 @@
 # Content of "config.programs.plasma.shortcuts" (home-manager+plasma-manager)
 {
-  # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
+  # Sesssion actions
+  "ksmserver"."Lock Session" = [ # Lock screen
+    "Meta+L"
+    "Ctrl+Alt+L"
+  ];
+  "ksmserver"."Log Out" = "Ctrl+Alt+Del"; # Logout
   # Volume actions
   "kmix"."increase_volume" = "Volume Up"; # Volume up
   "kmix"."decrease_volume" = "Volume Down"; # Volume down
@@ -10,7 +15,7 @@
   # Microphone actions
   "kmix"."increase_microphone_volume" = "Microphone Volume Up"; # Microphone volume up
   "kmix"."decrease_microphone_volume" = "Microphone Volume Down"; # Microphone volume down
-  "kmix"."mic_mute" = "Alt+Volume Mute,,Silenciar microfone"; # Microphone mute
+  "kmix"."mic_mute" = "Alt+Volume Mute"; # Microphone mute
   # Media control
   "mediacontrol"."playmedia" = "none"; # Play media (Play is used to toggle)
   "mediacontrol"."pausemedia" = "Media Pause"; # Pause media
@@ -25,8 +30,8 @@
   "kwin"."Show Desktop" = "Meta+D"; # Toggle hide all windows to show desktop
   # Activity actions
   "plasmashell"."manage activities" = "Meta+Q"; # Show activity menu
-  "plasmashell"."next activity" = "Meta+Tab,none,Percorrer as atividades"; # Next activity
-  "plasmashell"."previous activity" = "Meta+Shift+Tab,none,Percorrer as atividades (inverso)"; # Previous activity
+  "plasmashell"."next activity" = "Meta+Tab"; # Next activity
+  "plasmashell"."previous activity" = "Meta+Shift+Tab"; # Previous activity
   # Virtual desktop actions
   "kwin"."Switch One Desktop Up" = "Meta+Ctrl+Up"; # Switch to virtual desktop above
   "kwin"."Switch One Desktop Down" = "Meta+Ctrl+Down"; # Switch to virtual desktop below
@@ -40,7 +45,7 @@
   "kwin"."Window Maximize" = "Meta+PgUp"; # Maximize window
   "kwin"."Window Minimize" = "Meta+PgDown"; # Minimize window
   # Window actions (Move)
-  "kwin"."Window Move Center" = "Meta+alt+C,,Mover janela para o centro"; # Move window to the center
+  "kwin"."Window Move Center" = "Meta+alt+C"; # Move window to the center
   "kwin"."Window Quick Tile Top" = "Meta+Up"; # Snap window to top
   "kwin"."Window Quick Tile Bottom" = "Meta+Down"; # Snap window to bottom
   "kwin"."Window Quick Tile Left" = "Meta+Left"; # Snap window to left
@@ -54,8 +59,8 @@
   "kwin"."Switch Window Down" = "Meta+Alt+Down"; # Switch to the window below
   "kwin"."Switch Window Left" = "Meta+Alt+Left"; # Switch to the window at left
   "kwin"."Switch Window Right" = "Meta+Alt+Right"; # Switch to the window at right
-  "kwin"."Walk Through Windows" = "Alt+Tab,,Passear pelas janelas"; # Switch through a list of windows
-  "kwin"."Walk Through Windows (Reverse)" = "Alt+Shift+Backtab,Alt+Shift+Tab,Passear pelas janelas (sentido inverso)";
+  "kwin"."Walk Through Windows" = "Alt+Tab"; # Switch through a list of windows
+  "kwin"."Walk Through Windows (Reverse)" = "Alt+Shift+Tab";
   # Features
   "kwin"."Toggle Night Color" = [ ]; # Toggle night color
   "kwin"."ToggleCurrentThumbnail" = "Meta+Ctrl+T"; # Toggle small floating image of the current window
