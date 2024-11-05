@@ -1,1 +1,1 @@
-Programs/Plasma: Fix Window-Rules
+Programs/Plasma: Ajustes
