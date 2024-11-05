@@ -25,13 +25,8 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-    # Swap
-    swapDevices = [
-      {
-        device = "/var/swapfile";
-        size = (4 * 1024) + (2 * 1024);
-      }
-    ];
+    # Feature/Swapfile: 6GB
+    swap.devices."basicSwap".size = 4 + 2;
 
     # DHCP
     networking.useDHCP = (utils.mkDefault) true;

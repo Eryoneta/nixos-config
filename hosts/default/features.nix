@@ -3,6 +3,7 @@
   imports = with modules; [
     ./features/auto-upgrade.nix
     nixos-modules."link-to-source-config.nix"
+    nixos-modules."swap-devices.nix"
   ];
 
   config = {
@@ -13,7 +14,7 @@
       autoLogin.user = host.user.username;
     };
 
-    # Link to source configuration
+    # Link to source configuration ("link-to-source-config.nix")
     system.linkToSourceConfiguration = {
       enable = true;
       configurationPath = host.configFolderNixStore;
@@ -23,6 +24,17 @@
     services.fstrim = {
       enable = (utils.mkDefault) true;
       interval = "weekly";
+    };
+
+    # Swapfile ("swap-devices.nix")
+    swap = {
+      enable = (utils.mkDefault) true;
+      devices = {
+        "basicSwap" = {
+          device = (utils.mkDefault) "/var/swapfile";
+          size = (utils.mkDefault) (4 * 1024);
+        };
+      };
     };
 
   };
