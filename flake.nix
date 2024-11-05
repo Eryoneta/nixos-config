@@ -63,6 +63,14 @@
           );
         };
 
+        # Plasma/Plasmoid: TiledMenu (Manual Fetch)
+        tiledmenu = (
+          builtins.fetchGit {
+            url = "https://github.com/Zren/plasma-applet-tiledmenu.git";
+            rev = "73e03bd9ff523b01abb31a7c72901ba25918f9d8";
+          }
+        );
+
       });
       buildConfiguration = (import ./configurationBuilder.nix inputsAndExtras self.outPath);
 
