@@ -12,7 +12,7 @@
         fastfetch # FastFetch: Shows general system information
         gparted # GParted: Manages partitions
         git # Git: Versioning
-        htop # HTop: Terminal-based process viewer
+        btop # BTop: Terminal-based process viewer
       ])
       ++
       (with unstable-fixed; [
