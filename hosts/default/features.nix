@@ -37,6 +37,13 @@
       };
     };
 
+    # ZRAM
+    zramSwap = {
+      enable = (utils.mkDefault) true;
+      algorithm = (utils.mkDefault) "zstd"; # Compression algorithm
+      memoryPercent = (utils.mkDefault) 50; # Total space shown, in percent relative to RAM
+    };
+
   };
 
 }

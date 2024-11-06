@@ -28,6 +28,9 @@
     # Feature/Swapfile: 6GB
     swap.devices."basicSwap".size = ((4 + 2) * 1024);
 
+    # Feature/ZRAM: Disabled (CPU is not really fast)
+    zramSwap.enable = false;
+
     # DHCP
     networking.useDHCP = (utils.mkDefault) true;
 
