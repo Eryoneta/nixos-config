@@ -24,7 +24,7 @@
     };
 
     # Feature/Swapfile: 6GB
-    swap.devices."basicSwap".size = 4 + 2;
+    swap.devices."basicSwap".size = ((4 + 2) * 1024);
 
     # Hibernation
     boot.resumeDevice = config.fileSystems."/".device;
