@@ -6,6 +6,7 @@
       ./configuration/networking.nix
       ./configuration/security.nix
     ] ++ [
+      ./hardware-configuration.nix
       ./features.nix
       ./programs.nix
       ./users.nix

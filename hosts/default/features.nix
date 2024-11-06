@@ -3,7 +3,6 @@
   imports = with modules; [
     ./features/auto-upgrade.nix
     nixos-modules."link-to-source-config.nix"
-    nixos-modules."swap-devices.nix"
   ];
 
   config = {
@@ -24,24 +23,6 @@
     services.fstrim = {
       enable = (utils.mkDefault) true;
       interval = "weekly";
-    };
-
-    # Swapfile ("swap-devices.nix")
-    swap = {
-      enable = (utils.mkDefault) true;
-      devices = {
-        "basicSwap" = {
-          device = (utils.mkDefault) "/var/swapfile";
-          size = (utils.mkDefault) (4 * 1024);
-        };
-      };
-    };
-
-    # ZRAM
-    zramSwap = {
-      enable = (utils.mkDefault) true;
-      algorithm = (utils.mkDefault) "zstd"; # Compression algorithm
-      memoryPercent = (utils.mkDefault) 50; # Total space shown, in percent relative to RAM
     };
 
   };
