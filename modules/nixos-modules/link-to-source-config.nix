@@ -36,7 +36,7 @@
         {
           assertion = !(cfg.configurationPath == "");
           message = ''
-            The option 'system.linkToSourceConfiguration' cannot be empty
+            The option 'system.linkToSourceConfiguration.configurationPath' cannot be empty
           '';
         }
       ];

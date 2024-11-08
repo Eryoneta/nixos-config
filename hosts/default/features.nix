@@ -13,7 +13,7 @@
       autoLogin.user = host.user.username;
     };
 
-    # Link to source configuration
+    # Link to source configuration ("link-to-source-config.nix")
     system.linkToSourceConfiguration = {
       enable = true;
       configurationPath = host.configFolderNixStore;

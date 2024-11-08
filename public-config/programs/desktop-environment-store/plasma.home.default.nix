@@ -1,15 +1,12 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.plasma = {
       options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
       options.defaults = (utils.mkDefaultsOption {
-        panels = {
-          main = (import ./plasma+taskbar.nix {
-            inherit utils;
-          });
-        };
+        panels = {};
+        plasmoids = {};
       });
     };
   };
@@ -70,33 +67,46 @@
           verticalScroll = "switchActivity"; # Scroll = Switch activities
         };
       };
-      configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
-        "[ActionPlugins][0]" = { # Shift + Scroll = Switch virtual desktops
-          "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
-        };
-      };
+      # configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
+      #   "ActionPlugins"."0" = { # Shift + Scroll = Switch virtual desktops
+      #     "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
+      #   };
+      # };
+      # TODO: (Plasma/Desktop) Find a way to define "Shift+Wheel"
 
       # Panels
       panels = (utils.mkDefault) [
         # Main
-        options.defaults.panels.main
+        options.defaults.panels.main.panel
       ];
 
       # Windows
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.nix);
+      window-rules = (utils.mkDefault) (import ./plasma+window-rules.nix);
 
       # Shortcuts
-      shortcuts = (import ./plasma+shortcuts.nix);
+      shortcuts = (utils.mkDefault) (import ./plasma+shortcuts.nix);
 
       # Language
       configFile."plasma-localerc" = { # Language: PT-BR
-        "Formats"."LANG" = "pt_BR.UTF-8";
-        "Translations"."LANGUAGE" = "pt_BR";
+        "Formats" = {
+          "LANG" = "pt_BR.UTF-8";
+        };
+        "Translations" = {
+          "LANGUAGE" = "pt_BR";
+        };
       };
 
+    };
+
+    profile.programs.plasma = { # Defines MainPanel
+      options.defaults.panels.main = (
+        import ./plasma+taskbar.nix {
+          inherit utils;
+        }
+      );
     };
 
   };

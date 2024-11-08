@@ -6,38 +6,20 @@
 
   config = {
 
-    # Boot
+    # Kernel
     boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "ums_realtek" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ ];
     boot.kernelModules = [ "kvm-intel" ];
     boot.extraModulePackages = [ ];
 
-    # Root Partition
-    fileSystems."/" = {
-      device = "/dev/disk/by-label/NixOS";
-      fsType = "ext4";
-    };
+    # Boot partition
+    fileSystems."/boot".device = "/dev/disk/by-label/EFI"; # Label is "EFI"
 
-    # Boot Partition
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-label/EFI";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+    # Swapfile
+    swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
 
-    # Swap
-    swapDevices = [
-      {
-        device = "/var/swapfile";
-        size = (4 * 1024) + (2 * 1024);
-      }
-    ];
-
-    # DHCP
-    networking.useDHCP = (utils.mkDefault) true;
-
-    # Nix Packages
-    nixpkgs.hostPlatform = (utils.mkDefault) "x86_64-linux";
+    # ZRAM
+    zramSwap.enable = false; # CPU is not really fast
 
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;

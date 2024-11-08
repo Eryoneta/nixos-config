@@ -98,8 +98,8 @@
       "org_kde_powerdevil"."PowerDown" = "Power Down";
       "org_kde_powerdevil"."PowerOff" = "Power Off";
       "org_kde_powerdevil"."powerProfile" = [
-        "Meta+B,Battery"
-        "Meta+B,Trocar perfil de energia"
+        "Battery"
+        "Meta+B"
       ];
       # Keyboard backlight
       "org_kde_powerdevil"."Increase Keyboard Brightness" = "Keyboard Brightness Up";

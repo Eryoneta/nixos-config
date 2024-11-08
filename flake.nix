@@ -63,15 +63,22 @@
           );
         };
 
+        # Plasma/Plasmoid: TiledMenu (Manual Fetch)
+        tiledmenu = (
+          builtins.fetchGit {
+            url = "https://github.com/Zren/plasma-applet-tiledmenu.git";
+            rev = "73e03bd9ff523b01abb31a7c72901ba25918f9d8";
+          }
+        );
+
       });
       buildConfiguration = (import ./configurationBuilder.nix inputsAndExtras self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
-      # I change it at every rebuild. Very convenient for marking generations!
-      # But it might contain sensitive information, so its hidden
+      # I change it at every rebuild. Very convenient for naming generations!
       systemLabel = (
         let
-          filePath = ./private-config/NIXOS_LABEL.txt;
+          filePath = ./NIXOS_LABEL.txt;
         in if (builtins.pathExists filePath) then (
           builtins.readFile filePath
         ) else "Initial Configuration: Requires private-config to be complete"

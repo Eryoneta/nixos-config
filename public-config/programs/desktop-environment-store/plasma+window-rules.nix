@@ -4,10 +4,14 @@
     description = "Fix VSCodium launcher not sticking instances";
     match = { # What target
       window-class = {
-        value = "VSCodium"; # A VSCodium window
+        value = "vscodium VSCodium"; # A VSCodium window
         type = "exact";
       };
       window-types = [ "normal" ]; # Normal window
+      window-role = {
+        value = "browser-window";
+        type = "exact";
+      };
     };
     apply = { # What changes
       desktopfile = { # Set the .desktop launcher
