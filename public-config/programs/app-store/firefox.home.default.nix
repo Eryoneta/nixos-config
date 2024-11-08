@@ -45,7 +45,7 @@
         isDefault = false;
 
         # Extensions
-        extensions = with pkgs-bundle.firefox-addons; [
+        extensions = with pkgs-bundle.firefox-addons.pkgs; [
           ublock-origin # UBlock-Origin: Adblocker
           plasma-integration # Plasma Integration: Integrates Plasma Desktop
         ];

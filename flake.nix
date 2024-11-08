@@ -35,9 +35,12 @@
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Stable Unfree Packages (AutoUpgrade)
+    nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-24.05";
+
     # Firefox Addons (AutoUpgrade)
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-stable";
 
     # Firefox: FX-AutoConfig (Manual Upgrade)
     fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/master";

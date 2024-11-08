@@ -314,6 +314,25 @@
         "type": "github"
       }
     },
+    "nixpkgs-unfree-stable": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1730989349,
+        "narHash": "sha256-aAk54Fd03f8APLFxfWxOE0BbpasPsOpSucN8mFJXfWA=",
+        "owner": "numtide",
+        "repo": "nixpkgs-unfree",
+        "rev": "8375ee7779bec2abbcaacebaf06e4b96c6792497",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "ref": "nixos-24.05",
+        "repo": "nixpkgs-unfree",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1730785428,
@@ -346,11 +365,25 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1730883749,
+        "narHash": "sha256-mwrFF0vElHJP8X3pFCByJR365Q2463ATp2qGIrDUdlE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "dba414932936fde69f0606b4f1d87c5bc0003ede",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nurpkgs-firefox-addons": {
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unfree-stable"
         ]
       },
       "locked": {
@@ -399,6 +432,7 @@
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "nixpkgs-unfree-stable": "nixpkgs-unfree-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
