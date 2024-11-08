@@ -1,7 +1,8 @@
-{ modules, host, ... }@args: with args.config-utils; {
+{ config, modules, host, ... }@args: with args.config-utils; {
 
   imports = with modules; [
     nixos-modules."swap-devices.nix"
+    nixos-modules."swapfile-hibernation.nix"
   ];
 
   config = {
@@ -41,6 +42,17 @@
       enable = (utils.mkDefault) true;
       algorithm = (utils.mkDefault) "zstd"; # Compression algorithm
       memoryPercent = (utils.mkDefault) 50; # Total space shown, in percent relative to RAM
+    };
+
+    # Hibernation ("swapfile-hibernation.nix")
+    system.hibernation = {
+      enable = (utils.mkDefault) true;
+      resumeDevice = config.fileSystems."/".device;
+      swapfilePath = config.swap.devices."basicSwap".device;
+      dataFile = {
+        systemUser = host.user.username;
+        path = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
+      };
     };
 
     # DHCP

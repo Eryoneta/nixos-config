@@ -13,10 +13,6 @@
     # Swapfile
     swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
 
-    # Hibernation
-    boot.resumeDevice = config.fileSystems."/".device;
-    boot.kernelParams = [ "resume_offset=3848192" ];
-
     # Firmware
     virtualisation.hypervGuest.enable = true;
     

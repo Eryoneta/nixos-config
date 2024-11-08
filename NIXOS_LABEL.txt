@@ -1,1 +1,1 @@
-Hardware-Configuration: Reordem
+Features/Hibernation: Hardware-data
