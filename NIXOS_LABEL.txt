@@ -1,1 +1,1 @@
-Features/Hibernation: Hardware-data
+Plasma: Extra packages
