@@ -29,20 +29,27 @@ inputs: flakePath: (
             inherit host;
           })
           # Pkgs-Bundle
-          (flake-modules."package-bundle.nix".build {
-            architecture = host.system.architecture;
-            autoImportPackages = (with inputs; {
-              stable = nixpkgs-stable;
-              unstable = nixpkgs-unstable;
-              unstable-fixed = nixpkgs-unstable-fixed;
-            });
-            packages = (with inputs; {
-              firefox-addons = nurpkgs-firefox-addons.packages.${host.system.architecture};
-              fx-autoconfig = fx-autoconfig;
-              nixos-artwork = (nixos-artwork host.system.architecture);
-              tiledmenu = tiledmenu;
-            });
-          })
+          (flake-modules."package-bundle.nix".build (
+            let
+              architecture = host.system.architecture;
+            in {
+              inherit architecture;
+              autoImportPackages = (with inputs; {
+                stable = nixpkgs-stable;
+                unstable = nixpkgs-unstable;
+                unstable-fixed = nixpkgs-unstable-fixed;
+              });
+              packages = (with inputs; {
+                firefox-addons = {
+                  pkgs = nurpkgs-firefox-addons.packages.${architecture};
+                  buildFirefoxXpiAddon = nurpkgs-firefox-addons.lib.${architecture}.buildFirefoxXpiAddon;
+                };
+                fx-autoconfig = fx-autoconfig;
+                nixos-artwork = (nixos-artwork architecture);
+                tiledmenu = tiledmenu;
+              });
+            }
+          ))
           # Public-Private-Domains
           (flake-modules."public-private-domains.nix".build {
             # Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
@@ -103,6 +110,7 @@ inputs: flakePath: (
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   #inherit nixpkgs-unstable-fixed;
+                  inherit nixpkgs-unfree-stable;
                   inherit nurpkgs-firefox-addons;
                   #inherit fx-autoconfig;
                 });
