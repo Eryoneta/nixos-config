@@ -15,12 +15,6 @@
     # Boot partition
     fileSystems."/boot".device = "/dev/disk/by-label/EFI"; # Label is "EFI"
 
-    # Swapfile
-    swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
-
-    # ZRAM
-    zramSwap.enable = false; # CPU is not really fast
-
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;
     

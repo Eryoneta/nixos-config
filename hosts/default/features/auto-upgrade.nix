@@ -9,7 +9,6 @@
   config = {
     # System AutoUpgrade
     system.autoUpgrade = {
-      enable = (utils.mkDefault) true;
       operation = "boot";
       allowReboot = false;
       persistent = true;

@@ -1,9 +1,6 @@
-{ config, modules, host, ... }@args: with args.config-utils; {
+{ host, ... }@args: with args.config-utils; {
 
-  imports = with modules; [
-    nixos-modules."swap-devices.nix"
-    nixos-modules."swapfile-hibernation.nix"
-  ];
+  imports = [];
 
   config = {
 
@@ -24,37 +21,6 @@
       device = (utils.mkDefault) "/dev/disk/by-label/BOOT";
       fsType = (utils.mkDefault) "vfat";
       options = (utils.mkDefault) [ "fmask=0022" "dmask=0022" ];
-    };
-
-    # Swapfile ("swap-devices.nix")
-    swap = {
-      enable = (utils.mkDefault) true;
-      devices = {
-        "basicSwap" = {
-          device = (utils.mkDefault) "/var/swapfile";
-          size = (utils.mkDefault) (4 * 1024);
-        };
-      };
-    };
-
-    # ZRAM
-    zramSwap = {
-      enable = (utils.mkDefault) true;
-      algorithm = (utils.mkDefault) "zstd"; # Compression algorithm
-      memoryPercent = (utils.mkDefault) (
-        100 # Total space shown(Not real compressed space!), in percent relative to RAM
-      );
-    };
-
-    # Hibernation ("swapfile-hibernation.nix")
-    system.hibernation = {
-      enable = (utils.mkDefault) true;
-      resumeDevice = config.fileSystems."/".device;
-      swapfilePath = config.swap.devices."basicSwap".device;
-      dataFile = {
-        systemUser = host.user.username;
-        path = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
-      };
     };
 
     # DHCP
