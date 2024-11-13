@@ -6,7 +6,7 @@
 
       # Aliases
       shellAliases = {
-        nixos-generations = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+        "nixos-generations" = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
       };
       
     };

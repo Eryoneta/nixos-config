@@ -26,20 +26,20 @@
     xdg.configFile."yakuakerc" = {
       enable = options.enabled;
       text = utils.toINI {
-        Dialogs = {
-          FirstRun = false; # Do not show welcome-popup
+        "Dialogs" = {
+          "FirstRun" = false; # Do not show welcome-popup
         };
-        Window = {
-          Width = 80;
-          Height = 80;
-          KeepOpen = false; # Close when focus is lost
+        "Window" = {
+          "Width" = 80;
+          "Height" = 80;
+          "KeepOpen" = false; # Close when focus is lost
         };
-        Animation = {
-          Frames = 0; # Show instantly
+        "Animation" = {
+          "Frames" = 0; # Show instantly
         };
-        Appearance = {
-          Translucency = true; # Transparent
-          BackgroundColorOpacity = 80;
+        "Appearance" = {
+          "Translucency" = true; # Transparent
+          "BackgroundColorOpacity" = 80;
         };
       };
     };
@@ -47,15 +47,15 @@
       enable = options.enabled;
       text = utils.toINI {
         "Desktop Entry" = {
-          Name = "Yakuake";
-          Icon = "yakuake";
-          Type = "Application";
-          Exec = "yakuake";
-          Terminal = false;
-          DBusActivatable = true;
-          X-DBUS-ServiceName = "org.kde.yakuake";
-          X-DBUS-StartupType = "Unique";
-          X-KDE-StartupNotify = false;
+          "Name" = "Yakuake";
+          "Icon" = "yakuake";
+          "Type" = "Application";
+          "Exec" = "yakuake";
+          "Terminal" = false;
+          "DBusActivatable" = true;
+          "X-DBUS-ServiceName" = "org.kde.yakuake";
+          "X-DBUS-StartupType" = "Unique";
+          "X-KDE-StartupNotify" = false;
         };
       };
     };

@@ -42,30 +42,30 @@
           force = true;
           engines = {
             "Google" = {
-              metaData.alias = "@g";
+              "metaData"."alias" = "@g";
             };
             "Nix Packages" = {
-              urls = [
+              "urls" = [
                 {
-                  template = "https://search.nixos.org/packages";
-                  params = [
-                    { name = "type"; value = "packages"; }
-                    { name = "query"; value = "{searchTerms}"; }
+                  "template" = "https://search.nixos.org/packages";
+                  "params" = [
+                    { "name" = "type"; "value" = "packages"; }
+                    { "name" = "query"; "value" = "{searchTerms}"; }
                   ];
                 }
               ];
-              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
+              "icon" = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              "definedAliases" = [ "@np" ];
             };
             "NixOS Wiki" = {
-              urls = [
+              "urls" = [
                 {
-                  template = "https://nixos.wiki/index.php?search={searchTerms}";
+                  "template" = "https://nixos.wiki/index.php?search={searchTerms}";
                 }
               ];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
-              updateInterval = 24 * 60 * 60 * 1000; # Every day
-              definedAlias = [ "@nw" ];
+              "iconUpdateURL" = "https://nixos.wiki/favicon.png";
+              "updateInterval" = 24 * 60 * 60 * 1000; # Every day
+              "definedAlias" = [ "@nw" ];
             };
           };
           default = "DuckDuckGo"; # Is more reliable than Google

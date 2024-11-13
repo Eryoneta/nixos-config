@@ -22,14 +22,14 @@
       # Policies
       # More at: "about:policies#documentaion"
       policies = {
-        DisableAppUpdate = true; # Do not update
-        AppAutoUpdate = false; # Do not auto-update
-        BackgroundAppUpdate = false; # Do not update on background
-        DisableFirefoxAccounts = true; # Disable user account("Firefox Sync")
-        DisableFirefoxStudies = true; # Disable "Shield"
-        DisablePocket = true; # Disable "Pocket"
-        DisableTelemetry = true; # Disable telemetry
-        DontCheckDefaultBrowser = true; # Do not check if the browser is the default
+        "DisableAppUpdate" = true; # Do not update
+        "AppAutoUpdate" = false; # Do not auto-update
+        "BackgroundAppUpdate" = false; # Do not update on background
+        "DisableFirefoxAccounts" = true; # Disable user account("Firefox Sync")
+        "DisableFirefoxStudies" = true; # Disable "Shield"
+        "DisablePocket" = true; # Disable "Pocket"
+        "DisableTelemetry" = true; # Disable telemetry
+        "DontCheckDefaultBrowser" = true; # Do not check if the browser is the default
       };
 
       # Messaging Hosts
