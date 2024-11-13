@@ -59,7 +59,8 @@
       swapfilePath = config.swap.devices."basicSwap".device;
       dataFile = {
         systemUser = host.user.username;
-        path = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
+        absolutePath = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
+        storePath = (../. + "/${host.hostname}/hardware-data.json");
       };
     };
 

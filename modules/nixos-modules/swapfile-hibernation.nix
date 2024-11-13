@@ -36,9 +36,13 @@
                 description = "The system user to own the file.";
                 default = "root";
               };
-              path = lib.mkOption {
+              absolutePath = lib.mkOption {
                 type = lib.types.path;
-                description = "The path to the file.";
+                description = "The absolute path to the file.";
+              };
+              storePath = lib.mkOption {
+                type = lib.types.path;
+                description = "The relative path to the file.";
               };
             };
           };
@@ -68,9 +72,15 @@
           '';
         }
         {
-          assertion = !(cfg.dataFile.path == "");
+          assertion = !(cfg.dataFile.absolutePath == "");
           message = ''
-            The option 'system.hibernation.dataFile.path' cannot be empty
+            The option 'system.hibernation.dataFile.absolutePath' cannot be empty
+          '';
+        }
+        {
+          assertion = !(cfg.dataFile.storePath == "");
+          message = ''
+            The option 'system.hibernation.dataFile.storePath' cannot be empty
           '';
         }
       ];
@@ -100,23 +110,23 @@
               | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
             )
             # Saves the value into a json file
-            if [ -f "${cfg.dataFile.path}" ]; then
+            if [ -f "${cfg.dataFile.absolutePath}" ]; then
               # Edits a json file
               ( jq \
                 --arg offset "$resume_offset" \
                 '.hibernation.swapfile.resume_offset = $offset' \
-                "${cfg.dataFile.path}" \
-              ) > "${cfg.dataFile.path}.tmp" \
-                && mv "${cfg.dataFile.path}.tmp" "${cfg.dataFile.path}"
+                "${cfg.dataFile.absolutePath}" \
+              ) > "${cfg.dataFile.absolutePath}.tmp" \
+                && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}"
             else
               # Creates a json file
               ( jq -n \
                 --arg offset "$resume_offset" \
                 '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
-              ) > "${cfg.dataFile.path}"
+              ) > "${cfg.dataFile.absolutePath}"
             fi
             # Set "systemUser" as the owner (And the group)
-            chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.path}"
+            chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
           fi
         '';
       };
@@ -125,13 +135,14 @@
       # Note: The file is only available AFTER the first rebuild!
       #   Actually setting "resume_offset" requires another rebuild!
       boot.resumeDevice = cfg.resumeDevice;
-      boot.kernelParams = lib.mkIf (builtins.pathExists cfg.dataFile.path) (
+      boot.kernelParams = lib.mkIf (builtins.pathExists cfg.dataFile.storePath) (
         let
           offset = (
-            builtins.fromJSON (builtins.readFile cfg.dataFile.path)
+            builtins.fromJSON (builtins.readFile cfg.dataFile.storePath)
           )."hibernation"."swapfile"."resume_offset";
-        in [ "resume_offset=${offset}" ]
+        in  [ "resume_offset=${offset}" ]
       );
+      # Note: If everything works, then "/sys/power/resume_offset" should be populated
 
     };
   }
