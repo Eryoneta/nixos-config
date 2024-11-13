@@ -218,8 +218,8 @@
       },
       "original": {
         "owner": "MrOtherGuy",
-        "ref": "master",
         "repo": "fx-autoconfig",
+        "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
         "type": "github"
       }
     },
@@ -280,6 +280,18 @@
         "ref": "release-24.05",
         "repo": "home-manager",
         "type": "github"
+      }
+    },
+    "nixos-artwork": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-3z+ed5vqX2sWK6wHWfJ3UXNWumz8JY4eSu3dPVzLLGQ=",
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png"
       }
     },
     "nixpkgs": {
@@ -430,6 +442,7 @@
         "agenix": "agenix",
         "fx-autoconfig": "fx-autoconfig",
         "home-manager": "home-manager_2",
+        "nixos-artwork": "nixos-artwork",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unfree-stable": "nixpkgs-unfree-stable",
@@ -437,7 +450,8 @@
         "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
         "plasma-manager": "plasma-manager",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "tiledmenu": "tiledmenu"
       }
     },
     "stylix": {
@@ -485,6 +499,23 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tiledmenu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718670194,
+        "narHash": "sha256-hLXQmQ88rdcd5bfPijnjh9yffdu+7y42IUK9bADBjW4=",
+        "owner": "Zren",
+        "repo": "plasma-applet-tiledmenu",
+        "rev": "73e03bd9ff523b01abb31a7c72901ba25918f9d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Zren",
+        "repo": "plasma-applet-tiledmenu",
+        "rev": "73e03bd9ff523b01abb31a7c72901ba25918f9d8",
         "type": "github"
       }
     }
