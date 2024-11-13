@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
 
   imports = [];
 
@@ -9,9 +9,6 @@
     boot.initrd.kernelModules = [ ];
     boot.kernelModules = [ ];
     boot.extraModulePackages = [ ];
-
-    # Swapfile
-    swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
 
     # Firmware
     virtualisation.hypervGuest.enable = true;

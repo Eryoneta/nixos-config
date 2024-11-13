@@ -22,7 +22,7 @@
           force = true;
           engines = {
             "Google" = {
-              metaData.alias = "@g";
+              "metaData"."alias" = "@g";
             };
           };
           default = "Google";

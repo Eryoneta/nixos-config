@@ -5,46 +5,47 @@
   # Inputs
   inputs = {
 
+    # System Inputs
     # NixOS (AutoUpgrade)
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-
     # Home-Manager (AutoUpgrade)
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
     # Plasma-Manager (AutoUpgrade)
     plasma-manager.url = "github:nix-community/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
-
     # Agenix (AutoUpgrade)
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
-
     # Stylix (AutoUpgrade)
     stylix.url = "github:danth/stylix/release-24.05";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home-manager";
 
+    # Package Inputs
     # Stable Packages (AutoUpgrade)
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-
     # Unstable Packages (AutoUpgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Extra Inputs
     # Stable Unfree Packages (AutoUpgrade)
     nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-24.05";
-
     # Firefox Addons (AutoUpgrade)
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-stable";
-
-    # Firefox: FX-AutoConfig (Manual Upgrade)
-    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/master";
+    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-stable"; # Some extensions are unfree
+    # Firefox: FX-AutoConfig (Manual Fetch)
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/fe783f2c72388f64fd7ea0ee67617c6fd32f2261";
     fx-autoconfig.flake = false;
+    # NixOS Artwork (Manual Fetch)
+    nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
+    nixos-artwork.flake = false;
+    # Plasma/Plasmoid: TiledMenu (Manual Fetch)
+    tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
+    tiledmenu.flake = false;
 
   };
 
@@ -54,28 +55,7 @@
 
       # Imports
       user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
-      inputsAndExtras = (extraArgs // {
-
-        # NixOS Artwork (Manual Fetch)
-        nixos-artwork = architecture: {
-          "wallpaper/nix-wallpaper-simple-blue.png" = (
-            extraArgs.nixpkgs.legacyPackages.${architecture}.fetchurl {
-              url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
-              sha256 = "sha256-utrcjzfeJoFOpUbFY2eIUNCKy5rjLt57xIoUUssJmdI=";
-            }
-          );
-        };
-
-        # Plasma/Plasmoid: TiledMenu (Manual Fetch)
-        tiledmenu = (
-          builtins.fetchGit {
-            url = "https://github.com/Zren/plasma-applet-tiledmenu.git";
-            rev = "73e03bd9ff523b01abb31a7c72901ba25918f9d8";
-          }
-        );
-
-      });
-      buildConfiguration = (import ./configurationBuilder.nix inputsAndExtras self.outPath);
+      buildConfiguration = (import ./configurationBuilder.nix extraArgs self.outPath);
 
       # System_Label ([a-zA-Z0-9:_.-]*)
       # I change it at every rebuild. Very convenient for naming generations!

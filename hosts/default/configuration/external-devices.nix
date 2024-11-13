@@ -9,12 +9,15 @@
     console.keyMap = "br-abnt2";
 
     # Sound
-    hardware.pulseaudio.enable = false;
     services.pipewire = {
       enable = (utils.mkDefault) true;
-      alsa.enable = (utils.mkDefault) true;
-      alsa.support32Bit = (utils.mkDefault) true;
-      pulse.enable = (utils.mkDefault) true;
+      pulse = {
+        enable = (utils.mkDefault) true;
+      };
+      alsa = {
+        enable = (utils.mkDefault) true;
+        support32Bit = (utils.mkDefault) true;
+      };
     };
 
   };

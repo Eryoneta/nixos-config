@@ -36,9 +36,13 @@
                 description = "The system user to own the file.";
                 default = "root";
               };
-              path = lib.mkOption {
+              absolutePath = lib.mkOption {
                 type = lib.types.path;
-                description = "The path to the file.";
+                description = "The absolute path to the file.";
+              };
+              storePath = lib.mkOption {
+                type = lib.types.path;
+                description = "The relative path to the file.";
               };
             };
           };
@@ -68,70 +72,80 @@
           '';
         }
         {
-          assertion = !(cfg.dataFile.path == "");
+          assertion = !(cfg.dataFile.absolutePath == "");
           message = ''
-            The option 'system.hibernation.dataFile.path' cannot be empty
+            The option 'system.hibernation.dataFile.absolutePath' cannot be empty
+          '';
+        }
+        {
+          assertion = !(cfg.dataFile.storePath == "");
+          message = ''
+            The option 'system.hibernation.dataFile.storePath' cannot be empty
           '';
         }
       ];
 
       # Find and save "resume_offset"
-      systemd.services."find-swapfile-resume_offset" = {
-        serviceConfig.Type = "oneshot";
-        serviceConfig.User = "root"; # filefrag swapfile requires root access
-        after = ( # From "https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/swap.nix"
-          let
-            deviceName = lib.replaceStrings [ "\\" ] [ "" ] (utils.escapeSystemdPath cfg.swapfilePath);
-          in [ "mkswap-${deviceName}.service" ]
-        );
-        before = [ "shutdown.target" ];
-        conflicts = [ "shutdown.target" ];
-        path = with pkgs; [
-          coreutils
-          e2fsprogs # filefrag
-          gawk # awk
-          jq # JQ: Simple JSON formatter
-        ];
-        script = ''
-          if [ -f "${cfg.swapfilePath}" ]; then
-            # Finds the value of resume_offset
-            resume_offset=$( \
-              filefrag -v "${cfg.swapfilePath}" \
-              | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
-            )
-            # Saves the value into a json file
-            if [ -f "${cfg.dataFile.path}" ]; then
-              # Edits a json file
-              ( jq \
-                --arg offset "$resume_offset" \
-                '.hibernation.swapfile.resume_offset = $offset' \
-                "${cfg.dataFile.path}" \
-              ) > "${cfg.dataFile.path}.tmp" \
-                && mv "${cfg.dataFile.path}.tmp" "${cfg.dataFile.path}"
-            else
-              # Creates a json file
-              ( jq -n \
-                --arg offset "$resume_offset" \
-                '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
-              ) > "${cfg.dataFile.path}"
+      systemd.services."find-swapfile-resume_offset" = (
+        let
+          # From "https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/swap.nix"
+          deviceName = lib.replaceStrings [ "\\" ] [ "" ] (utils.escapeSystemdPath cfg.swapfilePath);
+          mkswapService = "mkswap-${deviceName}.service";
+        in {
+          serviceConfig.Type = "oneshot";
+          serviceConfig.User = "root"; # filefrag swapfile requires root access
+          wantedBy = [ mkswapService ];
+          after = [ mkswapService ];
+          before = [ "shutdown.target" ];
+          conflicts = [ "shutdown.target" ];
+          path = with pkgs; [
+            coreutils
+            e2fsprogs # filefrag
+            gawk # awk
+            jq # JQ: Simple JSON formatter
+          ];
+          script = ''
+            if [ -f "${cfg.swapfilePath}" ]; then
+              # Finds the value of resume_offset
+              resume_offset=$( \
+                filefrag -v "${cfg.swapfilePath}" \
+                | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
+              )
+              # Saves the value into a json file
+              if [ -f "${cfg.dataFile.absolutePath}" ]; then
+                # Edits a json file
+                ( jq \
+                  --arg offset "$resume_offset" \
+                  '.hibernation.swapfile.resume_offset = $offset' \
+                  "${cfg.dataFile.absolutePath}" \
+                ) > "${cfg.dataFile.absolutePath}.tmp" \
+                  && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}"
+              else
+                # Creates a json file
+                ( jq -n \
+                  --arg offset "$resume_offset" \
+                  '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
+                ) > "${cfg.dataFile.absolutePath}"
+              fi
+              # Set "systemUser" as the owner (And the group)
+              chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
             fi
-            # Set "systemUser" as the owner (And the group)
-            chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.path}"
-          fi
-        '';
-      };
+          '';
+        }
+      );
 
       # Hibernation
       # Note: The file is only available AFTER the first rebuild!
       #   Actually setting "resume_offset" requires another rebuild!
       boot.resumeDevice = cfg.resumeDevice;
-      boot.kernelParams = lib.mkIf (builtins.pathExists cfg.dataFile.path) (
+      boot.kernelParams = lib.mkIf (builtins.pathExists cfg.dataFile.storePath) (
         let
           offset = (
-            builtins.fromJSON (builtins.readFile cfg.dataFile.path)
+            builtins.fromJSON (builtins.readFile cfg.dataFile.storePath)
           )."hibernation"."swapfile"."resume_offset";
-        in [ "resume_offset=${offset}" ]
+        in  [ "resume_offset=${offset}" ]
       );
+      # Note: If everything works, then "/sys/power/resume_offset" should be populated
 
     };
   }

@@ -9,7 +9,7 @@
     
     # Variables
     home.sessionVariables = {
-      DEFAULT_BROWSER = "${pkgs-bundle.unstable.firefox-devedition}/bin/firefox-devedition"; # Default Browser
+      "DEFAULT_BROWSER" = "${pkgs-bundle.unstable.firefox-devedition}/bin/firefox-devedition"; # Default Browser
     };
 
     # XDG Mime Apps

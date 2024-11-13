@@ -145,7 +145,7 @@
         scriptOpts = {
           # UOSC configuration
           # Defaults: https://github.com/tomasklaen/uosc/blob/main/src/uosc.conf
-          uosc = {
+          "uosc" = {
 
             # Progress bar (Expanded)
             "timeline_style" = "line"; # Display current position as a line

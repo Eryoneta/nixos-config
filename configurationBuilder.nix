@@ -45,7 +45,9 @@ inputs: flakePath: (
                   buildFirefoxXpiAddon = nurpkgs-firefox-addons.lib.${architecture}.buildFirefoxXpiAddon;
                 };
                 fx-autoconfig = fx-autoconfig;
-                nixos-artwork = (nixos-artwork architecture);
+                nixos-artwork = {
+                  "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
+                };
                 tiledmenu = tiledmenu;
               });
             }
@@ -104,8 +106,8 @@ inputs: flakePath: (
                 packages = (with inputs; {
                   inherit nixpkgs;
                   inherit home-manager;
-                  inherit agenix;
                   inherit plasma-manager;
+                  inherit agenix;
                   inherit stylix;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
@@ -113,6 +115,8 @@ inputs: flakePath: (
                   inherit nixpkgs-unfree-stable;
                   inherit nurpkgs-firefox-addons;
                   #inherit fx-autoconfig;
+                  #inherit nixos-artwork;
+                  #inherit tiledmenu;
                 });
               })
             ];

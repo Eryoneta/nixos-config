@@ -16,15 +16,15 @@
       userName = (utils.mkDefault) "${user.name}";
       userEmail = (utils.mkDefault) "${user.username}@${user.host.hostname}";
       extraConfig = {
-        init = {
-          defaultBranch = "main";
+        "init" = {
+          "defaultBranch" = "main";
         };
-        merge = {
-          conflictstyle = "diff3"; # diff with Delta
+        "merge" = {
+          "conflictstyle" = "diff3"; # diff with Delta
         };
       };
       aliases = {
-        work = "checkout"; # "git work"
+        "work" = "checkout"; # "git work"
       };
       includes = [
         {
@@ -43,10 +43,10 @@
         enable = (utils.mkDefault) true;
         package = (utils.mkDefault) options.packageChannel.delta;
         options = (utils.mkDefault) {
-          line-numbers = true; # Show numbers
-          side-by-side = true; # git diff shows changes side-by-side
-          #hyperlinks = true; # Clickable links
-          #hyperlinks-file-link-format = "vscode://file/{path}:{line}";
+          "line-numbers" = true; # Show numbers
+          "side-by-side" = true; # git diff shows changes side-by-side
+          #"hyperlinks" = true; # Clickable links
+          #"hyperlinks-file-link-format" = "vscode://file/{path}:{line}";
           # TODO: (ZSH/Delta) Check hyperlinks. Useful?
         };
       };

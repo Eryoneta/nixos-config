@@ -20,7 +20,7 @@
           publicShare = "${homePath}/Público";
           templates = "${homePath}/Modelos";
           extraConfig = {
-            XDG_PERSONAL_DIR = "${homePath}/Personal";
+            "XDG_PERSONAL_DIR" = "${homePath}/Personal";
           };
         }
       );
