@@ -86,50 +86,53 @@
       ];
 
       # Find and save "resume_offset"
-      systemd.services."find-swapfile-resume_offset" = {
-        serviceConfig.Type = "oneshot";
-        serviceConfig.User = "root"; # filefrag swapfile requires root access
-        after = ( # From "https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/swap.nix"
-          let
-            deviceName = lib.replaceStrings [ "\\" ] [ "" ] (utils.escapeSystemdPath cfg.swapfilePath);
-          in [ "mkswap-${deviceName}.service" ]
-        );
-        before = [ "shutdown.target" ];
-        conflicts = [ "shutdown.target" ];
-        path = with pkgs; [
-          coreutils
-          e2fsprogs # filefrag
-          gawk # awk
-          jq # JQ: Simple JSON formatter
-        ];
-        script = ''
-          if [ -f "${cfg.swapfilePath}" ]; then
-            # Finds the value of resume_offset
-            resume_offset=$( \
-              filefrag -v "${cfg.swapfilePath}" \
-              | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
-            )
-            # Saves the value into a json file
-            if [ -f "${cfg.dataFile.absolutePath}" ]; then
-              # Edits a json file
-              ( jq \
-                --arg offset "$resume_offset" \
-                '.hibernation.swapfile.resume_offset = $offset' \
-                "${cfg.dataFile.absolutePath}" \
-              ) > "${cfg.dataFile.absolutePath}.tmp" \
-                && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}"
-            else
-              # Creates a json file
-              ( jq -n \
-                --arg offset "$resume_offset" \
-                '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
-              ) > "${cfg.dataFile.absolutePath}"
+      systemd.services."find-swapfile-resume_offset" = (
+        let
+          # From "https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/swap.nix"
+          deviceName = lib.replaceStrings [ "\\" ] [ "" ] (utils.escapeSystemdPath cfg.swapfilePath);
+          mkswapService = "mkswap-${deviceName}.service";
+        in {
+          serviceConfig.Type = "oneshot";
+          serviceConfig.User = "root"; # filefrag swapfile requires root access
+          wantedBy = [ mkswapService ];
+          after = [ mkswapService ];
+          before = [ "shutdown.target" ];
+          conflicts = [ "shutdown.target" ];
+          path = with pkgs; [
+            coreutils
+            e2fsprogs # filefrag
+            gawk # awk
+            jq # JQ: Simple JSON formatter
+          ];
+          script = ''
+            if [ -f "${cfg.swapfilePath}" ]; then
+              # Finds the value of resume_offset
+              resume_offset=$( \
+                filefrag -v "${cfg.swapfilePath}" \
+                | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
+              )
+              # Saves the value into a json file
+              if [ -f "${cfg.dataFile.absolutePath}" ]; then
+                # Edits a json file
+                ( jq \
+                  --arg offset "$resume_offset" \
+                  '.hibernation.swapfile.resume_offset = $offset' \
+                  "${cfg.dataFile.absolutePath}" \
+                ) > "${cfg.dataFile.absolutePath}.tmp" \
+                  && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}"
+              else
+                # Creates a json file
+                ( jq -n \
+                  --arg offset "$resume_offset" \
+                  '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
+                ) > "${cfg.dataFile.absolutePath}"
+              fi
+              # Set "systemUser" as the owner (And the group)
+              chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
             fi
-            # Set "systemUser" as the owner (And the group)
-            chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
-          fi
-        '';
-      };
+          '';
+        }
+      );
 
       # Hibernation
       # Note: The file is only available AFTER the first rebuild!
