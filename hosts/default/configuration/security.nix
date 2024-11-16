@@ -1,4 +1,4 @@
-{ config-domain, host, ... }@args: with args.config-utils; {
+{ config, config-domain, host, pkgs-bundle, lib, pkgs, ... }@args: with args.config-utils; {
   config = {
 
     # Firewall
@@ -27,6 +27,42 @@
         }
       )
     );
+
+    # AppArmor
+    # security.apparmor = {
+    #   enable = true;
+    #   policies = {
+    #     # "firefox" = {
+    #     #   enable = true;
+    #     #   enforce = false;
+    #     #   profile = ''
+    #     #   '';
+    #     # };
+    #   };
+    # };
+    # environment.systemPackages = with pkgs-bundle.stable; [
+    #   # apparmor-utils
+    #   apparmor-profiles
+    # ];
+    # TODO: (Security) AppArmor
+
+    # Firejail
+    # programs.firejail = {
+    #   enable = true;
+    #   wrappedBinaries = {
+    #     "firefox" = {
+    #       executable = (
+    #         let
+    #           firefox-pkgs = with config.home-manager.users.${host.user.username}; (
+    #             profile.programs.firefox.options.packageChannel
+    #           ).firefox;
+    #         in "${lib.getBin firefox-pkgs}/bin/firefox"
+    #       );
+    #       profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
+    #     };
+    #   };
+    # };
+    # TODO: (Security) Firejail
     
   };
 }
