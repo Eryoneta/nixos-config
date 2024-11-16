@@ -16,6 +16,7 @@
           kdePackages.kate # Kate: (Light) Code editor
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
+          jre8 # JRE8: Java Runtime Environment v8
         ])
         ++
         (with unstable-fixed; [
