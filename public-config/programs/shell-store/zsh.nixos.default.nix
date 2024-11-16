@@ -1,13 +1,5 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
-
-  options = {
-    profile.programs.zsh = {
-      options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
-    };
-  };
-
-  config = with config.profile.programs.zsh; {
+{ config, host, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.home-manager.users.${host.user.username}.profile.programs.zsh; {
 
     # ZSH: Shell
     programs.zsh = {
@@ -30,5 +22,4 @@
     );
 
   };
-
 }

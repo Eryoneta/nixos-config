@@ -1,13 +1,5 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
-
-  options = {
-    profile.programs.plasma = {
-      options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
-    };
-  };
-
-  config = with config.profile.programs.plasma; {
+{ config, host, ... }@args: with args.config-utils; {
+  config = with config.home-manager.users.${host.user.username}.profile.programs.plasma; {
 
     # Plasma: A "Desktop Environment" focused on customization
     services.desktopManager.plasma6 = {
@@ -30,5 +22,4 @@
     };
 
   };
-
 }
