@@ -18,6 +18,7 @@
           yt-dlp # yt-dlp: YouTube downloader script
           jre8 # JRE8: Java Runtime Environment v8
           eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
+          libreoffice # LibreOffice: Free office suite
         ])
         ++
         (with unstable-fixed; [
