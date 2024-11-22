@@ -5,6 +5,7 @@
       ./configuration/external-devices.nix
       ./configuration/networking.nix
       ./configuration/security.nix
+      ./configuration/fonts.nix
     ] ++ [
       ./hardware-configuration.nix
       ./features.nix
