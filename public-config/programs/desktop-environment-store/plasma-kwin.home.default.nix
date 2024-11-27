@@ -54,6 +54,7 @@
 
     };
     
+    # Dotfiles
     programs.plasma.configFile = {
 
       # Activities
@@ -70,9 +71,18 @@
             "${main-id}" = "nix-snowflake-white"; # Icon
             "${secondary-id}" = "kde-symbolic"; # Icon
           };
-          "main"."currentActivity" = main-id; # Start activity
+          "main" = {
+            "currentActivity" = main-id; # Start activity
+          };
         }
       );
+
+      # Virtual desktops
+      "kwinrc" = {
+        "Desktops" = {
+          "Rows" = 1; # Order in a singular row
+        };
+      };
 
     };
 

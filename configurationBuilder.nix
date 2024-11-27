@@ -49,6 +49,9 @@ inputs: flakePath: (
                   "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
                 };
                 tiledmenu = tiledmenu;
+                papirus-colors-icons = {
+                  "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
+                };
               });
             }
           ))
@@ -117,6 +120,7 @@ inputs: flakePath: (
                   #inherit fx-autoconfig;
                   #inherit nixos-artwork;
                   #inherit tiledmenu;
+                  #inherit papirus-colors-icons;
                 });
               })
             ];

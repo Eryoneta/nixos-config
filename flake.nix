@@ -46,6 +46,9 @@
     # Plasma/Plasmoid: TiledMenu (Manual Fetch)
     tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
     tiledmenu.flake = false;
+    # Plasma/Icons: Papirus Colors (Manual Fetch)
+    papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
+    papirus-colors-icons.flake = false;
 
   };
 

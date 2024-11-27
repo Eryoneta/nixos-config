@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; {
 
     # Plasma: The KDE Plasma Desktop
@@ -68,6 +68,14 @@
         })
       ];
 
+    };
+
+    # Icon theme
+    xdg.dataFile."icons/Papirus-Colors-Dark" = {
+      enable = options.enabled;
+      source = with pkgs-bundle; (
+        papirus-colors-icons."Papirus-Colors-Dark"
+      );
     };
 
   };
