@@ -414,6 +414,23 @@
         "type": "gitlab"
       }
     },
+    "papirus-colors-icons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1653498377,
+        "narHash": "sha256-CYgXLUFdmzdKyiBpkVsNKd8FTEiKwsX2DAZnY/rLcH8=",
+        "owner": "varlesh",
+        "repo": "papirus-colors",
+        "rev": "ae694e120110ab30ead27c66abc68e74dfd4e4f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "varlesh",
+        "repo": "papirus-colors",
+        "rev": "ae694e120110ab30ead27c66abc68e74dfd4e4f5",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -449,6 +466,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
+        "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
         "stylix": "stylix",
         "tiledmenu": "tiledmenu"
