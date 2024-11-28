@@ -1,1 +1,1 @@
-Programs: MindSort
+Stylix: Cursor

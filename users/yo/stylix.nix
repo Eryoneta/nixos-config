@@ -14,17 +14,18 @@
 
       # Cursor
       cursor = {
-        #package = "";
-        #name = "";
-        # TODO: (Yo/Stylix) Set custom cursor
+        package = pkgs-bundle.stable.afterglow-cursors-recolored;
+        name = "Afterglow-Recolored-Original-joris2";
         size = 24;
       };
 
       # Fonts
       fonts = {
         sizes = { # Font sizes
-          applications = 10; 
-          terminal = 10;
+          applications = 10; # Apps UIs
+          terminal = 10; # Terminals
+          desktop = 10; # Window titles, bars, widgets, etc
+          popups = 10; # Popups and notifications
         };
       };
 
