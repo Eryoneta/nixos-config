@@ -9,7 +9,6 @@
         ])
         ++
         (with stable; [
-          #kdePackages.kwrite # KWrite: (Light) Text editor (Included with KDE Plasma)
           #kdePackages.ark # Ark: File archiver (Included with KDE Plasma)
           #kdePackages.gwenview # Gwenview: Image viewer (Included with KDE Plasma)
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)

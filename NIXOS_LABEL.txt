@@ -1,1 +1,1 @@
-Stylix: Cursor
+Programs: NoNewLineAtEndOfFileDangIt
