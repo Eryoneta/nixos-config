@@ -1,1 +1,1 @@
-Programs: Samba: Public
+Programs: MindSort
