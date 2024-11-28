@@ -12,7 +12,6 @@
           #kdePackages.ark # Ark: File archiver (Included with KDE Plasma)
           #kdePackages.gwenview # Gwenview: Image viewer (Included with KDE Plasma)
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)
-          kdePackages.kate # Kate: (Light) Code editor
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
           jre8 # JRE8: Java Runtime Environment v8
