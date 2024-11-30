@@ -18,6 +18,7 @@
           jre8 # JRE8: Java Runtime Environment v8
           eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
           libreoffice # LibreOffice: Free office suite
+          marktext # MarkText: Markdown text editor
 
           nix-output-monitor # nix-output-monitor: Prettify nix output
           # Note: Best usage is "sudo ls /dev/null > /dev/null 2>&1 && sudo nixos-rebuild switch --flake <PATH>#<HOSTNAME> --use-remote-sudo --show-trace --print-build-logs --verbose |& nom"
