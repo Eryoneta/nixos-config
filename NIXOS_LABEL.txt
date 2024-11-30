@@ -1,1 +1,1 @@
-Programs: ZSH Aliases
+Programs: Ghostwriter
