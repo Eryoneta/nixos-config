@@ -17,7 +17,7 @@
     # SDDM: Display Manager
     services.displayManager.sddm = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.kdePackages.sddm;
+      package = (utils.mkDefault) (options.packageChannel).kdePackages.sddm;
 
       # Wayland
       wayland.enable = (utils.mkDefault) true; # Wayland support

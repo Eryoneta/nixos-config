@@ -12,7 +12,7 @@
     # Ghostwriter: Writer tool
     programs.ghostwriter = { # (plasma-manager option)
       enable = options.enabled;
-      package = options.packageChannel.kdePackages.ghostwriter;
+      package = (options.packageChannel).kdePackages.ghostwriter;
       general = {
         display = {
           hideMenubarInFullscreen = true; # Hide the topbar when in fullscreen

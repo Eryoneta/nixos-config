@@ -28,8 +28,8 @@
     # MPV: Multimidia player
     programs.mpv = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.mpv;
-      # package = (utils.mkDefault) (options.packageChannel.mpv.override {
+      package = (utils.mkDefault) (options.packageChannel).mpv;
+      # package = (utils.mkDefault) ((options.packageChannel).mpv.override {
       #   # Scripts
       #   scripts = with options.packageChannel; [
       #     mpvScripts.uosc # UOSC: MPV frontend

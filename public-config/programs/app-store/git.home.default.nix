@@ -12,7 +12,7 @@
     # Git: File versioning
     programs.git = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.git;
+      package = (utils.mkDefault) (options.packageChannel).git;
       userName = (utils.mkDefault) "${user.name}";
       userEmail = (utils.mkDefault) "${user.username}@${user.host.hostname}";
       extraConfig = {
@@ -41,7 +41,7 @@
       # Delta: Git diff highlighter
       delta = {
         enable = (utils.mkDefault) true;
-        package = (utils.mkDefault) options.packageChannel.delta;
+        package = (utils.mkDefault) (options.packageChannel).delta;
         options = (utils.mkDefault) {
           "line-numbers" = true; # Show numbers
           "side-by-side" = true; # git diff shows changes side-by-side

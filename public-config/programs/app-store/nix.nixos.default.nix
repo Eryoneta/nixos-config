@@ -11,7 +11,7 @@
 
     # Nix: System package manager
     nix = {
-      package = (utils.mkDefault) options.packageChannel.nix; # Same package as the system
+      package = (utils.mkDefault) (options.packageChannel).nix; # Same package as the system
 
       # Garbage Collector
       gc = {

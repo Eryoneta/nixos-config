@@ -15,7 +15,7 @@
     # Firefox: Browser
     programs.firefox = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.firefox;
+      package = (utils.mkDefault) (options.packageChannel).firefox;
 
       # Language
       #languagePacks = [ "pt-BR" "en-US" ];

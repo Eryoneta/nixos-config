@@ -12,7 +12,7 @@
       # ZSH: Shell
       programs.zsh = {
         enable = options.enabled;
-        package = (utils.mkDefault) options.packageChannel.zsh;
+        package = (utils.mkDefault) (options.packageChannel).zsh;
 
         # AutoComplete
         enableCompletion = (utils.mkDefault) true;
@@ -43,7 +43,7 @@
         # More at: https://github.com/zsh-users/zsh-syntax-highlighting/tree/master/docs/highlighters
         syntaxHighlighting = {
           enable = (utils.mkDefault) true;
-          package = (utils.mkDefault) options.packageChannel.zsh-syntax-highlighting;
+          package = (utils.mkDefault) (options.packageChannel).zsh-syntax-highlighting;
           highlighters = [ "root" "brackets" "cursor" ];
         };
 
@@ -63,7 +63,7 @@
         # Oh-My-ZSH: Customize ZSH
         oh-my-zsh = {
           enable = (utils.mkDefault) true;
-          package = (utils.mkDefault) options.packageChannel.oh-my-zsh;
+          package = (utils.mkDefault) (options.packageChannel).oh-my-zsh;
 
           # Plugins
           # More at: https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
@@ -83,7 +83,7 @@
           # ZSH-No-PS2: Enter with a incomplete command produces a newline instead of a PS2(Secondary prompt)
           {
             name = "zsh-no-ps2";
-            src = options.packageChannel.fetchFromGitHub {
+            src = (options.packageChannel).fetchFromGitHub {
               owner = "romkatv";
               repo = "zsh-no-ps2";
               rev = "v1.0.0";
@@ -96,7 +96,7 @@
           # Powerlevel10k: Custom theme
           (let
             p10kConfigPath = "${config.xdg.configHome}/zsh/.p10k.zsh";
-            powerlevel10k = options.packageChannel.zsh-powerlevel10k;
+            powerlevel10k = (options.packageChannel).zsh-powerlevel10k;
           in ''
             # Powerlevel10k Theme
             source "${powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
@@ -105,7 +105,7 @@
           +
           # Any-Nix-Shell: "nix-shell", "nix run", and "nix develop" with ZSH instead of bash
           (let
-            any-nix-shell = options.packageChannel.any-nix-shell;
+            any-nix-shell = (options.packageChannel).any-nix-shell;
           in ''
             # Any-Nix-Shell
             ${any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
@@ -115,7 +115,7 @@
       };
 
       # Powerlevel10k packages
-      home.packages = with options.packageChannel; [
+      home.packages = with (options.packageChannel); [
         zsh-powerlevel10k # Powerlevel10k: A ZSH theme
         meslo-lgs-nf # Meslo Nerd Font: A font patched for Powerlevel10k
       ];

@@ -12,7 +12,7 @@
     # SSH: Secure connection
     programs.ssh = {
       enable = options.enabled;
-      package = options.packageChannel.openssh; # Stable channel
+      package = (options.packageChannel).openssh; # Stable channel
     };
     services.ssh-agent.enable = false; # The system already starts the agent
 

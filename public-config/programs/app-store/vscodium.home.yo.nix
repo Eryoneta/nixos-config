@@ -83,7 +83,7 @@
       # Extensions
       extensions = (
         let
-          vscode-marketplace-pkgs = options.packageChannel.vscode-utils.extensionFromVscodeMarketplace;
+          vscode-marketplace-pkgs = (options.packageChannel).vscode-utils.extensionFromVscodeMarketplace;
           vscode-marketplace-extensions = {
             
             # VSCode-Random: Includes many random generators
