@@ -13,7 +13,7 @@
           hashedPasswordFilePath = username: with config-domain; (
             # Check for "./private-config/secrets"
             utils.mkIf (utils.pathExists private.secrets) (
-              config.age.secrets."${username}-userPassword".path
+              config.age.secrets."${username}-userPassword".path # (Agenix secret)
             )
           );
         in {

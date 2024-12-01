@@ -13,7 +13,7 @@
     security.rtkit.enable = true;
 
     # Agenix
-    age = with config-domain; (
+    age = with config-domain; ( # (Agenix option)
       # Check for "./private-config/secrets"
       utils.mkIf (utils.pathExists private.secrets) (
         let
