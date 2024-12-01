@@ -1,8 +1,8 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
-    programs.plasma = {
+    programs.plasma = { # (plasma-manager option)
 
       # Workspace
       workspace = {
@@ -72,12 +72,11 @@
 
     # Icon theme
     xdg.dataFile."icons/Papirus-Colors-Dark" = {
-      enable = options.enabled;
       source = with pkgs-bundle; (
         papirus-colors-icons."Papirus-Colors-Dark"
       );
     };
 
-  };
+  });
 
 }

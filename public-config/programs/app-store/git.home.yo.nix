@@ -1,11 +1,11 @@
-{ config, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.git; {
+{ lib, config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.git; (lib.mkIf (options.enabled) {
 
     # Git: File versioning
     programs.git = {
       extraConfig = {
         "merge" = {
-          "ff" = "false"; # Merge: Never fast-foward, always create a commit
+          "ff" = "false"; # Merge: Never fast-forward, always create a commit
         };
       };
       aliases = {
@@ -13,5 +13,5 @@
       };
     };
 
-  };
+  });
 }

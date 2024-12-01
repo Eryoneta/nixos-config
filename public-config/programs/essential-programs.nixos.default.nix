@@ -13,6 +13,7 @@
         gparted # GParted: Manages partitions
         git # Git: Versioning
         btop # BTop: Terminal-based process viewer
+        kdePackages.filelight # Filelight: Disk usage visualizer
       ])
       ++
       (with unstable-fixed; [

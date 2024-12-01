@@ -1,8 +1,8 @@
-{ config, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # KWin Window manager for Plasma
-    programs.plasma.kwin = {
+    programs.plasma.kwin = { # (plasma-manager option)
 
       # Windows
       borderlessMaximizedWindows = (utils.mkDefault) false; # Show borders even when full size
@@ -53,38 +53,35 @@
       };
 
     };
-    
-    # Dotfiles
-    programs.plasma.configFile = {
 
-      # Activities
-      "kactivitymanagerdrc" = ( # Note: Old activities are not deleted!
-        let
-          main-id = "main-activity-random-id";
-          secondary-id = "secondary-activity-random-id";
-        in {
-          "activities" = { # Note: It's alfabetically ordered
-            "${main-id}" = "Main Activity"; # Name
-            "${secondary-id}" = "Secondary Activity"; # Name
-          };
-          "activities-icons" = {
-            "${main-id}" = "nix-snowflake-white"; # Icon
-            "${secondary-id}" = "kde-symbolic"; # Icon
-          };
-          "main" = {
-            "currentActivity" = main-id; # Start activity
-          };
-        }
-      );
-
-      # Virtual desktops
-      "kwinrc" = {
-        "Desktops" = {
-          "Rows" = 1; # Order in a singular row
+    # Activities
+    # Note: Old activities are not removed
+    programs.plasma.configFile."kactivitymanagerdrc" = ( # (plasma-manager option)
+      let
+        main-id = "main-activity-random-id";
+        secondary-id = "secondary-activity-random-id";
+      in {
+        "activities" = { # Note: It's alfabetically ordered
+          "${main-id}" = "Main Activity"; # Name
+          "${secondary-id}" = "Secondary Activity"; # Name
         };
-      };
+        "activities-icons" = {
+          "${main-id}" = "nix-snowflake-white"; # Icon
+          "${secondary-id}" = "kde-symbolic"; # Icon
+        };
+        "main" = {
+          "currentActivity" = main-id; # Start activity
+        };
+      }
+    );
 
+    # Virtual desktops
+    programs.plasma.configFile."kwinrc" = { # (plasma-manager option)
+      "Desktops" = {
+        "Rows" = 1; # Order in a singular row
+      };
     };
 
-  };
+
+  });
 }

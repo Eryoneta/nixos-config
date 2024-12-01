@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, pkgs, lib, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, pkgs,  ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.mpv = {
@@ -7,29 +7,27 @@
     };
   };
 
-  config = with config.profile.programs.mpv; {
+  config = with config.profile.programs.mpv; (lib.mkIf (options.enabled) {
 
-    home.packages = utils.mkIf (options.enabled) (
-      with options.packageChannel; [
+    home.packages = with options.packageChannel; [
 
-        # Trash-Cli: Interface for Freedesktop.org Trash
-        # UOSC uses this to delete files(A menu option), moving them to the trash
-        trash-cli
+      # Trash-Cli: Interface for Freedesktop.org Trash
+      # UOSC uses this to delete files(A menu option), moving them to the trash
+      trash-cli
 
-        # yt-dlp: YouTube downloader script
-        # MPV uses this to open online videos
-        yt-dlp
+      # yt-dlp: YouTube downloader script
+      # MPV uses this to open online videos
+      yt-dlp
 
-        # xclip: Simple clipboard manager
-        # MPV uses this to copy a file path
-        xclip
+      # xclip: Simple clipboard manager
+      # MPV uses this to copy a file path
+      xclip
 
-      ]
-    );
+    ];
 
     # MPV: Multimidia player
     programs.mpv = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = (utils.mkDefault) options.packageChannel.mpv;
       # package = (utils.mkDefault) (options.packageChannel.mpv.override {
       #   # Scripts
@@ -322,6 +320,6 @@
       }
     );
 
-  };
+  });
 
 }

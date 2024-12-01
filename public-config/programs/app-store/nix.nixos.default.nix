@@ -1,13 +1,13 @@
-{ config, pkgs, ... }@args: with args.config-utils; {
+{ lib, config, pkgs, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.nix = {
-      #options.enabled = (utils.mkBoolOption true); # Always true
+      options.enabled = (utils.mkBoolOption true); # Always true
       options.packageChannel = (utils.mkPackageOption pkgs);
     };
   };
 
-  config = with config.profile.programs.nix; {
+  config = with config.profile.programs.nix; (lib.mkIf (options.enabled) {
 
     # Nix: System package manager
     nix = {
@@ -38,6 +38,6 @@
 
     };
 
-  };
+  });
   
 }

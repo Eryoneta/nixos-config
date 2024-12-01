@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.yakuake = {
@@ -7,24 +7,21 @@
     };
   };
 
-  config = with config.profile.programs.yakuake; {
+  config = with config.profile.programs.yakuake; (lib.mkIf (options.enabled) {
 
     # Yakuake: Drop-down terminal
-    home.packages = utils.mkIf (options.enabled) (
-      with options.packageChannel; [ kdePackages.yakuake ]
-    );
+    home.packages = with options.packageChannel; [ kdePackages.yakuake ];
 
     # Shortcut
-    programs.plasma.shortcuts = utils.mkIf (options.enabled) {
+    programs.plasma.shortcuts = { # (plasma-manager option)
       # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
       "yakuake" = {
         "toggle-window-state" = "Meta+T"; # Toggle window view
       };
     };
 
-    # Dotfiles
+    # Dotfile
     xdg.configFile."yakuakerc" = {
-      enable = options.enabled;
       text = utils.toINI {
         "Dialogs" = {
           "FirstRun" = false; # Do not show welcome-popup
@@ -43,8 +40,9 @@
         };
       };
     };
-    xdg.configFile."autostart/org.kde.yakuake.desktop" = { # Autostart
-      enable = options.enabled;
+
+    # Autostart
+    xdg.configFile."autostart/org.kde.yakuake.desktop" = {
       text = utils.toINI {
         "Desktop Entry" = {
           "Name" = "Yakuake";
@@ -60,6 +58,6 @@
       };
     };
 
-  };
+  });
 
 }

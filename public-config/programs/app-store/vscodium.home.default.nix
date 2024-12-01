@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.vscodium = {
@@ -7,11 +7,11 @@
     };
   };
 
-  config = with config.profile.programs.vscodium; {
+  config = with config.profile.programs.vscodium; (lib.mkIf (options.enabled) {
 
     # VSCodium: (Medium) Code editor
     programs.vscode = { # VSCode, but actually VSCodium
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = (utils.mkDefault) options.packageChannel.vscodium;
 
       # Updates check
@@ -84,6 +84,6 @@
 
     };
 
-  };
+  });
 
 }

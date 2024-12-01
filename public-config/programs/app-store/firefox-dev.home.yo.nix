@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.firefox-devedition = {
@@ -10,7 +10,7 @@
     };
   };
 
-  config = with config.profile.programs.firefox-devedition; {
+  config = with config.profile.programs.firefox-devedition; (lib.mkIf (options.enabled) {
 
     # Firefox Developer Edition: Browser
     # Can be used alonside regular "Firefox"
@@ -29,7 +29,7 @@
 
       # Personal profile
       # This profile is personal. Customization without limits!
-      profiles."dev-edition-default" = utils.mkIf (options.enabled) {
+      profiles."dev-edition-default" = {
         # It NEEDS to be "dev-edition-default"!
         #   This way "firefox-devedition" doesn't complain about "missing profiles"
         #   If it doesn't find it, then it creates a new one, but it can't edit "profiles.ini", throws an error
@@ -102,26 +102,22 @@
       in {
 
         # Firefox Developer Edition: Browser
-        packages = utils.mkIf (options.enabled) (
-          with options.packageChannel; [
-            (firefox-devedition.override {
-              extraPrefsFiles = [
-                # Enable "userChromeJS"
-                "${fx-autoconfig}/program/config.js"
-              ];
-            })
-          ]
-        );
+        packages = with options.packageChannel; [
+          (firefox-devedition.override {
+            extraPrefsFiles = [
+              # Enable "userChromeJS"
+              "${fx-autoconfig}/program/config.js"
+            ];
+          })
+        ];
 
         # Dotfile: Load scripts and styles
         file."${profilePath}/chrome/utils" = {
-          enable = options.enabled;
           source = "${fx-autoconfig}/profile/chrome/utils";
         };
 
         # Dotfile: Small example
         file."${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
-          enable = options.enabled;
           source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
         };
         
@@ -130,6 +126,6 @@
       }
     );
 
-  };
+  });
 
 }

@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; {
+{ user, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
     
   imports = [
     ../default/home.nix # Default
@@ -36,6 +36,15 @@
           "application/x-docbook+xml" = defaultLightCodeEditor;
           "text/x-cmake" = defaultLightCodeEditor;
         }
+      );
+    };
+
+    # Profile
+    home.file.".face.icon" = with config-domain; {
+      # Check for "./private-config/resources"
+      enable = (utils.pathExists private.resources);
+      source = with private; (
+        "${resources}/profiles/${user.username}/.face.icon"
       );
     };
 

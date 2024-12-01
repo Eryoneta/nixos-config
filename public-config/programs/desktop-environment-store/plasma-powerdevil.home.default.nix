@@ -1,8 +1,8 @@
-{ config, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # PowerDevil: Power manager for Plasma
-    programs.plasma.powerdevil = {
+    programs.plasma.powerdevil = { # (plasma-manager option)
 
       # General
       general.pausePlayersOnSuspend = (utils.mkDefault) true; # Pause players when suspending
@@ -90,7 +90,7 @@
     };
 
     # Shortcut
-    programs.plasma.shortcuts = {
+    programs.plasma.shortcuts = { # (plasma-manager option)
       # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
       # Actions
       "org_kde_powerdevil"."Sleep" = "Sleep";
@@ -113,5 +113,5 @@
       "org_kde_powerdevil"."Turn Off Screen" = [ ];
     };
 
-  };
+  });
 }

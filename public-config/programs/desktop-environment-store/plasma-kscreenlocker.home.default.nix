@@ -1,8 +1,8 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # KScreenLocker: Screen locker for Plasma
-    programs.plasma.kscreenlocker = {
+    programs.plasma.kscreenlocker = { # (plasma-manager option)
 
       # Appearance
       appearance = {
@@ -25,5 +25,5 @@
 
     };
 
-  };
+  });
 }

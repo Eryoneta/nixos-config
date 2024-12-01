@@ -1,4 +1,4 @@
-{ config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, user, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.git = {
@@ -7,11 +7,11 @@
     };
   };
 
-  config = with config.profile.programs.git; {
+  config = with config.profile.programs.git; (lib.mkIf (options.enabled) {
 
     # Git: File versioning
     programs.git = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = (utils.mkDefault) options.packageChannel.git;
       userName = (utils.mkDefault) "${user.name}";
       userEmail = (utils.mkDefault) "${user.username}@${user.host.hostname}";
@@ -55,7 +55,6 @@
 
     # Dotfile: "git loglist"
     xdg.configFile."git/aliases/loglist" = {
-      enable = options.enabled;
       text = ''
         [alias]
           # Basically 'git log --graph --oneline', but pretty
@@ -70,13 +69,11 @@
 
     # Dotfile: "git save"
     xdg.configFile."git/aliases/save" = {
-      enable = options.enabled;
       text = (import ./git+alias-save.nix);
     };
 
     # Dotfile: "git quicksave"
     xdg.configFile."git/aliases/quicksave" = {
-      enable = options.enabled;
       text = ''
         [alias]
           # Quick commit
@@ -92,6 +89,6 @@
       '';
     };
 
-  };
+  });
 
 }

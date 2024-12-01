@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.powershell = {
@@ -7,16 +7,14 @@
     };
   };
 
-  config = with config.profile.programs.powershell; {
+  config = with config.profile.programs.powershell; (lib.mkIf (options.enabled) {
 
     # PowerShell: Shell
-    home.packages = utils.mkIf (options.enabled) (
-      with options.packageChannel; [ powershell ]
-    );
+    home.packages = with options.packageChannel; [ powershell ];
 
     # Profile
     # TODO: (PowerShell) Add my custom prompt
 
-  };
+  });
 
 }
