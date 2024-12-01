@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.firefox = {
@@ -8,11 +8,11 @@
     };
   };
 
-  config = with config.profile.programs.firefox; {
+  config = with config.profile.programs.firefox; (lib.mkIf (options.enabled) {
 
     # Firefox: Browser
     programs.firefox = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = (utils.mkDefault) options.packageChannel.firefox;
 
       # Language
@@ -84,10 +84,10 @@
     };
 
     # Plasma Browser Integration: Integrate browsers into Plasma Desktop
-    home.packages = utils.mkIf (options.enabled) (
-      with options.packageChannel; [ kdePackages.plasma-browser-integration ]
-    );
+    home.packages = with options.packageChannel; [
+      kdePackages.plasma-browser-integration
+    ];
 
-  };
+  });
 
 }

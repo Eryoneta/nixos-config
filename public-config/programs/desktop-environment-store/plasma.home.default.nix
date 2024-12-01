@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.plasma = {
@@ -11,12 +11,12 @@
     };
   };
 
-  config = with config.profile.programs.plasma; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
     # Get current configurations with rc2nix: "nix run github:nix-community/plasma-manager > ~/Downloads/config.txt"
     programs.plasma = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       immutableByDefault = (utils.mkDefault) false; # Options can be changed by the user
       overrideConfig = (utils.mkDefault) false; # Do not delete configs set outside plasma-manager
       # TODO: (Plasma) Set to override all configs?
@@ -109,6 +109,6 @@
       );
     };
 
-  };
+  });
 
 }

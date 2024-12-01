@@ -1,4 +1,4 @@
-{ config, pkgs-bundle,  ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle,  ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.kwrite = {
@@ -7,13 +7,13 @@
     };
   };
 
-  config = with config.profile.programs.kwrite; {
+  config = with config.profile.programs.kwrite; (lib.mkIf (options.enabled) {
 
     # KWrite: (Light) Text editor
     # (Included with KDE Plasma)
 
     # Dotfiles
-    programs.plasma.configFile = utils.mkIf (options.enabled) {
+    programs.plasma.configFile = {
       "kwriterc" = {
         "KTextEditor Document" = {
           "Newline at End of File" = false; # Do NOT add a newline!
@@ -21,6 +21,6 @@
       };
     };
 
-  };
+  });
 
 }

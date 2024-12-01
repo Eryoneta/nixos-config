@@ -1,5 +1,5 @@
-{ config, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # KRunner: Program starter for Plasma
     programs.plasma.krunner = {
@@ -8,5 +8,5 @@
       position = (utils.mkDefault) "top"; # Open at the top
     };
 
-  };
+  });
 }

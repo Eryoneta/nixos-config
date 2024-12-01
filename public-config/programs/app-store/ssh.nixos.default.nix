@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.ssh = {
@@ -7,7 +7,7 @@
     };
   };
 
-  config = with config.profile.programs.ssh; {
+  config = with config.profile.programs.ssh; (lib.mkIf (options.enabled) {
 
     # SSH: Secure connection
     programs.ssh = { # Its always enabled
@@ -19,7 +19,7 @@
     # Fix: The system's SSH Agent doesn't set "SSH_AUTH_SOCK"...?
     # The variable is not set, but the agent is running, so set it
     environment.etc."profile" = {
-      enable = (options.enabled && config.programs.ssh.startAgent);
+      enable = (config.programs.ssh.startAgent);
       text = ''
         # Sets the variable, so the SSH Agent can be found
         # Shouldn't that be working by default...?
@@ -27,6 +27,6 @@
       '';
     };
 
-  };
+  });
 
 }

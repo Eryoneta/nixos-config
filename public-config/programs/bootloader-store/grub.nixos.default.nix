@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ lib, config, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.grub = {
@@ -7,11 +7,11 @@
     };
   };
 
-  config = with config.profile.programs.grub; {
+  config = with config.profile.programs.grub; (lib.mkIf (options.enabled) {
 
     # Grub: Desktop Environment
     boot.loader.grub = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
 
       efiSupport = true;
       device = "nodev";
@@ -35,6 +35,6 @@
       
     };
 
-  };
+  });
 
 }

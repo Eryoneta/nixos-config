@@ -1,5 +1,5 @@
-{ config, user, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.zsh; {
+{ lib, config, user, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.zsh; (lib.mkIf (options.enabled) {
 
     # ZSH: Shell
     programs.zsh = {
@@ -57,5 +57,5 @@
       
     };
 
-  };
+  });
 }

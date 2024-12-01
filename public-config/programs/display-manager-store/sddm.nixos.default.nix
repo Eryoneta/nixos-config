@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ lib, config, ... }@args: with args.config-utils; {
   
   options = {
     profile.programs.sddm = {
@@ -7,11 +7,11 @@
     };
   };
 
-  config = with config.profile.programs.sddm; {
+  config = with config.profile.programs.sddm; (lib.mkIf (options.enabled) {
 
     # SDDM: Display Manager
     services.displayManager.sddm = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = (utils.mkDefault) options.packageChannel.kdePackages.sddm;
 
       # Wayland
@@ -19,6 +19,6 @@
 
     };
 
-  };
+  });
 
 }

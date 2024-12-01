@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.spectacle = {
@@ -7,10 +7,10 @@
     };
   };
 
-  config = with config.profile.programs.spectacle; {
+  config = with config.profile.programs.spectacle; (lib.mkIf (options.enabled) {
 
     # Spectacle: Print-screen tool
-    programs.plasma.spectacle = utils.mkIf (options.enabled) {
+    programs.plasma.spectacle = {
 
       # Shortcuts
       shortcuts = {
@@ -27,7 +27,7 @@
 
     };
 
-    programs.plasma.configFile = utils.mkIf (options.enabled) {
+    programs.plasma.configFile = {
 
       # Dotfile
       "spectaclerc" = {
@@ -47,6 +47,6 @@
 
     };
 
-  };
+  });
 
 }

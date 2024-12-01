@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.mpc-qt = {
@@ -7,27 +7,23 @@
     };
   };
 
-  config = with config.profile.programs.mpc-qt; {
+  config = with config.profile.programs.mpc-qt; (lib.mkIf (options.enabled) {
 
     # MPC-QT: Multimidia player (A MPC-HC clone)
-    home.packages = utils.mkIf (options.enabled) (
-      with options.packageChannel; [ mpc-qt ]
-    );
+    home.packages = with options.packageChannel; [ mpc-qt ];
 
     # Dotfiles
     xdg.configFile."mpc-qt/settings.json" = with config-domain; {
-      enable = options.enabled;
       source = with public; (
         "${dotfiles}/mpc-qt/.config/mpc-qt/settings.json"
       );
     };
     xdg.configFile."mpc-qt/keys_v2.json" = with config-domain; { # Huh, it's v2 now
-      enable = options.enabled;
       source = with public; (
         "${dotfiles}/mpc-qt/.config/mpc-qt/keys.json"
       );
     };
 
-  };
+  });
 
 }

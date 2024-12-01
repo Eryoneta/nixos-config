@@ -1,5 +1,5 @@
-{ config, config-domain, user, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.vscodium; {
+{ lib, config, config-domain, user, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.vscodium; (lib.mkIf (options.enabled) {
 
     home.packages = with options.packageChannel; [
 
@@ -109,5 +109,5 @@
 
     };
 
-  };
+  });
 }

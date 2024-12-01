@@ -1,5 +1,5 @@
-{ config, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # PowerDevil: Power manager for Plasma
     programs.plasma.powerdevil = {
@@ -113,5 +113,5 @@
       "org_kde_powerdevil"."Turn Off Screen" = [ ];
     };
 
-  };
+  });
 }

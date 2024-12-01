@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.ghostwriter = {
@@ -7,10 +7,10 @@
     };
   };
 
-  config = with config.profile.programs.ghostwriter; {
+  config = with config.profile.programs.ghostwriter; (lib.mkIf (options.enabled) {
 
     # Ghostwriter: Writer tool
-    programs.ghostwriter = utils.mkIf (options.enabled) {
+    programs.ghostwriter = {
       enable = options.enabled;
       package = options.packageChannel.kdePackages.ghostwriter;
       general = {
@@ -43,11 +43,11 @@
       };
     };
 
-    home.packages = with pkgs-bundle.stable; [
+    home.packages = with options.packageChannel; [
       hunspellDicts.pt_BR # It crashes without it???
       hunspellDicts.en_US
     ];
 
-  };
+  });
 
 }

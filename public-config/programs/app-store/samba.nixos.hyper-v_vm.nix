@@ -1,4 +1,4 @@
-{ config, host, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, host, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.samba = {
@@ -7,11 +7,11 @@
     };
   };
 
-  config = with config.profile.programs.samba; {
+  config = with config.profile.programs.samba; (lib.mkIf (options.enabled) {
 
     # Samba: File sharing
     services.samba = {
-      enable = (utils.mkDefault) options.enabled;
+      enable = options.enabled;
       package = options.packageChannel.samba; # Stable channel
       openFirewall = true; # Open firewall
       securityType = "user"; # Require login
@@ -50,6 +50,6 @@
 
     # TODO: (Samba) Fix Dolphin not finding Samba shares
 
-  };
+  });
 
 }

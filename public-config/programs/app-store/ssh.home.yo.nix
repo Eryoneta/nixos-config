@@ -1,8 +1,8 @@
-{ config, user, config-domain, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.ssh; {
+{ lib, config, user, config-domain, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.ssh; (lib.mkIf (options.enabled) {
 
     # SSH: Secure connection
-    programs.ssh = utils.mkIf (options.enabled) {
+    programs.ssh = {
       matchBlocks = {
         "public" = {
           hostname = "github.com";
@@ -21,20 +21,18 @@
 
     # Dotfiles
     home.file.".ssh/id_ed25519_git-public.pub" = {
-      enable = options.enabled;
       text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdTS2ls4g75x46nh7Q+t+kC9qASc9mlVmKXsEbF5xa/";
     };
     home.file.".ssh/id_ed25519_git-private.pub" = {
-      enable = options.enabled;
       text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKwDO7ottElr2R+o/R7l4rJ7sPhyTuMJwybqi0Syryb+";
     };
     home.file.".ssh/known_hosts" = with config-domain; {
       # Check for "./private-config/dotfiles"
-      enable = (options.enabled && (utils.pathExists private.dotfiles));
+      enable = (utils.pathExists private.dotfiles);
       source = with outOfStore.private; (
         utils.mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
       );
     };
 
-  };
+  });
 }

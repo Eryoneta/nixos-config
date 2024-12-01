@@ -1,9 +1,8 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
     xdg.dataFile."plasma/plasmoids/com.github.zren.tiledmenu" = {
-      enable = options.enabled;
       source = "${pkgs-bundle.tiledmenu}/package";
     };
 
@@ -48,5 +47,5 @@
       };
     };
 
-  };
+  });
 }

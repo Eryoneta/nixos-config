@@ -25,6 +25,11 @@ nix-lib: hm-pkgs: hm-lib: (
 
       # If condition
       mkIf = condition: content: (nix-lib.mkIf condition content);
+      # Note: It seems it cannot be used like "config = utils.mkIf" as it causes an infinte recursion
+      # Theory:
+      #   Some config(override?) changes "pkgs"? That changes "pkgs.lib"?
+      #   That changes "config-utils" (Which uses "nixpkgs.lib"(Which is "pkgs.lib"))?
+      #   Infinite recursion: A config affects "pgks", and that causes "utils.mkIf" to "change" and affect the config...?
 
       # If else
       mkIfElse = condition: content: elseContent: nix-lib.mkMerge [

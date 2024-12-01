@@ -1,5 +1,5 @@
-{ config, user, pkgs-bundle, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.firefox; {
+{ lib, config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+  config = with config.profile.programs.firefox; (lib.mkIf (options.enabled) {
 
     profile.programs.firefox = { # Load settings into my "firefox.options.defaults"
       options.defaults = {
@@ -46,5 +46,5 @@
       
     };
 
-  };
+  });
 }

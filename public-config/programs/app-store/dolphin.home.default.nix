@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.dolphin = {
@@ -7,13 +7,13 @@
     };
   };
 
-  config = with config.profile.programs.dolphin; {
+  config = with config.profile.programs.dolphin; (lib.mkIf (options.enabled) {
 
     # Dolphin: File manager
     # (Included with KDE Plasma)
 
     # Dotfile
-    programs.plasma.configFile = utils.mkIf (options.enabled) {
+    programs.plasma.configFile = {
       "dolphinrc" = {
         "General" = {
           "ShowFullPathInTitlebar" = true; # Show path in window title
@@ -65,7 +65,6 @@
 
     # Dotfile: Toolbar and shortcuts
     xdg.dataFile."kxmlgui5/dolphin/dolphinui.rc" = with config-domain; {
-      enable = (options.enabled);
       source = with outOfStore.public; (
         utils.mkOutOfStoreSymlink (
           "${dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
@@ -73,6 +72,6 @@
       );
     };
 
-  };
+  });
 
 }
