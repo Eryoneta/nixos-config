@@ -2,7 +2,7 @@
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
-    programs.plasma = {
+    programs.plasma = { # (plasma-manager option)
 
       # Workspace
       workspace = {

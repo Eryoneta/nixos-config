@@ -2,7 +2,7 @@
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # KScreenLocker: Screen locker for Plasma
-    programs.plasma.kscreenlocker = {
+    programs.plasma.kscreenlocker = { # (plasma-manager option)
 
       # Appearance
       appearance = {

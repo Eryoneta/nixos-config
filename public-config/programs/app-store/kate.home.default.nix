@@ -12,12 +12,10 @@
     # Kate: (Light) Code editor
     home.packages = with options.packageChannel; [ kdePackages.kate ];
 
-    # Dotfiles
-    programs.plasma.configFile = {
-      "katerc" = {
-        "KTextEditor Document" = {
-          "Newline at End of File" = false; # Do NOT add a newline!
-        };
+    # Dotfile
+    programs.plasma.configFile."katerc" = { # (plasma-manager option)
+      "KTextEditor Document" = {
+        "Newline at End of File" = false; # Do NOT add a newline!
       };
     };
 

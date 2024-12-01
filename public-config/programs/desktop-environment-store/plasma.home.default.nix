@@ -15,7 +15,7 @@
 
     # Plasma: The KDE Plasma Desktop
     # Get current configurations with rc2nix: "nix run github:nix-community/plasma-manager > ~/Downloads/config.txt"
-    programs.plasma = {
+    programs.plasma = { # (plasma-manager option)
       enable = options.enabled;
       immutableByDefault = (utils.mkDefault) false; # Options can be changed by the user
       overrideConfig = (utils.mkDefault) false; # Do not delete configs set outside plasma-manager

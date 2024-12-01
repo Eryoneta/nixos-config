@@ -10,7 +10,10 @@
   config = with config.profile.programs.spectacle; (lib.mkIf (options.enabled) {
 
     # Spectacle: Print-screen tool
-    programs.plasma.spectacle = {
+    # (Included with KDE Plasma)
+
+    # Configuration
+    programs.plasma.spectacle = { # (plasma-manager option)
 
       # Shortcuts
       shortcuts = {
@@ -26,25 +29,19 @@
       };
 
     };
-
-    programs.plasma.configFile = {
-
-      # Dotfile
-      "spectaclerc" = {
-        "General" = {
-          "clipboardGroup" = "PostScreenshotCopyImage"; # On print, copy to clipboard
-        };
-        "ImageSave" = {
-          "imageFilenameTemplate" = "img_<yyyy>-<MM>-<dd>_<hh>:<mm>:<ss>";
-          "imageSaveLocation" = "file://${config.xdg.userDirs.pictures}/";
-        };
-        "VideoSave" = {
-          "preferredVideoFormat" = 2; # Save as .mp4
-          "videoFilenameTemplate" = "vid_<yyyy>-<MM>-<dd>_<hh>:<mm>:<ss>";
-          "videoSaveLocation" = "file://${config.xdg.userDirs.videos}/";
-        };
+    programs.plasma.configFile."spectaclerc" = { # (plasma-manager option)
+      "General" = {
+        "clipboardGroup" = "PostScreenshotCopyImage"; # On print, copy to clipboard
       };
-
+      "ImageSave" = {
+        "imageFilenameTemplate" = "img_<yyyy>-<MM>-<dd>_<hh>:<mm>:<ss>";
+        "imageSaveLocation" = "file://${config.xdg.userDirs.pictures}/";
+      };
+      "VideoSave" = {
+        "preferredVideoFormat" = 2; # Save as .mp4
+        "videoFilenameTemplate" = "vid_<yyyy>-<MM>-<dd>_<hh>:<mm>:<ss>";
+        "videoSaveLocation" = "file://${config.xdg.userDirs.videos}/";
+      };
     };
 
   });

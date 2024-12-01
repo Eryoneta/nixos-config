@@ -13,14 +13,14 @@
     home.packages = with options.packageChannel; [ kdePackages.yakuake ];
 
     # Shortcut
-    programs.plasma.shortcuts = {
+    programs.plasma.shortcuts = { # (plasma-manager option)
       # Format: "Action = Shortcut,DefaultShortcut,ShortcutTranslatedName"
       "yakuake" = {
         "toggle-window-state" = "Meta+T"; # Toggle window view
       };
     };
 
-    # Dotfiles
+    # Dotfile
     xdg.configFile."yakuakerc" = {
       text = utils.toINI {
         "Dialogs" = {
@@ -40,7 +40,9 @@
         };
       };
     };
-    xdg.configFile."autostart/org.kde.yakuake.desktop" = { # Autostart
+
+    # Autostart
+    xdg.configFile."autostart/org.kde.yakuake.desktop" = {
       text = utils.toINI {
         "Desktop Entry" = {
           "Name" = "Yakuake";

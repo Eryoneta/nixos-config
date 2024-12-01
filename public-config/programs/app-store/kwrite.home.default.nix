@@ -12,12 +12,10 @@
     # KWrite: (Light) Text editor
     # (Included with KDE Plasma)
 
-    # Dotfiles
-    programs.plasma.configFile = {
-      "kwriterc" = {
-        "KTextEditor Document" = {
-          "Newline at End of File" = false; # Do NOT add a newline!
-        };
+    # Dotfile
+    programs.plasma.configFile."kwriterc" = { # (plasma-manager option)
+      "KTextEditor Document" = {
+        "Newline at End of File" = false; # Do NOT add a newline!
       };
     };
 

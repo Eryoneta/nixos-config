@@ -7,7 +7,7 @@
     };
 
     # Configuration
-    profile.programs.plasma = {
+    profile.programs.plasma = { # (plasma-manager option)
       # Content of "config.programs.plasma.panels.<1>.widgets.<1>"
       options.defaults.plasmoids.tiledmenu = {
         name = "com.github.zren.tiledmenu"; # "TiledMenu": Start menu with tiled apps

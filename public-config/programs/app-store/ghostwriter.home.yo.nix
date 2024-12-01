@@ -10,7 +10,7 @@
   config = with config.profile.programs.ghostwriter; (lib.mkIf (options.enabled) {
 
     # Ghostwriter: Writer tool
-    programs.ghostwriter = {
+    programs.ghostwriter = { # (plasma-manager option)
       enable = options.enabled;
       package = options.packageChannel.kdePackages.ghostwriter;
       general = {
@@ -35,7 +35,7 @@
     };
 
     # Dotfiles
-    programs.plasma.configFile."kde.org/ghostwriter.conf" = {
+    programs.plasma.configFile."kde.org/ghostwriter.conf" = { # (plasma-manager option)
       "Preview" = {
         # Note: This option is REQUIRED, or "Ghostwriter" crashes!
         "lastUsedExporter" = "cmark-gfm";
