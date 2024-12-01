@@ -91,8 +91,10 @@
 
       # Git-Pull&Commit
       systemd.services."nixos-upgrade-git-prepare" = {
-        serviceConfig.Type = "oneshot";
-        serviceConfig.User = cfg_gs.systemUser;
+        serviceConfig = {
+          "Type" = "oneshot";
+          "User" = cfg_gs.systemUser;
+        };
         path = with pkgs; [
           coreutils
           git
@@ -118,8 +120,10 @@
 
       # Git-Push
       systemd.services."nixos-upgrade-git-conclude" = {
-        serviceConfig.Type = "oneshot";
-        serviceConfig.User = cfg_gs.systemUser;
+        serviceConfig = {
+          "Type" = "oneshot";
+          "User" = cfg_gs.systemUser;
+        };
         path = with pkgs; [
           coreutils
           git
@@ -127,7 +131,7 @@
         ];
         script = ''
           ${lib.optionalString cfg_gs.push ''
-          # Interrupts if there is an error or undefined variable
+            # Interrupts if there is an error or undefined variable
             set -eu
             # Access folder
             cd "${cfg_gs.directory}"

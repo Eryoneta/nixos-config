@@ -92,8 +92,10 @@
           deviceName = lib.replaceStrings [ "\\" ] [ "" ] (utils.escapeSystemdPath cfg.swapfilePath);
           mkswapService = "mkswap-${deviceName}.service";
         in {
-          serviceConfig.Type = "oneshot";
-          serviceConfig.User = "root"; # filefrag swapfile requires root access
+          serviceConfig = {
+            "Type" = "oneshot";
+            "User" = "root"; # filefrag swapfile requires root access
+          };
           wantedBy = [ mkswapService ];
           after = [ mkswapService ];
           before = [ "shutdown.target" ];

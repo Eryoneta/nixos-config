@@ -50,12 +50,12 @@
     # User profile icons
     systemd.services."sddm-user-profile" = {
       description = "Copy or update user profiles at startup";
-      wantedBy = [ "multi-user.target" ];
-      before = [ "sddm.service" ];
       serviceConfig = {
         "Type" = "simple";
         "User" = "root";
       };
+      wantedBy = [ "multi-user.target" ];
+      before = [ "sddm.service" ];
       script = ''
         set -eu
         for user in /home/*; do
