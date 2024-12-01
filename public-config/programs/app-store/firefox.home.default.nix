@@ -4,7 +4,9 @@
     profile.programs.firefox = {
       options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
-      options.defaults = (utils.mkDefaultsOption {});
+      options.defaults = (utils.mkDefaultsOption {
+        "settings" = {};
+      });
     };
   };
 

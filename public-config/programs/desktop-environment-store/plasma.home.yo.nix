@@ -28,9 +28,9 @@
       # Panels
       panels = [
         # Main
-        (options.defaults.panels.main.panel // {
-          widgets = with options.defaults.panels.main; [
-            options.defaults.plasmoids.tiledmenu
+        (options.defaults."panels"."main".panel // {
+          widgets = with options.defaults."panels"."main"; [
+            options.defaults."plasmoids".tiledmenu
             widgets.activityPager
             widgets.virtualDesktopsPager
             (widgets.taskManager // {
