@@ -1,1 +1,1 @@
-Programs: Global enable
+Programs: SDDM Theme
