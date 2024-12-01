@@ -1,1 +1,1 @@
-Programs: Destaque de packageChannel
+Upgrade: 24.11
