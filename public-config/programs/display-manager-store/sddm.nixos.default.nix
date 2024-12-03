@@ -41,7 +41,7 @@
       options.defaults = (utils.mkDefault) {
         "theme" = {
           "backgroundPath" = (
-            pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+            "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}"
           );
         };
       };
