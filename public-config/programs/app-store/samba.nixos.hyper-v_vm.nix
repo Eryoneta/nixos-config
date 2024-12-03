@@ -12,7 +12,7 @@
     # Samba: File sharing
     services.samba = {
       enable = options.enabled;
-      package = options.packageChannel.samba; # Stable channel
+      package = (options.packageChannel).samba; # Stable channel
       openFirewall = true; # Open firewall
       securityType = "user"; # Require login
       shares = {

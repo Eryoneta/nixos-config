@@ -1,12 +1,6 @@
 { lib, config, user, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.firefox; (lib.mkIf (options.enabled) {
 
-    profile.programs.firefox = { # Load settings into my "firefox.options.defaults"
-      options.defaults = {
-        settings = (import ./firefox+settings.nix);
-      };
-    };
-
     # Firefox: Browser
     programs.firefox = {
 
@@ -39,11 +33,17 @@
 
         # Settings
         settings = (config.programs.firefox.profiles."template-profile".settings // (
-          options.defaults.settings
+          options.defaults."settings"
         ));
 
       };
       
+    };
+
+    profile.programs.firefox = { # Load settings into my "firefox.options.defaults"
+      options.defaults = {
+        "settings" = (import ./firefox+settings.nix);
+      };
     };
 
   });

@@ -17,7 +17,7 @@
     # SDDM: Display Manager
     services.displayManager.sddm = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.kdePackages.sddm;
+      package = (utils.mkDefault) (options.packageChannel).kdePackages.sddm;
 
       # Wayland
       wayland.enable = (utils.mkDefault) true; # Wayland support
@@ -41,7 +41,7 @@
       options.defaults = (utils.mkDefault) {
         "theme" = {
           "backgroundPath" = (
-            pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+            "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}"
           );
         };
       };
@@ -50,12 +50,12 @@
     # User profile icons
     systemd.services."sddm-user-profile" = {
       description = "Copy or update user profiles at startup";
-      wantedBy = [ "multi-user.target" ];
-      before = [ "sddm.service" ];
       serviceConfig = {
         "Type" = "simple";
         "User" = "root";
       };
+      wantedBy = [ "multi-user.target" ];
+      before = [ "sddm.service" ];
       script = ''
         set -eu
         for user in /home/*; do

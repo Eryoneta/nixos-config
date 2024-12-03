@@ -6,12 +6,12 @@
       # ZSH: Shell
       programs.zsh = {
         enable = options.enabled;
-        #package = (utils.mkDefault) options.packageChannel.zsh; # Option does not exist
+        #package = (utils.mkDefault) (options.packageChannel).zsh; # Option does not exist
       };
 
       # Default user shell
       users.defaultUserShell = ( # Cannot be "utils.mkDefault" (Conflicts with bash)
-        options.packageChannel.zsh
+        (options.packageChannel).zsh
       );
 
       # Allows autocompletion for system packages

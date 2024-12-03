@@ -99,8 +99,10 @@
 
         # Update "flake.lock"
         systemd.services."nixos-upgrade-update-flake-lock" = {
-          serviceConfig.Type = "oneshot";
-          serviceConfig.User = cfg_gs.systemUser;
+          serviceConfig = {
+            "Type" = "oneshot";
+            "User" = cfg_gs.systemUser;
+          };
           path = with pkgs; [
             coreutils
             git

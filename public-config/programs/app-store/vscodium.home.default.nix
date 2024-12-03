@@ -12,7 +12,7 @@
     # VSCodium: (Medium) Code editor
     programs.vscode = { # VSCode, but actually VSCodium
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.vscodium;
+      package = (utils.mkDefault) (options.packageChannel).vscodium;
 
       # Updates check
       enableUpdateCheck = (utils.mkDefault) false; # Never check for updates
@@ -78,7 +78,7 @@
 
       # Extensions
       mutableExtensionsDir = (utils.mkDefault) true;
-      extensions = with options.packageChannel.vscode-extensions; [
+      extensions = with (options.packageChannel).vscode-extensions; [
         jnoortheen.nix-ide # Nix IDE: Nix sintax support
       ];
 

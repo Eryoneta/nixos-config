@@ -5,8 +5,8 @@
       options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
       options.defaults = (utils.mkDefaultsOption {
-        panels = {};
-        plasmoids = {};
+        "panels" = {};
+        "plasmoids" = {};
       });
     };
   };
@@ -77,7 +77,7 @@
       # Panels
       panels = (utils.mkDefault) [
         # Main
-        options.defaults.panels.main.panel
+        options.defaults."panels"."main".panel
       ];
 
       # Windows
@@ -102,11 +102,11 @@
     };
 
     profile.programs.plasma = { # Defines MainPanel
-      options.defaults.panels.main = (
-        import ./plasma+taskbar.nix {
+      options.defaults = {
+        "panels"."main" = (import ./plasma+taskbar.nix {
           inherit utils;
-        }
-      );
+        });
+      };
     };
 
   });

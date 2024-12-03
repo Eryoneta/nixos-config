@@ -18,7 +18,7 @@
       # FWUpd: Used by Plasma to update firmwares
       services.fwupd = {
         enable = (utils.mkDefault) options.enabled;
-        package = (utils.mkDefault) options.packageChannel.fwupd;
+        package = (utils.mkDefault) (options.packageChannel).fwupd;
       };
 
     })

@@ -4,7 +4,9 @@
     profile.programs.firefox = {
       options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
-      options.defaults = (utils.mkDefaultsOption {});
+      options.defaults = (utils.mkDefaultsOption {
+        "settings" = {};
+      });
     };
   };
 
@@ -13,7 +15,7 @@
     # Firefox: Browser
     programs.firefox = {
       enable = options.enabled;
-      package = (utils.mkDefault) options.packageChannel.firefox;
+      package = (utils.mkDefault) (options.packageChannel).firefox;
 
       # Language
       #languagePacks = [ "pt-BR" "en-US" ];

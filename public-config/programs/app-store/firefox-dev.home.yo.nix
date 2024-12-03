@@ -5,7 +5,7 @@
       options.enabled = (utils.mkBoolOption true);
       options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
       options.defaults = (utils.mkDefaultsOption {
-        settings = (import ./firefox-dev+settings.nix);
+        "settings" = (import ./firefox-dev+settings.nix);
       });
     };
   };
@@ -87,7 +87,7 @@
 
         # Settings
         settings = (config.programs.firefox.profiles."template-profile".settings // (
-          options.defaults.settings
+          options.defaults."settings"
         ));
 
       };
