@@ -7,9 +7,9 @@
 
     # System Inputs
     # NixOS (AutoUpgrade)
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     # Home-Manager (AutoUpgrade)
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # Plasma-Manager (AutoUpgrade)
     plasma-manager.url = "github:nix-community/plasma-manager";
@@ -19,26 +19,21 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     # Stylix (AutoUpgrade)
-    # stylix.url = "github:danth/stylix/release-24.11";
-    # TODO: (Flake/Stylix)(24.11) Set input when the branch is created
-    stylix.url = "github:danth/stylix/master";
+    stylix.url = "github:danth/stylix/release-24.05";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home-manager";
 
     # Package Inputs
     # Stable Packages (AutoUpgrade)
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     # Unstable Packages (AutoUpgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Stable Packages (Manual Upgrade)
-    nixpkgs-stable-fixed.url = "github:NixOS/nixpkgs/nixos-24.05";
     # Unstable Packages (Manual Upgrade)
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Extra Inputs
     # Stable Unfree Packages (AutoUpgrade)
-    nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
-    # TODO: (Flake/unFree)(24.11) Set input when the branch is created
+    nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-24.05";
     # Firefox Addons (AutoUpgrade)
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-stable"; # Some extensions are unfree
