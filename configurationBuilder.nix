@@ -37,6 +37,7 @@ inputs: flakePath: (
               autoImportPackages = (with inputs; {
                 stable = nixpkgs-stable;
                 unstable = nixpkgs-unstable;
+                stable-fixed = nixpkgs-stable-fixed;
                 unstable-fixed = nixpkgs-unstable-fixed;
               });
               packages = (with inputs; {
@@ -114,6 +115,7 @@ inputs: flakePath: (
                   inherit stylix;
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
+                  #inherit nixpkgs-stable-fixed;
                   #inherit nixpkgs-unstable-fixed;
                   inherit nixpkgs-unfree-stable;
                   inherit nurpkgs-firefox-addons;
