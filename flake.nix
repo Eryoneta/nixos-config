@@ -111,7 +111,7 @@
       nixosConfigurations = {
         "Yo@LiCo" = (buildConfiguration Yo LiCo).nixosSystemConfig;
         "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).nixosSystemConfig;
-        #"Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).nixosSystemConfig;
+        "Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).nixosSystemConfig;
         #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).nixosSystemConfig;
       };
       
@@ -119,7 +119,7 @@
       homeConfigurations = {
         "Yo@LiCo" = (buildConfiguration Yo LiCo).homeManagerConfig;
         "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).homeManagerConfig;
-        #"Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).homeManagerConfig;
+        "Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).homeManagerConfig;
         #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).homeManagerConfig;
       };
 
