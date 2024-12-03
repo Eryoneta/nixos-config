@@ -13,16 +13,9 @@
   config = with config.profile.programs.firefox-devedition; (lib.mkIf (options.enabled) {
 
     # Firefox Developer Edition: Browser
-    # Can be used alonside regular "Firefox"
-    # But! There is potential for a conflict between the two!
-    #   Here, "firefox" is using "pkgs-bundle.stable"
-    #   And "firefox-devedition" is using "pkgs-bundle.unstable"
-    #   Pray that the two packages are "far away" from eachother(Different versions)
-    #   If not, there is a conflict and the rebuild fails
-    # TODO: (Firefox-Dev) Firefox-Dev cannot have the same channel as Firefox. Fix? How?
+    # Can be used alonside regular "Firefox" (With a trick!)
 
     # Note: Added with override below (With FX-AutoConfig)
-    #home.packages = with pkgs-bundle.unstable; [ firefox-devedition ];
 
     # The profiles configuration are shared with regular "Firefox" (Convenient!)
     programs.firefox = {
@@ -103,12 +96,21 @@
 
         # Firefox Developer Edition: Browser
         packages = with options.packageChannel; [
-          (firefox-devedition.override {
-            extraPrefsFiles = [
-              # Enable "userChromeJS"
-              "${fx-autoconfig}/program/config.js"
-            ];
-          })
+          (
+            let
+              firefox-devedition-pkg = (firefox-devedition.override {
+                extraPrefsFiles = [
+                  # Enable "userChromeJS"
+                  "${fx-autoconfig}/program/config.js"
+                ];
+              });
+            in (
+              # Allows firefox to coexist with firefox-devedition!
+              #   All files from firefox-devedition will override files from firefox!
+              #   Warning: Uhh, firefox might not be compatible with some stuffs from firefox-devedition...! Watch out!
+              lib.hiPrio firefox-devedition-pkg
+            )
+          )
         ];
 
         # Dotfile: Load scripts and styles
