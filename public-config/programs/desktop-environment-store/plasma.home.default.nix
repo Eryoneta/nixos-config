@@ -67,12 +67,11 @@
           verticalScroll = "switchActivity"; # Scroll = Switch activities
         };
       };
-      # configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
-      #   "ActionPlugins"."0" = { # Shift + Scroll = Switch virtual desktops
-      #     "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
-      #   };
-      # };
-      # TODO: (Plasma/Desktop) Find a way to define "Shift+Wheel"
+      configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
+        "ActionPlugins/0" = { # Shift + Scroll = Switch virtual desktops
+          "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
+        };
+      };
 
       # Panels
       panels = (utils.mkDefault) [
