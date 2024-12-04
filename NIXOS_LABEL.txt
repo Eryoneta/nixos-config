@@ -1,1 +1,1 @@
-Firefox: Fix
+Plasma: WiFi-Fix
