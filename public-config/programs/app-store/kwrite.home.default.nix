@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle,  ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.kwrite = {
@@ -14,10 +14,32 @@
 
     # Dotfile
     programs.plasma.configFile."kwriterc" = { # (plasma-manager option)
+      "General" = {
+        "Show welcome view for new window" = false; # Do not show welcome view
+      };
       "KTextEditor Document" = {
         "Newline at End of File" = false; # Do NOT add a newline!
+        "Remove Spaces" = 0; # Do NOT remove spaces from EndOfLines!
+      };
+      "KTextEditor Renderer" = {
+        "Text Font" = "Comic Sans MS,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"; # Font (Comic Sans MS my beloved)
+      };
+      "KTextEditor View" = {
+        "Show Line Ending Type in Statusbar" = true; # Show type of EOF in statusbar
+        "Shoe Line Ending Type in Statusbar" = true; # Uh, someone made a typo (I'm gonna keep both so it works either way)
+        # TODO: (KWrite) There is a typo in a config. Change it if it's fixed
       };
     };
+
+    # Dotfile: Toolbar and shortcuts
+    xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with config-domain; {
+      source = with outOfStore.public; (
+        utils.mkOutOfStoreSymlink (
+          "${dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
+        )
+      );
+    };
+    # TODO: (KWrite) Watch out for the dotfile name! Currently, KWrite uses "kateui.rc"
 
   });
 
