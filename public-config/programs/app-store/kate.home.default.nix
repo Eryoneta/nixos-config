@@ -16,6 +16,7 @@
     programs.plasma.configFile."katerc" = { # (plasma-manager option)
       "KTextEditor Document" = {
         "Newline at End of File" = false; # Do NOT add a newline!
+        "Remove Spaces" = 0; # Do NOT remove spaces from EndOfLines!
       };
     };
 

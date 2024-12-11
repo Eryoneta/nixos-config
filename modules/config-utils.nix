@@ -80,6 +80,9 @@ nix-lib: hm-pkgs: hm-lib: (
       # Check if a path exists
       toFile = fileName: content: (builtins.toFile fileName content);
 
+      # Build a JSON format from a set
+      toJSON = content: (nix-lib.generators.toJSON {} content);
+
       # Build a INI format from a set
       toINI = content: (nix-lib.generators.toINI {} content);
 
