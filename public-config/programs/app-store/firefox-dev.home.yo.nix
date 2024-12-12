@@ -92,6 +92,7 @@
       let
         fx-autoconfig = pkgs-bundle.fx-autoconfig;
         profilePath = ".mozilla/firefox/dev-edition-default";
+        scripts = pkgs-bundle.firefox-scripts;
       in {
 
         # Firefox Developer Edition: Browser
@@ -113,18 +114,55 @@
           )
         ];
 
-        # Dotfile: Load scripts and styles
-        file."${profilePath}/chrome/utils" = {
-          source = "${fx-autoconfig}/profile/chrome/utils";
-        };
+        file = (
+          let
 
-        # Dotfile: Small example
-        file."${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
-          source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
-        };
+            mapDirContent = src: dest: (
+              # ListToAttrs: [ { name = ".../file1.ext"; value = { source = ".../file1.ext" }; } ] -> { ".../file1.ext" = { source = ".../file1.ext" }; }
+              builtins.listToAttrs (
+                # Map: [ "file1.ext" ] -> [ { name = ".../file1.ext"; value = { source = ".../file1.ext" }; } ]
+                builtins.map (
+                  value: {
+                    name = "${dest}/${value}";
+                    value = {
+                      source = "${src}/${value}";
+                    };
+                  }
+                ) (
+                  # AttrNames: { "file1.ext" = "regular"; "file2.ext" = "regular"; } -> [ "file1.ext" "file2.ext" ]
+                  builtins.attrNames (
+                    # ReadDir: dirPath -> { "file1.ext" = "regular"; "file2.ext" = "regular"; }
+                    builtins.readDir "${src}"
+                  )
+                )
+              )
+            );
+
+          in {
+
+            # Dotfile: Load scripts and styles
+            "${profilePath}/chrome/utils" = {
+              source = "${fx-autoconfig}/profile/chrome/utils";
+            };
+
+            # Dotfile: Small example
+            "${profilePath}/chrome/CSS/small_dot_example.uc.css" = {
+              source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
+            };
+
+          } // (
+
+            # My Firefox styles
+            mapDirContent "${scripts}/chrome/CSS" "${profilePath}/chrome/CSS"
+
+            ) // (
+
+            # My Firefox scripts
+            mapDirContent "${scripts}/chrome/JS" "${profilePath}/chrome/JS"
+
+          )
+        );
         
-        # TODO: (Firefox-Dev) Add my firefox scripts and styles
-
       }
     );
 

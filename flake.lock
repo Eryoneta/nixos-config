@@ -111,6 +111,22 @@
         "type": "github"
       }
     },
+    "firefox-scripts": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733881544,
+        "narHash": "sha256-XA5XI3AdMAsY87st14jwtDK/dFGWBSirKicxBGS7DRs=",
+        "owner": "Eryoneta",
+        "repo": "Firefox-Scripts",
+        "rev": "bfb545d2cff445f7d0cd17d6268a1979a6d171ae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "Firefox-Scripts",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -193,6 +209,22 @@
         "owner": "MrOtherGuy",
         "repo": "fx-autoconfig",
         "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
+        "type": "github"
+      }
+    },
+    "git-tools": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733934446,
+        "narHash": "sha256-/+/m/SGrnUzjkgzdn2fgbAkKKosUd5aCUDkXkFNvUSY=",
+        "owner": "Eryoneta",
+        "repo": "git-tools",
+        "rev": "f1bfe0c7656bc4de31f746c2da1ae70351e66d6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "git-tools",
         "type": "github"
       }
     },
@@ -427,10 +459,28 @@
         "type": "github"
       }
     },
+    "powershell-prompt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733929380,
+        "narHash": "sha256-A5utH9k3f0uVbOJZtlaSoEV06i8DVReZ/sBOPyvklG8=",
+        "owner": "Eryoneta",
+        "repo": "powershell-prompt",
+        "rev": "57e71a9b9ce82d9a9f4d571743cf95885cc66707",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "powershell-prompt",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "firefox-scripts": "firefox-scripts",
         "fx-autoconfig": "fx-autoconfig",
+        "git-tools": "git-tools",
         "home-manager": "home-manager_2",
         "nixos-artwork": "nixos-artwork",
         "nixpkgs": "nixpkgs",
@@ -441,6 +491,7 @@
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
+        "powershell-prompt": "powershell-prompt",
         "stylix": "stylix",
         "tiledmenu": "tiledmenu"
       }

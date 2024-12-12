@@ -50,6 +50,17 @@
     papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
     papirus-colors-icons.flake = false;
 
+    # My Utilities
+    # PowerShell Prompt (Manual Fetch)
+    powershell-prompt.url = "github:Eryoneta/powershell-prompt";
+    powershell-prompt.flake = false;
+    # Git Tools (Manual Fetch)
+    git-tools.url = "github:Eryoneta/git-tools";
+    git-tools.flake = false;
+    # Firefox Scripts (Manual Fetch)
+    firefox-scripts.url = "github:Eryoneta/Firefox-Scripts";
+    firefox-scripts.flake = false;
+
   };
 
   # Outputs
