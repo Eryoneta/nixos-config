@@ -40,10 +40,8 @@
                     "applications:systemsettings.desktop" # Settings
                     "applications:org.kde.dolphin.desktop" # Dolphin
                     "applications:codium.desktop" # VSCodium
-                    # "applications:org.kde.dolphin.desktop" # Dolphin
-                    # "applications:firefox.desktop" # Firefox
-                    # "applications:firefox-devedition.desktop" # Firefox-Dev
-                    # TODO: (Plasma/Taskbar/Apps) Change later
+                    "applications:firefox.desktop" # Firefox
+                    "applications:firefox-devedition.desktop" # Firefox-Dev
                   ]);
                 });
               };
