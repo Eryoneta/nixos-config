@@ -14,6 +14,12 @@
     # WiFi
     boot.extraModulePackages = [ config.boot.kernelPackages.rtl8192eu ];
 
+    # Personal partition
+    fileSystems."/home/yo/Personal" = {
+      device = "/dev/disk/by-label/Personal";
+      fsType = "ext4";
+    };
+
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;
     
