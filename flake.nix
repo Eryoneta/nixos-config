@@ -32,15 +32,11 @@
     nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Extra Inputs
-    # Stable Unfree Packages (AutoUpgrade)
-    # nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-24.11";
-    
-    nixpkgs-unfree-stable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
-    # TODO: (Flake/unFree)(24.11) Set input when the branch is created
-
+    # Unstable Unfree Packages (AutoUpgrade)
+    nixpkgs-unfree-unstable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
     # Firefox Addons (AutoUpgrade)
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-stable"; # Some extensions are unfree
+    nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
     # Firefox: FX-AutoConfig (Manual Fetch)
     fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/fe783f2c72388f64fd7ea0ee67617c6fd32f2261";
     fx-autoconfig.flake = false;

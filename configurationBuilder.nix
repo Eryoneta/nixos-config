@@ -115,7 +115,7 @@ inputs: flakePath: (
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   #inherit nixpkgs-unstable-fixed;
-                  inherit nixpkgs-unfree-stable;
+                  inherit nixpkgs-unfree-unstable;
                   inherit nurpkgs-firefox-addons;
                   #inherit fx-autoconfig;
                   #inherit nixos-artwork;
