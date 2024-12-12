@@ -21,6 +21,22 @@
 
       # Fonts
       fonts = {
+        emoji = {
+          name = "Noto Color Emoji";
+          package = (pkgs-bundle.stable).noto-fonts-color-emoji;
+        };
+        monospace = {
+          name = "Noto Sans Mono";
+          package = (pkgs-bundle.stable).noto-fonts;
+        };
+        sansSerif = {
+          name = "Noto Sans";
+          package = (pkgs-bundle.stable).noto-fonts;
+        };
+        serif = {
+          name = "Noto Serif";
+          package = (pkgs-bundle.stable).noto-fonts;
+        };
         sizes = { # Font sizes
           applications = 10; # Apps UIs
           terminal = 10; # Terminals
