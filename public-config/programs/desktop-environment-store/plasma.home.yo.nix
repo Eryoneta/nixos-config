@@ -39,9 +39,9 @@
                   "launchers" = (utils.joinStr "," [ # Pinned apps
                     "applications:systemsettings.desktop" # Settings
                     "applications:org.kde.dolphin.desktop" # Dolphin
-                    "applications:codium.desktop" # VSCodium
                     "applications:firefox.desktop" # Firefox
                     "applications:firefox-devedition.desktop" # Firefox-Dev
+                    "applications:codium.desktop" # VSCodium
                   ]);
                 });
               };
