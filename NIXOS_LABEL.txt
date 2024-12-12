@@ -1,1 +1,1 @@
-Programs: Plasma System Monitor
+Programs: KWin Rules
