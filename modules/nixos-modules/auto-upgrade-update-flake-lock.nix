@@ -106,8 +106,7 @@
           path = with pkgs; [
             coreutils
             git
-            nixVersions.nix_2_19 # Only "Nix >= v2.19" allows multiple "nix flake update" inputs!
-            # TODO: (Nix-Module/GitSupport)(24.11) Remove once nix is upgraded
+            nix
           ];
           script = ''
             # Interrupts if there is an error or undefined variable

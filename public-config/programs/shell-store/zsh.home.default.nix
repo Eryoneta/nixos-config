@@ -20,8 +20,7 @@
         # AutoSuggest
         autosuggestion = {
           enable = (utils.mkDefault) true;
-          #strategy = [ "history" ]; # Suggests based on history
-          # TODO: (ZSH)(24.11) Enable "autosuggestion.strategy" once it's included
+          strategy = [ "history" ]; # Suggests based on history
         };
 
         # Configuration

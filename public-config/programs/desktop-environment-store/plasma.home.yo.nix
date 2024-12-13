@@ -39,11 +39,9 @@
                   "launchers" = (utils.joinStr "," [ # Pinned apps
                     "applications:systemsettings.desktop" # Settings
                     "applications:org.kde.dolphin.desktop" # Dolphin
+                    "applications:firefox.desktop" # Firefox
+                    "applications:firefox-devedition.desktop" # Firefox-Dev
                     "applications:codium.desktop" # VSCodium
-                    # "applications:org.kde.dolphin.desktop" # Dolphin
-                    # "applications:firefox.desktop" # Firefox
-                    # "applications:firefox-devedition.desktop" # Firefox-Dev
-                    # TODO: (Plasma/Taskbar/Apps) Change later
                   ]);
                 });
               };
@@ -83,6 +81,28 @@
           vendorId = "093a";
         }
       ];
+
+      # Border colors
+      configFile."kdeglobals" = {
+        # Reference: https://stylix.danth.me/configuration.html
+        "WM" = with config.lib.stylix.colors; {
+          "frame" = "${base0D-rgb-r},${base0D-rgb-g},${base0D-rgb-b}"; # Border color of active window
+          "inactiveFrame" = "${base01-rgb-r},${base01-rgb-g},${base01-rgb-b}"; # Border color of inactive window
+        };
+      };
+
+      # Button size
+      configFile."breezerc" = {
+        # Reference: https://stylix.danth.me/configuration.html
+        "Windeco" = {
+          "ButtonSize" = "ButtonLarge"; # Size of window buttons
+        };
+      };
+
+      # KWin Window manager for Plasma
+      kwin = {
+        effects.dimInactive.enable = false; # Dim inactive screens
+      };
 
     };
 

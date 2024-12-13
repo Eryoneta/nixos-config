@@ -19,6 +19,8 @@
         "ShowFullPath" = true; # Show full path in address
         "RememberOpenedTabs" = false; # Always start clean
         "BrowseThroughArchives" = true; # Navigate through archive files
+        "GlobalViewProps" = false; # Remember the view configurations for each different folder
+        "DoubleClickViewAction" = "view_redisplay"; # Double click on background = Refresh folder content
       };
       "PreviewSettings" = { # Show preview of everything
         "Plugins" = "appimagethumbnail,cursorthumbnail,fontthumbnail,ffmpegthumbs,audiothumbnail,djvuthumbnail,blenderthumbnail,mobithumbnail,gsthumbnail,rawthumbnail,comicbookthumbnail,opendocumentthumbnail,kraorathumbnail,ebookthumbnail,windowsexethumbnail,imagethumbnail,windowsimagethumbnail,exrthumbnail,jpegthumbnail,svgthumbnail,directorythumbnail";

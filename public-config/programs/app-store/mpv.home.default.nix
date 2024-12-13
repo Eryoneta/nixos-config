@@ -29,25 +29,12 @@
     programs.mpv = {
       enable = options.enabled;
       package = (utils.mkDefault) (options.packageChannel).mpv;
-      # package = (utils.mkDefault) ((options.packageChannel).mpv.override {
-      #   # Scripts
-      #   scripts = with options.packageChannel; [
-      #     mpvScripts.uosc # UOSC: MPV frontend
-      #     #mpvScripts.modernx-zydezu # ModernX: MPV frontend
-      #     mpvScripts.mpris # MPRIS: Protocol for media control(Ex.: Media start/pause)
-      #     mpvScripts.thumbfast # Thumbafast: Previews in the trackbar
-      #     #mpvScripts.mpv-notify-send # Notify-Send: Inform about the media
-      #     #mpvScripts.quality-menu # Quality-Menu: Menu for selecting ytdl video quality
-      #   ];
-      # }); # "package" with "unstable" ins incompatible...?
 
       # Scripts
       scripts = with options.packageChannel; [
         mpvScripts.uosc # UOSC: MPV frontend
         mpvScripts.mpris # MPRIS: Protocol for media control(Ex.: Media start/pause)
         mpvScripts.thumbfast # Thumbafast: Previews in the trackbar
-        #mpvScripts.mpv-notify-send # Notify-Send: Inform about the media
-        # TODO: (MPV/Notify-Send)(24.11) Test if it works
       ];
 
     } // (

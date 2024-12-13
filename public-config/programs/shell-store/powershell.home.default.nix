@@ -12,8 +12,10 @@
     # PowerShell: Shell
     home.packages = with options.packageChannel; [ powershell ];
 
-    # Profile
-    # TODO: (PowerShell) Add my custom prompt
+    # My PowerShell-Prompt
+    xdg.configFile."powershell/Microsoft.PowerShell_profile.ps1" = {
+      source = "${pkgs-bundle.powershell-prompt}/Microsoft.PowerShell_profile.ps1";
+    };
 
   });
 

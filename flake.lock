@@ -111,6 +111,22 @@
         "type": "github"
       }
     },
+    "firefox-scripts": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1734063513,
+        "narHash": "sha256-UolhT7aBGDWMuUmhjVQw0S1ZNyiaSNxjVOjBLKS/uec=",
+        "owner": "Eryoneta",
+        "repo": "Firefox-Scripts",
+        "rev": "6ad07dd67d61a5da2526afbb584a483e256ba8ae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "Firefox-Scripts",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -193,6 +209,22 @@
         "owner": "MrOtherGuy",
         "repo": "fx-autoconfig",
         "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
+        "type": "github"
+      }
+    },
+    "git-tools": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733934446,
+        "narHash": "sha256-/+/m/SGrnUzjkgzdn2fgbAkKKosUd5aCUDkXkFNvUSY=",
+        "owner": "Eryoneta",
+        "repo": "git-tools",
+        "rev": "f1bfe0c7656bc4de31f746c2da1ae70351e66d6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "git-tools",
         "type": "github"
       }
     },
@@ -299,16 +331,16 @@
         "type": "github"
       }
     },
-    "nixpkgs-unfree-stable": {
+    "nixpkgs-unfree-unstable": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1733494987,
-        "narHash": "sha256-OgTMJjbgDs2DgxubJZ+UJA7leUcNr1s3OV0mwf8nJvo=",
+        "lastModified": 1733840602,
+        "narHash": "sha256-SXmZMqBDjwqC5ceiSYkM/oq+qLKzLyyqaHwEOYZazdg=",
         "owner": "numtide",
         "repo": "nixpkgs-unfree",
-        "rev": "51184038929d2639224c05457686f9a4a29bfa6d",
+        "rev": "299a9106e7ffce3dd61898d95f9eba82ed965177",
         "type": "github"
       },
       "original": {
@@ -336,11 +368,11 @@
     },
     "nixpkgs-unstable-fixed": {
       "locked": {
-        "lastModified": 1720768451,
-        "narHash": "sha256-EYekUHJE2gxeo2pM/zM9Wlqw1Uw2XTJXOSAO79ksc4Y=",
+        "lastModified": 1733759999,
+        "narHash": "sha256-463SNPWmz46iLzJKRzO3Q2b0Aurff3U1n0nYItxq7jU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7e7c39ea35c5cdd002cd4588b03a3fb9ece6fad9",
+        "rev": "a73246e2eef4c6ed172979932bc80e1404ba2d56",
         "type": "github"
       },
       "original": {
@@ -352,11 +384,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1733392399,
-        "narHash": "sha256-kEsTJTUQfQFIJOcLYFt/RvNxIK653ZkTBIs4DG+cBns=",
+        "lastModified": 1733759999,
+        "narHash": "sha256-463SNPWmz46iLzJKRzO3Q2b0Aurff3U1n0nYItxq7jU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d0797a04b81caeae77bcff10a9dde78bc17f5661",
+        "rev": "a73246e2eef4c6ed172979932bc80e1404ba2d56",
         "type": "github"
       },
       "original": {
@@ -368,7 +400,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
-          "nixpkgs-unfree-stable"
+          "nixpkgs-unfree-unstable"
         ]
       },
       "locked": {
@@ -427,20 +459,39 @@
         "type": "github"
       }
     },
+    "powershell-prompt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733929380,
+        "narHash": "sha256-A5utH9k3f0uVbOJZtlaSoEV06i8DVReZ/sBOPyvklG8=",
+        "owner": "Eryoneta",
+        "repo": "powershell-prompt",
+        "rev": "57e71a9b9ce82d9a9f4d571743cf95885cc66707",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Eryoneta",
+        "repo": "powershell-prompt",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "firefox-scripts": "firefox-scripts",
         "fx-autoconfig": "fx-autoconfig",
+        "git-tools": "git-tools",
         "home-manager": "home-manager_2",
         "nixos-artwork": "nixos-artwork",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
-        "nixpkgs-unfree-stable": "nixpkgs-unfree-stable",
+        "nixpkgs-unfree-unstable": "nixpkgs-unfree-unstable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-unstable-fixed": "nixpkgs-unstable-fixed",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
+        "powershell-prompt": "powershell-prompt",
         "stylix": "stylix",
         "tiledmenu": "tiledmenu"
       }

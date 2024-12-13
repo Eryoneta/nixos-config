@@ -23,18 +23,9 @@
           "conflictstyle" = "diff3"; # diff with Delta
         };
       };
-      aliases = {
-        "work" = "checkout"; # "git work"
-      };
       includes = [
         {
-          path = "${config.xdg.configHome}/git/aliases/loglist";
-        }
-        {
-          path = "${config.xdg.configHome}/git/aliases/save";
-        }
-        {
-          path = "${config.xdg.configHome}/git/aliases/quicksave";
+          path = "${pkgs-bundle.git-tools}/.gitconfig"; # My useful Git aliases!
         }
       ];
 
@@ -51,42 +42,6 @@
         };
       };
 
-    };
-
-    # Dotfile: "git loglist"
-    xdg.configFile."git/aliases/loglist" = {
-      text = ''
-        [alias]
-          # Basically 'git log --graph --oneline', but pretty
-          #   Tip: It accepts '--all'
-          loglist = log \
-            --graph \
-            --abbrev-commit \
-            --decorate \
-            --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset) %C(white)%s%C(reset) %C(yellow)- %an%C(reset)'
-      '';
-    };
-
-    # Dotfile: "git save"
-    xdg.configFile."git/aliases/save" = {
-      text = (import ./git+alias-save.nix);
-    };
-
-    # Dotfile: "git quicksave"
-    xdg.configFile."git/aliases/quicksave" = {
-      text = ''
-        [alias]
-          # Quick commit
-          #   Executes 'git save' with title defined as the current date
-          #     Date format: 'dd/mm/YYYY'
-          #   It can be used the same way as 'git save', but the title pre-defined
-          # Ex.: 'git quicksave --amend --push "Message"'
-          quicksave = "!f() { \
-              printf -v titulo '%(%d/%m/%Y)T' -1; \
-              git save \"$titulo\" \"$@\"; \
-            }; \
-            f"
-      '';
     };
 
   });

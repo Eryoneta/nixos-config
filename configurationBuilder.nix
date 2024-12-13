@@ -52,6 +52,9 @@ inputs: flakePath: (
                 papirus-colors-icons = {
                   "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
                 };
+                powershell-prompt = powershell-prompt;
+                git-tools = git-tools;
+                firefox-scripts = firefox-scripts;
               });
             }
           ))
@@ -115,12 +118,15 @@ inputs: flakePath: (
                   inherit nixpkgs-stable;
                   inherit nixpkgs-unstable;
                   #inherit nixpkgs-unstable-fixed;
-                  inherit nixpkgs-unfree-stable;
+                  inherit nixpkgs-unfree-unstable;
                   inherit nurpkgs-firefox-addons;
                   #inherit fx-autoconfig;
                   #inherit nixos-artwork;
                   #inherit tiledmenu;
                   #inherit papirus-colors-icons;
+                  #inherit powershell-prompt;
+                  #inherit git-tools;
+                  #inherit firefox-scripts;
                 });
               })
             ];
