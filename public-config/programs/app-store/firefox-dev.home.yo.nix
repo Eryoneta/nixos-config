@@ -155,12 +155,25 @@
             # My Firefox styles
             mapDirContent "${scripts}/chrome/CSS" "${profilePath}/chrome/CSS"
 
-            ) // (
+          ) // (
 
             # My Firefox scripts
             mapDirContent "${scripts}/chrome/JS" "${profilePath}/chrome/JS"
 
-          )
+          ) // {
+
+            # Modified dotfile: Custom accent color
+            "${profilePath}/chrome/CSS/addAccentColor.uc.css" = {
+              source = with config.lib.stylix.colors; (pkgs.runCommand "customize-accent-color" {} ''
+                sed \
+                  -e 's/--accent-color: .*/--accent-color: #${base0D};/' \
+                  -e 's/--inactive-color: .*/--inactive-color: #${base01};/' \
+                  "${scripts}/chrome/CSS/addAccentColor.uc.css" \
+                   > $out
+              '');
+            };
+
+          }
         );
         
       }
