@@ -30,6 +30,8 @@
           "workbench.editor.pinnedTabsOnSeparateRow" = true; # Pinned tabs on a separated row!
           "editor.renderWhitespace" = "all"; # Show spaces as dots
           "window.titleBarStyle" = "custom"; # Do not use the OS decorations (Smaller context menu)
+          # Random settings
+          "git.openRepositoryInParentFolders" = "never"; # Only open repos in the current folder
           # Automatic settings
           "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
         }
