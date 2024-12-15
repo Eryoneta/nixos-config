@@ -56,4 +56,21 @@
       };
     };
   }
+  {
+    description = "Start Firefox(XWayland) with a set size";
+    match = { # What target
+      window-class = {
+        value = "Navigator firefox"; # A Firefox window
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+    };
+    apply = { # What changes
+      "size" = { # Set the window.to be above
+        value = "683,724";
+        apply = "initially"; # On start
+      };
+    };
+    # TODO: (Firefox) Remove size rule once wayland works for Firefox
+  }
 ]

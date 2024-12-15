@@ -36,4 +36,46 @@
       };
     };
   }
+  {
+    description = "Fix Firefox-Dev(XWayland) launcher not sticking instances";
+    match = { # What target
+      window-class = {
+        value = "Navigator firefox"; # A Firefox-Dev window
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+      title = {
+        value = ".*Firefox Developer Edition$";
+        type = "regex";
+      };
+    };
+    apply = { # What changes
+      "desktopfile" = { # Set the .desktop launcher
+        value = "firefox-devedition";
+        apply = "initially"; # On start
+      };
+    };
+    # TODO: (Firefox-Dev) Remove desktopFile rule once wayland works for Firefox
+  }
+  {
+    description = "Start Firefox-Dev(XWayland) with a set size";
+    match = { # What target
+      window-class = {
+        value = "Navigator firefox"; # A Firefox-Dev window
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+      title = {
+        value = ".*Firefox Developer Edition$";
+        type = "regex";
+      };
+    };
+    apply = { # What changes
+      "size" = { # Set the window.to be above
+        value = "683,724";
+        apply = "initially"; # On start
+      };
+    };
+    # TODO: (Firefox-Dev) Remove size rule once wayland works for Firefox
+  }
 ]
