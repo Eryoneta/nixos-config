@@ -112,7 +112,7 @@
   "cookiebanners.service.mode" = 1; # Reject all coookies or do nothing
   # Delays
   "ui.tooltipDelay" = 100; # Decrease tooltip delay
-  "ui.submenuDelay" = 300; # Decrease submenu delay
+  "ui.submenuDelay" = 100; # Decrease submenu delay
   # Bookmarks
   "browser.bookmarks.editDialog.maxRecentFolders" = 10; # Maximum amount of folders shown in "Edit Bookmark"
   "browser.bookmarks.openInTabClosesMenu" = false; # Open bookmark(Middle click), but don't close the menu
