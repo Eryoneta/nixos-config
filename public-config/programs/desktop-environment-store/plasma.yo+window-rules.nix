@@ -20,4 +20,20 @@
       };
     };
   }
+  {
+    description = "Start Firefox-Dev with a set size";
+    match = { # What target
+      window-class = {
+        value = "firefox firefox-devedition"; # Firefox-Dev
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+    };
+    apply = { # What changes
+      "size" = { # Set the window.to be above
+        value = "683,724";
+        apply = "initially"; # On start
+      };
+    };
+  }
 ]
