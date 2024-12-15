@@ -66,6 +66,9 @@
         })
       ];
 
+      # Window rules
+      window-rules = (import ./plasma.yo+window-rules.nix);
+
       # Mouse
       input.mice = [
         {
