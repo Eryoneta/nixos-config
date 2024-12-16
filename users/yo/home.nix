@@ -10,6 +10,9 @@
     # Variables
     home.sessionVariables = {
       "DEFAULT_BROWSER" = "${pkgs-bundle.unstable.firefox-devedition}/bin/firefox-devedition"; # Default Browser
+      "MOZ_ENABLE_WAYLAND" = 0; # Disable wayland for Firefox
+      # Note: Bookmark dragging does NOT work under submenus! The menu keeps disappearing! Unusable!
+      # TODO: (Firefox) Enable wayland for Firefox when it works
     };
 
     # XDG Mime Apps

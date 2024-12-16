@@ -39,7 +39,7 @@
         };
         sizes = { # Font sizes
           applications = 10; # Apps UIs
-          terminal = 10; # Terminals
+          terminal = 8; # Terminals
           desktop = 10; # Window titles, bars, widgets, etc
           popups = 10; # Popups and notifications
         };

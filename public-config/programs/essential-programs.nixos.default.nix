@@ -13,6 +13,8 @@
         gparted # GParted: Manages partitions
         git # Git: Versioning
         btop # BTop: Terminal-based process viewer
+        htop # HTop: Terminal-based process viewer
+        # TODO: (HTop/BTop) Test to see which one is more used on the daily
         kdePackages.filelight # Filelight: Disk usage visualizer
       ])
       ++
