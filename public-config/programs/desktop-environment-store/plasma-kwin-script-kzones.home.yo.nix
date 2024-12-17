@@ -211,6 +211,45 @@
       };
     };
 
+    # Shortcut
+    programs.plasma.shortcuts = { # (plasma-manager option)
+      "kwin" = {
+        # Disable all shortcuts
+        # Everything is done with the mouse
+        "KZones: Activate layout 1" = "none";
+        "KZones: Activate layout 2" = "none";
+        "KZones: Activate layout 3" = "none";
+        "KZones: Activate layout 4" = "none";
+        "KZones: Activate layout 5" = "none";
+        "KZones: Activate layout 6" = "none";
+        "KZones: Activate layout 7" = "none";
+        "KZones: Activate layout 8" = "none";
+        "KZones: Activate layout 9" = "none";
+        "KZones: Cycle layouts" = "none";
+        "KZones: Cycle layouts (reversed)" = "none";
+        "KZones: Move active window down" = [ ];
+        "KZones: Move active window left" = [ ];
+        "KZones: Move active window right" = [ ];
+        "KZones: Move active window to next zone" = "none";
+        "KZones: Move active window to previous zone" = "none";
+        "KZones: Move active window to zone 1" = "none";
+        "KZones: Move active window to zone 2" = "none";
+        "KZones: Move active window to zone 3" = "none";
+        "KZones: Move active window to zone 4" = "none";
+        "KZones: Move active window to zone 5" = "none";
+        "KZones: Move active window to zone 6" = "none";
+        "KZones: Move active window to zone 7" = "none";
+        "KZones: Move active window to zone 8" = "none";
+        "KZones: Move active window to zone 9" = "none";
+        "KZones: Move active window up" = [ ];
+        "KZones: Snap active window" = "none";
+        "KZones: Snap all windows" = "none";
+        "KZones: Switch to next window in current zone" = "none";
+        "KZones: Switch to previous window in current zone" = "none";
+        "KZones: Toggle zone overlay" = "none";
+      };
+    };
+
   });
 
 }
