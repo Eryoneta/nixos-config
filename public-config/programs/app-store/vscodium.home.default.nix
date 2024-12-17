@@ -34,7 +34,22 @@
           "git.openRepositoryInParentFolders" = "never"; # Only open repos in the current folder
           # Automatic settings
           "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
-        }
+        } // (
+          let
+            sizes.terminal = 10;
+          in {
+            # From https://github.com/danth/stylix/blob/release-24.11/modules/vscode/hm.nix
+            "editor.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
+            "debug.console.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
+            "markdown.preview.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
+            "terminal.integrated.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
+            "chat.editor.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
+            "editor.minimap.sectionHeaderFontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 9 / 14 + 0.5));
+            "scm.inputFontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 13 / 14 + 0.5));
+            "screencastMode.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 56 / 14 + 0.5));
+            # TODO: (VSCodium) (25.05) Stylix sets the font to be too small, check if it's changed later
+          }
+        )
       );
 
       # Shortcuts
