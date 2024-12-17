@@ -96,7 +96,6 @@
 
       # Button size
       configFile."breezerc" = {
-        # Reference: https://stylix.danth.me/configuration.html
         "Windeco" = {
           "ButtonSize" = "ButtonLarge"; # Size of window buttons
         };
