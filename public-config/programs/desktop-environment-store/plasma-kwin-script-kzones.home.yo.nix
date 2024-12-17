@@ -88,6 +88,15 @@
                     "right" = (addMargin "right" margins.${indicatorPosition});
                   }
                 );
+                mkInvisibleIndicator = { # Sets the indicator to be outside the screen
+                  "position" = "bottom";
+                  "margin" = {
+                    "top" = 100;
+                    "bottom" = 0;
+                    "left" = 0;
+                    "right" = 0;
+                  };
+                };
                 # Originally, indicators are BEHIND hotEdges. Here, moving them doesn't really change anything
                 #   But! My modified "kzones.kwinscript" prioritizes indicators over hotEdges!
                 #   The indicators can be used to easily put windows into corners!
@@ -96,10 +105,14 @@
                   "y" = area."y";
                   "width" = area."width";
                   "height" = area."height";
-                  "indicator" = {
-                    "position" = indicatorPosition;
-                    "margin" = (mkIndicatorMargins indicatorPosition);
-                  };
+                  "indicator" = (
+                    if (indicatorPosition == "none") then
+                      mkInvisibleIndicator
+                    else {
+                      "position" = indicatorPosition;
+                      "margin" = (mkIndicatorMargins indicatorPosition);
+                    }
+                  );
                 });
 
                 # Zone makers
@@ -111,7 +124,7 @@
                     area = (mkArea parentZone.area parentZone.hotEdges);
                   in { # 1 Zone
                     inherit area hotEdges;
-                    full = (mkZone area "center");
+                    full = (mkZone area "none");
                   }
                 );
                 mkVerticalSplit = parentZone: hotEdges: (
