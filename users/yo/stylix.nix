@@ -1,14 +1,12 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
   config = {
 
     # Stylix: Themes and colors manager
     stylix = {
-      enable = true;
-      autoEnable = true; # Automatically set for installed apps
 
       # Wallpaper
       image = ( # Wallpaper
-        pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+        "${config-domain.private.resources}/wallpapers/Window/006.png"
       );
       imageScalingMode = "fill"; # Fill background
 
@@ -47,10 +45,7 @@
 
       # Theme
       polarity = "dark"; # Theme
-      # base16Scheme = with pkgs-bundle.stable; ( # Colors
-      #   # Note: Between stable and unstable, some themes might not exist
-      #   "${base16-schemes}/share/themes/oxocarbon-dark.yaml"
-      # );
+      # Reference: https://github.com/chriskempson/base16/blob/main/styling.md
       base16Scheme = ( # Colors
         utils.toFile "yo-theme.yaml" ( # Custom colors
           utils.toYAML {
