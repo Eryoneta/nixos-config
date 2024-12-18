@@ -15,7 +15,7 @@
     # Dotfile
     programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)
       "General" = {
-        "ShowFullPathInTitlebar" = true; # Show path in window title
+        "ShowFullPathInTitlebar" = false; # Do not show path in window title
         "ShowFullPath" = true; # Show full path in address
         "RememberOpenedTabs" = false; # Always start clean
         "BrowseThroughArchives" = true; # Navigate through archive files
