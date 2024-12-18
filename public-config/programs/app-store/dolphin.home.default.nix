@@ -43,13 +43,19 @@
       };
       # View modes
       "IconsMode" = {
-        "PreviewSize" = 48; # Icon size
+        "IconSize" = 64; # Icon size
+        #"PreviewSize" = 16; # Preview content icon size
+        "PreviewSize" = 64; # Preview content icon size
+        # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
+        # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
       };
       "CompactMode" = {
-        "PreviewSize" = 16; # Icon size
+        "IconSize" = 16; # Icon size
+        "PreviewSize" = 16; # Preview content icon size
       };
       "DetailsMode" = {
-        "PreviewSize" = 16; # Icon size
+        "IconSize" = 16; # Icon size
+        "PreviewSize" = 16; # Preview content icon size
         "ExpandableFolders" = false; # Do not expand folders
       };
       # Context menu
