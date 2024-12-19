@@ -78,6 +78,14 @@
       );
     };
 
+    # Dotfile: General
+    programs.plasma.configFile."kdeglobals" = { # (plasma-manager option)
+      "PreviewSettings" = {
+        "EnableRemoteFolderThumbnail" = false; # Show thumbnails for remote
+        "MaximumRemoteSize" = 10485760; # 10MB: Max file size allowed to get a thumbnail
+      };
+    };
+
   });
 
 }
