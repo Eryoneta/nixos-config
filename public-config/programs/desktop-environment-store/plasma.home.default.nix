@@ -73,6 +73,14 @@
         };
       };
 
+      # Sessions
+      session = {
+        general.askForConfirmationOnLogout = true; # Show confirmation screen
+        sessionRestore.restoreOpenApplicationsOnLogin = (
+          "whenSessionWasManuallySaved" # Restore apps only when explicitly saved
+        );
+      };
+
       # Panels
       panels = (utils.mkDefault) [
         # Main

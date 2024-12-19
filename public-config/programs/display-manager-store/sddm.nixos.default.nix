@@ -29,7 +29,7 @@
       kdePackages.sddm-kcm # SDDM-KCM: Lets KDE Plasma configure SDDM
       (writeTextDir "share/sddm/themes/breeze/theme.conf.user" (utils.toINI {
         "General" = {
-          "background" = options.defaults."theme"."backgroundPath";
+          "background" = (options.defaults)."theme"."backgroundPath";
         };
       }))
     ];

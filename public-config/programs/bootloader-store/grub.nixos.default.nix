@@ -1,4 +1,4 @@
-{ lib, config, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.grub = {
@@ -13,19 +13,20 @@
     boot.loader.grub = {
       enable = options.enabled;
 
+      # Utilities
       efiSupport = true;
       device = "nodev";
       useOSProber = (utils.mkDefault) true; # Search for other OSs
 
       # Menus
       extraEntries = ''
-        menuentry "Firmware" {
+        menuentry "Firmware" --class driver {
           fwsetup
         }
-        menuentry "Poweroff" {
+        menuentry "Poweroff" --class shutdown {
           halt
         }
-        menuentry "Reboot" {
+        menuentry "Reboot" --class restart {
           reboot
         }
       ''; # Extra menus
@@ -33,6 +34,10 @@
       default = 3; # Selects NixOS entry as default
       configurationLimit = (utils.mkDefault) 100; # Max itens shown
       
+      # Theme
+      splashImage = null; # No background image
+      theme = (utils.mkDefault) "${config-domain.public.dotfiles}/grub/blue-star-grub-theme/light";
+
     };
 
   });

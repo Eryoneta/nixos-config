@@ -3,6 +3,7 @@
   imports = [
     ./programs.nix
     ./variables.nix
+    ./stylix.nix
     ./xdg-base-directory.nix
     ./xdg-mime-apps.nix
     ./xdg-desktop-entries.nix

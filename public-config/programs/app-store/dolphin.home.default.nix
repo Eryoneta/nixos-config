@@ -15,7 +15,7 @@
     # Dotfile
     programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)
       "General" = {
-        "ShowFullPathInTitlebar" = true; # Show path in window title
+        "ShowFullPathInTitlebar" = false; # Do not show path in window title
         "ShowFullPath" = true; # Show full path in address
         "RememberOpenedTabs" = false; # Always start clean
         "BrowseThroughArchives" = true; # Navigate through archive files
@@ -43,13 +43,19 @@
       };
       # View modes
       "IconsMode" = {
-        "PreviewSize" = 48; # Icon size
+        "IconSize" = 64; # Icon size
+        #"PreviewSize" = 16; # Preview content icon size
+        "PreviewSize" = 64; # Preview content icon size
+        # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
+        # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
       };
       "CompactMode" = {
-        "PreviewSize" = 16; # Icon size
+        "IconSize" = 16; # Icon size
+        "PreviewSize" = 16; # Preview content icon size
       };
       "DetailsMode" = {
-        "PreviewSize" = 16; # Icon size
+        "IconSize" = 16; # Icon size
+        "PreviewSize" = 16; # Preview content icon size
         "ExpandableFolders" = false; # Do not expand folders
       };
       # Context menu
@@ -70,6 +76,14 @@
           "${dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
         )
       );
+    };
+
+    # Dotfile: General
+    programs.plasma.configFile."kdeglobals" = { # (plasma-manager option)
+      "PreviewSettings" = {
+        "EnableRemoteFolderThumbnail" = false; # Show thumbnails for remote
+        "MaximumRemoteSize" = 10485760; # 10MB: Max file size allowed to get a thumbnail
+      };
     };
 
   });

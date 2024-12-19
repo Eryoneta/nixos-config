@@ -1,0 +1,79 @@
+# Blue Star Grub Theme
+# Based on https://github.com/sandesh236/sleek--themes/tree/master/Sleek%20theme-light/sleek
+
+desktop-color: "#F0F0F0"
+desktop-image: "background.png"
+# Note: Needs to be an image here
+title-text: " "
+message-color: "#757575"
+
+# Terminal fullsreen
+terminal-border: "0"
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+
++ label {
+	text = "Grub Bootloader"
+	font = "Poppins Regular 18"
+	color = "#4286DD"
+	left = 50%-200
+	top = 15%
+	width = 400
+	height = 20
+	align = "center"
+}
+
++ label {
+	text = "Select a boot option"
+	font = "Poppins Regular 16"
+	color = "#8D8686"
+	top = 25%-30
+	left = 50%-80
+	align = "center"
+	width = 160
+	height = 40
+}
+
++ boot_menu {
+	left = 20%
+	top = 25%
+	width = 60%
+	height = 50%-12
+	menu_pixmap_style = "boot_menu_*.png"
+	icon_width = 32
+	icon_height =32
+	item_icon_space = 12
+	item_height = 42
+	item_padding = 4
+	item_spacing = 4
+	item_font = "Poppins Regular 14"
+	item_color = "#757575"
+	selected_item_color= "#FFFFFF"
+	selected_item_pixmap_style= "select_bkg_*.png"
+	scrollbar = true
+	scrollbar_width = 12
+	scrollbar_thumb = "slider_*.png"
+}
+
++ progress_bar {
+	id = "__timeout__"
+	left = 20%
+	top = 75%
+	width = 60%
+	height = 23
+	# show_text = true
+	text = "@TIMEOUT_NOTIFICATION_SHORT@"
+	text_color = "#8D8686"
+	bar_style = "progress_bar_*.png"
+	highlight_style = "progress_highlight_*.png"
+}
+
++ image {
+	left = 50%-240
+	top = 80%+23
+	width = 480
+	height = 42
+	file = "menu.png"
+}
