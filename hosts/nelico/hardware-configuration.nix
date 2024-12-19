@@ -20,9 +20,23 @@
       fsType = "ext4";
     };
 
+    # Basement partition
+    fileSystems."/home/yo/Personal/Mind Mansion/Basement" = {
+      device = "/dev/disk/by-label/Basement";
+      fsType = "ext4";
+      depends = [ "/home/yo/Personal" ];
+    };
+
+    # Storage partition
+    fileSystems."/home/yo/Personal/System_Utilities/Storage" = {
+      device = "/dev/disk/by-label/Storage";
+      fsType = "ext4";
+      depends = [ "/home/yo/Personal" ];
+    };
+
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;
-    
+
   };
 
 }
