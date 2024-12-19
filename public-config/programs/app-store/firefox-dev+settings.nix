@@ -148,7 +148,8 @@
   "browser.formfill.enable" = false; # Do not fill forms
   "signon.rememberSignons" = false; # Do not ask to save passwords
   "dom.private-attribution.submission.enabled" = false; # Do not inform measurements to advertisers
-  "privacy.firstparty.isolate" = true; # Isolate cookies to its own domain
+  "privacy.firstparty.isolate" = false; # Isolate cookies to its own domain
+  #   Note: Ideally, it should be on, but it's too inconvenient to do so
   "privacy.resistFingerprinting" = true; # Resist browser fingerprinting
   # Cookies
   "network.cookie.cookieBehavior" = 1; # Block third party cookies
