@@ -14,8 +14,8 @@
       };
     };
     apply = { # What changes
-      "desktopfile" = { # Set the .desktop launcher
-        value = "codium";
+      "desktopfile" = {
+        value = "codium"; # Set the .desktop launcher
         apply = "initially"; # On start
       };
     };
@@ -34,8 +34,8 @@
       };
     };
     apply = { # What changes
-      "above" = { # Set the window.to be above
-        value = true;
+      "above" = {
+        value = true; # Set the window.to be above
         apply = "initially"; # On start
       };
     };
@@ -50,8 +50,8 @@
       window-types = [ "normal" ]; # Normal window
     };
     apply = { # What changes
-      "size" = { # Set the window.to be above
-        value = "683,724";
+      "size" = {
+        value = "683,724"; # Set the window.size
         apply = "initially"; # On start
       };
     };
@@ -66,8 +66,8 @@
       window-types = [ "normal" ]; # Normal window
     };
     apply = { # What changes
-      "size" = { # Set the window.to be above
-        value = "683,724";
+      "size" = {
+        value = "683,724"; # Set the window.size
         apply = "initially"; # On start
       };
     };
