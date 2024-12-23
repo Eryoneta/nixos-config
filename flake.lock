@@ -287,6 +287,23 @@
         "type": "github"
       }
     },
+    "mpv-input-event": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727839986,
+        "narHash": "sha256-2JHgJE5CYLZ17RXpgiBOZ/xk1VN0K8EIkev3QAUYwOM=",
+        "owner": "natural-harmonia-gropius",
+        "repo": "input-event",
+        "rev": "d1ff3f7a44692ae39a296e48476214f21334206d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "natural-harmonia-gropius",
+        "ref": "refs/tags/v1.3",
+        "repo": "input-event",
+        "type": "github"
+      }
+    },
     "nixos-artwork": {
       "flake": false,
       "locked": {
@@ -482,6 +499,7 @@
         "fx-autoconfig": "fx-autoconfig",
         "git-tools": "git-tools",
         "home-manager": "home-manager_2",
+        "mpv-input-event": "mpv-input-event",
         "nixos-artwork": "nixos-artwork",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",

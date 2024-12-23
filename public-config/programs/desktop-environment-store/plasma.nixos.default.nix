@@ -13,6 +13,7 @@
         wayland-utils # Wayland Utils: Used by Plasma to display information about Wayland
         aha # Ansi HTML Adapter: Used by Plasma to format information
         pciutils # PCI Utilities: Used by Plasma to display information about PCI
+        kdePackages.qtimageformats # QTImageFormats: Tools for generating thumbnails (Includes .webp support)
       ];
 
       # FWUpd: Used by Plasma to update firmwares

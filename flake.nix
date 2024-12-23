@@ -49,6 +49,10 @@
     # Plasma/Icons: Papirus Colors (Manual Fetch)
     papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
     papirus-colors-icons.flake = false;
+    # MPV Scripts: InputEvent (Manual Fetch)
+    mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
+    #mpv-input-event.url = "https://github.com/natural-harmonia-gropius/input-event/releases/download/v1.3/inputevent.lua";
+    mpv-input-event.flake = false;
 
     # My Utilities
     # PowerShell Prompt (Manual Fetch)

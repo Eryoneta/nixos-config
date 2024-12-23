@@ -14,8 +14,8 @@
       };
     };
     apply = { # What changes
-      "above" = { # Set the window.to be above
-        value = true;
+      "above" = {
+        value = true; # Set the window.to be above
         apply = "initially"; # On start
       };
     };
@@ -30,8 +30,8 @@
       window-types = [ "normal" ]; # Normal window
     };
     apply = { # What changes
-      "size" = { # Set the window.to be above
-        value = "683,724";
+      "size" = {
+        value = "683,724"; # Set the window.size
         apply = "initially"; # On start
       };
     };
@@ -50,8 +50,8 @@
       };
     };
     apply = { # What changes
-      "desktopfile" = { # Set the .desktop launcher
-        value = "firefox-devedition";
+      "desktopfile" = {
+        value = "firefox-devedition"; # Set the .desktop launcher
         apply = "initially"; # On start
       };
     };
@@ -71,11 +71,35 @@
       };
     };
     apply = { # What changes
-      "size" = { # Set the window.to be above
-        value = "683,724";
+      "size" = {
+        value = "683,724"; # Set the window.size
         apply = "initially"; # On start
       };
     };
     # TODO: (Firefox-Dev) Remove size rule once wayland works for Firefox
+  }
+  {
+    description = "Alarm Clock with a fixed window size";
+    match = { # What target
+      window-class = {
+        value = "alarm-clock-applet alarm-clock-applet"; # Alarm Clock
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+    };
+    apply = { # What changes
+      "ignoregeometry" = {
+        value = true; # Ignore programs size requests
+        apply = "force"; # Force
+      };
+      "minsize" = {
+        value = "380,440"; # Set the window.minimum size
+        apply = "force"; # On start
+      };
+      "size" = {
+        value = "380,440"; # Set the window.size
+        apply = "initially"; # On start
+      };
+    };
   }
 ]

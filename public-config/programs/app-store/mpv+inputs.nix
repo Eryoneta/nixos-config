@@ -1,138 +1,160 @@
 # Content of "config.programs.mpv.bindings" (home-manager)
-actions: {
+actions: (
+  let
 
-  # Play/Pause
-  "MBTN_LEFT" = actions.togglePause; # mouse_left
-  "Space" = actions.togglePause; # space
-  "PLAY" = actions.togglePause; # media_play
-  "PAUSE" = actions.togglePause; # media_pause
-  "PLAYPAUSE" = actions.togglePause; # media_play_pause
+    # Events as defined bt Scripts/InputEvent
+    # Doc: https://github.com/natural-harmonia-gropius/input-event
+    event = {
+      press = action: "${action} #event: press"; # Key pressed
+      release = action: "${action} #event: release"; # Key released
+      repeat = action: "${action} #event: repeat"; # Key pressed continuously
+      click = action: "${action} #event: click"; # Key pressed and released
+      double_click = action: "${action} #event: double_click"; # Two clicks
+      triple_click = action: "${action} #event: triple_click"; # Three clicks
+      quatra_click = action: "${action} #event: quatra_click"; # Four clicks
+      penta_click = action: "${action} #event: penta_click"; # Five clicks
+    };
 
-  "PLAYONLY" = actions.play; # media_play_only
-  "PAUSEONLY" = actions.pause; # media_pause_only
+  in {
 
-  # Fullscreen
-  "MBTN_LEFT_DBL" = actions.toggleFullscreen; # mouse_left_x2
-  "Enter" = actions.toggleFullscreen; # enter
-  "Esc" = actions.exitFullscreen; # esc
+    # Play/Pause
+    "MBTN_LEFT" = (event.click actions.togglePause); # mouse_left
+    "Space" = actions.togglePause; # space
+    "PLAY" = actions.togglePause; # media_play
+    "PAUSE" = actions.togglePause; # media_pause
+    "PLAYPAUSE" = actions.togglePause; # media_play_pause
 
-  # Menu
-  "MBTN_RIGHT" = actions.openMenu; # mouse_right
-  "o" = actions.openMenu; # o
+    "PLAYONLY" = actions.play; # media_play_only
+    "PAUSEONLY" = actions.pause; # media_pause_only
 
-  # Exit
-  "Shift+Esc" = actions.exit; # shift+esc
-  "MBTN_MID" = actions.exit; # mouse_middle
-  "STOP" = actions.exit; # media_stop
-  "POWER" = actions.exit; # power
-  "CLOSE_WIN" = actions.exit; # close-window
+    # Fullscreen
+    "MBTN_LEFT " = (event.double_click actions.toggleFullscreen); # mouse_left_x2
+    #   Note: It toggles fullscreen without the annoying quick pause-play
+    "MBTN_LEFT_DBL" = "ignore"; # mouse_left_x2
+    "Enter" = actions.toggleFullscreen; # enter
+    "Esc" = actions.exitFullscreen; # esc
 
-  # Seek
-  "Right" = actions.goForward.small; # right
-  "Left" = actions.goBack.small; # left
+    # Menu
+    "MBTN_RIGHT" = actions.openMenu; # mouse_right
+    "o" = actions.openMenu; # o
 
-  "Ctrl+Right" = actions.goForward.medium; # ctrl+right
-  "Ctrl+Left" = actions.goBack.medium; # ctrl+left
-  
-  "FORWARD" = actions.goForward.medium; # media_forward
-  "REWIND" = actions.goBack.medium; # media_rewind
+    # Exit
+    "Shift+Esc" = actions.exit; # shift+esc
+    "MBTN_MID" = actions.exit; # mouse_middle
+    "STOP" = actions.exit; # media_stop
+    "POWER" = actions.exit; # power
+    "CLOSE_WIN" = actions.exit; # close-window
 
-  "Ctrl+Shift+Right" = actions.goForward.big; # ctrl+shift+right
-  "Ctrl+Shift+Left" = actions.goBack.big; # ctrl+shift+left
+    # Seek
+    "Right" = actions.goForward.small; # right
+    "Left" = actions.goBack.small; # left
 
-  "." = actions.goForward.frame; # .
-  "," = actions.goBack.frame; # ,
-  
-  "End" = actions.goForward.end; # end
-  "Home" = actions.goBack.start; # home
+    "Ctrl+Right" = actions.goForward.medium; # ctrl+right
+    "Ctrl+Left" = actions.goBack.medium; # ctrl+left
+    
+    "FORWARD" = actions.goForward.medium; # media_forward
+    "REWIND" = actions.goBack.medium; # media_rewind
 
-  # Volume
-  "m" = actions.toggleMute; # m
-  "MUTE" = actions.toggleMute; # media_mute
+    "Ctrl+Shift+Right" = actions.goForward.big; # ctrl+shift+right
+    "Ctrl+Shift+Left" = actions.goBack.big; # ctrl+shift+left
 
-  "WHEEL_UP" = actions.volumeUp; # wheel_up
-  "WHEEL_DOWN" = actions.volumeDown; # wheel_down
+    "." = actions.goForward.frame; # .
+    "," = actions.goBack.frame; # ,
+    
+    "End" = actions.goForward.end; # end
+    "Home" = actions.goBack.start; # home
 
-  "up" = actions.volumeUp; # up
-  "down" = actions.volumeDown; # down
+    # Volume
+    "m" = actions.toggleMute; # m
+    "MUTE" = actions.toggleMute; # media_mute
 
-  "VOLUME_UP" = actions.volumeUp; # media_volume_up
-  "VOLUME_DOWN" = actions.volumeDown; # media_volume_down
+    "WHEEL_UP" = actions.volumeUp; # wheel_up
+    "WHEEL_DOWN" = actions.volumeDown; # wheel_down
 
-  # Audios
-  "Ctrl+Shift+a" = actions.openAudioMenu; # ctrl+shift+a
+    "up" = actions.volumeUp; # up
+    "down" = actions.volumeDown; # down
 
-  "a" = actions.nextAudio; # a
-  "Shift+a" = actions.prevAudio; # shift+a
+    "VOLUME_UP" = actions.volumeUp; # media_volume_up
+    "VOLUME_DOWN" = actions.volumeDown; # media_volume_down
 
-  # Subtitles
-  "Ctrl+Shift+s" = actions.openSubtitleMenu; # ctrl+shift+s
-  "Ctrl+s" = actions.toggleSubtitle; # ctrl+s
+    # Audios
+    "Ctrl+Shift+a" = actions.openAudioMenu; # ctrl+shift+a
+    "Ctrl+a" = actions.toggleMute; # ctrl+a
 
-  "s" = actions.nextSubtitle; # s
-  "Shift+s" = actions.prevSubtitle; # shift+s
+    "a" = actions.nextAudio; # a
+    "Shift+a" = actions.prevAudio; # shift+a
 
-  # Playlist
-  "l" = actions.openPlaylistMenu; # l
+    # Subtitles
+    "Ctrl+Shift+s" = actions.openSubtitleMenu; # ctrl+shift+s
+    "Ctrl+s" = actions.toggleSubtitle; # ctrl+s
 
-  "PgDwn" = actions.nextFile; # page_down
-  "PgUp" = actions.prevFile; # page_up
+    "s" = actions.nextSubtitle; # s
+    "Shift+s" = actions.prevSubtitle; # shift+s
 
-  "NEXT" = actions.nextFile; # media_next
-  "PREV" = actions.prevFile; # media_prev
+    # Playlist
+    "l" = actions.openPlaylistMenu; # l
 
-  # Playback speed
-  "Ctrl+0" = actions.resetSpeed; # ctrl+0
+    "PgDwn" = actions.nextFile; # page_down
+    "PgUp" = actions.prevFile; # page_up
 
-  "Ctrl+Up" = actions.speedUp; # ctrl+up
-  "Ctrl+Down" = actions.speedDown; # ctrl+down
+    "NEXT" = actions.nextFile; # media_next
+    "PREV" = actions.prevFile; # media_prev
 
-  # Zoom
-  "Alt+Shift+f" = actions.resetZoom; # ctrl+shift+f
+    # Playback speed
+    "Ctrl+0" = actions.resetSpeed; # ctrl+0
 
-  "Alt+f" = actions.zoomIn; # ctrl+f
-  "Shift+f" = actions.zoomOut; # shift+f
+    "Ctrl+Up" = actions.speedUp; # ctrl+up
+    "Ctrl+Down" = actions.speedDown; # ctrl+down
 
-  "Ctrl+WHEEL_UP" = actions.zoomIn; # ctrl+wheel_up
-  "Ctrl+WHEEL_DOWN" = actions.zoomOut; # ctrl+wheel_down
+    "Ctrl+Enter" = actions.togglePitchCorrection;
 
-  "Alt+a" = actions.moveLeft; # alt+a
-  "Alt+d" = actions.moveRight; # alt+d
-  "Alt+w" = actions.moveUp; # alt+w
-  "Alt+s" = actions.moveDown; # alt+s
+    # Zoom
+    "Alt+Shift+f" = actions.resetZoom; # ctrl+shift+f
 
-  # Rotate
-  "Ctrl+Shift+r" = actions.resetRotation; # ctrl+shift+r
+    "Alt+f" = actions.zoomIn; # ctrl+f
+    "Shift+f" = actions.zoomOut; # shift+f
 
-  "Ctrl+r" = actions.rotateClockwise; # ctrl+r
-  "Shift+r" = actions.rotateAntiClockwise; # shift+r
+    "Ctrl+WHEEL_UP" = actions.zoomIn; # ctrl+wheel_up
+    "Ctrl+WHEEL_DOWN" = actions.zoomOut; # ctrl+wheel_down
 
-  # After end
-  "t" = actions.afterPlaying.exit; # t
-  "g" = actions.afterPlaying.playNext; # g
-  "Ctrl+Alt+d" = actions.afterPlaying.shutdown; # ctrl+alt+d
-  "Ctrl+Alt+s" = actions.afterPlaying.suspend; # ctrl+alt+s
-  "Ctrl+Alt+h" = actions.afterPlaying.hibernate; # ctrl+alt+h
+    "Alt+a" = actions.moveLeft; # alt+a
+    "Alt+d" = actions.moveRight; # alt+d
+    "Alt+w" = actions.moveUp; # alt+w
+    "Alt+s" = actions.moveDown; # alt+s
 
-  # Loop
-  "r" = actions.toggleLoop; # r
+    # Rotate
+    "Ctrl+Shift+r" = actions.resetRotation; # ctrl+shift+r
 
-  # Reverse
-  "Alt+r" = actions.toggleReverse; # alt+r
+    "Ctrl+r" = actions.rotateClockwise; # ctrl+r
+    "Shift+r" = actions.rotateAntiClockwise; # shift+r
 
-  # Pin
-  "p" = actions.togglePin; # p
+    # After end
+    "t" = actions.afterPlaying.exit; # t
+    "g" = actions.afterPlaying.playNext; # g
+    "Ctrl+Alt+d" = actions.afterPlaying.shutdown; # ctrl+alt+d
+    "Ctrl+Alt+s" = actions.afterPlaying.suspend; # ctrl+alt+s
+    "Ctrl+Alt+h" = actions.afterPlaying.hibernate; # ctrl+alt+h
 
-  # Screenshot
-  "F5" = actions.takeScreenshot; # f5
+    # Loop
+    "r" = actions.toggleLoop; # r
 
-  # Info
-  "i" = actions.toggleInfo; # i
+    # Reverse
+    "Alt+r" = actions.toggleReverse; # alt+r
 
-  # File
-  "Ctrl+o" = actions.openFileMenu; # ctrl+o
+    # Pin
+    "p" = actions.togglePin; # p
 
-  "Ctrl+c" = actions.copyFilePath; # ctrl+c
-  "Ctrl+v" = actions.openFileInClipboard; # ctrl+v
+    # Screenshot
+    "F5" = actions.takeScreenshot; # f5
 
-}
+    # Info
+    "i" = actions.toggleInfo; # i
+
+    # File
+    "Ctrl+o" = actions.openFileMenu; # ctrl+o
+
+    "Ctrl+c" = actions.copyFilePath; # ctrl+c
+    "Ctrl+v" = actions.openFileInClipboard; # ctrl+v
+
+  }
+)
