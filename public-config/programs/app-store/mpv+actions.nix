@@ -29,24 +29,24 @@
 
     # Play/Pause
     togglePause = (utils.joinStr ";" [ # Play/Pause
-      "cycle pause"
+      "no-osd cycle pause"
       uosc-flash-pause-indicator
     ]);
     play = (utils.joinStr ";" [ # Play
-      "set pause no"
+      "no-osd set pause no"
       uosc-flash-pause-indicator
     ]);
     pause = (utils.joinStr ";" [ # Pause
-      "set pause yes"
+      "no-osd set pause yes"
       uosc-flash-pause-indicator
     ]);
 
     # Fullscreen
     toggleFullscreen = (utils.joinStr ";" [ # Toggle fullscreen
-      "cycle fullscreen"
+      "no-osd cycle fullscreen"
     ]);
     exitFullscreen = (utils.joinStr ";" [ # Exit fullscreen
-      "set fullscreen no"
+      "no-osd set fullscreen no"
     ]);
 
     # Menu
@@ -66,62 +66,62 @@
     # Seek
     goForward = {
       frame = (utils.joinStr ";" [ # Go +1 frame and pause
-        "frame-step"
+        "no-osd frame-step"
         ''show-text "Step: +1 frame"''
         uosc-flash-timeline
       ]);
       small = (utils.joinStr ";" [ # Go forward (Small)
-        "seek ${mpv-config.seekStepSmall}"
+        "no-osd seek ${mpv-config.seekStepSmall}"
         uosc-flash-timeline
       ]);
       medium = (utils.joinStr ";" [ # Go forward (Medium)
-        "seek ${mpv-config.seekStepMedium}"
+        "no-osd seek ${mpv-config.seekStepMedium}"
         uosc-flash-timeline
       ]);
       big = (utils.joinStr ";" [ # Go forward (Big)
-        "seek ${mpv-config.seekStepBig}"
+        "no-osd seek ${mpv-config.seekStepBig}"
         uosc-flash-timeline
       ]);
       end = (utils.joinStr ";" [ # End of video
-        "seek 100 absolute-percent"
+        "no-osd seek 100 absolute-percent"
         uosc-flash-timeline
       ]);
     };
     goBack = {
       frame = (utils.joinStr ";" [ # Go -1 frame and pause
-        "frame-back-step"
+        "no-osd frame-back-step"
         ''show-text "Step: -1 frame"''
         uosc-flash-timeline
       ]);
       small = (utils.joinStr ";" [ # Go back (Small)
-        "seek -${mpv-config.seekStepSmall}"
+        "no-osd seek -${mpv-config.seekStepSmall}"
         uosc-flash-timeline
       ]);
       medium = (utils.joinStr ";" [ # Go back (Medium)
-        "seek -${mpv-config.seekStepMedium}"
+        "no-osd seek -${mpv-config.seekStepMedium}"
         uosc-flash-timeline
       ]);
       big = (utils.joinStr ";" [ # Go back (Big)
-        "seek -${mpv-config.seekStepBig}"
+        "no-osd seek -${mpv-config.seekStepBig}"
         uosc-flash-timeline
       ]);
       start = (utils.joinStr ";" [ # Start of video
-        "seek 0 absolute-percent"
+        "no-osd seek 0 absolute-percent"
         uosc-flash-timeline
       ]);
     };
 
     # Volume
     toggleMute = (utils.joinStr ";" [ # Mute/Unmute
-      "cycle mute"
+      "no-osd cycle mute"
       uosc-flash-volume
     ]);
     volumeUp = (utils.joinStr ";" [ # Increase volume
-      "add volume ${mpv-config.volumeStep}"
+      "no-osd add volume ${mpv-config.volumeStep}"
       uosc-flash-volume
     ]);
     volumeDown = (utils.joinStr ";" [ # Decrease volume
-      "add volume -${mpv-config.volumeStep}"
+      "no-osd add volume -${mpv-config.volumeStep}"
       uosc-flash-volume
     ]);
 
@@ -130,11 +130,11 @@
       uosc-open-audio
     ]);
     nextAudio = (utils.joinStr ";" [ # Next audio
-      "cycle audio up"
+      "no-osd cycle audio up"
       ''show-text "Audio: ''${audio}"''
     ]);
     prevAudio = (utils.joinStr ";" [ # Previous audio
-      "cycle audio down"
+      "no-osd cycle audio down"
       ''show-text "Audio: ''${audio}"''
     ]);
 
@@ -143,15 +143,15 @@
       uosc-open-subtitles
     ]);
     nextSubtitle = (utils.joinStr ";" [ # Next subtitle
-      "cycle sub up"
+      "no-osd cycle sub up"
       ''show-text "Subtitle: ''${sub}"''
     ]);
     prevSubtitle = (utils.joinStr ";" [ # Previous subtitle
-      "cycle sub down"
+      "no-osd cycle sub down"
       ''show-text "Subtitle: ''${sub}"''
     ]);
     toggleSubtitle = (utils.joinStr ";" [ # Disable/Enable subtitle
-      "cycle sub-visibility"
+      "no-osd cycle sub-visibility"
       ''show-text "Subtitle: ''${sub}"''
     ]);
 
@@ -180,107 +180,114 @@
       # ''show-text "Speed: ''${speed}x"''
     ]);
     # TODO: (MPV) "speed" var breaks UOSC. Fix?
+    togglePitchCorrection = (utils.joinStr ";" [ # How the video speed affects the sound
+      "no-osd cycle audio-pitch-correction"
+    ]);
 
     # Zoom
     zoomIn = (utils.joinStr ";" [ # Zoom in
-      "add video-zoom ${mpv-config.zoomStep}"
+      "no-osd add video-zoom ${mpv-config.zoomStep}"
       ''show-text "Zoom: ''${video-zoom}"''
     ]);
     zoomOut = (utils.joinStr ";" [ # Zoom out
-      "add video-zoom -${mpv-config.zoomStep}"
+      "no-osd add video-zoom -${mpv-config.zoomStep}"
       ''show-text "Zoom: ''${video-zoom}"''
     ]);
     resetZoom = (utils.joinStr ";" [ # Reset zoom and offsets
-      "set video-zoom 0"
-      "set video-pan-x 0"
-      "set video-pan-y 0"
+      "no-osd set video-zoom 0"
+      "no-osd set video-pan-x 0"
+      "no-osd set video-pan-y 0"
       ''show-text "Zoom: Reset"''
     ]);
     moveLeft = (utils.joinStr ";" [ # Move left
-      "add video-pan-x ${mpv-config.moveStep}"
+      "no-osd add video-pan-x ${mpv-config.moveStep}"
       ''show-text "Move left"''
     ]);
     moveRight = (utils.joinStr ";" [ # Move right
-      "add video-pan-x -${mpv-config.moveStep}"
+      "no-osd add video-pan-x -${mpv-config.moveStep}"
       ''show-text "Move right"''
     ]);
     moveUp = (utils.joinStr ";" [ # Move up
-      "add video-pan-y ${mpv-config.moveStep}"
+      "no-osd add video-pan-y ${mpv-config.moveStep}"
       ''show-text "Move up"''
     ]);
     moveDown = (utils.joinStr ";" [ # Move down
-      "add video-pan-y -${mpv-config.moveStep}"
+      "no-osd add video-pan-y -${mpv-config.moveStep}"
       ''show-text "Move down"''
     ]);
 
     # Rotate
     rotateClockwise = (utils.joinStr ";" [ # Rotate video clockwise
-      "cycle-values video-rotate ${rotationList}"
+      "no-osd cycle-values video-rotate ${rotationList}"
       ''show-text "Rotation: ''${video-rotate}°"''
     ]);
     rotateAntiClockwise = (utils.joinStr ";" [ # Rotate video anti-clockwise
-      "cycle-values !reverse video-rotate ${rotationList}"
+      "no-osd cycle-values !reverse video-rotate ${rotationList}"
       ''show-text "Rotation: ''${video-rotate}°"''
     ]);
     resetRotation = (utils.joinStr ";" [ # Reset rotation
-      "set video-rotate 0"
+      "no-osd set video-rotate 0"
       ''show-text "Rotation: Reset"''
     ]);
 
     # After Playing
     afterPlaying = {
       exit = (utils.joinStr ";" [ # Exit/Do nothing after video end
-        ""
+        "no-osd set keep-open no"
+        "no-osd set keep-open-pause no"
+        "no-osd set loop-file no"
+        "playlist-clear"
         ''show-text "After playing: Exit"''
       ]);
       playNext = (utils.joinStr ";" [ # Play next/Do nothing after video end
-        ""
+        "no-osd set keep-open no"
+        "no-osd set keep-open-pause no"
+        "no-osd set loop-file no"
         ''show-text "After playing: Load next file"''
       ]);
       shutdown = (utils.joinStr ";" [ # Shutdown after video end
         # Note: It's good practice to ask KDE Plasma to shutdown
-        #''run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
-        ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
-        # ''run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
+        #''no-osd run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
+        ''no-osd run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
+        # ''no-osd run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
         ''show-text "After playing: Shutdown"''
       ]);
       suspend = (utils.joinStr ";" [ # Suspend after video end
-        ''run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend"''
+        ''no-osd run "${pkgs.bash}/bin/sh" "-c" "systemctl suspend"''
         ''show-text "After playing: Suspend"''
       ]);
       hibernate = (utils.joinStr ";" [ # Hibernate after video end
-        ''run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
+        ''no-osd run "${pkgs.bash}/bin/sh" "-c" "systemctl hibernate"''
         ''show-text "After playing: Hibernate"''
       ]);
       # TODO: (MPV) Make "After playing" work, somehow...
-      # "shutdown" = "";
       # TODO: (MPV) Act by event? Check
     };
 
     # Loop
     toggleLoop = (utils.joinStr ";" [ # Loop/Do nothing
-      "cycle-values loop-file inf no"
+      "no-osd cycle-values loop-file inf no"
       ''show-text "Loop: ''${loop-file}"''
       uosc-flash-timeline
     ]);
 
     # Reverse
     toggleReverse = (utils.joinStr ";" [ # Toggle Reverse video
-      "cycle-values play-direction forward backward"
+      "no-osd cycle-values play-direction forward backward"
       ''show-text "Play direction: ''${play-direction}"''
       uosc-flash-timeline
     ]);
 
     # Pin
     togglePin = (utils.joinStr ";" [ # Toggle pin-on-top
-      "cycle ontop"
+      "no-osd cycle ontop"
+      ''no-osd set title "''${filename} - mpv''${?ontop==yes: <Pinned>}"''
       ''show-text "Pinned: ''${ontop}"''
     ]);
-    # TODO: (MPV)(24.11) "Pinned" does not work. Check if it's working later
 
     # Screenshot
     takeScreenshot = (utils.joinStr ";" [ # Screenshot without subtitles
-      "screenshot video"
+      "no-osd screenshot video"
       ''show-text "Screenshot taken"''
     ]);
 
@@ -294,7 +301,7 @@
       uosc-open-file
     ]);
     copyFilePath = (utils.joinStr ";" [ # Copy file path
-      ''run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard"''
+      ''no-osd run "${pkgs.bash}/bin/sh" "-c" "echo -n \"''${path}\" | xclip -i -selection clipboard"''
       ''show-text "Copied file path to clipboard"''
     ]);
     openFileInClipboard = (utils.joinStr ";" [ # Paste file path to play

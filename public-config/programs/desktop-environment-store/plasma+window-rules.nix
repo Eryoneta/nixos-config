@@ -21,6 +21,26 @@
     };
   }
   {
+    description = "Stick MPV windows on top";
+    match = { # What target
+      window-class = {
+        value = "mpv mpv"; # MPV
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+      title = {
+        value = ".* \\<Pinned\\>$";
+        type = "regex";
+      };
+    };
+    apply = { # What changes
+      "above" = {
+        value = true; # Set the window.to be above
+        apply = "force"; # Force
+      };
+    };
+  }
+  {
     description = "Stick Firefox PiP windows on top";
     match = { # What target
       window-class = {
