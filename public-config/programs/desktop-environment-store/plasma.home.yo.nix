@@ -37,7 +37,6 @@
               config = {
                 "General" = (widgets.taskManager.config."General" // {
                   "launchers" = (utils.joinStr "," [ # Pinned apps
-                    "applications:systemsettings.desktop" # Settings
                     "applications:org.kde.dolphin.desktop" # Dolphin
                     "applications:firefox.desktop" # Firefox
                     "applications:firefox-devedition.desktop" # Firefox-Dev
@@ -49,10 +48,11 @@
             widgets.separator
             (widgets.systemTray // {
               systemTray.items = (widgets.systemTray.systemTray.items // {
-                shown = [
-                  "org.kde.plasma.volume" # System volume
-                  "org.kde.plasma.networkmanagement" # Network status
-                ];
+                shown = (
+                  widgets.systemTray.systemTray.items.shown ++ [
+                    "org.kde.plasma.mediacontroller" # Media Controller
+                  ]
+                );
                 hidden = (
                   widgets.systemTray.systemTray.items.hidden ++ [
                     "Yakuake" # Yakuake

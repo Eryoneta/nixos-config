@@ -50,6 +50,7 @@
             "separateLaunchers" = false; # When clicked, replace the icon with the app. Do not keep the icon reserved!
             "showOnlyCurrentScreen" = true; # Show only apps on the current screen
             "wheelEnabled" = false; # Do not scroll through programs!
+            "maxStripes" = 2; # Two layers of apps
           };
         };
       };
