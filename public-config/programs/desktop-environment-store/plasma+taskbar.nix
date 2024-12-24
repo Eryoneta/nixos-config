@@ -51,6 +51,7 @@
             "showOnlyCurrentScreen" = true; # Show only apps on the current screen
             "wheelEnabled" = false; # Do not scroll through programs!
             "maxStripes" = 2; # Two layers of apps
+            "indicateAudioStreams" = false; # Do not indicate apps that are playing sound
           };
         };
       };
