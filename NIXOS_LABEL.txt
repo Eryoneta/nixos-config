@@ -1,1 +1,1 @@
-Programs: Pinta, LazPaint
+Programs: Konsole
