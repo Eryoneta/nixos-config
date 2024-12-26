@@ -8,6 +8,7 @@
         "panels" = {};
         "plasmoids" = {};
       });
+      options.activities = (utils.mkDefaultsOption {});
     };
   };
 
@@ -110,9 +111,24 @@
 
     profile.programs.plasma = { # Defines MainPanel
       options.defaults = {
-        "panels"."main" = (import ./plasma+taskbar.nix {
+        "panels"."main" = (import ./plasma+taskbar.nix { # Used as reference
           inherit utils;
         });
+      };
+      options.activities = (utils.mkDefault) rec { # Used as a placeholder
+        list = { # Note: It's alfabetically ordered
+          "main" = {
+            id = "main-activity";
+            name = "Main Activity";
+            icon = "nix-snowflake-white";
+          };
+          "secondary" = {
+            id = "secondary-activity";
+            name = "Secondary Activity";
+            icon = "kde-symbolic";
+          };
+        };
+        startId = list."main".id;
       };
     };
 
