@@ -85,9 +85,6 @@
         "ElectricBorderDelay" = 350; # Delay in ms before the border action running
         "ElectricBorderCooldown" = 1000; # Delay in ms before doing another action
       };
-      "EdgeBarrier" = {
-        "EdgeBarrier" = 80; # Space in px of extra space to be moved before any action
-      };
       "Plugins" = {
         "screenedgeEnabled" = false; # Disable the glow effect from screen edges
       };
