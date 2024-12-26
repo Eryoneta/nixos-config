@@ -50,8 +50,10 @@
             "separateLaunchers" = false; # When clicked, replace the icon with the app. Do not keep the icon reserved!
             "showOnlyCurrentScreen" = true; # Show only apps on the current screen
             "wheelEnabled" = false; # Do not scroll through programs!
-            "maxStripes" = 2; # Two layers of apps
+            "maxStripes" = 1; # Maximum of layers of apps
+            #   Note: Two layers is good when there is a lot of open apps, but is harder to actually find anything as everything is smaller
             "indicateAudioStreams" = false; # Do not indicate apps that are playing sound
+            "taskMaxWidth" = "Narrow"; # Largura máxima dos apps abertos
           };
         };
       };
