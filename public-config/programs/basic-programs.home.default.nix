@@ -28,9 +28,5 @@
       );
     };
 
-    programs.btop.enable = true; # BTop: Terminal-based process viewer
-    programs.htop.enable = true; # HTop: Terminal-based process viewer
-    # TODO: (HTop/BTop) Test to see which one is more used on the daily
-    
   };
 }
