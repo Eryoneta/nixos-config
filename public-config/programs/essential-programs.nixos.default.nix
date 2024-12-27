@@ -13,6 +13,7 @@
         gparted # GParted: Manages partitions
         git # Git: Versioning
         kdePackages.filelight # Filelight: Disk usage visualizer
+        pavucontrol # PulseAudio Volume Control: Tool for system audio
 
         nix-output-monitor # nix-output-monitor: Prettify nix output
         # Note: Best usage is "sudo ls /dev/null > /dev/null 2>&1 && sudo nixos-rebuild switch --flake <PATH>#<HOSTNAME> --use-remote-sudo --show-trace --print-build-logs --verbose |& nom"
@@ -34,6 +35,6 @@
     environment.plasma6.excludePackages = with pkgs; [
       kdePackages.elisa # Elisa: Music player (Not used)
     ];
-    
+
   };
 }

@@ -12,6 +12,12 @@
           #kdePackages.ark # Ark: File archiver (Included with KDE Plasma)
           #kdePackages.gwenview # Gwenview: Image viewer (Included with KDE Plasma)
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)
+          kdePackages.kcalc # KCalc: Calculator
+          #kdePackages.kamoso # Kamoso: Camera
+          # TODO: (Kamoso) Marked as broken. Check later
+          cheese # Cheese: Camera app
+          kdePackages.kconfig # KConfig: Tool for editing KDE config files
+          krename # KRename: Tool for mass file rename
 
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
