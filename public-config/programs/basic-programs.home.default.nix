@@ -15,7 +15,7 @@
           kdePackages.kcalc # KCalc: Calculator
           #kdePackages.kamoso # Kamoso: Camera
           # TODO: (Kamoso) Marked as broken. Check later
-          cheese # Cheese: Camera app
+          obs-studio # OBS Studio: Video streamer
           kdePackages.kconfig # KConfig: Tool for editing KDE config files
           krename # KRename: Tool for mass file rename
 
