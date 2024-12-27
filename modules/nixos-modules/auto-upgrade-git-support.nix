@@ -78,7 +78,11 @@
       home-manager.users.root.home = lib.mkIf (cfg_gs.markDirectoryAsSafe) {
         file.".gitconfig".text = lib.mkAfter ''
           [safe]
-            directory = ${cfg_gs.directory}/.git
+            # directory = "${cfg_gs.directory}/.git"
+            # directory = "${cfg_gs.directory}/*"
+            # Note: It does NOT WORK for SOME REASON
+            #   ...So, disable all safety checks
+            directory = *
         '';
         stateVersion = lib.mkDefault (
           if (cfg_gs.systemUser != "root") then (
