@@ -8,6 +8,7 @@
         "panels" = {};
         "plasmoids" = {};
       });
+      options.activities = (utils.mkDefaultsOption {});
     };
   };
 
@@ -91,7 +92,7 @@
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.nix);
+      window-rules = (import ./plasma+window-rules.nix config.lib.hardware.configuration.screensize);
 
       # Shortcuts
       shortcuts = (import ./plasma+shortcuts.nix);
@@ -107,12 +108,31 @@
       };
 
     };
+    
+    hardware.configuration.screensize.verticalBars = [ # (Option of Hosts/Default/Hardware)
+      options.defaults."panels"."main".panel.height
+    ];
 
     profile.programs.plasma = { # Defines MainPanel
       options.defaults = {
-        "panels"."main" = (import ./plasma+taskbar.nix {
+        "panels"."main" = (import ./plasma+taskbar.nix { # Used as reference
           inherit utils;
         });
+      };
+      options.activities = (utils.mkDefault) rec { # Used as a placeholder
+        list = { # Note: It's alfabetically ordered
+          "main" = {
+            id = "main-activity";
+            name = "Main Activity";
+            icon = "nix-snowflake-white";
+          };
+          "secondary" = {
+            id = "secondary-activity";
+            name = "Secondary Activity";
+            icon = "kde-symbolic";
+          };
+        };
+        startId = list."main".id;
       };
     };
 

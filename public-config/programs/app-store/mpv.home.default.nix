@@ -74,7 +74,9 @@
 
         # Window
         "force-window" = "yes"; # Always show a window
-        "geometry" = "683x724-0-0"; # Start size
+        "geometry" = with config.lib.hardware.configuration.screensize; (
+          "${builtins.toString (width / 2)}x${builtins.toString (height - 34)}-0-0" # Start size
+        );
         "keepaspect-window" = "no"; # Use black bars to center video
         "window-dragging" = "yes"; # Dragging moves the window
         "drag-and-drop" = "auto"; # Drop to replace current video

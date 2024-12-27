@@ -27,6 +27,17 @@
 
   in {
 
+    # All Features:
+    #   Basics: Play/Pause, Volume, Fullscreen/Windowed, Playlist, Exit
+    #   Seek; Small, medium, big, and start/end
+    #   Audios: Switch and menu
+    #   Subtitles: Switch and menu
+    #   Playback speed: Up/Down, and pitch correction
+    #   Zoom: In/Out, and move
+    #   Rotation: Cycle
+    #   After playing: close, next, suspend, hiberntate, shutdown
+    #   Utils: Pin window, loop, screeenshot, info, file copy/paste
+
     # Play/Pause
     togglePause = (utils.joinStr ";" [ # Play/Pause
       "no-osd cycle pause"
@@ -168,21 +179,24 @@
 
     # Playback speed
     speedUp = (utils.joinStr ";" [ # Increase speed
-      "cycle-values speed ${speedsList}"
-      # ''show-text "Speed: ''${speed}x"''
+      "no-osd cycle-values speed ${speedsList}"
+      ''show-text "Speed: ''${speed}x"''
     ]);
     speedDown = (utils.joinStr ";" [ # Decrease speed
-      "cycle-values !reverse speed ${speedsList}"
-      # ''show-text "Speed: ''${speed}x"''
+      "no-osd cycle-values !reverse speed ${speedsList}"
+      ''show-text "Speed: ''${speed}x"''
     ]);
     resetSpeed = (utils.joinStr ";" [ # Reset speed
-      "set speed 1"
-      # ''show-text "Speed: ''${speed}x"''
+      "no-osd set speed 1"
+      ''show-text "Speed: ''${speed}x"''
     ]);
-    # TODO: (MPV) "speed" var breaks UOSC. Fix?
     togglePitchCorrection = (utils.joinStr ";" [ # How the video speed affects the sound
       "no-osd cycle audio-pitch-correction"
+      ''show-text "Audio pitch correction: ''${audio-pitch-correction}"''
     ]);
+    speedUpNoOSC = "no-osd cycle-values speed ${speedsList}"; # Increase speed (For UOSC)
+    speedDownNoOSC = "no-osd cycle-values !reverse speed ${speedsList}"; # Decrease speed (For UOSC)
+    resetSpeedNoOSC = "no-osd set speed 1"; # Reset speed (For UOSC)
 
     # Zoom
     zoomIn = (utils.joinStr ";" [ # Zoom in
@@ -249,7 +263,7 @@
         # Note: It's good practice to ask KDE Plasma to shutdown
         #''no-osd run "${pkgs.bash}/bin/sh" "-c" "systemctl poweroff"'' # Works, but is not safe!
         ''no-osd run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.Shutdown /Shutdown logoutAndShutdown"'' # Shutdown now
-        # ''no-osd run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
+        #''no-osd run "${pkgs.bash}/bin/sh" "-c" "qdbus org.kde.LogoutPrompt /LogoutPrompt promptShutDown"'' # Ask for shutdown
         ''show-text "After playing: Shutdown"''
       ]);
       suspend = (utils.joinStr ";" [ # Suspend after video end

@@ -53,10 +53,22 @@ nix-lib: hm-pkgs: hm-lib: (
         )
       );
 
+      # Creates a list of integers option for "options"
+      mkIntListOption = default: nix-lib.mkOption {
+        inherit default;
+        type = nix-lib.types.listOf nix-lib.types.int;
+      };
+
       # Creates a bool option for "options"
       mkBoolOption = default: nix-lib.mkOption {
         inherit default;
         type = nix-lib.types.bool;
+      };
+
+      # Creates a int option for "options"
+      mkIntOption = default: nix-lib.mkOption {
+        inherit default;
+        type = nix-lib.types.int;
       };
 
       # Creates a package option for "options"

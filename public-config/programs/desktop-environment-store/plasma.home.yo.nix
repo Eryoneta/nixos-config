@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
@@ -37,7 +37,6 @@
               config = {
                 "General" = (widgets.taskManager.config."General" // {
                   "launchers" = (utils.joinStr "," [ # Pinned apps
-                    "applications:systemsettings.desktop" # Settings
                     "applications:org.kde.dolphin.desktop" # Dolphin
                     "applications:firefox.desktop" # Firefox
                     "applications:firefox-devedition.desktop" # Firefox-Dev
@@ -49,10 +48,12 @@
             widgets.separator
             (widgets.systemTray // {
               systemTray.items = (widgets.systemTray.systemTray.items // {
-                shown = [
-                  "org.kde.plasma.volume" # System volume
-                  "org.kde.plasma.networkmanagement" # Network status
-                ];
+                shown = (
+                  widgets.systemTray.systemTray.items.shown ++ [
+                    "org.kde.plasma.mediacontroller" # Media Controller
+                    "org.kde.plasma.weather" # Weather
+                  ]
+                );
                 hidden = (
                   widgets.systemTray.systemTray.items.hidden ++ [
                     "Yakuake" # Yakuake
@@ -67,7 +68,7 @@
       ];
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.yo.nix);
+      window-rules = (import ./plasma+window-rules.yo.nix config.lib.hardware.configuration.screensize);
 
       # Mouse
       input.mice = [

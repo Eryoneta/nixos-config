@@ -43,11 +43,13 @@
       };
       # View modes
       "IconsMode" = {
-        "IconSize" = 64; # Icon size
-        #"PreviewSize" = 16; # Preview content icon size
-        "PreviewSize" = 64; # Preview content icon size
+        "IconSize" = 80; # Icon size
+        #"PreviewSize" = 32; # Preview content icon size
+        "PreviewSize" = 80; # Preview content icon size
         # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
         # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
+        "MaximumTextLines" = 5; # Allowed number of lines for the filename
+        "TextWidthIndex" = 1; # (Menu index option) Text width per item
       };
       "CompactMode" = {
         "IconSize" = 16; # Icon size

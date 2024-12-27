@@ -204,4 +204,5 @@
    <Action name="show_doc_name"/>
   </Menu>
  </Menu>
+ <ActionProperties scheme="Default"/>
 </gui>

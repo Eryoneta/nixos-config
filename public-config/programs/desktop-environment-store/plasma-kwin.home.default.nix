@@ -58,19 +58,30 @@
     # Note: Old activities are not removed
     programs.plasma.configFile."kactivitymanagerdrc" = ( # (plasma-manager option)
       let
-        main-id = "main-activity-random-id";
-        secondary-id = "secondary-activity-random-id";
+        ativities = (
+          builtins.listToAttrs (builtins.map (
+            value: {
+              name = (options.activities).list."${value}".id;
+              value = {
+                name = (options.activities).list."${value}".name;
+                icon = (options.activities).list."${value}".icon;
+              };
+            }
+          ) (builtins.attrNames (options.activities).list))
+        );
       in {
-        "activities" = { # Note: It's alfabetically ordered
-          "${main-id}" = "Main Activity"; # Name
-          "${secondary-id}" = "Secondary Activity"; # Name
-        };
-        "activities-icons" = {
-          "${main-id}" = "nix-snowflake-white"; # Icon
-          "${secondary-id}" = "kde-symbolic"; # Icon
-        };
+        "activities" = (
+          builtins.mapAttrs (
+            name: value: value.name
+          ) ativities
+        );
+        "activities-icons" = (
+          builtins.mapAttrs (
+            name: value: value.icon
+          ) ativities
+        );
         "main" = {
-          "currentActivity" = main-id; # Start activity
+          "currentActivity" = (options.activities).startId;
         };
       }
     );
@@ -80,8 +91,15 @@
       "Desktops" = {
         "Rows" = 1; # Order in a singular row
       };
+      "Windows" = {
+        "ElectricBorders" = 2; # Move between virtual desktops by moving to the edges
+        "ElectricBorderDelay" = 350; # Delay in ms before the border action running
+        "ElectricBorderCooldown" = 1000; # Delay in ms before doing another action
+      };
+      "Plugins" = {
+        "screenedgeEnabled" = false; # Disable the glow effect from screen edges
+      };
     };
-
 
   });
 }

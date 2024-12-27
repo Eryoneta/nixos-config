@@ -29,6 +29,7 @@
         "Show Line Ending Type in Statusbar" = true; # Show type of EOF in statusbar
         "Shoe Line Ending Type in Statusbar" = true; # Uh, someone made a typo (I'm gonna keep both so it works either way)
         # TODO: (KWrite) There is a typo in a config. Change it if it's fixed
+        # Auto completion
         "Auto Completion" = false; # Do not autocomplete
         "Auto Completion Preselect First Entry" = false;
         "Enable Tab completion" = false;
@@ -36,6 +37,11 @@
         "Word Completion" = false; # Do not autocomplete
         "Keyword Completion" = false; # Do not autocomplete
         "Show Documentation With Completion" = false;
+        # Space-saving
+        "Line Numbers" = false; # Do not show number alongside lines
+        "Icon Bar" = false; # Do not show special icons (Bookmarked lines) alongside lines
+        "Scroll Bar MiniMap" = false; # Do not show the minimap
+        "Folding Bar" = false; # Do not show arrows to collapse blocks of code
       };
     };
 
