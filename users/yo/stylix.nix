@@ -36,9 +36,9 @@
           package = (pkgs-bundle.stable).noto-fonts;
         };
         sizes = { # Font sizes
-          applications = 10; # Apps UIs
+          desktop = 9; # Window titles, bars, widgets, etc
+          applications = 9; # Apps UIs
           terminal = 8; # Terminals
-          desktop = 10; # Window titles, bars, widgets, etc
           popups = 10; # Popups and notifications
         };
       };
