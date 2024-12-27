@@ -1,5 +1,5 @@
 # Content of "config.programs.plasma.window-rules" (home-manager+plasma-manager)
-[
+screenSize: [
   {
     description = "Fix VSCodium launcher not sticking instances";
     match = { # What target
@@ -71,7 +71,7 @@
     };
     apply = { # What changes
       "size" = {
-        value = "683,724"; # Set the window.size
+        value = "${builtins.toString (screenSize.width / 2)},${builtins.toString screenSize.height}"; # Set the window.size
         apply = "initially"; # On start
       };
     };
@@ -87,7 +87,7 @@
     };
     apply = { # What changes
       "size" = {
-        value = "683,724"; # Set the window.size
+        value = "${builtins.toString (screenSize.width / 2)},${builtins.toString screenSize.height}"; # Set the window.size
         apply = "initially"; # On start
       };
     };

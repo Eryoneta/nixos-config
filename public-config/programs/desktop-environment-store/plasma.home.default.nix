@@ -92,7 +92,7 @@
       windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.nix);
+      window-rules = (import ./plasma+window-rules.nix config.lib.hardware.configuration.screensize);
 
       # Shortcuts
       shortcuts = (import ./plasma+shortcuts.nix);
@@ -108,6 +108,10 @@
       };
 
     };
+    
+    hardware.configuration.screensize.verticalBars = [ # (Option of Hosts/Default/Hardware)
+      options.defaults."panels"."main".panel.height
+    ];
 
     profile.programs.plasma = { # Defines MainPanel
       options.defaults = {

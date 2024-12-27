@@ -68,7 +68,7 @@
       ];
 
       # Window rules
-      window-rules = (import ./plasma+window-rules.yo.nix);
+      window-rules = (import ./plasma+window-rules.yo.nix config.lib.hardware.configuration.screensize);
 
       # Mouse
       input.mice = [

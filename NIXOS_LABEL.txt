@@ -1,1 +1,1 @@
-Programs: OBS Studio
+Programs: Screensize
