@@ -65,19 +65,19 @@
             (utils.joinStr "" [ # Speed-down button
               "command" # Type
               ":fast_rewind" # Icon
-              ":${mpv-config.actions.speedDown}" # Command
+              ":${mpv-config.actions.speedDownNoOSC}" # Command
               "?Decrease speed" # Tooltip
             ])
             (utils.joinStr "" [ # Reset speed button
               "command" # Type
               ":speed" # Icon
-              ":${mpv-config.actions.resetSpeed}" # Command
+              ":${mpv-config.actions.resetSpeedNoOSC}" # Command
               "?Reset speed" # Tooltip
             ])
             (utils.joinStr "" [ # Speed-up button
               "command" # Type
               ":fast_forward" # Icon
-              ":${mpv-config.actions.speedUp}" # Command
+              ":${mpv-config.actions.speedUpNoOSC}" # Command
               "?Increase speed" # Tooltip
             ])
             "space"
