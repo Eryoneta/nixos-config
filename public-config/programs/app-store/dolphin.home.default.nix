@@ -43,9 +43,9 @@
       };
       # View modes
       "IconsMode" = {
-        "IconSize" = 80; # Icon size
+        "IconSize" = 96; # Icon size
         #"PreviewSize" = 32; # Preview content icon size
-        "PreviewSize" = 80; # Preview content icon size
+        "PreviewSize" = 96; # Preview content icon size
         # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
         # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
         "MaximumTextLines" = 5; # Allowed number of lines for the filename
