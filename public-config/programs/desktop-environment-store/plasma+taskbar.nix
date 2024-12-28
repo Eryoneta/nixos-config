@@ -79,7 +79,6 @@
               "org.kde.kscreen"
               "org.kde.plasma.battery"
               "org.kde.plasma.printmanager"
-              "org.kde.plasma.cameraindicator"
               "org.kde.plasma.keyboardlayout"
               "org.kde.plasma.keyboardindicator"
               "org.kde.plasma.clipboard"
