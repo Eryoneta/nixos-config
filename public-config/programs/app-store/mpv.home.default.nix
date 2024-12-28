@@ -11,8 +11,9 @@
           osc-duration = "1000";
 
           # Volume
+          startVolume = "45"; # Start volume: 45%;
           volumeStep = "5"; # Volume: 5%
-          volumeMax = 200; # Max-volume: 200%
+          volumeMax = "200"; # Max-volume: 200%
 
           # Seek
           seekStepSmall = "2"; # Seek: +-2s
@@ -73,7 +74,10 @@
       config = {
 
         # Window
-        "force-window" = "yes"; # Always show a window
+        "force-window" = "no"; # Do not open an empty window
+        #   Note: It's a bug. Ideally, MPV would open an empty window if executed, but in reality, it opens two windows!
+        #     And it does not allow for more instances than one. Very annoying
+        # TODO: (MPV) Check later if it works with "force-window". Probably not
         "geometry" = with config.lib.hardware.configuration.screensize; (
           "${builtins.toString (width / 2)}x${builtins.toString (height - 34)}-0-0" # Start size
         );
@@ -97,6 +101,7 @@
         "directory-filter-types" = "video,audio"; # Accept only videos and audios
 
         # Sound
+        "volume" = mpv-config.startVolume; # Initial volume in %
         "volume-max" = mpv-config.volumeMax; # Maximum volume in %
         "af" = "scaletempo2=${utils.joinStr ":" [ # Audio engine
           "min-speed=${mpv-config.speedMinBoundary}"

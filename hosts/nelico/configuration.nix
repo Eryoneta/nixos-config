@@ -11,6 +11,9 @@
     # Features/Swapfile
     swap.devices."basicSwap".size = ((16 + 2) * 1024); # 18GB
 
+    # Features/AlterProfile
+    system.autoUpgrade.alterProfile.configurationLimit = 12; # Keep only 12 generations
+
   };
 
 }

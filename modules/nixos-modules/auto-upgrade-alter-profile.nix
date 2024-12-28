@@ -57,7 +57,7 @@
         # The service "nixos-upgrade" has to run only after this one! That avoids dead symlinks in the boot menu
         #   The disadvantage is that this requires a minimum of 2 generations to work
         preStart = ''
-          nix-env --delete-generations +${toString (cfg_ap.configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${cfg_ap.name}
+          nix-env --delete-generations +${toString (cfg_ap.configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${cfg_ap.name} || true
         '';
       };
 

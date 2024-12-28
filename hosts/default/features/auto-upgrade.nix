@@ -34,7 +34,7 @@
 
       alterProfile = {
         enable = (utils.mkDefault) true;
-        name = (utils.mkDefault) "System_Updates";
+        name = (utils.mkDefault) "System_Upgrades";
         configurationLimit = (utils.mkDefault) 24;
       };
       
