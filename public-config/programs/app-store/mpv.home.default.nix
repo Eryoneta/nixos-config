@@ -74,7 +74,10 @@
       config = {
 
         # Window
-        "force-window" = "yes"; # Always show a window
+        "force-window" = "no"; # Do not open an empty window
+        #   Note: It's a bug. Ideally, MPV would open an empty window if executed, but in reality, it opens two windows!
+        #     And it does not allow for more instances than one. Very annoying
+        # TODO: (MPV) Check later if it works with "force-window". Probably not
         "geometry" = with config.lib.hardware.configuration.screensize; (
           "${builtins.toString (width / 2)}x${builtins.toString (height - 34)}-0-0" # Start size
         );
