@@ -29,13 +29,33 @@ screenSize: [
       };
       window-types = [ "normal" ]; # Normal window
       title = {
-        value = ".* \\<Pinned\\>$";
+        value = ".* - mpv \\<Pinned\\>$";
         type = "regex";
       };
     };
     apply = { # What changes
       "above" = {
         value = true; # Set the window.to be above
+        apply = "force"; # Force
+      };
+    };
+  }
+  {
+    description = "Unstick MPV windows from top";
+    match = { # What target
+      window-class = {
+        value = "mpv mpv"; # MPV
+        type = "exact";
+      };
+      window-types = [ "normal" ]; # Normal window
+      title = {
+        value = ".* - mpv$";
+        type = "regex";
+      };
+    };
+    apply = { # What changes
+      "above" = {
+        value = false; # Set the window.to be above
         apply = "force"; # Force
       };
     };
