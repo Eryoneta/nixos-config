@@ -85,6 +85,12 @@
           vendorId = "093a";
         }
       ];
+      configFile."kcminputrc" = {
+        "ButtonRebinds/Mouse" = {
+          "ExtraButton1" = "Key,Ctrl+Space"; # Button 9 = Ctrl + Space
+          "ExtraButton2" = "Key,Ctrl+S"; # Button 9 = Ctrl + S
+        };
+      };
 
       # Border colors
       configFile."kdeglobals" = {
