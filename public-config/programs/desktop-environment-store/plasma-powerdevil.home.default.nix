@@ -62,7 +62,7 @@
       };
       # Turn the display off
       AC.turnOffDisplay = {
-        idleTimeout = (utils.mkDefault) (10 * 60); # 10min
+        idleTimeout = (utils.mkDefault) (6 * 60); # 6min
         idleTimeoutWhenLocked = (utils.mkDefault) (1 * 60); # 1min
       };
       battery.turnOffDisplay = {
