@@ -40,7 +40,6 @@
                     "applications:org.kde.dolphin.desktop" # Dolphin
                     "applications:firefox.desktop" # Firefox
                     "applications:firefox-devedition.desktop" # Firefox-Dev
-                    "applications:codium.desktop" # VSCodium
                   ]);
                 });
               };
