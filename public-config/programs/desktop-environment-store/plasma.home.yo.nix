@@ -56,6 +56,8 @@
                 hidden = (
                   widgets.systemTray.systemTray.items.hidden ++ [
                     "Yakuake" # Yakuake
+                    "chrome_status_icon_1" # Kando
+                    # TODO: (Kando) Watchout for the widget. The name might change!
                   ]
                 );
               });
@@ -86,8 +88,8 @@
       ];
       configFile."kcminputrc" = {
         "ButtonRebinds/Mouse" = {
-          "ExtraButton1" = "Key,Ctrl+Space"; # Button 9 = Ctrl + Space
-          "ExtraButton2" = "Key,Ctrl+S"; # Button 9 = Ctrl + S
+          "ExtraButton1" = "Key,Meta+Space"; # Button 9 = Meta + Space
+          "ExtraButton2" = "Key,Ctrl+S"; # Button 8 = Ctrl + S
         };
       };
 
