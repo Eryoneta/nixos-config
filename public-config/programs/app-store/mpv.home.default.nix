@@ -11,7 +11,7 @@
           osc-duration = "1000";
 
           # Volume
-          startVolume = "45"; # Start volume: 45%;
+          startVolume = "60"; # Start volume: 60%
           volumeStep = "5"; # Volume: 5%
           volumeMax = "200"; # Max-volume: 200%
 
