@@ -11,7 +11,7 @@
           osc-duration = "1000";
 
           # Volume
-          startVolume = "45"; # Start volume: 45%;
+          startVolume = "60"; # Start volume: 60%
           volumeStep = "5"; # Volume: 5%
           volumeMax = "200"; # Max-volume: 200%
 
@@ -74,10 +74,7 @@
       config = {
 
         # Window
-        "force-window" = "no"; # Do not open an empty window
-        #   Note: It's a bug. Ideally, MPV would open an empty window if executed, but in reality, it opens two windows!
-        #     And it does not allow for more instances than one. Very annoying
-        # TODO: (MPV) Check later if it works with "force-window". Probably not
+        "force-window" = "yes"; # Open an empty window, if no file is provided
         "geometry" = with config.lib.hardware.configuration.screensize; (
           "${builtins.toString (width / 2)}x${builtins.toString (height - 34)}-0-0" # Start size
         );

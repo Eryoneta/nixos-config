@@ -40,7 +40,6 @@
                     "applications:org.kde.dolphin.desktop" # Dolphin
                     "applications:firefox.desktop" # Firefox
                     "applications:firefox-devedition.desktop" # Firefox-Dev
-                    "applications:codium.desktop" # VSCodium
                   ]);
                 });
               };
@@ -57,6 +56,8 @@
                 hidden = (
                   widgets.systemTray.systemTray.items.hidden ++ [
                     "Yakuake" # Yakuake
+                    "chrome_status_icon_1" # Kando
+                    # TODO: (Kando) Watchout for the widget. The name might change!
                   ]
                 );
               });
@@ -85,6 +86,12 @@
           vendorId = "093a";
         }
       ];
+      configFile."kcminputrc" = {
+        "ButtonRebinds/Mouse" = {
+          "ExtraButton1" = "Key,Meta+Space"; # Button 9 = Meta + Space
+          "ExtraButton2" = "Key,Ctrl+S"; # Button 8 = Ctrl + S
+        };
+      };
 
       # Border colors
       configFile."kdeglobals" = {
