@@ -56,7 +56,6 @@
 
           # UI (User Interface)
           "intl.locale.requested" = "pt-BR, en-US"; # UI language
-          "intl.accept_languages" = "en-US, en, pt-BR, pt"; # Priority of languages when accessing pages
 
           # UX (User experience)
           "browser.shell.checkDefaultBrowser" = false; # Do not check if the browser is the default
