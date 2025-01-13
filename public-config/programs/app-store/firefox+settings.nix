@@ -2,6 +2,7 @@
 {
 
   # UI (User Interface)
+  "layout.css.prefers-color-scheme.content-override" = 1; # Light theme
   "browser.toolbars.bookmarks.visibility" = "always"; # Always show bookmark-toolbar
   # User interface
   "browser.uiCustomization.state" = (
