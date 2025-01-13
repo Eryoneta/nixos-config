@@ -18,6 +18,7 @@
           obs-studio # OBS Studio: Video streamer
           kdePackages.kconfig # KConfig: Tool for editing KDE config files
           krename # KRename: Tool for mass file rename
+          kdePackages.kolourpaint # KolourPaint: Basic image editor
 
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
