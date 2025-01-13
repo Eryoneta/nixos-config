@@ -77,6 +77,14 @@
 
         };
 
+        # Aliases
+        shellAliases = {
+          "gw" = "git work";
+          "gs" = "git save";
+          "gqs" = "git quicksave";
+          # Note: Inspired by "git" from "Oh-My-ZSH"
+        };
+
         # Plugins
         plugins = [
           # ZSH-No-PS2: Enter with a incomplete command produces a newline instead of a PS2(Secondary prompt)
