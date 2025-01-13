@@ -18,12 +18,12 @@
           obs-studio # OBS Studio: Video streamer
           kdePackages.kconfig # KConfig: Tool for editing KDE config files
           krename # KRename: Tool for mass file rename
+          kdePackages.kolourpaint # KolourPaint: Basic image editor
 
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
           jre8 # JRE8: Java Runtime Environment v8
           eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
-          libreoffice # LibreOffice: Free office suite
           marktext # MarkText: Markdown text editor
 
         ])

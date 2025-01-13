@@ -148,22 +148,6 @@ screenSize: (
       };
     }
     {
-      description = "Set Dolphin start position";
-      match = { # What target
-        window-class = {
-          value = "dolphin org.kde.dolphin"; # A Dolphin window
-          type = "exact";
-        };
-        window-types = [ "normal" ]; # Normal window
-      };
-      apply = { # What changes
-        "position" = {
-          value = "0,0"; # Set the window.position
-          apply = "initially"; # On start
-        };
-      };
-    }
-    {
       description = "Set KWrite start position";
       match = { # What target
         window-class = {

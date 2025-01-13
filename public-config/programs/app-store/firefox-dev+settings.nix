@@ -3,6 +3,7 @@
 
   # UI (User Interface)
   #"toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Can change UI with a css file
+  "intl.accept_languages" = "en-US, en, pt-BR, pt"; # Priority of languages when accessing pages
   "browser.toolbars.bookmarks.visibility" = "always"; # Always show bookmark-toolbar
   "browser.compactmode.show" = true; # Allows to use compact-view
   "browser.uidensity" = 1; # Use compact-view
