@@ -1,1 +1,1 @@
-KWin: Window position
+Programs: Fix AlarmClock

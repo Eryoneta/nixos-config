@@ -96,7 +96,7 @@ screenSize: (
       description = "Alarm Clock with a fixed window size";
       match = { # What target
         window-class = {
-          value = "alarm-clock-applet Alarm-clock-applet"; # Alarm Clock
+          value = "alarm-clock-applet alarm-clock-applet"; # Alarm Clock
           type = "exact";
         };
         window-types = [ "normal" ]; # Normal window
