@@ -1,1 +1,1 @@
-KWin: Window position
+Partition: Mirror
