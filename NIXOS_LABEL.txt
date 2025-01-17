@@ -1,1 +1,1 @@
-Partition: Mirror
+Programs: inotifywait
