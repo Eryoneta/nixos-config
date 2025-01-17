@@ -34,6 +34,13 @@
       depends = [ "/home/yo/Personal" ];
     };
 
+    # Mirror partition
+    fileSystems."/home/yo/Personal/System_Utilities/Backups/Mirror" = {
+      device = "/dev/disk/by-label/Mirror";
+      fsType = "ext4";
+      depends = [ "/home/yo/Personal" ];
+    };
+
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;
 
