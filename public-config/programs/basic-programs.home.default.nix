@@ -20,6 +20,7 @@
           krename # KRename: Tool for mass file rename
           kdePackages.kolourpaint # KolourPaint: Basic image editor
           imagemagick # ImageMagick: Terminal based image editor
+          inotify-tools # INotify-Tools: File event monitor
 
           keepassxc # KeePassXC: Password manager
           yt-dlp # yt-dlp: YouTube downloader script
