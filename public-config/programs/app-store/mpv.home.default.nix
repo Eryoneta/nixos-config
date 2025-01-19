@@ -56,7 +56,8 @@
 
       # yt-dlp: YouTube downloader script
       # MPV uses this to open online videos
-      yt-dlp
+      #yt-dlp
+      # Note: Already included
 
       # xclip: Simple clipboard manager
       # MPV uses this to copy a file path
