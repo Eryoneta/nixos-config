@@ -1,1 +1,1 @@
-Programs: inotifywait
+Firefox: Ajustes

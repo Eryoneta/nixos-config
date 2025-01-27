@@ -74,44 +74,44 @@ screenSize: (
     }
 
     # Firefox: PiP onTop
-    {
-      description = "Stick Firefox PiP windows on top";
-      match = { # What target
-        window-class = {
-          value = "firefox firefox"; # Firefox
-          type = "exact";
-        };
-        window-types = [ "normal" ]; # Normal window
-        title = {
-          value = "Picture-in-Picture";
-          type = "exact";
-        };
-      };
-      apply = { # What changes
-        "above" = {
-          value = true; # Set the window.to be above
-          apply = "initially"; # On start
-        };
-      };
-    }
+    # {
+    #   description = "Stick Firefox PiP windows on top";
+    #   match = { # What target
+    #     window-class = {
+    #       value = "firefox firefox"; # Firefox
+    #       type = "exact";
+    #     };
+    #     window-types = [ "normal" ]; # Normal window
+    #     title = {
+    #       value = "Picture-in-Picture";
+    #       type = "exact";
+    #     };
+    #   };
+    #   apply = { # What changes
+    #     "above" = {
+    #       value = true; # Set the window.to be above
+    #       apply = "initially"; # On start
+    #     };
+    #   };
+    # }
 
     # Set sizes
-    {
-      description = "Start Firefox with a set size";
-      match = { # What target
-        window-class = {
-          value = "firefox firefox"; # Firefox
-          type = "exact";
-        };
-        window-types = [ "normal" ]; # Normal window
-      };
-      apply = { # What changes
-        "size" = {
-          value = "${screen.halfWidth},${screen.height}"; # Set the window.size
-          apply = "initially"; # On start
-        };
-      };
-    }
+    # {
+    #   description = "Start Firefox with a set size";
+    #   match = { # What target
+    #     window-class = {
+    #       value = "firefox firefox"; # Firefox
+    #       type = "exact";
+    #     };
+    #     window-types = [ "normal" ]; # Normal window
+    #   };
+    #   apply = { # What changes
+    #     "size" = {
+    #       value = "${screen.halfWidth},${screen.height}"; # Set the window.size
+    #       apply = "initially"; # On start
+    #     };
+    #   };
+    # }
     {
       description = "Start Firefox(XWayland) with a set size";
       match = { # What target

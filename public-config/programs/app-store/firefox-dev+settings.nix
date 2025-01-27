@@ -79,10 +79,10 @@
         "unified-extensions-area" = [ # List of extensions not in the bars
           ublock-origin-id
           plasma-integration-id
+          sidebery-id
         ];
         "PersonalToolbar" = [ # The bar that contains bookmars
           "sidebar-button" # Sidebar button
-          sidebery-id
           "customizableui-special-spring3"# Stretch space
           "personal-bookmarks" # Bookmarks
         ];

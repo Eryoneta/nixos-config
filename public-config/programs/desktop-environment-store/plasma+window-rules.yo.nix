@@ -33,44 +33,44 @@ screenSize: (
     }
 
     # Firefox-Dev: PiP onTop
-    {
-      description = "Stick Firefox-Dev PiP windows on top";
-      match = { # What target
-        window-class = {
-          value = "firefox firefox-devedition"; # Firefox-Dev
-          type = "exact";
-        };
-        window-types = [ "normal" ]; # Normal window
-        title = {
-          value = "Picture-in-Picture";
-          type = "exact";
-        };
-      };
-      apply = { # What changes
-        "above" = {
-          value = true; # Set the window.to be above
-          apply = "initially"; # On start
-        };
-      };
-    }
+    # {
+    #   description = "Stick Firefox-Dev PiP windows on top";
+    #   match = { # What target
+    #     window-class = {
+    #       value = "firefox firefox-devedition"; # Firefox-Dev
+    #       type = "exact";
+    #     };
+    #     window-types = [ "normal" ]; # Normal window
+    #     title = {
+    #       value = "Picture-in-Picture";
+    #       type = "exact";
+    #     };
+    #   };
+    #   apply = { # What changes
+    #     "above" = {
+    #       value = true; # Set the window.to be above
+    #       apply = "initially"; # On start
+    #     };
+    #   };
+    # }
 
     # Set sizes
-    {
-      description = "Start Firefox-Dev with a set size";
-      match = { # What target
-        window-class = {
-          value = "firefox firefox-devedition"; # Firefox-Dev
-          type = "exact";
-        };
-        window-types = [ "normal" ]; # Normal window
-      };
-      apply = { # What changes
-        "size" = {
-          value = "${screen.halfWidth},${screen.height}"; # Set the window.size
-          apply = "initially"; # On start
-        };
-      };
-    }
+    # {
+    #   description = "Start Firefox-Dev with a set size";
+    #   match = { # What target
+    #     window-class = {
+    #       value = "firefox firefox-devedition"; # Firefox-Dev
+    #       type = "exact";
+    #     };
+    #     window-types = [ "normal" ]; # Normal window
+    #   };
+    #   apply = { # What changes
+    #     "size" = {
+    #       value = "${screen.halfWidth},${screen.height}"; # Set the window.size
+    #       apply = "initially"; # On start
+    #     };
+    #   };
+    # }
     {
       description = "Start Firefox-Dev(XWayland) with a set size";
       match = { # What target
