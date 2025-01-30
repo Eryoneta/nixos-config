@@ -12,7 +12,7 @@
   options = {
     hardware.configuration.screensize = {
       baseWidth = utils.mkIntOption 1366;
-      baseHeigth = utils.mkIntOption 768;
+      baseHeight = utils.mkIntOption 768;
       horizontalBars = utils.mkIntListOption [];
       verticalBars = utils.mkIntListOption [];
     };
@@ -22,12 +22,13 @@
 
     # Screen size
     lib.hardware.configuration.screensize = with config.hardware.configuration.screensize; {
+      inherit baseWidth baseHeight horizontalBars verticalBars;
       width = builtins.foldl' (
         x: y: x - y
       ) baseWidth horizontalBars;
       height = builtins.foldl' (
         x: y: x - y
-      ) baseHeigth verticalBars;
+      ) baseHeight verticalBars;
     };
 
     # Home-Manager
