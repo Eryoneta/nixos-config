@@ -98,6 +98,7 @@
    <Action name="bookmarks"/>
    <Action name="closed_tabs"/>
   </Menu>
+  <Separator weakSeparator="1"/>
   <Menu alreadyVisited="1" name="tools" noMerge="1">
    <text translationDomain="kxmlgui6">&amp;Tools</text>
    <Action name="open_preferred_search_tool"/>
@@ -107,7 +108,7 @@
    <Action name="compare_files"/>
    <Action name="change_remote_encoding"/>
   </Menu>
-  <Menu name="settings" noMerge="1">
+  <Menu alreadyVisited="1" name="settings" noMerge="1">
    <text translationDomain="kxmlgui6">&amp;Settings</text>
    <Action name="options_show_menubar"/>
    <Merge name="StandardToolBarMenuHandler"/>
@@ -120,7 +121,7 @@
    <Action name="options_configure"/>
   </Menu>
   <Separator weakSeparator="1"/>
-  <Menu name="help" noMerge="1">
+  <Menu alreadyVisited="1" name="help" noMerge="1">
    <text translationDomain="kxmlgui6">&amp;Help</text>
    <Action name="help_contents"/>
    <Action name="help_whats_this"/>
@@ -142,6 +143,7 @@
   <Action name="new_tab"/>
   <Action name="url_navigators"/>
   <Action name="toggle_search"/>
+  <Action name="show_terminal_panel"/>
   <Action name="hamburger_menu"/>
  </ToolBar>
  <State name="new_file">
