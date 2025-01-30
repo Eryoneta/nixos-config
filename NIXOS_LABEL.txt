@@ -1,1 +1,1 @@
-ZSH: Fix
+Programs: EasyEffects
