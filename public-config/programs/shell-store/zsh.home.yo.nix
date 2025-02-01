@@ -39,6 +39,7 @@
               "};f"
             ]
           );
+          sysName = "System_Upgrades";
         in {
           # Rebuild
           "nx-boot" = (rebuildSystemCommand "boot");
@@ -47,11 +48,13 @@
           "nx-home" = (rebuildHomeCommand);
           # Generations
           "nx-list" = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+          "nx-listsys" = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system-profiles/${sysName}";
           "nx-list2" = ''cat /boot/grub/grub.cfg | sed -n "s/^menuentry \"NixOS - \(.*\)\" --class nixos .*$/\1/p"'';
           "nx-delgen" = (deleteGenerationsCommand "/nix/var/nix/profiles/system");
-          "nx-delsysgen" = (deleteGenerationsCommand "/nix/var/nix/profiles/system-profiles/System_Updates");
+          "nx-delsysgen" = (deleteGenerationsCommand "/nix/var/nix/profiles/system-profiles/${sysName}");
           # Garbage
           "nx-trim" = "nix-collect-garbage";
+          # TODO: (ZSH) Replace "nx-*" with "nx *"
         }
       );
       

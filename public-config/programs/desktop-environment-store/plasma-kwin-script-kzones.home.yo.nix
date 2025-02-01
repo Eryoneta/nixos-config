@@ -64,12 +64,23 @@
                     "height" = area."height" - (addVerticalMargin "top") - (addVerticalMargin "bottom");
                   }
                 ));
-                indicatorMargin = -5; # In px, distance to move the zone indicators
+                indicatorMargin = { # In px, distance to move the zone indicators
+                  vertical = -50;
+                  horizontal = -80;
+                };
                 mkIndicatorMargins = indicatorPosition: ( # Adds a margin to each zone indicator
                   let
                     addMargin = position: positions: (
-                      if (builtins.elem position positions) then indicatorMargin else 0
+                      if (builtins.elem position positions) then (
+                        orientationMargins.${position}
+                      ) else 0
                     );
+                    orientationMargins = {
+                      "top" = indicatorMargin.vertical;
+                      "bottom" = indicatorMargin.vertical;
+                      "left" = indicatorMargin.horizontal;
+                      "right" = indicatorMargin.horizontal;
+                    };
                     margins = {
                       "center" = [];
                       "top-left" = [ "top" "left" ];
@@ -89,10 +100,10 @@
                   }
                 );
                 mkInvisibleIndicator = { # Sets the indicator to be outside the screen
-                  "position" = "bottom";
+                  "position" = "bottom-center";
                   "margin" = {
-                    "top" = 100;
-                    "bottom" = 0;
+                    "top" = 0;
+                    "bottom" = -100; # Out of screen
                     "left" = 0;
                     "right" = 0;
                   };

@@ -65,14 +65,15 @@
         mouseActions = {
           rightClick = "contextMenu"; # RightClick = Context menu
           middleClick = "applicationLauncher"; # MiddleClick = AppLauncher menu
-          verticalScroll = "switchActivity"; # Scroll = Switch activities
+          # verticalScroll = "switchActivity"; # Scroll = Switch activities
         };
       };
-      configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
-        "ActionPlugins/0" = { # Shift + Scroll = Switch virtual desktops
-          "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
-        };
-      };
+      # configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
+      #   "ActionPlugins/0" = { # Shift + Scroll = Switch virtual desktops
+      #     "wheel:Vertical;ShiftModifier" = "org.kde.switchdesktop";
+      #   };
+      # };
+      # Note: Using mouse scroll in the desktop for switching activities and virtual desktops might be cool, but I only use it by accident
 
       # Sessions
       session = {
