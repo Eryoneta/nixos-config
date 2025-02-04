@@ -48,6 +48,17 @@
             "scm.inputFontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 13 / 14 + 0.5));
             "screencastMode.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 56 / 14 + 0.5));
             # TODO: (VSCodium) (25.05) Stylix sets the font to be too small, check if it's changed later
+            "editor.tokenColorCustomizations" = {
+              "textMateRules" = [
+                {
+                  "scope" = "comment";
+                  "settings" = {
+                    "fontStyle" = "regular";
+                  };
+                }
+              ];
+            };
+            # Note: Undone the italic of comments, as it makes reading too hard
           }
         )
       );
