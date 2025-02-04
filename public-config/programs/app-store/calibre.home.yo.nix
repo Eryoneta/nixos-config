@@ -3,7 +3,7 @@
   options = {
     profile.programs.calibre = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable-fixed);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
     };
   };
 

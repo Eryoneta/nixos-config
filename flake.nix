@@ -28,8 +28,6 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     # Unstable Packages (AutoUpgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Unstable Packages (Manual Upgrade)
-    nixpkgs-unstable-fixed.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Extra Inputs
     # Unstable Unfree Packages (AutoUpgrade)
