@@ -37,6 +37,7 @@ inputs: flakePath: (
               autoImportPackages = (with inputs; {
                 stable = nixpkgs-stable;
                 unstable = nixpkgs-unstable;
+                unstable-firefox-dev_135_0b4 = nixpkgs-unstable-firefox-dev_135_0b4;
               });
               packages = (with inputs; {
                 firefox-addons = {

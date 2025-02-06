@@ -452,6 +452,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-unstable-firefox-dev_135_0b4": {
+      "locked": {
+        "lastModified": 1737545071,
+        "narHash": "sha256-j4HeaLw1LZxkCvuOxdO1xTnPYLSOQuzOjGEuCK80X2w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "21808d22b1cda1898b71cf1a1beb524a97add2c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "21808d22b1cda1898b71cf1a1beb524a97add2c4",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1738142207,
@@ -558,6 +574,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unfree-unstable": "nixpkgs-unfree-unstable",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nixpkgs-unstable-firefox-dev_135_0b4": "nixpkgs-unstable-firefox-dev_135_0b4",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
