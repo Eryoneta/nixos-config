@@ -1,1 +1,1 @@
-Flake: Del unstable-fixed
+Programs: No Invidious

@@ -28,6 +28,9 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     # Unstable Packages (AutoUpgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Unstable Packages (Manual Fetch)
+    nixpkgs-unstable-firefox-dev_135_0b4.url = "github:NixOS/nixpkgs/21808d22b1cda1898b71cf1a1beb524a97add2c4";
+    
 
     # Extra Inputs
     # Unstable Unfree Packages (AutoUpgrade)
