@@ -3,7 +3,7 @@
   options = {
     profile.programs.firefox-devedition = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable-firefox-dev_135_0b4);
+      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
       options.defaults = (utils.mkDefaultsOption {
         "settings" = (import ./firefox-dev+settings.nix);
       });
