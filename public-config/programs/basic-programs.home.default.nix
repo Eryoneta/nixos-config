@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # Programs
@@ -14,20 +14,24 @@
           #kdePackages.gwenview # Gwenview: Image viewer (Included with KDE Plasma)
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)
           kdePackages.kcalc # KCalc: Calculator
+
+          marktext # MarkText: Markdown text editor
+
           #kdePackages.kamoso # Kamoso: Camera
           # TODO: (Kamoso) Marked as broken. Check later
           obs-studio # OBS Studio: Video streamer
+
           kdePackages.kconfig # KConfig: Tool for editing KDE config files
           krename # KRename: Tool for mass file rename
-          kdePackages.kolourpaint # KolourPaint: Basic image editor
-          imagemagick # ImageMagick: Terminal based image editor
           inotify-tools # INotify-Tools: File event monitor
 
-          keepassxc # KeePassXC: Password manager
-          jre8 # JRE8: Java Runtime Environment v8
-          eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
-          marktext # MarkText: Markdown text editor
+          kdePackages.kolourpaint # KolourPaint: Basic image editor
+          imagemagick # ImageMagick: Terminal based image editor
 
+          keepassxc # KeePassXC: Password manager
+          eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
+          #jre8 # JRE8: Java Runtime Environment v8
+          (lib.hiPrio zulu17) # Zulu: Java Development Kit v17
         ])
         ++
         (with unstable-fixed; [
