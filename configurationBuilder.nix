@@ -23,6 +23,10 @@ inputs: flakePath: (
             home-manager-pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
             home-manager-lib = inputs.home-manager.lib;
           })
+          # Inputs-as-Arguments
+          (flake-modules."inputs-as-args.nix".build {
+            inherit inputs;
+          })
           # User-Host-Scheme
           (flake-modules."user-host-scheme.nix".build {
             inherit user;
