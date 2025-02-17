@@ -89,6 +89,9 @@ nix-lib: hm-pkgs: hm-lib: (
       # Join strings from a list into one
       joinStr = str: list: (builtins.concatStringsSep str list);
 
+      # Replace strings
+      replaceStr = from: to: list: (builtins.replaceStrings [ from ] [ to ] list);
+
       # Check if a path exists
       toFile = fileName: content: (builtins.toFile fileName content);
 
