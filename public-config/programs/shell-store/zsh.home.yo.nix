@@ -44,38 +44,68 @@
 
           deleteGenerationsCommand = profilePath: (
             utils.replaceStr "\n" "" ''
-              f() {
+              dg() {
                 local generations;
                 for command in "$@"; do
-                  generations="$generations $command"
+                  if [[ $command =~ ^[0-9]+$ ]]; then
+                    generations="$generations $command";
+                  fi;
                 done;
                 echo "";
                 echo "Deleting system generations...";
-                eval "sudo nix-env --delete-generations $generations --profile ${profilePath};"
+                eval "sudo nix-env --delete-generations $generations --profile ${profilePath}";
                 echo "";
                 echo "Deleting ALL home-manager generations...";
                 home-manager expire-generations "-0 day";
-              };f
+              };
+              dg
             ''
           );
 
           collectGarbageCommand = "nix-collect-garbage";
 
+          nxCommand = (
+            utils.replaceStr "\n" "" ''
+              nx() {
+                case $1 in
+                  "boot")
+                    ${rebuildSystemCommand "boot"};
+                  ;;
+                  "test")
+                    ${rebuildSystemCommand "test"};
+                  ;;
+                  "switch")
+                    ${rebuildSystemCommand "switch"};
+                  ;;
+                  "build-vm")
+                    ${rebuildSystemCommand "build-vm"};
+                  ;;
+                  "home")
+                    ${rebuildHomeCommand};
+                  ;;
+                  "list")
+                    ${list "${systemProfile.name}"};
+                  ;;
+                  "listsys")
+                    ${list "${upgradeProfile.name}"};
+                  ;;
+                  "delgen")
+                    ${deleteGenerationsCommand "${systemProfile.path}"} $@;
+                  ;;
+                  "delgensys")
+                    ${deleteGenerationsCommand "${upgradeProfile.path}"} $@;
+                  ;;
+                  "cg")
+                    ${collectGarbageCommand};
+                  ;;
+                esac;
+              };
+              nx
+            ''
+          );
+
         in {
-          # Rebuild
-          "nx-boot" = (rebuildSystemCommand "boot");
-          "nx-test" = (rebuildSystemCommand "test");
-          "nx-switch" = (rebuildSystemCommand "switch");
-          "nx-build-vm" = (rebuildSystemCommand "build-vm");
-          "nx-home" = (rebuildHomeCommand);
-          # Generations
-          "nx-list" = (list "${systemProfile.name}");
-          "nx-listsys" = (list "${upgradeProfile.name}");
-          "nx-delgen" = (deleteGenerationsCommand "${systemProfile.path}");
-          "nx-delgensys" = (deleteGenerationsCommand "${upgradeProfile.path}");
-          # Garbage
-          "nx-cg" = (collectGarbageCommand);
-          # TODO: (ZSH) Replace "nx-*" with "nx *"
+          "nx" = nxCommand;
         }
       );
       
