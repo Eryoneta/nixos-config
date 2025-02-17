@@ -26,6 +26,7 @@
         "Text Font" = "Comic Sans MS,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"; # Font (Comic Sans MS my beloved)
       };
       "KTextEditor View" = {
+        "Auto Brackets" = false; # Do not autocomplete brackets (More trouble than helpful)
         "Show Line Ending Type in Statusbar" = true; # Show type of EOF in statusbar
         "Shoe Line Ending Type in Statusbar" = true; # Uh, someone made a typo (I'm gonna keep both so it works either way)
         # TODO: (KWrite) There is a typo in a config. Change it if it's fixed
