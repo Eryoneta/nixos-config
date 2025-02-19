@@ -92,6 +92,9 @@ nix-lib: hm-pkgs: hm-lib: (
       # Replace strings
       replaceStr = from: to: list: (builtins.replaceStrings [ from ] [ to ] list);
 
+      # Greatly simplify the use of functions
+      pipe = startValue: listOfFunctions: (nix-lib.pipe startValue listOfFunctions);
+
       # Check if a path exists
       toFile = fileName: content: (builtins.toFile fileName content);
 
