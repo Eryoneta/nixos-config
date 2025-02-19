@@ -7,54 +7,105 @@
       # Aliases
       shellAliases = (
         let
+          systemProfile = rec {
+            name = "system";
+            path = "/nix/var/nix/profiles/${name}";
+          };
+          upgradeProfile = rec {
+            name = "System_Upgrades";
+            path = "/nix/var/nix/profiles/system-profiles/${name}";
+          };
+
           rebuildSystemCommand = rebuildMode: (
             let
-              promptSudo = "sudo ls /dev/null > /dev/null 2>&1";
+              promptSudo = "sudo ls /dev/null > /dev/null 2>&1"; # Makes the sudo prompt appear before (If later, nom hides the prompt)
               nixosRebuild = "sudo nixos-rebuild";
-              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}";
+              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}"; # "path:" = Ignores Git repository
               args = "--use-remote-sudo --show-trace --print-build-logs --verbose";
               nomOutput = "|& nom"; # nix-output-monitor
             in "${promptSudo} && ${nixosRebuild} ${rebuildMode} --flake ${flakePath} ${args} ${nomOutput}"
           );
+
           rebuildHomeCommand = (
             let
-              homeManagerRebuild = "home-manager switch";
-              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}";
+              homeManagerRebuild = "home-manager";
+              rebuildMode = "switch";
+              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}"; # "path:" = Ignores Git repository
               args = "--print-build-logs --verbose";
-            in "${homeManagerRebuild} --flake ${flakePath} ${args}"
+            in "${homeManagerRebuild} ${rebuildMode} --flake ${flakePath} ${args}"
           );
+
+          list = profileName: (
+            let
+              nixosRebuild = "nixos-rebuild";
+              profile = if(profileName != "") then "--profile-name ${profileName}" else "";
+            in "${nixosRebuild} list-generations ${profile}"
+          );
+
           deleteGenerationsCommand = profilePath: (
-            utils.joinStr " " [
-              "f() {"
-                "local generations;"
-                ''for command in "$@"; do''
-                  ''generations="$generations $command"''
-                "done;"
-                ''echo "";''
-                ''echo "Deleting system generations...";''
-                ''eval "sudo nix-env --delete-generations $generations --profile ${profilePath};"''
-                ''echo "";''
-                ''echo "Deleting ALL home-manager generations...";''
-                ''home-manager expire-generations "-0 day";''
-              "};f"
-            ]
+            utils.replaceStr "\n" "" ''
+              dg() {
+                local generations;
+                for command in "$@"; do
+                  if [[ $command =~ ^[0-9]+$ ]]; then
+                    generations="$generations $command";
+                  fi;
+                done;
+                echo "";
+                echo "Deleting system generations...";
+                eval "sudo nix-env --delete-generations $generations --profile ${profilePath}";
+                echo "";
+                echo "Deleting ALL home-manager generations...";
+                home-manager expire-generations "-0 day";
+              };
+              dg
+            ''
           );
-          sysName = "System_Upgrades";
+
+          collectGarbageCommand = "nix-collect-garbage";
+
+          nxCommand = (
+            utils.replaceStr "\n" "" ''
+              nx() {
+                case $1 in
+                  "boot")
+                    ${rebuildSystemCommand "boot"};
+                  ;;
+                  "test")
+                    ${rebuildSystemCommand "test"};
+                  ;;
+                  "switch")
+                    ${rebuildSystemCommand "switch"};
+                  ;;
+                  "build-vm")
+                    ${rebuildSystemCommand "build-vm"};
+                  ;;
+                  "home")
+                    ${rebuildHomeCommand};
+                  ;;
+                  "list")
+                    ${list "${systemProfile.name}"};
+                  ;;
+                  "listsys")
+                    ${list "${upgradeProfile.name}"};
+                  ;;
+                  "delgen")
+                    ${deleteGenerationsCommand "${systemProfile.path}"} $@;
+                  ;;
+                  "delgensys")
+                    ${deleteGenerationsCommand "${upgradeProfile.path}"} $@;
+                  ;;
+                  "cg")
+                    ${collectGarbageCommand};
+                  ;;
+                esac;
+              };
+              nx
+            ''
+          );
+
         in {
-          # Rebuild
-          "nx-boot" = (rebuildSystemCommand "boot");
-          "nx-test" = (rebuildSystemCommand "test");
-          "nx-switch" = (rebuildSystemCommand "switch");
-          "nx-home" = (rebuildHomeCommand);
-          # Generations
-          "nx-list" = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
-          "nx-listsys" = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system-profiles/${sysName}";
-          "nx-list2" = ''cat /boot/grub/grub.cfg | sed -n "s/^menuentry \"NixOS - \(.*\)\" --class nixos .*$/\1/p"'';
-          "nx-delgen" = (deleteGenerationsCommand "/nix/var/nix/profiles/system");
-          "nx-delsysgen" = (deleteGenerationsCommand "/nix/var/nix/profiles/system-profiles/${sysName}");
-          # Garbage
-          "nx-trim" = "nix-collect-garbage";
-          # TODO: (ZSH) Replace "nx-*" with "nx *"
+          "nx" = nxCommand;
         }
       );
       

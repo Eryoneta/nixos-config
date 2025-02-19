@@ -106,10 +106,10 @@
                 ];
               });
             in (
-              # Allows firefox to coexist with firefox-devedition!
+              lib.hiPrio firefox-devedition-pkg
+              # Note: Allows firefox to coexist with firefox-devedition!
               #   All files from firefox-devedition will override files from firefox!
               #   Warning: Uhh, firefox might not be compatible with some stuffs from firefox-devedition...! Watch out!
-              lib.hiPrio firefox-devedition-pkg
             )
           )
         ];
@@ -117,26 +117,26 @@
         file = (
           let
 
-            mapDirContent = src: dest: (
+            mapDirContent = src: dest: (utils.pipe "${src}" [
+              # ReadDir: dirPath -> { "file1.ext" = "regular"; "file2.ext" = "regular"; }
+              (x: builtins.readDir x)
+
+              # AttrNames: { "file1.ext" = "regular"; "file2.ext" = "regular"; } -> [ "file1.ext" "file2.ext" ]
+              (x: builtins.attrNames x)
+
+              # Map: [ "file1.ext" ] -> [ { name = ".../file1.ext"; value = { source = ".../file1.ext" }; } ]
+              (x: builtins.map (
+                value: {
+                  name = "${dest}/${value}";
+                  value = {
+                    source = "${src}/${value}";
+                  };
+                }
+              ) x)
+
               # ListToAttrs: [ { name = ".../file1.ext"; value = { source = ".../file1.ext" }; } ] -> { ".../file1.ext" = { source = ".../file1.ext" }; }
-              builtins.listToAttrs (
-                # Map: [ "file1.ext" ] -> [ { name = ".../file1.ext"; value = { source = ".../file1.ext" }; } ]
-                builtins.map (
-                  value: {
-                    name = "${dest}/${value}";
-                    value = {
-                      source = "${src}/${value}";
-                    };
-                  }
-                ) (
-                  # AttrNames: { "file1.ext" = "regular"; "file2.ext" = "regular"; } -> [ "file1.ext" "file2.ext" ]
-                  builtins.attrNames (
-                    # ReadDir: dirPath -> { "file1.ext" = "regular"; "file2.ext" = "regular"; }
-                    builtins.readDir "${src}"
-                  )
-                )
-              )
-            );
+              (x: builtins.listToAttrs x)
+            ]);
 
           in {
 
@@ -150,17 +150,12 @@
               source = "${fx-autoconfig}/profile/chrome/CSS/author_style.uc.css";
             };
 
-          } // (
-
-            # My Firefox styles
-            mapDirContent "${scripts}/chrome/CSS" "${profilePath}/chrome/CSS"
-
-          ) // (
-
-            # My Firefox scripts
-            mapDirContent "${scripts}/chrome/JS" "${profilePath}/chrome/JS"
-
-          ) // {
+          }
+          # My Firefox styles
+          // (mapDirContent "${scripts}/chrome/CSS" "${profilePath}/chrome/CSS")
+          # My Firefox scripts
+          // (mapDirContent "${scripts}/chrome/JS" "${profilePath}/chrome/JS")
+          // {
 
             # Modified dotfile: Custom accent color
             "${profilePath}/chrome/CSS/addAccentColor.uc.css" = {
