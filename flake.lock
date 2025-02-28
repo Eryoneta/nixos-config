@@ -130,11 +130,11 @@
     "firefox-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1738628105,
-        "narHash": "sha256-jILbn421MSfqkBFUK5vwXVgQ7bES8pLVmG0BLFc6/ko=",
+        "lastModified": 1740749503,
+        "narHash": "sha256-Fms3V7NOLNRVtj/uTJfb/gxWBrVlCl1k61TJGqeKMug=",
         "owner": "Eryoneta",
         "repo": "Firefox-Scripts",
-        "rev": "b3b950e4aea4b528cf7f6b1211c096f0203527ad",
+        "rev": "90904ef08c860f8f39db0ff41be070003a98f930",
         "type": "github"
       },
       "original": {
