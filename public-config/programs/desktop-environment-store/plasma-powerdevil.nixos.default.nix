@@ -1,6 +1,6 @@
 { lib, config, host, ... }@args: with args.config-utils; {
   config = (
-    with config.home-manager.users.${host.user.username};
+    with config.home-manager.users.${host.userDev.username};
     with profile.programs.plasma; (lib.mkIf (options.enabled) {
 
       systemd.sleep.extraConfig = utils.mkIf (options.enabled) (

@@ -1,4 +1,4 @@
-{ lib, config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.firefox; (lib.mkIf (options.enabled) {
 
     # Firefox: Browser

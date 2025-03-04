@@ -1,7 +1,7 @@
-{ config, user, ... }@args: with args.config-utils; {
+username: { config, ... }@args: with args.config-utils; { # Note: This is a NixOSModule within a Nix function!
 
   imports = [
-    ./programs.nix
+    (import ./programs.nix username) # Imports programs with the usrname. This avoids infinite recursion
     ./variables.nix
     ./stylix.nix
     ./xdg-base-directory.nix
@@ -35,8 +35,7 @@
     home = {
 
       # User
-      username = user.username;
-      homeDirectory = "/home/${user.username}";
+      homeDirectory = "/home/${config.home.username}";
 
       # Start version
       stateVersion = "24.05"; # Home-Manager start version. (Default options).

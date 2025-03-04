@@ -1,4 +1,4 @@
-{ lib, config, config-domain, user, ... }@args: with args.config-utils; {
+{ lib, config, config-domain, userDev, ... }@args: with args.config-utils; {
   config = with config.profile.programs.vscodium; (lib.mkIf (options.enabled) {
 
     home.packages = with options.packageChannel; [
@@ -23,9 +23,9 @@
           "problems.decorations.enabled" = false; # Do not paint files and directories with warnings!
         } // ( 
           let
-            flakeGetter = "(builtins.getFlake \"${user.configFolder}\")";
-            nixosConfigName = "\"${user.name}@${user.host.name}\"";
-            homeConfigName = "\"${user.name}@${user.host.name}\"";
+            flakeGetter = "(builtins.getFlake \"${userDev.configFolder}\")";
+            nixosConfigName = "\"${userDev.name}@${userDev.host.name}\"";
+            homeConfigName = "\"${userDev.name}@${userDev.host.name}\"";
           in {
             # Nix IDE extension configuration
             "nix.serverPath" = "nixd";

@@ -1,4 +1,4 @@
-{ config, config-domain, host, pkgs-bundle, lib, pkgs, ... }@args: with args.config-utils; {
+{ config-domain, host, ... }@args: with args.config-utils; {
   config = {
 
     # Firewall
@@ -19,11 +19,31 @@
         let
           username = host.user.username;
         in {
-          identityPaths = [ "/home/${username}/.ssh/id_ed25519_agenix" ];
-          secrets = {
-            "root-userPassword".file = "${private.secrets}/root_user_password.age";
-            "${username}-userPassword".file = "${private.secrets}/${username}_user_password.age";
-          };
+          identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
+          secrets = (utils.pipe (utils.attrsToList host.users) [
+            # Removes users with files that don't exists
+            (x: builtins.filter (user: (
+              builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
+            )) x)
+
+            # Set the value of each user to be a valid configuration
+            (x: builtins.map (user: {
+              name = "${user.username}-userPassword";
+              value = {
+                file = "${private.secrets}/${user.username}_user_password.age";
+              };
+            }) x)
+
+            # Merge all items into a single set
+            (x: builtins.listToAttrs x)
+
+            # Add root user configuration
+            (x: x // {
+              "root-userPassword" = {
+                file = "${private.secrets}/root_user_password.age";
+              };
+            })
+          ]);
         }
       )
     );

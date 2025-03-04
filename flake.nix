@@ -111,25 +111,22 @@
       Eryoneta = user-host-scheme.buildUser {
         username = "eryoneta";
         name = "Eryoneta";
-        configFolder = "/home/eryoneta/.nixos-config";
       };
       
     in {
 
       # NixOS + Home-Manager(+ Plasma-Manager + Agenix) + Agenix
       nixosConfigurations = {
-        "Yo@LiCo" = (buildConfiguration Yo LiCo).nixosSystemConfig;
-        "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).nixosSystemConfig;
-        "Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).nixosSystemConfig;
-        #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).nixosSystemConfig;
+        "Yo@HyperV_VM" = (buildConfiguration [ Yo ] HyperV_VM).nixosSystemConfig;
+        "Yo@LiCo" = (buildConfiguration [ Yo ] LiCo).nixosSystemConfig;
+        "Yo@NeLiCo" = (buildConfiguration [ Yo Eryoneta ] NeLiCo).nixosSystemConfig;
       };
       
       # Home-Manager + Plasma-Manager + Agenix
       homeConfigurations = {
-        "Yo@LiCo" = (buildConfiguration Yo LiCo).homeManagerConfig;
-        "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).homeManagerConfig;
-        "Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).homeManagerConfig;
-        #"Eryoneta@NeLiCo" = (buildConfiguration Eryoneta NeLiCo).homeManagerConfig;
+        "Yo@HyperV_VM" = (buildConfiguration Yo HyperV_VM).homeManagerConfig.Yo;
+        "Yo@LiCo" = (buildConfiguration Yo LiCo).homeManagerConfig.Yo;
+        "Yo@NeLiCo" = (buildConfiguration Yo NeLiCo).homeManagerConfig.Yo;
       };
 
     }

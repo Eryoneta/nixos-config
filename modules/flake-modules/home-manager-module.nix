@@ -16,24 +16,28 @@ flakePath: (
     );
 
     # Basic Home-Manager Configuration
-    homeManagerConfig = username: {
+    homeManagerConfig = usernames: {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${username} = (
-          let
-            configPath = "${flakePath}/home.nix";
-          in
-            if (builtins.pathExists configPath) then (import configPath) else ({ ... }: {})
-        );
+        users = (builtins.listToAttrs (builtins.map (
+          username: {
+            name = username;
+            value = (
+              let
+                configPath = "${flakePath}/home.nix";
+              in if (builtins.pathExists configPath) then (import configPath) else ({...}: {})
+            );
+          }
+        ) usernames));
         sharedModules = [];
         extraSpecialArgs = {};
       };
     };
 
     # Home-Manager Configuration With Modifiers
-    homeManagerConfigWithModifiers = username: modifiers: (
-      collapseAttrs (homeManagerConfig username) (homeManagerModuleModifiers modifiers) {
+    homeManagerConfigWithModifiers = usernames: modifiers: (
+      collapseAttrs (homeManagerConfig usernames) (homeManagerModuleModifiers modifiers) {
         home-manager = {
           sharedModules = [];
           extraSpecialArgs = {};
@@ -43,13 +47,14 @@ flakePath: (
 
   in {
     # Builder
-    build = { username ? "nixos", package, modifiers ? [] }: {
+    build = { usernames ? [ "nixos" ], package, modifiers ? [] }: {
 
       # Override System Configuration
       nixosSystem = {
         modules = [
-          # IT'S TWO SEPARATE THINGS??? NOT A FUNCTION CALL???
-          package.nixosModules.home-manager (homeManagerConfigWithModifiers username modifiers)
+          # Note: It's two separate items within a list! Not a function!
+          package.nixosModules.home-manager
+          (homeManagerConfigWithModifiers usernames modifiers)
         ];
       };
 

@@ -12,7 +12,7 @@
     # Auto-login
     services.displayManager = {
       autoLogin.enable = (utils.mkDefault) false;
-      autoLogin.user = host.user.username;
+      autoLogin.user = host.userDev.username;
     };
 
     # System AutoUpgrade ("features/auto-upgrade.nix")
@@ -58,7 +58,7 @@
       resumeDevice = config.fileSystems."/".device;
       swapfilePath = config.swap.devices."basicSwap".device;
       dataFile = {
-        systemUser = host.user.username;
+        systemUser = host.userDev.username;
         absolutePath = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
         storePath = (../. + "/${host.hostname}/hardware-data.json");
       };

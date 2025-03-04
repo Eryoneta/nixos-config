@@ -1,4 +1,4 @@
-{ lib, config, user, ... }@args: with args.config-utils; {
+{ lib, config, userDev, ... }@args: with args.config-utils; {
   config = with config.profile.programs.zsh; (lib.mkIf (options.enabled) {
 
     # ZSH: Shell
@@ -20,7 +20,7 @@
             let
               promptSudo = "sudo ls /dev/null > /dev/null 2>&1"; # Makes the sudo prompt appear before (If later, nom hides the prompt)
               nixosRebuild = "sudo nixos-rebuild";
-              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}"; # "path:" = Ignores Git repository
+              flakePath = "path:${userDev.configDevFolder}#${userDev.name}@${userDev.host.name}"; # "path:" = Ignores Git repository
               args = "--use-remote-sudo --show-trace --print-build-logs --verbose";
               nomOutput = "|& nom"; # nix-output-monitor
             in "${promptSudo} && ${nixosRebuild} ${rebuildMode} --flake ${flakePath} ${args} ${nomOutput}"
@@ -30,7 +30,7 @@
             let
               homeManagerRebuild = "home-manager";
               rebuildMode = "switch";
-              flakePath = "path:${user.configDevFolder}#${user.name}@${user.host.name}"; # "path:" = Ignores Git repository
+              flakePath = "path:${userDev.configDevFolder}#${userDev.name}@${userDev.host.name}"; # "path:" = Ignores Git repository
               args = "--print-build-logs --verbose";
             in "${homeManagerRebuild} ${rebuildMode} --flake ${flakePath} ${args}"
           );

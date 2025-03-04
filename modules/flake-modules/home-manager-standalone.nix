@@ -10,8 +10,12 @@ flakePath: (
     collapseAttrs = (import ../nix-modules/collapseAttrs.nix).collapseAttrs;
 
     # Gets Only Home-Manager-Standalone Modifiers
-    homeManagerStandaloneModifiers = modifiers: (
-      builtins.map (value: value.homeManagerStandalone) modifiers
+    homeManagerStandaloneModifiers = username: modifiers: (
+      builtins.map (value: (
+        if(builtins.isFunction value.homeManagerStandalone) then (
+          value.homeManagerStandalone username
+        ) else value.homeManagerStandalone
+      )) modifiers
     );
 
     # Basic Home-Manager Configuration
@@ -27,8 +31,8 @@ flakePath: (
     };
 
     # Home-Manager Configuration With Modifiers
-    homeManagerConfigWithModifiers = systemPackage: architecture: modifiers: (
-      collapseAttrs (homeManagerConfig systemPackage architecture) (homeManagerStandaloneModifiers modifiers) {
+    homeManagerConfigWithModifiers = systemPackage: architecture: username: modifiers: (
+      collapseAttrs (homeManagerConfig systemPackage architecture) (homeManagerStandaloneModifiers username modifiers) {
         modules = [];
         extraSpecialArgs = {};
       }
@@ -39,7 +43,7 @@ flakePath: (
     # Builder
     build = { username ? "nixos", package, systemPackage, architecture ? "x86_64-linux", modifiers ? [] }: (
       # Build Home-Manager Configuration
-      package.lib.homeManagerConfiguration (homeManagerConfigWithModifiers systemPackage architecture modifiers)
+      package.lib.homeManagerConfiguration (homeManagerConfigWithModifiers systemPackage architecture username modifiers)
     );
 
   }

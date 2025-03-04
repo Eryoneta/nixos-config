@@ -1,26 +1,20 @@
-{ user, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; {
   config = {
     
     # XDG Mime Apps
     xdg.mimeApps = {
       defaultApplications = (
         let
-          associateDefault = app: extensions: (
+          associateDefault = app: extensions: (utils.pipe extensions [
+            # Map: ("app", [ "mimeType1" "mimeType2" ]) -> [ { "mimeType1" = "app"; } { "mimeType2" = "app"; } ]
+            (x: builtins.map (value: {
+              "${value}" = app;
+            }) x)
             # Foldl': [ { "mimeType1" = "app"; } { "mimeType2" = "app"; } ] -> { "mimeType1" = "app"; "mimeType2" = "app"; }
-            builtins.foldl' (x: y: (x // y)) {} (
-              # Map: ("app", [ "mimeType1" "mimeType2" ]) -> [ { "mimeType1" = "app"; } { "mimeType2" = "app"; } ]
-              builtins.map (value: {
-                "${value}" = app;
-              }) extensions
-            )
-          );
-          firefox-dev = "firefox-devedition.desktop";
-          kwrite = "org.kde.kwrite.desktop";
-          kate = "org.kde.kate.desktop";
-          mpv = "mpv.desktop";
-          libreoffice-writer = "writer.desktop";
+            (x: builtins.foldl' (x: y: (x // y)) {} x)
+          ]);
         in (
-          (associateDefault firefox-dev [
+          (associateDefault "firefox-devedition.desktop" [ # Firefox Developer-Edition
             "default-web-browser"
             "text/html"
             "x-scheme-handler/http"
@@ -29,19 +23,19 @@
             "x-scheme-handler/unknown"
           ])
           //
-          (associateDefault kwrite [
+          (associateDefault "org.kde.kwrite.desktop" [ # KWrite
             "text/plain"
             "text/markdown"
           ])
           //
-          (associateDefault kate [
+          (associateDefault "org.kde.kate.desktop" [ # Kate
             "application/json"
             "application/x-yaml"
             "application/x-docbook+xml"
             "text/x-cmake"
           ])
           //
-          (associateDefault libreoffice-writer [
+          (associateDefault "writer.desktop" [ # LibreOffice Writer
             # As defined by "writer.desktop"
             "application/clarisworks"
             "application/docbook+xml"
@@ -87,7 +81,7 @@
             "text/rtf"
           ])
           //
-          (associateDefault mpv [
+          (associateDefault "mpv.desktop" [ # MPV
             # As defined by "KDE Plasma" in ~/config/mimeapps.list
             # Note: This is necessary as "UMPV" is INSISTENT in being the default, for some reason
             #   Extra note: "UMPV" is like "MPV", but all new medias are added into a playlist, instead of a new instance

@@ -7,7 +7,7 @@
         name = "org.kde.plasma.kickoff";
         config = {
           "General" = {
-            "icon" = "nix-showflake-white"; # Icon
+            "icon" = "nix-snowflake"; # Icon
             "alphaSort" = true; # Sort by alphabet
           };
         };

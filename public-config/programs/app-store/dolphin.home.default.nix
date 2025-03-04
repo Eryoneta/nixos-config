@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, userDev, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.dolphin = {
@@ -73,9 +73,12 @@
 
     # Dotfile: Toolbar and shortcuts
     xdg.dataFile."kxmlgui5/dolphin/dolphinui.rc" = with config-domain; {
-      source = with outOfStore.public; (
-        utils.mkOutOfStoreSymlink (
-          "${dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
+      source = (
+        # Only the developer should be able to modify the file
+        if (config.home.username == userDev.username) then (
+          utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
+        ) else (
+          "${public.dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
         )
       );
     };

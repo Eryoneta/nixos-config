@@ -2,13 +2,13 @@
 /*
   - A flake-module modifier
   - Defines "host" inside "specialArgs" and "user" inside "extraSpecialArgs"
-    - Basically, NixOS gets "host" and Home-Manager gets "user"
-  - "host" have a atribute "user", and "user" have a atribute "host"
+    - Basically, NixOS gets "host" and Home-Manager gets "users" and "userDev"
+  - "host" have a atribute "users", and each "users" have a atribute "host"
     - One points to the other recursively
-      - Ex.: "host.user.host.user.host.user.username" is totally valid
-  - Both "user" and "host" need to be created before
+      - Ex.: "host.userDev.host.userDev.host.userDev.username" is totally valid
+  - Both "users" and "host" need to be created before
     - "buildHost" returns a valid "host"
-    - "buildUser" returns a valid "user"
+    - "buildUser" returns a valid "user" to be included in a list
     - Then, both need to be passed to "build" to be used
   - It can carry useful atributes like "system" or "username", and even custom atributes
   - Ex.: At "flake.nix": ''
@@ -24,6 +24,7 @@
         name = "User 1";
         configFolder = "/home/user1/.nixos-config";
       };
+      Users = [ User1 ];
     in {
       nixosConfigurations = {
         flake-modules."nixos-system.nix".build {
@@ -32,8 +33,8 @@
           modifiers = [
             # ...
             (user-host-scheme.build {
-              inherit User1;
-              inherit Machine1;
+              users = Users;
+              host = Machine1;
             })
           ];
         }
@@ -55,13 +56,14 @@ flakePath: (
       host = {
         hostname = "nixos";
         name = "nixos";
-        user = default.user;
+        userDev = default.user;
+        users = [ default.user ];
         system = {
           architecture = "x86_64-linux";
           label = "";
         };
-        configFolder = /etc/nixos;
-        configFolderNixStore = flakePath;
+        configFolder = "/etc/nixos";
+        configFolderNixStore = flakePath; # Note: A flake gets copied into the NixStore before evaluation
       };
 
       # Default User
@@ -70,23 +72,35 @@ flakePath: (
         name = "nixos";
         host = default.host;
         configFolder = default.host.configFolder;
+        configDevFolder = "";
       };
 
     };
 
-    # Host-User-Pair Builder
-    buildPair = user: host: (
+    # Host-Users-Group Builder
+    buildGroup = userDev: users: host: (
       let
-        userPair = user // {
-          host = hostPair;
+        userDevGroup = userDev // {
+          host = hostGroup;
         };
-        hostPair = host // {
-          user = userPair;
-          configFolder = user.configFolder;
+        usersGroup = (builtins.map (user: (
+          user // {
+            host = hostGroup;
+          }
+        )) users);
+        usersGroupSet = (builtins.listToAttrs (builtins.map (user: {
+          name = user.username;
+          value = user;
+        }) usersGroup));
+        hostGroup = host // {
+          userDev = userDevGroup;
+          users = usersGroupSet;
+          configFolder = userDevGroup.configFolder;
         };
       in {
-        user = userPair;
-        host = hostPair;
+        userDev = userDevGroup;
+        users = usersGroupSet;
+        host = hostGroup;
       }
     );
 
@@ -111,38 +125,43 @@ flakePath: (
     );
 
     # Builder
-    build = { user ? default.user, host ? default.host }: (
+    build = { users ? [ default.user ], host ? default.host }: (
       let
-        pair = (buildPair user host);
+        userDev = (builtins.head users);
+        group = (buildGroup userDev users host);
       in {
 
         # Override Home-Manager-Module Configuration
         homeManagerModule = {
           home-manager = {
-            users.${pair.user.username} = (import "${flakePath}/users/${pair.user.username}/home.nix");
+            users = (builtins.mapAttrs (
+              username: user: (import "${flakePath}/users/${username}/home.nix")
+            ) group.users);
             extraSpecialArgs = {
-              user = pair.user;
+              userDev = group.userDev;
+              users = group.users;
             };
           };
         };
 
         # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = {
+        homeManagerStandalone = username: {
           modules = [
-            "${flakePath}/users/${pair.user.username}/home.nix"
+            "${flakePath}/users/${username}/home.nix"
           ];
           extraSpecialArgs = {
-            user = pair.user;
+            userDev = group.userDev;
+            users = group.users;
           };
         };
 
         # Override System Configuration
         nixosSystem = {
           modules = [
-            "${flakePath}/hosts/${pair.host.hostname}/configuration.nix"
+            "${flakePath}/hosts/${group.host.hostname}/configuration.nix"
           ];
           specialArgs = {
-            host = pair.host;
+            host = group.host;
           };
         };
 
