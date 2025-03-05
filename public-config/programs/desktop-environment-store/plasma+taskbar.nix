@@ -100,6 +100,7 @@
             "fontWeight" = 400; # Font
             "showSeconds" = "Always"; # Show seconds
             "use24hFormat" = 2; # Show 24h
+            "enabledCalendarPlugins" = "holidaysevents"; # Show holidays
           };
         };
       };
