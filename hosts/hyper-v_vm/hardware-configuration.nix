@@ -1,6 +1,6 @@
 { ... }@args: with args.config-utils; {
 
-  imports = [];
+  imports = [ ];
 
   config = {
 

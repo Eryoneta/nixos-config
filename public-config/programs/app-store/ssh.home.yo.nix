@@ -1,4 +1,4 @@
-{ lib, config, user, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, userDev, config-domain, ... }@args: with args.config-utils; {
   config = with config.profile.programs.ssh; (lib.mkIf (options.enabled) {
 
     # SSH: Secure connection
@@ -8,13 +8,13 @@
           hostname = "github.com";
           identityFile = "~/.ssh/id_ed25519_git-public.pub";
           identitiesOnly = true;
-          user = user.username;
+          user = userDev.username;
         };
         "private" = {
           hostname = "github.com";
           identityFile = "~/.ssh/id_ed25519_git-private.pub";
           identitiesOnly = true;
-          user = user.username;
+          user = userDev.username;
         };
       };
     };

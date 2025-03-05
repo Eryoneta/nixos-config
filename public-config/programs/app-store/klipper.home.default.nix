@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.klipper = {

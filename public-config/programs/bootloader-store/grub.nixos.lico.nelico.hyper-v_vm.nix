@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, config-domain, ... }@args: with args.config-utils; {
   config = with config.profile.programs.grub; (lib.mkIf (options.enabled) {
 
     # Grub: Desktop Environment

@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
@@ -50,7 +50,6 @@
                 shown = (
                   widgets.systemTray.systemTray.items.shown ++ [
                     "org.kde.plasma.mediacontroller" # Media Controller
-                    "org.kde.plasma.weather" # Weather
                   ]
                 );
                 hidden = (

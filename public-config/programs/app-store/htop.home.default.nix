@@ -1,4 +1,4 @@
-{ lib, config, user, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.htop = {

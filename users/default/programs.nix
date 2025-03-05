@@ -1,11 +1,11 @@
-{ config-domain, user, ... }@args: with args.config-utils; {
-    
+username: { config, config-domain, ... }@args: with args.config-utils; { # Note: This is a NixOSModule within a Nix function!
+
   # Programs
   imports = (
     let
       onlyHomeConfig = ".home.";
       onlyDefault = ".default.";
-      onlyUser = ".${user.username}.";
+      onlyUser = ".${username}.";
       onlyNixFile = ".nix";
     in with config-domain; (
       []

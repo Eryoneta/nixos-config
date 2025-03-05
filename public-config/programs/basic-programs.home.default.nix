@@ -5,7 +5,6 @@
     home = {
       packages = with pkgs-bundle; (
         (with unstable; [
-          xdg-ninja # xdg-ninja: Scans $HOME for uncompliant XDG files (Very convenient!)
           yt-dlp # yt-dlp: YouTube downloader script
         ])
         ++
@@ -15,23 +14,15 @@
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)
           kdePackages.kcalc # KCalc: Calculator
 
-          marktext # MarkText: Markdown text editor
-
           #kdePackages.kamoso # Kamoso: Camera
           # TODO: (Kamoso) Marked as broken. Check later
           obs-studio # OBS Studio: Video streamer
 
-          kdePackages.kconfig # KConfig: Tool for editing KDE config files
           krename # KRename: Tool for mass file rename
-          inotify-tools # INotify-Tools: File event monitor
 
           kdePackages.kolourpaint # KolourPaint: Basic image editor
-          imagemagick # ImageMagick: Terminal based image editor
 
           keepassxc # KeePassXC: Password manager
-          eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
-          #jre8 # JRE8: Java Runtime Environment v8
-          (lib.hiPrio zulu17) # Zulu: Java Development Kit v17
         ])
         ++
         (with unstable-fixed; [

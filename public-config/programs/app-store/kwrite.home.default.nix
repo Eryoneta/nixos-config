@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ lib, config, userDev, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.kwrite = {
@@ -48,9 +48,12 @@
 
     # Dotfile: Toolbar and shortcuts
     xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with config-domain; {
-      source = with outOfStore.public; (
-        utils.mkOutOfStoreSymlink (
-          "${dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
+      source = (
+        # Only the developer should be able to modify the file
+        if (config.home.username == userDev.username) then (
+          utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
+        ) else (
+          "${public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
         )
       );
     };

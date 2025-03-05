@@ -7,7 +7,7 @@
         name = "org.kde.plasma.kickoff";
         config = {
           "General" = {
-            "icon" = "nix-showflake-white"; # Icon
+            "icon" = "nix-snowflake"; # Icon
             "alphaSort" = true; # Sort by alphabet
           };
         };
@@ -100,6 +100,7 @@
             "fontWeight" = 400; # Font
             "showSeconds" = "Always"; # Show seconds
             "use24hFormat" = 2; # Show 24h
+            "enabledCalendarPlugins" = "holidaysevents"; # Show holidays
           };
         };
       };
