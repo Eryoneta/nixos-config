@@ -50,7 +50,6 @@
                 shown = (
                   widgets.systemTray.systemTray.items.shown ++ [
                     "org.kde.plasma.mediacontroller" # Media Controller
-                    "org.kde.plasma.weather" # Weather
                   ]
                 );
                 hidden = (
