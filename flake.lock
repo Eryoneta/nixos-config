@@ -132,11 +132,11 @@
     "firefox-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1738628105,
-        "narHash": "sha256-jILbn421MSfqkBFUK5vwXVgQ7bES8pLVmG0BLFc6/ko=",
+        "lastModified": 1740749503,
+        "narHash": "sha256-Fms3V7NOLNRVtj/uTJfb/gxWBrVlCl1k61TJGqeKMug=",
         "owner": "Eryoneta",
         "repo": "Firefox-Scripts",
-        "rev": "b3b950e4aea4b528cf7f6b1211c096f0203527ad",
+        "rev": "90904ef08c860f8f39db0ff41be070003a98f930",
         "type": "github"
       },
       "original": {
@@ -433,6 +433,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-unstable-firefox-dev_135_0b4": {
+      "locked": {
+        "lastModified": 1737545071,
+        "narHash": "sha256-j4HeaLw1LZxkCvuOxdO1xTnPYLSOQuzOjGEuCK80X2w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "21808d22b1cda1898b71cf1a1beb524a97add2c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "21808d22b1cda1898b71cf1a1beb524a97add2c4",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1739866667,
@@ -539,6 +555,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unfree-unstable": "nixpkgs-unfree-unstable",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nixpkgs-unstable-firefox-dev_135_0b4": "nixpkgs-unstable-firefox-dev_135_0b4",
         "nurpkgs-firefox-addons": "nurpkgs-firefox-addons",
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
