@@ -1,8 +1,6 @@
 { config, modulesPath, ... }@args: with args.config-utils; {
 
   imports = [
-    ./hardware-configuration.nix # Scan de hardware
-    ./hardware-fixes.nix # Hardware fixes
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 

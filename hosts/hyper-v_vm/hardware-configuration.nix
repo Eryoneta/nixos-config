@@ -1,9 +1,6 @@
 { ... }@args: with args.config-utils; {
 
-  imports = [
-    ./hardware-configuration.nix # Scan de hardware
-    ./hardware-fixes.nix # Hardware fixes
-  ];
+  imports = [ ];
 
   config = {
 
