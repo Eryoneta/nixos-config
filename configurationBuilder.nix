@@ -145,6 +145,7 @@ inputs: flakePath: (
         commonModifiers = with modifiers; [
           config-utils
           inputs-as-args
+          auto-upgrade-list
           package-bundle
           user-host-scheme
           public-private-domains
@@ -162,7 +163,6 @@ inputs: flakePath: (
             package = inputs.nixpkgs;
             modifiers = commonModifiers ++ (with modifiers; [
               home-manager-module
-              auto-upgrade-list
             ]);
           }
         );
