@@ -15,6 +15,7 @@
           eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
           nodePackages."@angular/cli" # Angular-Cli: Helper for Angular development
           hoppscotch # Hoppscotch: API tool
+          mysql-workbench # MySQL Workbench: Tool for MySQL management
         ])
       );
     };
