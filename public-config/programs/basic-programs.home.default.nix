@@ -24,10 +24,6 @@
 
           keepassxc # KeePassXC: Password manager
         ])
-        ++
-        (with unstable-fixed; [
-
-        ])
       );
     };
 

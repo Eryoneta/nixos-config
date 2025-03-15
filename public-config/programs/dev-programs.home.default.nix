@@ -15,10 +15,6 @@
           nodePackages."@angular/cli" # Angular-Cli: Helper for Angular development
           hoppscotch # Hoppscotch: Ferramenta de API
         ])
-        ++
-        (with unstable-fixed; [
-
-        ])
       );
     };
 
