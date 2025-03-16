@@ -9,14 +9,13 @@
         ])
         ++
         (with stable; [
-          eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
-          #jre8 # JRE8: Java Runtime Environment v8
           (lib.hiPrio zulu17) # Zulu: Java Development Kit v17
-          nodePackages."@angular/cli" # Angular-Cli: Helper for Angular development
-        ])
-        ++
-        (with unstable-fixed; [
+          python3Full # Python: Full Python environment v3
 
+          eclipses.eclipse-java # Eclipse(For Java): IDE for Java development
+          nodePackages."@angular/cli" # Angular-Cli: Helper for Angular development
+          hoppscotch # Hoppscotch: API tool
+          mysql-workbench # MySQL Workbench: Tool for MySQL management
         ])
       );
     };

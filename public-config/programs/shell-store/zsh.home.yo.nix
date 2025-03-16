@@ -104,7 +104,7 @@
                 eval "sudo nix-env --delete-generations $generations --profile $profilePath";
                 echo "";
                 echo "Deleting ALL home-manager generations...";
-                home-manager expire-generations "-0 day";
+                home-manager expire-generations -d;
               };
               dg
             ''

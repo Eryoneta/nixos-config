@@ -25,10 +25,6 @@
         #   "|& nom" passes the output to nix-output-monitor to prettify
         
       ])
-      ++
-      (with unstable-fixed; [
-
-      ])
     );
 
     # Do NOT include

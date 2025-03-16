@@ -16,10 +16,6 @@
 
           imagemagick # ImageMagick: Terminal based image editor
         ])
-        ++
-        (with unstable-fixed; [
-
-        ])
       );
     };
 
