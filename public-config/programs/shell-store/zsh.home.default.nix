@@ -82,6 +82,7 @@
           "gw" = "git work";
           "gs" = "git save";
           "gqs" = "git quicksave";
+          "gll" = "git loglist";
           # Note: Inspired by "git" from "Oh-My-ZSH"
         };
 
