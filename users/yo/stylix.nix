@@ -55,7 +55,7 @@
             "variant" = "dark";
             "palette" = {
               "base00" = ( # Default Background
-                "161616"
+                "161616" # Very Black
               );
               "base01" = ( # Lighter Background (Used for Status Bars, Line Number and Folding Marks)
                 "262626" # Dark Black
@@ -91,7 +91,7 @@
                 "c39eff" # Dead Purple
               );
               "base0C" = ( # Support, Regular Expressions, Escape Characters, Markup Quotes
-                "492387" # Strong Purple
+                "aa00ff" # Strong Purple
               );
               "base0D" = ( # Functions, Methods, Attribute IDs, Headings
                 "00fbec" # Blue Star

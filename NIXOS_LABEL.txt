@@ -1,1 +1,1 @@
-Programs: DJango
+Stylix: Ajuste de cor

@@ -53,6 +53,30 @@ screenSize: (
     #     };
     #   };
     # }
+    {
+      description = "Stick Firefox-Dev PiP on all virtual desktops";
+      match = { # What target
+        window-class = {
+          value = "Toolkit firefox-devedition"; # Firefox-Dev
+          type = "exact";
+        };
+        window-types = [ "utility" ]; # Utility window
+        window-role = {
+          value = "PictureInPicture"; # PiP
+          type = "exact";
+        };
+        title = {
+          value = "Picture-in-Picture";
+          type = "exact";
+        };
+      };
+      apply = { # What changes
+        "desktops" = {
+          value = 0; # Set the window.to be on all virtual desktops
+          apply = "initially"; # On start
+        };
+      };
+    }
 
     # Set sizes
     # {
