@@ -32,6 +32,23 @@ screenSize: (
       # TODO: (Firefox-Dev) Remove desktopFile rule once wayland works for Firefox
     }
 
+    # Focus
+    {
+      description = "Unfocusable Chromium";
+      match = { # What target
+        window-class = {
+          value = "chromium-browser Chromium-browser"; # Chromium
+          type = "exact";
+        };
+      };
+      apply = { # What changes
+        "fsplevel" = {
+          value = 3; # Stops the app from stealing focus
+          apply = "force"; # Force
+        };
+      };
+    }
+
     # Firefox-Dev: PiP onTop
     # {
     #   description = "Stick Firefox-Dev PiP windows on top";
