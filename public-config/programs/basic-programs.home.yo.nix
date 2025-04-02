@@ -1,4 +1,4 @@
-{ lib, pkgs-bundle, ... }@args: with args.config-utils; {
+{ pkgs-bundle, ... }@args: with args.config-utils; {
   config = {
 
     # Programs
@@ -13,6 +13,7 @@
 
           kdePackages.kconfig # KConfig: Tool for editing KDE config files
           inotify-tools # INotify-Tools: File event monitor
+          kdialog # KDialog: Popup tool
 
           imagemagick # ImageMagick: Terminal based image editor
         ])

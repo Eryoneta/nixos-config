@@ -1,1 +1,1 @@
-Programs/Chromium: Unfocusable
+Programs/RSnapshot: Service
