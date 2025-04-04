@@ -1,1 +1,1 @@
-Stylix: Ajuste de cor
+Programs/RSnapshot: Service
