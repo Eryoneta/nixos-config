@@ -33,6 +33,7 @@
     # Extra Inputs
     # Unstable Unfree Packages (AutoUpgrade)
     nixpkgs-unfree-unstable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
+    nixpkgs-unfree-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     # Firefox Addons (AutoUpgrade)
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
