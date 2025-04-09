@@ -41,7 +41,6 @@
                 rs
               '');
             in "${promptSudo} && ${rebuildSystem}"
-            
           );
 
           rebuildHomeCommand = (
@@ -67,6 +66,12 @@
               };
               ufl
             '')
+          );
+
+          downgradeSystemCommand = (
+            let
+              args = "--rollback --use-remote-sudo --show-trace --print-build-logs --verbose";
+            in "sudo nixos-rebuild switch --flake \"${systemProfile.flakePath}\" ${args}"
           );
 
           listGenerationsCommand = (
@@ -134,6 +139,9 @@
                   ;;
                   "upgrade")
                     ${upgradeSystemCommand};
+                  ;;
+                  "rollback")
+                    ${downgradeSystemCommand};
                   ;;
                   "list")
                     ${listGenerationsCommand} $@;
