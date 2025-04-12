@@ -11,6 +11,9 @@
     # Features/Swapfile
     swap.devices."basicSwap".size = ((16 + 2) * 1024); # 18GB
 
+    # Bootloader/Grub: MemTest86
+    boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
+
   };
 
 }
