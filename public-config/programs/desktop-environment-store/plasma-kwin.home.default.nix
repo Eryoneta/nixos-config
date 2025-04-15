@@ -47,7 +47,7 @@
         };
         time = {
           morning = (utils.mkDefault) "07:45"; # Morning time
-          evening = (utils.mkDefault)  "19:45"; # Night time
+          evening = (utils.mkDefault)  "18:45"; # Night time
         };
         transitionTime = (utils.mkDefault) 30; # Time in minutes for the transition
       };
