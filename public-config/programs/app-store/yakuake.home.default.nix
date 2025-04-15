@@ -21,8 +21,7 @@
     };
 
     # Dotfile
-    xdg.configFile."yakuakerc" = {
-      text = utils.toINI {
+    programs.plasma.configFile."yakuakerc" = { # (plasma-manager option)
         "Dialogs" = {
           "FirstRun" = false; # Do not show welcome-popup
         };
@@ -38,7 +37,6 @@
           "Translucency" = true; # Transparent
           "BackgroundColorOpacity" = 80;
         };
-      };
     };
 
     # Autostart
