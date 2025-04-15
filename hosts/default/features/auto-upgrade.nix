@@ -4,6 +4,7 @@
     nixos-modules."auto-upgrade-git-support.nix"
     nixos-modules."auto-upgrade-update-flake-lock.nix"
     nixos-modules."auto-upgrade-alter-profile.nix"
+    nixos-modules."auto-upgrade-notifier.nix"
   ];
 
   config = {
@@ -37,7 +38,14 @@
         name = (utils.mkDefault) "System_Upgrades";
         configurationLimit = (utils.mkDefault) 12; # 12 seems like a good mumber, 3 months of weekly upgrades
       };
-      
+
+      notifier = {
+        enable = (utils.mkDefault) true;
+        systemUser = host.userDev.username;
+        informStart = (utils.mkDefault) true;
+        informConclusion = (utils.mkDefault) true;
+      };
+
     };
   };
 
