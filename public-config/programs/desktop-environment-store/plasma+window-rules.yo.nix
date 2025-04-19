@@ -11,17 +11,13 @@ screenSize: (
 
     # Instances
     {
-      description = "Fix Firefox-Dev(XWayland) launcher not sticking instances";
+      description = "Fix Firefox-Dev launcher not sticking instances";
       match = { # What target
         window-class = {
-          value = "Navigator firefox"; # A Firefox-Dev window
+          value = "Navigator firefox-dev"; # A Firefox-Dev window
           type = "exact";
         };
         window-types = [ "normal" ]; # Normal window
-        title = {
-          value = ".*Firefox Developer Edition$";
-          type = "regex";
-        };
       };
       apply = { # What changes
         "desktopfile" = {
@@ -29,7 +25,6 @@ screenSize: (
           apply = "initially"; # On start
         };
       };
-      # TODO: (Firefox-Dev) Remove desktopFile rule once wayland works for Firefox
     }
 
     # Focus
@@ -50,26 +45,6 @@ screenSize: (
     }
 
     # Firefox-Dev: PiP onTop
-    # {
-    #   description = "Stick Firefox-Dev PiP windows on top";
-    #   match = { # What target
-    #     window-class = {
-    #       value = "firefox firefox-devedition"; # Firefox-Dev
-    #       type = "exact";
-    #     };
-    #     window-types = [ "normal" ]; # Normal window
-    #     title = {
-    #       value = "Picture-in-Picture";
-    #       type = "exact";
-    #     };
-    #   };
-    #   apply = { # What changes
-    #     "above" = {
-    #       value = true; # Set the window.to be above
-    #       apply = "initially"; # On start
-    #     };
-    #   };
-    # }
     {
       description = "Stick Firefox-Dev PiP on all virtual desktops";
       match = { # What target
@@ -96,34 +71,14 @@ screenSize: (
     }
 
     # Set sizes
-    # {
-    #   description = "Start Firefox-Dev with a set size";
-    #   match = { # What target
-    #     window-class = {
-    #       value = "firefox firefox-devedition"; # Firefox-Dev
-    #       type = "exact";
-    #     };
-    #     window-types = [ "normal" ]; # Normal window
-    #   };
-    #   apply = { # What changes
-    #     "size" = {
-    #       value = "${screen.halfWidth},${screen.height}"; # Set the window.size
-    #       apply = "initially"; # On start
-    #     };
-    #   };
-    # }
     {
-      description = "Start Firefox-Dev(XWayland) with a set size";
+      description = "Start Firefox-Dev with a set size";
       match = { # What target
         window-class = {
-          value = "Navigator firefox"; # A Firefox-Dev window
+          value = "Navigator firefox-dev"; # A Firefox-Dev window
           type = "exact";
         };
         window-types = [ "normal" ]; # Normal window
-        title = {
-          value = ".*Firefox Developer Edition$";
-          type = "regex";
-        };
       };
       apply = { # What changes
         "size" = {
@@ -131,7 +86,6 @@ screenSize: (
           apply = "initially"; # On start
         };
       };
-      # TODO: (Firefox-Dev) Remove size rule once wayland works for Firefox
     }
     {
       description = "Alarm Clock with a fixed window size";
