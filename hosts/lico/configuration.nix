@@ -17,6 +17,9 @@
     # Features/ZRAM
     zramSwap.enable = false; # CPU is not really fast
 
+    # Features/AutoUpgrade
+    system.autoUpgrade.alterProfile.configurationLimit = 4; # No need for more than that
+
   };
 
 }

@@ -3,7 +3,7 @@
 
     # MySQL: MySQL Database v8.0
     services.mysql = {
-      enable = false;
+      enable = true;
       package = (pkgs-bundle.stable).mysql80;
     };
 

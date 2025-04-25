@@ -1,1 +1,1 @@
-Fix: Yakuake
+Fix KWin-Rules: Firefox-Dev
