@@ -1,1 +1,1 @@
-Fix KWin-Rules: Firefox-Dev
+Programs: Prism Launcher

@@ -51,8 +51,10 @@
     papirus-colors-icons.flake = false;
     # MPV Scripts: InputEvent (Manual Fetch)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
-    #mpv-input-event.url = "https://github.com/natural-harmonia-gropius/input-event/releases/download/v1.3/inputevent.lua";
     mpv-input-event.flake = false;
+    # Prism Launcher (Cracked) (Manual Fetch)
+    primslauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
+    primslauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
 
     # My Utilities
     # PowerShell Prompt (Manual Fetch)
