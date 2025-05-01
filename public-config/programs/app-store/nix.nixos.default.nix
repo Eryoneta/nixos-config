@@ -1,4 +1,8 @@
-{ lib, config, pkgs, ... }@args: with args.config-utils; {
+{ lib, config, modules, host, pkgs, ... }@args: with args.config-utils; {
+
+  imports = with modules; [
+    nixos-modules."garbage-collector-notifier.nix"
+  ];
 
   options = {
     profile.programs.nix = {
@@ -17,6 +21,20 @@
       gc = {
         automatic = (utils.mkDefault) true;
         dates = (utils.mkDefault) "*-*-* 18:00:00"; # Every day, 18h00
+
+        # Notifier ("garbage-collector-notifier.nix")
+        notifier = {
+          enable = (utils.mkDefault) true;
+          systemUser = host.userDev.username;
+          informStart = {
+            show = (utils.mkDefault) true;
+            time = (utils.mkDefault) 15;
+          };
+          informConclusion = {
+            show = (utils.mkDefault) true;
+            time = (utils.mkDefault) 30;
+          };
+        };
       };
 
       # Nix Store

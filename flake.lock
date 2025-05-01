@@ -318,6 +318,22 @@
         "type": "github"
       }
     },
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699286814,
+        "narHash": "sha256-yy0q+bky80LtK1GWzz7qpM+aAGrOqLuewbid8WT1ilk=",
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "rev": "23b955121b8217c1c348a9ed2483167a6f3ff4ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "type": "github"
+      }
+    },
     "mpv-input-event": {
       "flake": false,
       "locked": {
@@ -494,6 +510,28 @@
         "type": "github"
       }
     },
+    "primslauncherCRK": {
+      "inputs": {
+        "libnbtplusplus": "libnbtplusplus",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1744221816,
+        "narHash": "sha256-Ld6t+zKGfDcXjfELdbcBAh9RQlAp7LIumUjQ2s7fjKg=",
+        "owner": "Diegiwg",
+        "repo": "PrismLauncher-Cracked",
+        "rev": "062a55639b4b18e8123a1306e658834ba0ffc137",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Diegiwg",
+        "repo": "PrismLauncher-Cracked",
+        "rev": "062a55639b4b18e8123a1306e658834ba0ffc137",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -511,6 +549,7 @@
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
         "powershell-prompt": "powershell-prompt",
+        "primslauncherCRK": "primslauncherCRK",
         "stylix": "stylix",
         "tiledmenu": "tiledmenu"
       }

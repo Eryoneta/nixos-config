@@ -11,13 +11,20 @@
             name = "system";
             path = "/nix/var/nix/profiles/${systemProfile.name}";
             flakePath = "path:${userDev.configDevFolder}#${userDev.name}@${userDev.host.name}"; # "path:" = Ignores Git repository
+            preStart = "";
           };
           upgradeProfile = {
             name = "System_Upgrades";
             path = "/nix/var/nix/profiles/system-profiles/${upgradeProfile.name}";
             flakePath = "git+file://${userDev.configFolder}?submodules=1#${userDev.name}@${userDev.host.name}";
-            # Notice: The flake ignores submodules! The flag "submodules=1" is necessary
+            # Notice: The flag "submodules=1" is necessary to make the flake see Git submodules
             # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
+            preStart = (
+              let
+                name = upgradeProfile.name;
+                configurationLimit = 8;
+              in "sudo nix-env --delete-generations +${builtins.toString (configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${name} || true"
+            );
           };
 
           rebuildSystemCommand = rebuildMode: (
@@ -32,11 +39,13 @@
                   if [[ $2 =~ ^sys$ ]]; then
                     profileNameArg="--profile-name ${upgradeProfile.name}";
                     flakePathArg="--flake \"${upgradeProfile.flakePath}\"";
+                    preStart="${upgradeProfile.preStart}";
                   else
                     profileNameArg="--profile-name ${systemProfile.name}";
                     flakePathArg="--flake \"${systemProfile.flakePath}\"";
+                    preStart="${systemProfile.preStart}";
                   fi;
-                  eval "sudo nixos-rebuild ${rebuildMode} $flakePathArg $profileNameArg ${args} ${nomOutput}";
+                  eval "$preStart; sudo nixos-rebuild ${rebuildMode} $flakePathArg $profileNameArg ${args} ${nomOutput}";
                 };
                 rs
               '');

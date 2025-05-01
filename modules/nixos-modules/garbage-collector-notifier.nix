@@ -1,21 +1,21 @@
-# Notifier for AutoUpgrade
+# Notifier for Garbage Collector
 /*
-  - Creates a notification for every upgrade made
-    - Great for knowing if the upgrade was a success or not
+  - Creates a notification for every garbage collection made
+    - Great as a  warning before the big operation
   - Uses "libnotify"
-  - Depends on the option set by "nixpkgs/nixos/modules/tasks/auto-upgrade.nix"
+  - Depends on the option set by "nixpkgs/nixos/modules/services/misc/nix-gc.nix"
 */
 { config, pkgs, lib, ... }:
   let
-    cfg = config.system.autoUpgrade;
-    cfg_n = config.system.autoUpgrade.notifier;
+    cfg = config.nix.gc;
+    cfg_n = config.nix.gc.notifier;
   in {
 
     options = {
-      system.autoUpgrade.notifier = {
+      nix.gc.notifier = {
 
         enable = lib.mkEnableOption ''
-          Enables a notifier to appear before and after a NixOS upgrade.
+          Enables a notifier to appear before and after a garbage collection.
         '';
 
         systemUser = lib.mkOption {
@@ -27,7 +27,7 @@
         informStart = {
           show = lib.mkOption {
             type = lib.types.bool;
-            description = "Show notification when a upgrade starts.";
+            description = "Shows a notification when garbage collect starts.";
             default = true;
           };
           time = lib.mkOption {
@@ -44,7 +44,7 @@
         informConclusion = {
           show = lib.mkOption {
             type = lib.types.bool;
-            description = "Shows a notification when a upgrade ends, informing success or failure.";
+            description = "Shows a notification when garbage collect ends, informing success or failure.";
             default = true;
           };
           time = lib.mkOption {
@@ -61,12 +61,12 @@
       };
     };
 
-    config = lib.mkIf (cfg.enable && cfg_n.enable) {
+    config = lib.mkIf (cfg.automatic && cfg_n.enable) {
 
       assertions = [{
         assertion = !(!cfg_n.informStart.show && !cfg_n.informConclusion.show);
         message = ''
-          The option 'system.autoUpgrade.notifier.enable' requires at least one of 'informStart.show' or 'informConclusion.show' to be set.
+          The option 'nix.gc.notifier.enable' requires at least one of 'informStart.show' or 'informConclusion.show' to be set.
         '';
       }];
 
@@ -78,7 +78,7 @@
             # Loads access
             export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/''${UID}/bus"
             # Send notification
-            notify-send "NixOS Upgrade" \
+            notify-send "Nix Garbage Collector" \
               "${text}" \
               --icon "${icon}" \
               --urgency "${timing.urgency}" \
@@ -92,8 +92,8 @@
           };
         in {
 
-          # Notify upgrade start
-          services."nixos-upgrade-notify-start" = lib.mkIf (cfg_n.informStart.show) {
+          # Notify garbage collection start
+          services."garbage-collector-notify-start" = lib.mkIf (cfg_n.informStart.show) {
             serviceConfig = {
               "Type" = "oneshot";
               "User" = cfg_n.systemUser;
@@ -103,14 +103,14 @@
               libnotify
             ];
             script = (mkScript {
-              text = "Performing system upgrade...\nIt should be available in the next boot";
-              icon = "system-upgrade";
+              text = "Performing garbage collection...";
+              icon = "trash-empty";
               timing = (mkTiming cfg_n.informStart.time);
             });
           };
 
-          # Notify upgrade success
-          services."nixos-upgrade-notify-success" = lib.mkIf (cfg_n.informConclusion.show) {
+          # Notify garbage collection success
+          services."garbage-collector-notify-success" = lib.mkIf (cfg_n.informConclusion.show) {
             serviceConfig = {
               "Type" = "oneshot";
               "User" = cfg_n.systemUser;
@@ -120,14 +120,14 @@
               libnotify
             ];
             script = (mkScript {
-              text = "The system upgrade was successful";
-              icon = "system-upgrade";
+              text = "Garbage collection was successful";
+              icon = "trash-empty";
               timing = (mkTiming cfg_n.informConclusion.time);
             });
           };
 
-          # Notify upgrade failure
-          services."nixos-upgrade-notify-failure" = lib.mkIf (cfg_n.informConclusion.show) {
+          # Notify garbage collection failure
+          services."garbage-collector-notify-failure" = lib.mkIf (cfg_n.informConclusion.show) {
             serviceConfig = {
               "Type" = "oneshot";
               "User" = cfg_n.systemUser;
@@ -137,18 +137,18 @@
               libnotify
             ];
             script = (mkScript {
-              text = "The system upgrade failed";
+              text = "Garbage collection failed";
               icon = "script-error";
               timing = (mkTiming cfg_n.informConclusion.time);
             });
           };
 
-          # NixOS-Upgrade calls the services as needed
-          services."nixos-upgrade" = {
-            wants = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
-            after = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
-            onSuccess = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-success.service");
-            onFailure = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-failure.service");
+          # Nix Garbage Collector calls the services as needed
+          services."nix-gc" = {
+            wants = (lib.optional (cfg_n.informStart.show) "garbage-collector-notify-start.service");
+            after = (lib.optional (cfg_n.informStart.show) "garbage-collector-notify-start.service");
+            onSuccess = (lib.optional (cfg_n.informConclusion.show) "garbage-collector-notify-success.service");
+            onFailure = (lib.optional (cfg_n.informConclusion.show) "garbage-collector-notify-failure.service");
           };
 
         }
