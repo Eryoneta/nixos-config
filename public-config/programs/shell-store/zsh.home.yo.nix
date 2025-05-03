@@ -21,9 +21,9 @@
             # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
             preStart = (
               let
-                name = upgradeProfile.name;
-                configurationLimit = 8;
-              in "sudo nix-env --delete-generations +${builtins.toString (configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${name} || true"
+                profilePath = upgradeProfile.path;
+                configurationLimit = 8; # Needs to be the same as in "config.system.autoUpgrade.alterProfile.configurationLimit"!
+              in "sudo nix-env --delete-generations +${builtins.toString (configurationLimit - 1)} --profile ${profilePath} || true"
             );
           };
 
@@ -117,14 +117,29 @@
                 echo "Deleting system generations...";
                 eval "sudo nix-env --delete-generations $generations --profile $profilePath";
                 echo "";
-                echo "Deleting ALL home-manager generations...";
+                echo "Deleting ALL home-manager generations from user...";
                 home-manager expire-generations -d;
+                echo "";
+                echo "Deleting ALL home-manager generations from root...";
+                sudo home-manager expire-generations -d;
+                echo "";
+                echo "Deleting ALL nix generations from user...";
+                nix-env --delete-generations +1;
+                echo "";
+                echo "Deleting ALL nix generations from root...";
+                sudo nix-env --delete-generations +1;
+                echo "";
               };
               dg
             ''
-          );
+          ); # Note: It also deletes all home-manager/nix generations from the current user and root!
 
-          collectGarbageCommand = "nix-collect-garbage";
+          collectGarbageCommand = ( # Should delete from both system and user profiles
+            utils.replaceStr "\n" "" ''
+              sudo nix-collect-garbage;
+              nix-collect-garbage;
+            ''
+          );
 
           nxCommand = (
             # Note: Everything is collapsed into a single line
