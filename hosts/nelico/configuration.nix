@@ -15,7 +15,8 @@
     boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
 
     # Features/AutoUpgrade
-    system.autoUpgrade.alterProfile.configurationLimit = 8; # Upgrades are heavy! 256GB is not enough for 12 generations!
+    #system.autoUpgrade.alterProfile.configurationLimit = 8; # Upgrades are heavy! 256GB is not enough for 12 generations!
+    # Note: Maybe it can handle 12... Testing
 
   };
 

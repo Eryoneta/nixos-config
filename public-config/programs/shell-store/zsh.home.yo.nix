@@ -7,6 +7,8 @@
       # Aliases
       shellAliases = (
         let
+
+          version = "v1.0.1"; # Should be changed at each modification
           systemProfile = {
             name = "system";
             path = "/nix/var/nix/profiles/${systemProfile.name}";
@@ -22,10 +24,12 @@
             preStart = (
               let
                 profilePath = upgradeProfile.path;
-                configurationLimit = 8; # Needs to be the same as in "config.system.autoUpgrade.alterProfile.configurationLimit"!
+                configurationLimit = 12; # Needs to be the same as in "config.system.autoUpgrade.alterProfile.configurationLimit"!
               in "sudo nix-env --delete-generations +${builtins.toString (configurationLimit - 1)} --profile ${profilePath} || true"
             );
           };
+
+          versionCommand = "echo ${version}"; # Useful for telling if the terminal got the latest one or not
 
           rebuildSystemCommand = rebuildMode: (
             let
@@ -33,7 +37,7 @@
               args = "--use-remote-sudo --show-trace --print-build-logs --verbose";
               nomOutput = "|& nom"; # nix-output-monitor
               rebuildSystem = (utils.replaceStr "\n" "" ''
-                rs() {
+                nx-rs() {
                   local profileNameArg;
                   local flakePathArg;
                   if [[ $2 =~ ^sys$ ]]; then
@@ -47,7 +51,7 @@
                   fi;
                   eval "$preStart; sudo nixos-rebuild ${rebuildMode} $flakePathArg $profileNameArg ${args} ${nomOutput}";
                 };
-                rs
+                nx-rs
               '');
             in "${promptSudo} && ${rebuildSystem}"
           );
@@ -64,7 +68,7 @@
               configFolderPath = userDev.configFolder;
               # Important note: This whole command should be equivalent as set by "modules/nixos-modules/auto-upgrade-update-flake-lock.nix"!
             in (utils.replaceStr "\n" "" ''
-              ufl() {
+              nx-ufl() {
                 echo "Updating flake.lock...";
                 nix flake update ${inputs} --flake "${configFolderPath}" --commit-lock-file;
                 cd "${configFolderPath}";
@@ -73,7 +77,7 @@
                 fi;
                 cd -;
               };
-              ufl
+              nx-ufl
             '')
           );
 
@@ -85,7 +89,7 @@
 
           listGenerationsCommand = (
             utils.replaceStr "\n" "" ''
-              lg() {
+              nx-lg() {
                 local profileNameArg;
                 if [[ $2 =~ ^sys$ ]]; then
                   profileNameArg="--profile-name ${upgradeProfile.name}";
@@ -94,13 +98,33 @@
                 fi;
                 eval "nixos-rebuild list-generations $profileNameArg";
               };
-              lg
+              nx-lg
             ''
           );
 
           deleteGenerationsCommand = (
-            utils.replaceStr "\n" "" ''
-              dg() {
+            let
+              promptSudo = "sudo ls /dev/null > /dev/null 2>&1"; # Makes the sudo prompt appear before
+              mkDeleteCommand = user: profile: isSystemPath: ''
+                echo "Deleting ALL ${profile} generations from ${user}...";
+                sudo nix-env --delete-generations +1 --profile ${
+                  if (isSystemPath) then (
+                    "/nix/var/nix/profiles/per-user/${user}/${profile}"
+                  ) else "/home/${user}/.local/state/nix/profiles/${profile}"
+                };
+                echo "";
+              '';
+              # Note: Yikes! There is A LOT of profiles around!
+              #   "home-manager expire-generations -d" = Deletes from "/home/USER/.local/state/nix/profiles/home-manager"
+              #   "nix-env --delete-generations +1" = Deletes from "/home/USER/.local/state/nix/profiles/profile"
+              #   "sudo home-manager expire-generations -d" = Deletes from "/nix/var/nix/profiles/per-user/root/home-manager"
+              #   "sudo nix-env --delete-generations +1" = Deletes from "/nix/var/nix/profiles/per-user/root/profile"
+              #   There is also "/nix/var/nix/profiles/system/" and "/nix/var/nix/profiles/system-profiles/PROFILE"
+              #   Also channels, in "/nix/var/nix/profiles/per-user/root/channels"
+              # It is worryingly easy to accumulate a lot of generations! A lot of wasted space! Specially with home-manager generations!
+              #   This is unsustainable
+            in (utils.replaceStr "\n" "" ''
+              nx-dg() {
                 local profilePath;
                 if [[ $2 =~ ^sys$ ]]; then
                   profilePath=${upgradeProfile.path};
@@ -113,39 +137,36 @@
                     generations="$generations $command";
                   fi;
                 done;
+                ${promptSudo};
                 echo "";
                 echo "Deleting system generations...";
                 eval "sudo nix-env --delete-generations $generations --profile $profilePath";
                 echo "";
-                echo "Deleting ALL home-manager generations from user...";
-                home-manager expire-generations -d;
-                echo "";
-                echo "Deleting ALL home-manager generations from root...";
-                sudo home-manager expire-generations -d;
-                echo "";
-                echo "Deleting ALL nix generations from user...";
-                nix-env --delete-generations +1;
-                echo "";
-                echo "Deleting ALL nix generations from root...";
-                sudo nix-env --delete-generations +1;
-                echo "";
+                ${mkDeleteCommand "yo" "home-manager" false}
+                ${mkDeleteCommand "yo" "profile" false}
+                ${mkDeleteCommand "eryoneta" "home-manager" false}
+                ${mkDeleteCommand "eryoneta" "profile" false}
+                ${mkDeleteCommand "root" "home-manager" true}
+                ${mkDeleteCommand "root" "profile" true}
+                ${mkDeleteCommand "root" "channels" true}
               };
-              dg
-            ''
-          ); # Note: It also deletes all home-manager/nix generations from the current user and root!
+              nx-dg
+            '')
+          );
+          # Note: It also deletes all home-manager/nix generations from the current user and root!
 
-          collectGarbageCommand = ( # Should delete from both system and user profiles
-            utils.replaceStr "\n" "" ''
-              sudo nix-collect-garbage;
-              nix-collect-garbage;
-            ''
+          collectGarbageCommand = (
+            "sudo nix-collect-garbage"
           );
 
           nxCommand = (
-            # Note: Everything is collapsed into a single line
+            # Note: Everything is collapsed into a single line!
             utils.replaceStr "\n" "" ''
               nx() {
                 case $1 in
+                  "version")
+                    ${versionCommand};
+                  ;;
                   "boot")
                     ${rebuildSystemCommand "boot"} $@;
                   ;;
