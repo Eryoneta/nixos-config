@@ -4,11 +4,11 @@
     # ZSH: Shell
     programs.zsh = {
 
-      # Aliases
-      shellAliases = (
+      # NX Function
+      initExtra = (
         let
 
-          version = "v1.0.1"; # Should be changed at each modification
+          version = "v1.1.0"; # Should be changed at each modification
           systemProfile = {
             name = "system";
             path = "/nix/var/nix/profiles/${systemProfile.name}";
@@ -199,13 +199,14 @@
                   ;;
                 esac;
               };
-              nx
             ''
           );
 
-        in {
-          "nx" = nxCommand;
-        }
+        in ''
+          # NX Command
+          ${nxCommand}
+        ''
+
       );
       
     };
