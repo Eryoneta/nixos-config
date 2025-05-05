@@ -1,5 +1,5 @@
 { lib, config, config-domain, ... }@args: with args.config-utils; {
-  config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
+  config = with config.profile.programs.plasma; (lib.mkIf (false) {
 
     # KZones: KWin script for snapping windows into zones
     home.packages = with options.packageChannel; [
