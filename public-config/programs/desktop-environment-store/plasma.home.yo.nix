@@ -32,7 +32,6 @@
           widgets = with options.defaults."panels"."main"; [
             options.defaults."plasmoids".tiledmenu
             widgets.activityPager
-            widgets.virtualDesktopsPager
             (widgets.taskManager // {
               config = {
                 "General" = (widgets.taskManager.config."General" // {
@@ -45,25 +44,36 @@
               };
             })
             widgets.separator
+            "org.kde.plasma.volume"
+            "org.kde.plasma.networkmanagement"
+            widgets.clock
+            widgets.showDesktop
+          ];
+        })
+        # Extra
+        (options.defaults."panels"."main".panel // {
+          height = 24; # Size
+          widgets = with options.defaults."panels"."main"; [
+            widgets.virtualDesktopsPager
+            widgets.spacer
+            "org.kde.plasma.colorpicker"
             (widgets.systemTray // {
               systemTray.items = (widgets.systemTray.systemTray.items // {
-                shown = (
-                  widgets.systemTray.systemTray.items.shown ++ [
-                    "org.kde.plasma.mediacontroller" # Media Controller
-                    "org.kde.plasma.vault" # Plasma Vault
-                  ]
-                );
+                shown = [
+                  "org.kde.plasma.mediacontroller" # Media Controller
+                  "org.kde.plasma.vault" # Plasma Vault
+                ];
                 hidden = (
                   widgets.systemTray.systemTray.items.hidden ++ [
                     "Yakuake" # Yakuake
                     "chrome_status_icon_1" # Kando
                     # TODO: (Kando) Watchout for the widget. The name might change!
+                    "org.kde.plasma.volume" # System volume
+                    "org.kde.plasma.networkmanagement" # Network status
                   ]
                 );
               });
             })
-            widgets.clock
-            widgets.showDesktop
           ];
         })
       ];
