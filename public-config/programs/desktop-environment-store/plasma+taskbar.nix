@@ -20,6 +20,7 @@
           "General" = {
             "pagerLayout" = "Vertical"; # Order top to bottom (More compact)
             "showWindowIcons" = true; # Small icons inside (Good to see which are being used)
+            "displayedText" = "Number"; # Display a number inside
           };
         };
       };
@@ -31,6 +32,7 @@
           "General" = {
             "pagerLayout" = "Horizontal"; # Order left to right (Easier to click)
             "showWindowIcons" = true; # Small icons inside (Good to see which are being used)
+            "displayedText" = "Number"; # Display a number inside
           };
         };
       };
@@ -53,13 +55,16 @@
             "maxStripes" = 1; # Maximum of layers of apps
             #   Note: Two layers is good when there is a lot of open apps, but is harder to actually find anything as everything is smaller
             "indicateAudioStreams" = false; # Do not indicate apps that are playing sound
-            "taskMaxWidth" = "Narrow"; # Largura máxima dos apps abertos
+            "taskMaxWidth" = "Narrow"; # Maximum width of open apps
           };
         };
       };
 
       # Separator
       separator = "org.kde.plasma.marginsseparator";
+
+      # Spacer
+      spacer = "org.kde.plasma.panelspacer";
 
       # System tray
       systemTray = {
@@ -118,11 +123,12 @@
     panel = {
       location = "bottom"; # Place at the bottom of screen
       alignment = "center"; # Center the bar
-      height = 44; # Size
+      height = 42; # Size
       lengthMode = "fill"; # Cover the entire width
       floating = false; # Do not float
       hiding = "normalpanel"; # Stay on screen
       screen = "all"; # Appear on all screens
+      opacity = "opaque"; # Opaque
       widgets = [
         widgets.startMenu
         widgets.activityPager

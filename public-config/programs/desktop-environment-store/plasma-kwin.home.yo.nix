@@ -8,6 +8,8 @@
       virtualDesktops.names = [ # List of virtual desktops
         "Primary Desktop"
         "Auxiliary Desktop"
+        "Extra Desktop"
+        "Emergency Desktop"
       ];
 
     };
