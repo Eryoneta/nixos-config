@@ -128,6 +128,7 @@
       floating = false; # Do not float
       hiding = "normalpanel"; # Stay on screen
       screen = "all"; # Appear on all screens
+      opacity = "opaque"; # Opaque
       widgets = [
         widgets.startMenu
         widgets.activityPager
