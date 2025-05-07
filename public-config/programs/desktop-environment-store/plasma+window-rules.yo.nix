@@ -102,11 +102,11 @@ screenSize: (
           apply = "force"; # Force
         };
         "minsize" = {
-          value = "380,440"; # Set the window.minimum size
+          value = "380,500"; # Set the window.minimum size
           apply = "force"; # On start
         };
         "size" = {
-          value = "380,440"; # Set the window.size
+          value = "380,500"; # Set the window.size
           apply = "initially"; # On start
         };
       };
