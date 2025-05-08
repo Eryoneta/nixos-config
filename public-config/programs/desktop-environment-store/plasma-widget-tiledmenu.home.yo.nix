@@ -34,7 +34,7 @@
                 MC = "io.missioncenter.MissionCenter.desktop";
                 # Utilities
                 KO = "org.kde.korganizer.desktop";
-                KC = "org.kde.kcalc.desktop";
+                KC = "org.kde.kalk.desktop";
                 Wr = "writer.desktop";
                 Ca = "calc.desktop";
                 # Development
