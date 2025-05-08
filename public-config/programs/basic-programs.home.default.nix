@@ -12,7 +12,7 @@
           #kdePackages.ark # Ark: File archiver (Included with KDE Plasma)
           #kdePackages.gwenview # Gwenview: Image viewer (Included with KDE Plasma)
           #kdePackages.okular # Okular: Document viewer (Included with KDE Plasma)
-          kdePackages.kcalc # KCalc: Calculator
+          kdePackages.kalk # Kalk: Calculator
 
           #kdePackages.kamoso # Kamoso: Camera
           # TODO: (Kamoso) Marked as broken. Check later
