@@ -131,8 +131,9 @@
           before = lib.mkIf cfg_gs.enable [ "nixos-upgrade-update-flake-lock.service" ];
         };
         systemd.services."nixos-upgrade-update-flake-lock" = {
-          wants = lib.mkIf cfg_gs.enable [ "nixos-upgrade-git-conclude.service" ];
-          before = lib.mkIf cfg_gs.enable [ "nixos-upgrade-git-conclude.service" ];
+          # Internet access is needed
+          wants = [ "network-online.target" ] ++ (lib.optional (cfg_gs.enable) "nixos-upgrade-git-conclude.service");
+          after = [ "network-online.target" ] ++ (lib.optional (cfg_gs.enable) "nixos-upgrade-git-conclude.service");
         };
 
         # NixOS-Upgrade starts only after this one

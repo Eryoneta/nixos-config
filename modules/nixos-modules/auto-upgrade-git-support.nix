@@ -146,10 +146,16 @@
         '';
       };
 
+
       # Git-Push comes after Git-Pull&Commit
       systemd.services."nixos-upgrade-git-prepare" = {
         wants = [ "nixos-upgrade-git-conclude.service" ];
         before = [ "nixos-upgrade-git-conclude.service" ];
+      };
+      systemd.services."nixos-upgrade-git-conclude" = {
+        # Internet access might be needed
+        wants = lib.mkIf (cfg_gs.pull || cfg_gs.push) [ "network-online.target" ];
+        after = lib.mkIf (cfg_gs.pull || cfg_gs.push) [ "network-online.target" ];
       };
 
       # NixOS-Upgrade starts only after both
