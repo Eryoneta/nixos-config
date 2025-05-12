@@ -1,9 +1,9 @@
-{ lib, config, userDev, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.kwrite = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
     };
   };
 
@@ -47,10 +47,10 @@
     };
 
     # Dotfile: Toolbar and shortcuts
-    xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with config-domain; {
+    xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with args.config-domain; {
       source = (
         # Only the developer should be able to modify the file
-        if (config.home.username == userDev.username) then (
+        if (config.home.username == args.userDev.username) then (
           utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
         ) else (
           "${public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"

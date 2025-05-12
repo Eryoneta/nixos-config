@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   
   options = {
     profile.programs.sddm = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
       options.defaults = (utils.mkDefaultsOption {
         "theme" = {
           "backgroundPath" = "";
@@ -41,7 +41,7 @@
       options.defaults = (utils.mkDefault) {
         "theme" = {
           "backgroundPath" = (
-            "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}"
+            "${args.pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}"
           );
         };
       };

@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.grub = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
     };
   };
 
@@ -36,7 +36,7 @@
       
       # Theme
       splashImage = null; # No background image
-      theme = (utils.mkDefault) "${config-domain.public.dotfiles}/grub/blue-star-grub-theme/light";
+      theme = (utils.mkDefault) "${args.config-domain.public.dotfiles}/grub/blue-star-grub-theme/light";
 
     };
 

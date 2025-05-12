@@ -1,9 +1,9 @@
-{ lib, config, users, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.git = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
     };
   };
 
@@ -12,7 +12,7 @@
     # Git: File versioning
     programs.git = (
       let
-        user = users.${config.home.username};
+        user = args.users.${config.home.username};
       in {
         enable = options.enabled;
         package = (utils.mkDefault) (options.packageChannel).git;
@@ -28,7 +28,7 @@
         };
         includes = [
           {
-            path = "${pkgs-bundle.git-tools}/.gitconfig"; # My useful Git aliases!
+            path = "${args.pkgs-bundle.git-tools}/.gitconfig"; # My useful Git aliases!
           }
         ];
 

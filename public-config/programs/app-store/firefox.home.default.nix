@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.firefox = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
       options.defaults = (utils.mkDefaultsOption {
         "settings" = {};
       });
@@ -46,7 +46,7 @@
         isDefault = false;
 
         # Extensions
-        extensions = with pkgs-bundle.firefox-addons.pkgs; [
+        extensions = with args.pkgs-bundle.firefox-addons.pkgs; [
           ublock-origin # UBlock-Origin: Adblocker
           plasma-integration # Plasma Integration: Integrates Plasma Desktop
         ];

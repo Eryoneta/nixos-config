@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Stylix: Themes and colors manager
@@ -6,13 +6,13 @@
 
       # Wallpaper
       image = ( # Wallpaper
-        "${config-domain.private.resources}/wallpapers/Window/006.png"
+        "${args.config-domain.private.resources}/wallpapers/Window/006.png"
       );
       imageScalingMode = "fill"; # Fill background
 
       # Cursor
       cursor = {
-        package = pkgs-bundle.stable.afterglow-cursors-recolored;
+        package = args.pkgs-bundle.stable.afterglow-cursors-recolored;
         name = "Afterglow-Recolored-Original-joris2";
         size = 24;
       };
@@ -21,19 +21,19 @@
       fonts = {
         emoji = {
           name = "Noto Color Emoji";
-          package = (pkgs-bundle.stable).noto-fonts-color-emoji;
+          package = (args.pkgs-bundle.stable).noto-fonts-color-emoji;
         };
         monospace = {
           name = "Noto Sans Mono";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         sansSerif = {
           name = "Noto Sans";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         serif = {
           name = "Noto Serif";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         sizes = { # Font sizes
           desktop = 9; # Window titles, bars, widgets, etc

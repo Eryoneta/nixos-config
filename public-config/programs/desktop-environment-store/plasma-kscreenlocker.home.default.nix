@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # KScreenLocker: Screen locker for Plasma
@@ -9,7 +9,7 @@
         alwaysShowClock = (utils.mkDefault) true; # Show time
         showMediaControls = (utils.mkDefault) true; # Show media controls
         wallpaper = (utils.mkDefault) ( # Wallpaper
-          pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+          args.pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
         );
       };
 

@@ -1,8 +1,8 @@
-{ host, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Hostname
-    networking.hostName = host.name;
+    networking.hostName = args.host.name;
 
     # Internet
     networking.networkmanager.enable = (utils.mkDefault) true;

@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.firefox; (lib.mkIf (options.enabled) {
 
     # Firefox: Browser
@@ -26,7 +26,7 @@
         extensions = (
           config.programs.firefox.profiles."template-profile".extensions
           ++
-          (with pkgs-bundle.firefox-addons.pkgs; [
+          (with args.pkgs-bundle.firefox-addons.pkgs; [
             tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
           ])
         );

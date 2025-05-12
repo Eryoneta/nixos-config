@@ -1,23 +1,23 @@
-{ config, config-domain, host, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; {
     config = {
 
       # Users
       users.users = (
         let
           hashedFilePath = username: config.age.secrets."${username}-userPassword".path or null; # (Agenix secret)
-          defaultPassword = username: with config-domain; (
+          defaultPassword = username: with args.config-domain; (
             # Check for "./private-config/secrets"
             utils.mkIf (!(utils.pathExists private.secrets) || (hashedFilePath username) == null) (
               "nixos"
             )
           );
-          hashedPasswordFilePath = username: with config-domain; (
+          hashedPasswordFilePath = username: with args.config-domain; (
             # Check for "./private-config/secrets"
             utils.mkIf (utils.pathExists private.secrets && (hashedFilePath username) != null) (
               hashedFilePath username
             )
           );
-        in (utils.pipe (utils.attrsToList host.users) [
+        in (utils.pipe (utils.attrsToList args.host.users) [
           # Set the value of each user to be a valid configuration
           (x: builtins.map (user: {
             name = "${user.username}";

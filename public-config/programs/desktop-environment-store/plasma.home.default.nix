@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.plasma = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
       options.defaults = (utils.mkDefaultsOption {
         "panels" = {};
         "plasmoids" = {};
@@ -34,7 +34,7 @@
         };
         # Wallpaper
         wallpaper = (utils.mkDefault) ( # Wallpaper
-          pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+          args.pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
         );
         wallpaperFillMode = (utils.mkDefault) "preserveAspectCrop"; # Resize and cut excess
         # TODO: (Plasma/Wallpaper)(24.11) Does not work(--fill-mode does not exist). Check later

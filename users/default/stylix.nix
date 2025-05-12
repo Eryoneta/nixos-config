@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Stylix: Themes and colors manager
@@ -8,13 +8,13 @@
 
       # Wallpaper
       image = (utils.mkDefault) ( # Wallpaper
-        pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+        args.pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
       );
       imageScalingMode = (utils.mkDefault) "fill"; # Fill background
 
       # Cursor
       cursor = (utils.mkDefault) {
-        package = pkgs-bundle.stable.bibata-cursors;
+        package = args.pkgs-bundle.stable.bibata-cursors;
         name = "Bibata-Modern-Ice";
         size = 24;
       };
@@ -23,19 +23,19 @@
       fonts = (utils.mkDefault) {
         emoji = {
           name = "Noto Color Emoji";
-          package = (pkgs-bundle.stable).noto-fonts-color-emoji;
+          package = (args.pkgs-bundle.stable).noto-fonts-color-emoji;
         };
         monospace = {
           name = "Noto Sans Mono";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         sansSerif = {
           name = "Noto Sans";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         serif = {
           name = "Noto Serif";
-          package = (pkgs-bundle.stable).noto-fonts;
+          package = (args.pkgs-bundle.stable).noto-fonts;
         };
         sizes = { # Font sizes
           applications = 10; # Apps UIs
@@ -49,7 +49,7 @@
       polarity = (utils.mkDefault) "light"; # Theme
       # Gallery: https://tinted-theming.github.io/base16-gallery/
       base16Scheme = (utils.mkDefault) (
-        with pkgs-bundle.stable; ( # Colors
+        with args.pkgs-bundle.stable; ( # Colors
           "${base16-schemes}/share/themes/nord-light.yaml"
           # Note: Between stable and unstable, some themes might not exist
         )

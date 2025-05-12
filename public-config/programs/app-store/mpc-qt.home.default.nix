@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.mpc-qt = {
       options.enabled = (utils.mkBoolOption false); # DISABLED (Replaced by MPV)
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.unstable);
     };
   };
 
@@ -13,12 +13,12 @@
     home.packages = with options.packageChannel; [ mpc-qt ];
 
     # Dotfiles
-    xdg.configFile."mpc-qt/settings.json" = with config-domain; {
+    xdg.configFile."mpc-qt/settings.json" = with args.config-domain; {
       source = with public; (
         "${dotfiles}/mpc-qt/.config/mpc-qt/settings.json"
       );
     };
-    xdg.configFile."mpc-qt/keys_v2.json" = with config-domain; { # Huh, it's v2 now
+    xdg.configFile."mpc-qt/keys_v2.json" = with args.config-domain; { # Huh, it's v2 now
       source = with public; (
         "${dotfiles}/mpc-qt/.config/mpc-qt/keys.json"
       );

@@ -1,9 +1,9 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Programs
     home = {
-      packages = with pkgs-bundle; (
+      packages = with args.pkgs-bundle; (
         (with unstable; [
           xdg-ninja # xdg-ninja: Scans $HOME for uncompliant XDG files (Very convenient!)
         ])

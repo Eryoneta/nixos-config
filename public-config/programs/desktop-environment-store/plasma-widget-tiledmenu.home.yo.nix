@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
     xdg.dataFile."plasma/plasmoids/com.github.zren.tiledmenu" = {
-      source = "${pkgs-bundle.tiledmenu}/package";
+      source = "${args.pkgs-bundle.tiledmenu}/package";
     };
 
     # Configuration
@@ -153,7 +153,7 @@
                     toJSON = grid: (
                       utils.toJSON (utils.attrsToList grid)
                     );
-                    toBase64 = ((import "${config-domain.public.dotfiles}/plasma-widget-tiled-menu/base64.nix"){ inherit lib; }).toBase64;
+                    toBase64 = ((import "${args.config-domain.public.dotfiles}/plasma-widget-tiled-menu/base64.nix"){ inherit lib; }).toBase64;
                   in (toBase64 (toJSON (mkGrid apps gridModel)
                   ))
                 );

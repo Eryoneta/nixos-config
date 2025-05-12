@@ -1,4 +1,4 @@
-username: { config, config-domain, ... }@args: with args.config-utils; { # Note: This is a NixOSModule within a Nix function!
+username: { ... }@args: with args.config-utils; { # Note: This is a NixOSModule within a Nix function!
 
   # Programs
   imports = (
@@ -7,7 +7,7 @@ username: { config, config-domain, ... }@args: with args.config-utils; { # Note:
       onlyDefault = ".default.";
       onlyUser = ".${username}.";
       onlyNixFile = ".nix";
-    in with config-domain; (
+    in with args.config-domain; (
       []
       # Default
       ++ (utils.searchFiles "${public.programs}" "" [ onlyHomeConfig onlyDefault ] onlyNixFile)

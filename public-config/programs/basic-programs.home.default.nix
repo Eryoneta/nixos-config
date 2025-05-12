@@ -1,9 +1,9 @@
-{ lib, pkgs-bundle, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
 
     # Programs
     home = {
-      packages = with pkgs-bundle; (
+      packages = with args.pkgs-bundle; (
         (with unstable; [
           yt-dlp # yt-dlp: YouTube downloader script
         ])
