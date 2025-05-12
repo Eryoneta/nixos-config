@@ -138,7 +138,7 @@
 
         # NixOS-Upgrade starts only after this one
         systemd.services."nixos-upgrade" = {
-          wants = [ "nixos-upgrade-update-flake-lock.service" ];
+          requires = [ "nixos-upgrade-update-flake-lock.service" ];
           after = [ "nixos-upgrade-update-flake-lock.service" ];
         };
 
