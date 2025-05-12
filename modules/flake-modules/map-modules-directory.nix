@@ -14,10 +14,10 @@
     }
   ''
     - Ex.: ''
-        { modules, ...}: {
+        { modules-directory, ...}: {
           imports = [
-            modules."feat1.nix"
-            modules.subDir."feat2.nix"
+            modules-directory."feat1.nix"
+            modules-directory.subDir."feat2.nix"
           ]
           # ...
         }
@@ -31,7 +31,7 @@ flakePath: (
 
     # SpecialArg
     specialArg = directory: {
-      modules = (mapDir directory);
+      modules-directory = (mapDir directory);
     };
     
   in {

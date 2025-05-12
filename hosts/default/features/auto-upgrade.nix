@@ -1,6 +1,6 @@
 { ... }@args: with args.config-utils; {
 
-  imports = with args.modules; [
+  imports = with args.modules-directory; [
     nixos-modules."auto-upgrade-git-support.nix"
     nixos-modules."auto-upgrade-update-flake-lock.nix"
     nixos-modules."auto-upgrade-alter-profile.nix"

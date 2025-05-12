@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }@args: with args.config-utils; {
 
-  imports = with args.modules; [
+  imports = with args.modules-directory; [
     nixos-modules."garbage-collector-notifier.nix"
   ];
 

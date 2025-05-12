@@ -1,6 +1,6 @@
 { config, ... }@args: with args.config-utils; {
 
-  imports = with args.modules; [
+  imports = with args.modules-directory; [
     ./features/auto-upgrade.nix
     nixos-modules."link-to-source-config.nix"
     nixos-modules."swap-devices.nix"
