@@ -24,6 +24,7 @@
         captureEntireDesktop = (utils.mkDefault) "Ctrl+Shift+Print"; # Print everything
         captureRectangularRegion = (utils.mkDefault) "Shift+Print"; # Print a rectangle (Asks where)
         captureWindowUnderCursor = (utils.mkDefault) ""; # Print the window under cursor
+        recordRegion = (utils.mkDefault) ""; # Record a rectangle
         recordScreen = (utils.mkDefault) ""; # Record whole screen
         recordWindow = (utils.mkDefault) ""; # Record only a single window
       };
