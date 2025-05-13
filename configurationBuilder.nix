@@ -105,6 +105,9 @@ inputs: flakePath: (
             directory = ./modules;
           });
 
+          # Modular Configuration
+          modular-config = (flake-modules."modular-config.nix".build);
+
           # Agenix
           agenix = (flake-modules."agenix.nix".build {
             architecture = host.system.architecture;
@@ -142,6 +145,7 @@ inputs: flakePath: (
           user-host-scheme
           public-private-domains
           map-modules-directory
+          modular-config
           agenix
         ];
 

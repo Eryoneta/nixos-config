@@ -3,10 +3,13 @@
     username = "yo";
   in {
 
-    imports = [
-      (import ../default/home.nix username) # Imports default with the usrname. This avoids infinite recursion
-      ./stylix.nix
-      ./xdg-mime-apps.nix
+    imports = utils.concatLists [
+      [
+        (import ../default/home.nix username) # Imports default with the username. This avoids infinite recursion
+        ./stylix.nix
+        ./xdg-mime-apps.nix
+      ]
+      config.setup.taggedModules."yo"
     ];
 
     config = {
