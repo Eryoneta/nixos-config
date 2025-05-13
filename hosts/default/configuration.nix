@@ -23,7 +23,7 @@
           hasPkgsHash = (builtins.stringLength (args.inputs.nixpkgs.rev or "") > 0);
         in if (hasGitHash && hasPkgsHash) then (
           args.inputs.nixpkgs.rev
-        ) else (utils.formatStr args.host.system.label) #[a-zA-Z0-9:_.-]*
+        ) else (utils.formatStr args.hostArgs.system.label) #[a-zA-Z0-9:_.-]*
       );
 
       # Current configuration revision

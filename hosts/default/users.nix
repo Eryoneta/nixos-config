@@ -17,7 +17,7 @@
               hashedFilePath username
             )
           );
-        in (utils.pipe (utils.attrsToList args.host.users) [
+        in (utils.pipe (utils.attrsToList args.hostArgs.users) [
           # Set the value of each user to be a valid configuration
           (x: builtins.map (user: {
             name = "${user.username}";

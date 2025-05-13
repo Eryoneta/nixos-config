@@ -23,9 +23,9 @@
           "problems.decorations.enabled" = false; # Do not paint files and directories with warnings!
         } // ( 
           let
-            flakeGetter = "(builtins.getFlake \"${args.userDev.configFolder}\")";
-            nixosConfigName = "\"${args.userDev.name}@${args.userDev.host.name}\"";
-            homeConfigName = "\"${args.userDev.name}@${args.userDev.host.name}\"";
+            flakeGetter = "(builtins.getFlake \"${args.userDevArgs.configFolder}\")";
+            nixosConfigName = "\"${args.userDevArgs.name}@${args.userDevArgs.host.name}\"";
+            homeConfigName = "\"${args.userDevArgs.name}@${args.userDevArgs.host.name}\"";
           in {
             # Nix IDE extension configuration
             "nix.serverPath" = "nixd";

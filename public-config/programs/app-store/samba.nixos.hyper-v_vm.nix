@@ -18,13 +18,13 @@
       shares = {
         # Options: https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html
         "Público" = {
-          "comment" = "${args.host.userDev.name}'s shared files";
+          "comment" = "${args.hostArgs.userDev.name}'s shared files";
           # Browsing
-          "directory" = config.home-manager.users.${args.host.userDev.username}.xdg.userDirs.publicShare;
+          "directory" = config.home-manager.users.${args.hostArgs.userDev.username}.xdg.userDirs.publicShare;
           "browseable" = "yes"; # Can see
           "read only" = "no"; # Can write
           "hide dot files" = "no"; # Can see dotfiles
-          "force user" = args.host.userDev.username; # Act as if is main user
+          "force user" = args.hostArgs.userDev.username; # Act as if is main user
           "force group" = "users"; # Act as if from "users"
           # Security
           "server role" = "standalone"; # Is a single server with a user

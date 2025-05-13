@@ -75,7 +75,7 @@
     xdg.dataFile."kxmlgui5/dolphin/dolphinui.rc" = with args.config-domain; {
       source = (
         # Only the developer should be able to modify the file
-        if (config.home.username == args.userDev.username) then (
+        if (config.home.username == args.userDevArgs.username) then (
           utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"
         ) else (
           "${public.dotfiles}/dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc"

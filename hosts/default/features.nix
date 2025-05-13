@@ -12,7 +12,7 @@
     # Auto-login
     services.displayManager = {
       autoLogin.enable = (utils.mkDefault) false;
-      autoLogin.user = args.host.userDev.username;
+      autoLogin.user = args.hostArgs.userDev.username;
     };
 
     # System AutoUpgrade ("features/auto-upgrade.nix")
@@ -23,7 +23,7 @@
     # Link to source configuration ("link-to-source-config.nix")
     system.linkToSourceConfiguration = {
       enable = true;
-      configurationPath = args.host.configFolderNixStore;
+      configurationPath = args.hostArgs.configFolderNixStore;
     };
 
     # FSTrim
@@ -58,9 +58,9 @@
       resumeDevice = config.fileSystems."/".device;
       swapfilePath = config.swap.devices."basicSwap".device;
       dataFile = {
-        systemUser = args.host.userDev.username;
-        absolutePath = "${args.host.configFolder}/hosts/${args.host.hostname}/hardware-data.json";
-        storePath = (../. + "/${args.host.hostname}/hardware-data.json");
+        systemUser = args.hostArgs.userDev.username;
+        absolutePath = "${args.hostArgs.configFolder}/hosts/${args.hostArgs.hostname}/hardware-data.json";
+        storePath = (../. + "/${args.hostArgs.hostname}/hardware-data.json");
       };
     };
 

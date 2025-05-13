@@ -50,7 +50,7 @@
     xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with args.config-domain; {
       source = (
         # Only the developer should be able to modify the file
-        if (config.home.username == args.userDev.username) then (
+        if (config.home.username == args.userDevArgs.username) then (
           utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
         ) else (
           "${public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"

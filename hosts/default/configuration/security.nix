@@ -16,8 +16,8 @@
     age = with args.config-domain; ( # (Agenix option)
       # Check for "./private-config/secrets"
       utils.mkIf (utils.pathExists private.secrets) {
-        identityPaths = [ "/home/${args.host.userDev.username}/.ssh/id_ed25519_agenix" ];
-        secrets = (utils.pipe (utils.attrsToList args.host.users) [
+        identityPaths = [ "/home/${args.hostArgs.userDev.username}/.ssh/id_ed25519_agenix" ];
+        secrets = (utils.pipe (utils.attrsToList args.hostArgs.users) [
           # Removes users with files that don't exists
           (x: builtins.filter (user: (
             builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
@@ -69,7 +69,7 @@
     #     "firefox" = {
     #       executable = (
     #         let
-    #           firefox-pkgs = with config.home-manager.users.${args.host.user.username}; (
+    #           firefox-pkgs = with config.home-manager.users.${args.hostArgs.user.username}; (
     #             profile.programs.firefox.options.packageChannel
     #           ).firefox;
     #         in "${lib.getBin firefox-pkgs}/bin/firefox"

@@ -2,7 +2,7 @@
   config = {
 
     # Hostname
-    networking.hostName = args.host.name;
+    networking.hostName = args.hostArgs.name;
 
     # Internet
     networking.networkmanager.enable = (utils.mkDefault) true;

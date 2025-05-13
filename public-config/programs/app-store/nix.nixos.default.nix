@@ -25,7 +25,7 @@
         # Notifier ("garbage-collector-notifier.nix")
         notifier = {
           enable = (utils.mkDefault) true;
-          systemUser = args.host.userDev.username;
+          systemUser = args.hostArgs.userDev.username;
           informStart = {
             show = (utils.mkDefault) true;
             time = (utils.mkDefault) 15;

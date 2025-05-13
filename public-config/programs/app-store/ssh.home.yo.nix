@@ -8,13 +8,13 @@
           hostname = "github.com";
           identityFile = "~/.ssh/id_ed25519_git-public.pub";
           identitiesOnly = true;
-          user = args.userDev.username;
+          user = args.userDevArgs.username;
         };
         "private" = {
           hostname = "github.com";
           identityFile = "~/.ssh/id_ed25519_git-private.pub";
           identitiesOnly = true;
-          user = args.userDev.username;
+          user = args.userDevArgs.username;
         };
       };
     };

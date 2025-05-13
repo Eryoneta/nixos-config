@@ -27,7 +27,7 @@
     networking.useDHCP = (utils.mkDefault) true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = args.host.system.architecture;
+    nixpkgs.hostPlatform = args.hostArgs.system.architecture;
     
   };
 

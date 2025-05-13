@@ -12,7 +12,7 @@
     # Git: File versioning
     programs.git = (
       let
-        user = args.users.${config.home.username};
+        user = args.usersArgs.${config.home.username};
       in {
         enable = options.enabled;
         package = (utils.mkDefault) (options.packageChannel).git;

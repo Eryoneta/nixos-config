@@ -5,7 +5,7 @@
     let
       onlySystemConfig = ".nixos.";
       onlyDefault = ".default.";
-      onlyHost = ".${args.host.hostname}.";
+      onlyHost = ".${args.hostArgs.hostname}.";
       onlyNixFile = ".nix";
     in with args.config-domain; (
       []

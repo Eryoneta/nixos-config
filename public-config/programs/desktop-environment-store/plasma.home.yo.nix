@@ -65,7 +65,7 @@
           showGrid = {
             name = "org.kde.plasma.icon";
             config = {
-              "localPath" = "/home/${args.userDev.username}/.local/share/plasma_icons/ShowGrid.desktop";
+              "localPath" = "/home/${args.userDevArgs.username}/.local/share/plasma_icons/ShowGrid.desktop";
             };
           };
 
