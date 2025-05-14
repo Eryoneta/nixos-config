@@ -95,9 +95,6 @@ nix-lib: hm-pkgs: hm-lib: (
       # Greatly simplify the use of functions
       pipe = startValue: listOfFunctions: (nix-lib.pipe startValue listOfFunctions);
 
-      # Merges lists of lists into a single list
-      concatLists = listOfLists: (builtins.concatLists listOfLists);
-
       # Check if a path exists
       toFile = fileName: content: (builtins.toFile fileName content);
 

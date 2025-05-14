@@ -3,19 +3,19 @@
     username = "yo";
   in {
 
-    imports = utils.concatLists [
-      [
-        (import ../default/home.nix username) # Imports default with the username. This avoids infinite recursion
-        ./stylix.nix
-        ./xdg-mime-apps.nix
-      ]
-      config.setup.taggedModules."yo"
+    imports = [
+      (import ../default/home.nix username) # Imports default with the username. This avoids infinite recursion
+      ./stylix.nix
+      ./xdg-mime-apps.nix
     ];
 
     config = {
 
+      setup.enabledTags = [ "yo" ];
+      # setup.modules."calibre".included = true;
+
       home.username = username;
-      
+
       # Variables
       home.sessionVariables = {
         "DEFAULT_BROWSER" = with config.profile.programs.firefox-devedition; (
