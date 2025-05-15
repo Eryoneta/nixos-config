@@ -106,7 +106,10 @@ inputs: flakePath: (
           });
 
           # Modular Configuration
-          modular-config = (flake-modules."modular-config.nix".build);
+          modular-config = (flake-modules."modular-config.nix".build {
+            nixpkgs-lib = inputs.nixpkgs.lib;
+            packages = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
+          });
 
           # Agenix
           agenix = (flake-modules."agenix.nix".build {

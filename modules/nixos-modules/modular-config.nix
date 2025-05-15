@@ -1,7 +1,17 @@
 let
   mkConfig = (moduleType: { config, lib, ... }: (
     let
+
       cfg = config.setup;
+
+      evalModule = (
+        if (moduleType == "nixos") then (
+          "nixosConfiguration"
+        ) else if (moduleType == "home") then (
+          "homeConfiguration"
+        ) else ""
+      );
+
     in {
 
       options = {
@@ -9,10 +19,28 @@ let
 
           # Tags
           enabledTags = lib.mkOption {
-            type = (lib.types.attrsOf (lib.types.raw));
-            default = {};
+            type = (lib.types.listOf (lib.types.str));
+            default = [];
             description = ''
               FINAL-TAGS
+            '';
+          };
+
+          # NixOS system config
+          nixosConfiguration = lib.mkOption {
+            type = (lib.types.raw);
+            default = {};
+            description = ''
+              ATTRS
+            '';
+          };
+
+          # Home-Manager system config
+          homeConfiguration = lib.mkOption {
+            type = (lib.types.raw);
+            default = {};
+            description = ''
+              ATTRS
             '';
           };
 
@@ -20,6 +48,15 @@ let
           modules = lib.mkOption {
             type = (lib.types.lazyAttrsOf (lib.types.submodule {
               options = {
+
+                # Module enabler
+                enabled = lib.mkOption {
+                  type = (lib.types.bool);
+                  default = true;
+                  description = ''
+                    ENABLE
+                  '';
+                };
 
                 # Module includer
                 included = lib.mkOption {
@@ -70,13 +107,13 @@ let
             }));
             default = {};
             description = ''
-              FINAL-TAGS
+              MODULES
             '';
           };
         };
       };
 
-      config = (lib.pipe cfg.modules [
+      config.setup.${evalModule} = (lib.pipe cfg.modules [
 
         # For each module in "setup.modules", calls "nixos" and "home" using "attributes" (If those are functions)
         (x: builtins.mapAttrs (moduleId: module: {
@@ -96,7 +133,7 @@ let
         # For each module, define if it should be included or not
         (x: builtins.mapAttrs (moduleId: module: {
           inherit (module) enabled nixos home;
-          included = lib.mkDefault ( # Default value, allows to be overriden
+          included = ( # Default value, allows to be overriden
             lib.pipe module.tags [
 
               # Check each tag with the list present in "config.setup.enabledTags"
@@ -114,19 +151,13 @@ let
         # For each module, define if it should be enabled or not
         (x: builtins.mapAttrs (moduleId: module: (
           lib.mkIf (module.enabled && module.included) module.${moduleType}
-          # if (module.enabled && module.included) then module.${moduleType} else {}
         )) x)
-
-        (x: builtins.mapAttrs (moduleId: module:
-          builtins.removeAttrs module [ "setup" ]
-        ) x)
 
         # Transforms the set of modules into a list of modules
         (x: lib.attrsets.attrValues x)
 
         # Merges everything into a single set
         (x: lib.mkMerge x)
-        # (x: lib.foldAttrs (attrs: attrsList: attrsList ++ [ attrs ]) [] x)
 
       ]);
 
