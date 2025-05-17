@@ -18,8 +18,8 @@ flakePath: (
     # Basic Home-Manager Configuration
     homeManagerConfig = usernames: {
       home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
+        useGlobalPkgs = false; # Ignore system nixpkgs configuration. Every one is configured separately
+        useUserPackages = true; # Save user packages in "/etc/profiles/per-user/$USERNAME" if it's already present in the system ("/etc/profiles/")
         users = (builtins.listToAttrs (builtins.map (
           username: {
             name = username;
@@ -47,7 +47,7 @@ flakePath: (
 
   in {
     # Builder
-    build = { usernames ? [ "nixos" ], package, modifiers ? [] }: {
+    build = { systemPackage, architecture ? "x86_64-linux", usernames ? [ "nixos" ], package, modifiers ? [] }: {
 
       # Override System Configuration
       nixosSystem = {
@@ -55,6 +55,21 @@ flakePath: (
           # Note: It's two separate items within a list! Not a function!
           package.nixosModules.home-manager
           (homeManagerConfigWithModifiers usernames modifiers)
+          {
+            home-manager = {
+              extraSpecialArgs = {
+                pkgs = import systemPackage { # Replace "pkgs" with a custom one
+                  system = architecture;
+                  config.allowUnfree = true;
+                };
+                # Note: Not exactly a good idea...! But it works!
+                #   This allows all home-manager modules to use a different package from the system
+                #   Kernel and KDE Plasma are defined by NixOS. Nearly all apps are defined by Home-Manager
+                #   Both can use a different version of nixpkgs now
+                #   Evaluation time is doubled, lol
+              };
+            };
+          }
         ];
       };
 
