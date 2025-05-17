@@ -24,12 +24,16 @@ let
             description = ''
               FINAL-TAGS
             '';
+            example = ''
+              EXAMPLE
+            '';
           };
 
           # NixOS system config
           nixosConfiguration = lib.mkOption {
             type = (lib.types.raw);
-            default = {};
+            readOnly = true;
+            visible = false;
             description = ''
               ATTRS
             '';
@@ -38,7 +42,8 @@ let
           # Home-Manager system config
           homeConfiguration = lib.mkOption {
             type = (lib.types.raw);
-            default = {};
+            readOnly = true;
+            visible = false;
             description = ''
               ATTRS
             '';
@@ -56,6 +61,9 @@ let
                   description = ''
                     ENABLE
                   '';
+                  example = ''
+                    EXAMPLE
+                  '';
                 };
 
                 # Module includer
@@ -64,6 +72,9 @@ let
                   default = true;
                   description = ''
                     TAGS
+                  '';
+                  example = ''
+                    EXAMPLE
                   '';
                 };
 
@@ -74,6 +85,9 @@ let
                   description = ''
                     TAGS
                   '';
+                  example = ''
+                    EXAMPLE
+                  '';
                 };
 
                 # Module attributes
@@ -82,6 +96,9 @@ let
                   default = {};
                   description = ''
                     ATTRS
+                  '';
+                  example = ''
+                    EXAMPLE
                   '';
                 };
 
@@ -92,6 +109,9 @@ let
                   description = ''
                     ATTRS
                   '';
+                  example = ''
+                    EXAMPLE
+                  '';
                 };
 
                 # Module home config
@@ -101,6 +121,9 @@ let
                   description = ''
                     ATTRS
                   '';
+                  example = ''
+                    EXAMPLE
+                  '';
                 };
 
               };
@@ -108,6 +131,9 @@ let
             default = {};
             description = ''
               MODULES
+            '';
+            example = ''
+              EXAMPLE
             '';
           };
         };
