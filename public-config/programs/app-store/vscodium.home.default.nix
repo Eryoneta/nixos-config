@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.vscodium = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.unstable);
     };
   };
 
@@ -19,7 +19,7 @@
       enableExtensionUpdateCheck = (utils.mkDefault) true; # Warn about extension updates
 
       # Settings
-      userSettings = with config-domain; (
+      userSettings = with args.config-domain; (
         (
           # Simple settings
           utils.readJSONFile "${public.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
@@ -64,7 +64,7 @@
       );
 
       # Shortcuts
-      keybindings = with config-domain; (
+      keybindings = with args.config-domain; (
         (
           # Unbindings
           utils.readJSONFile "${public.dotfiles}/vscodium/.config/VSCodium/User/keybindings.json"

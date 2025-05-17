@@ -1,4 +1,4 @@
-{ host, inputs, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
 
     imports = [
       ./configuration/boot-loader.nix
@@ -18,18 +18,18 @@
       # Current-configuration label
       system.nixos.label = (
         let
-          self = inputs.self;
+          self = args.inputs.self;
           hasGitHash = (builtins.stringLength (self.shortRev or self.dirtyShortRev or "") > 0);
-          hasPkgsHash = (builtins.stringLength (inputs.nixpkgs.rev or "") > 0);
+          hasPkgsHash = (builtins.stringLength (args.inputs.nixpkgs.rev or "") > 0);
         in if (hasGitHash && hasPkgsHash) then (
-          inputs.nixpkgs.rev
-        ) else (utils.formatStr host.system.label) #[a-zA-Z0-9:_.-]*
+          args.inputs.nixpkgs.rev
+        ) else (utils.formatStr args.hostArgs.system.label) #[a-zA-Z0-9:_.-]*
       );
 
       # Current configuration revision
       system.configurationRevision = (
         let
-          self = inputs.self;
+          self = args.inputs.self;
         in (builtins.toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown"))
         # Note:
         #   shortRev = Git current commit

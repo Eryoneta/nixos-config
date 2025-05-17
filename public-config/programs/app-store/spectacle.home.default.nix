@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.spectacle = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
     };
   };
 
@@ -24,6 +24,7 @@
         captureEntireDesktop = (utils.mkDefault) "Ctrl+Shift+Print"; # Print everything
         captureRectangularRegion = (utils.mkDefault) "Shift+Print"; # Print a rectangle (Asks where)
         captureWindowUnderCursor = (utils.mkDefault) ""; # Print the window under cursor
+        recordRegion = (utils.mkDefault) ""; # Record a rectangle
         recordScreen = (utils.mkDefault) ""; # Record whole screen
         recordWindow = (utils.mkDefault) ""; # Record only a single window
       };

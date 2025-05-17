@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.ghostwriter = {
       options.enabled = (utils.mkBoolOption false); # IT ALWAYS CRASHES
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
     };
   };
 

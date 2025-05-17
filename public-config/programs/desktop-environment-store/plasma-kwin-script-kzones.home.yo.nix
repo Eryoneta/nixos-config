@@ -1,4 +1,4 @@
-{ lib, config, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (false) {
 
     # KZones: KWin script for snapping windows into zones
@@ -8,7 +8,7 @@
         # It is a newer, modified version
         #   (Zones indicators have priority over edges)
         fetchFromGitHub = ignoredArgs: (
-          "${config-domain.public.dotfiles}/kwin/kzones"
+          "${args.config-domain.public.dotfiles}/kwin/kzones"
         );
       })
       #kdePackages.kzones

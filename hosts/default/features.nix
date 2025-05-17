@@ -1,6 +1,6 @@
-{ config, modules, host, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; {
 
-  imports = with modules; [
+  imports = with args.modules-directory; [
     ./features/auto-upgrade.nix
     nixos-modules."link-to-source-config.nix"
     nixos-modules."swap-devices.nix"
@@ -12,7 +12,7 @@
     # Auto-login
     services.displayManager = {
       autoLogin.enable = (utils.mkDefault) false;
-      autoLogin.user = host.userDev.username;
+      autoLogin.user = args.hostArgs.userDev.username;
     };
 
     # System AutoUpgrade ("features/auto-upgrade.nix")
@@ -23,7 +23,7 @@
     # Link to source configuration ("link-to-source-config.nix")
     system.linkToSourceConfiguration = {
       enable = true;
-      configurationPath = host.configFolderNixStore;
+      configurationPath = args.hostArgs.configFolderNixStore;
     };
 
     # FSTrim
@@ -58,9 +58,9 @@
       resumeDevice = config.fileSystems."/".device;
       swapfilePath = config.swap.devices."basicSwap".device;
       dataFile = {
-        systemUser = host.userDev.username;
-        absolutePath = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
-        storePath = (../. + "/${host.hostname}/hardware-data.json");
+        systemUser = args.hostArgs.userDev.username;
+        absolutePath = "${args.hostArgs.configFolder}/hosts/${args.hostArgs.hostname}/hardware-data.json";
+        storePath = (../. + "/${args.hostArgs.hostname}/hardware-data.json");
       };
     };
 

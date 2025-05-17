@@ -1,6 +1,6 @@
-{ auto-upgrade-pkgs, modules, host, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
 
-  imports = with modules; [
+  imports = with args.modules-directory; [
     nixos-modules."auto-upgrade-git-support.nix"
     nixos-modules."auto-upgrade-update-flake-lock.nix"
     nixos-modules."auto-upgrade-alter-profile.nix"
@@ -15,15 +15,15 @@
       persistent = true;
       dates = (utils.mkDefault) "Fri *-*-* 16:00:00"; # Every friday, 16h00
       randomizedDelaySec = (utils.mkDefault) "30min"; # Random delay of 30min (Its best to not upgrade right after booting)
-      flake = "git+file://${host.configFolder}?submodules=1#${host.userDev.name}@${host.name}";
+      flake = "git+file://${args.hostArgs.configFolder}?submodules=1#${args.hostArgs.userDev.name}@${args.hostArgs.name}";
       # Notice: The flake ignores submodules! The flag "submodules=1" is necessary
       # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
 
       # Git support ("auto-upgrade-git-support.nix")
       gitSupport = {
         enable = (utils.mkDefault) true;
-        systemUser = host.userDev.username;
-        directory = host.configFolder;
+        systemUser = args.hostArgs.userDev.username;
+        directory = args.hostArgs.configFolder;
         markDirectoryAsSafe = (utils.mkDefault) true;
         push = (utils.mkDefault) true;
       };
@@ -31,7 +31,7 @@
       # Update flake lock ("auto-upgrade-update-flake-lock.nix")
       updateFlakeLock = {
         enable = (utils.mkDefault) true;
-        inputs = auto-upgrade-pkgs;
+        inputs = args.auto-upgrade-pkgs;
         commitLockFile = (utils.mkDefault) true; # Commits "flake.lock"
       };
 
@@ -45,7 +45,7 @@
       # Notifier ("auto-upgrade-notifier.nix")
       notifier = {
         enable = (utils.mkDefault) true;
-        systemUser = host.userDev.username;
+        systemUser = args.hostArgs.userDev.username;
           informStart = {
             show = (utils.mkDefault) true;
             time = (utils.mkDefault) 15;

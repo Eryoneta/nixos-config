@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   
   options = {
     profile.programs.plymouth = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
     };
   };
 

@@ -1,11 +1,11 @@
 # User & Host Scheme
 /*
   - A flake-module modifier
-  - Defines "host" inside "specialArgs" and "user" inside "extraSpecialArgs"
-    - Basically, NixOS gets "host" and Home-Manager gets "users" and "userDev"
-  - "host" have a atribute "users", and each "users" have a atribute "host"
+  - Defines "hostArgs" inside "specialArgs" and "userArgs" inside "extraSpecialArgs"
+    - Basically, NixOS gets "hostArgs" and Home-Manager gets "usersArgs" and "userDevArgs"
+  - "hostArgs" have a atribute "usersArgs", and each "usersArgs" have a atribute "hostArgs"
     - One points to the other recursively
-      - Ex.: "host.userDev.host.userDev.host.userDev.username" is totally valid
+      - Ex.: "hostArgs.userDev.host.userDev.host.userDev.username" is totally valid
   - Both "users" and "host" need to be created before
     - "buildHost" returns a valid "host"
     - "buildUser" returns a valid "user" to be included in a list
@@ -138,8 +138,8 @@ flakePath: (
               username: user: (import "${flakePath}/users/${username}/home.nix")
             ) group.users);
             extraSpecialArgs = {
-              userDev = group.userDev;
-              users = group.users;
+              userDevArgs = group.userDev;
+              usersArgs = group.users;
             };
           };
         };
@@ -150,8 +150,8 @@ flakePath: (
             "${flakePath}/users/${username}/home.nix"
           ];
           extraSpecialArgs = {
-            userDev = group.userDev;
-            users = group.users;
+            userDevArgs = group.userDev;
+            usersArgs = group.users;
           };
         };
 
@@ -161,7 +161,7 @@ flakePath: (
             "${flakePath}/hosts/${group.host.hostname}/configuration.nix"
           ];
           specialArgs = {
-            host = group.host;
+            hostArgs = group.host;
           };
         };
 

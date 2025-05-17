@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
   config = {
     
     # XDG Desktop Entries

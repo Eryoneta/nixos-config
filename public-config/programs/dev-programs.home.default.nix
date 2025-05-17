@@ -1,9 +1,9 @@
-{ lib, pkgs-bundle, ... }@args: with args.config-utils; {
+{ lib, ... }@args: with args.config-utils; {
   config = {
 
     # Programs
     home = {
-      packages = with pkgs-bundle; (
+      packages = with args.pkgs-bundle; (
         (with unstable; [
 
         ])
@@ -30,7 +30,7 @@
     # Java: Java Development Kit v17
     programs.java = {
       enable = true;
-      package = with pkgs-bundle; with stable; (lib.hiPrio zulu17); # Zulu: Java Development Kit v17
+      package = with args.pkgs-bundle; with stable; (lib.hiPrio zulu17); # Zulu: Java Development Kit v17
       # Note: Has a collision with "eclipses.eclipse-java"
     };
 

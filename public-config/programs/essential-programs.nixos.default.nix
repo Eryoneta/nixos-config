@@ -1,8 +1,8 @@
-{ pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+{ pkgs, ... }@args: with args.config-utils; {
   config = {
 
     # System programs
-    environment.systemPackages = with pkgs-bundle; (
+    environment.systemPackages = with args.pkgs-bundle; (
       (with unstable; [
 
       ])

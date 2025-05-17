@@ -1,4 +1,4 @@
-{ lib, config,  ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.mpv; (lib.mkIf (options.enabled) {
 
     home.packages = with options.packageChannel; [

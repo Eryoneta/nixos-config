@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }@args: with args.config-utils; {
+{ config, lib, pkgs, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.nix = {

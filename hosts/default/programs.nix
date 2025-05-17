@@ -1,13 +1,13 @@
-{ config-domain, host, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
     
   # Programs
   imports = (
     let
       onlySystemConfig = ".nixos.";
       onlyDefault = ".default.";
-      onlyHost = ".${host.hostname}.";
+      onlyHost = ".${args.hostArgs.hostname}.";
       onlyNixFile = ".nix";
-    in with config-domain; (
+    in with args.config-domain; (
       []
       # Default
       ++ (utils.searchFiles "${public.programs}" "" [ onlySystemConfig onlyDefault ] onlyNixFile)

@@ -1,4 +1,4 @@
-{ lib, config, pkgs-bundle, userDev, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Plasma: The KDE Plasma Desktop
@@ -65,7 +65,7 @@
           showGrid = {
             name = "org.kde.plasma.icon";
             config = {
-              "localPath" = "/home/${userDev.username}/.local/share/plasma_icons/ShowGrid.desktop";
+              "localPath" = "/home/${args.userDevArgs.username}/.local/share/plasma_icons/ShowGrid.desktop";
             };
           };
 
@@ -147,7 +147,7 @@
 
     # Icon theme
     xdg.dataFile."icons/Papirus-Colors-Dark" = {
-      source = with pkgs-bundle; (
+      source = with args.pkgs-bundle; (
         papirus-colors-icons."Papirus-Colors-Dark"
       );
     };

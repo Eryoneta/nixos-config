@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.zsh = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
     };
   };
 
@@ -135,7 +135,7 @@
       #   The file is already imported(If present) at the theme above
       #   Of course, HM will complain if there is a file where the symlink should be
       #     Just replace the one at "dotfiles"
-      xdg.configFile."zsh/.p10k.zsh" = with config-domain; {
+      xdg.configFile."zsh/.p10k.zsh" = with args.config-domain; {
         source = "${public.dotfiles}/zsh/.config/zsh/.p10k.zsh";
       };
 

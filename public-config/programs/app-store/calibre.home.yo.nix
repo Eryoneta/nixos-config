@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.calibre = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
     };
   };
 
@@ -13,7 +13,7 @@
     home.packages = with options.packageChannel; [ calibre ];
 
     # Dotfiles
-    xdg.configFile."calibre" = with config-domain; {
+    xdg.configFile."calibre" = with args.config-domain; {
       # Check for "./private-config/dotfiles"
       enable = (utils.pathExists private.dotfiles);
       source = with outOfStore.private; (

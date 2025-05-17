@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.konsole = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable); # Not used
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable); # Not used
     };
   };
 
@@ -18,7 +18,7 @@
         "DefaultProfile" = "Yo.profile"; # Profile
       };
     };
-    xdg.dataFile."konsole" = with config-domain; {
+    xdg.dataFile."konsole" = with args.config-domain; {
       source = with outOfStore.public; (
         utils.mkOutOfStoreSymlink "${dotfiles}/konsole/.local/share/konsole"
       );

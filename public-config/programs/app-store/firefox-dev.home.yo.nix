@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, pkgs, ... }@args: with args.config-utils; {
+{ config, lib, pkgs, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.firefox-devedition = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.unstable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.unstable);
       options.defaults = (utils.mkDefaultsOption {
         "settings" = (import ./firefox-dev+settings.nix);
       });
@@ -72,7 +72,7 @@
         extensions = (
           config.programs.firefox.profiles."template-profile".extensions
           ++
-          (with pkgs-bundle.firefox-addons.pkgs; [
+          (with args.pkgs-bundle.firefox-addons.pkgs; [
             tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
             sidebery # Sidebery: Sidebar with vertical tabs
           ])
@@ -90,9 +90,9 @@
     # FX-AutoConfig: Custom JavaScript loader
     home = (
       let
-        fx-autoconfig = pkgs-bundle.fx-autoconfig;
+        fx-autoconfig = args.pkgs-bundle.fx-autoconfig;
         profilePath = ".mozilla/firefox/dev-edition-default";
-        scripts = pkgs-bundle.firefox-scripts;
+        scripts = args.pkgs-bundle.firefox-scripts;
       in {
 
         # Firefox Developer Edition: Browser

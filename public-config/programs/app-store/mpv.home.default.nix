@@ -1,9 +1,9 @@
-{ lib, config, pkgs-bundle, pkgs,  ... }@args: with args.config-utils; {
+{ config, lib, pkgs, ... }@args: with args.config-utils; {
 
   options = {
     profile.programs.mpv = {
       options.enabled = (utils.mkBoolOption true);
-      options.packageChannel = (utils.mkPackageOption pkgs-bundle.stable);
+      options.packageChannel = (utils.mkPackageOption args.pkgs-bundle.stable);
       options.defaults = (utils.mkDefaultsOption rec {
         mpv-config = {
 
@@ -163,7 +163,7 @@
 
     # Scripts/InputEvent: More control over the inputs
     xdg.configFile."mpv/scripts/inputevent.lua" = {
-      source = "${pkgs-bundle.mpv-input-event}/inputevent.lua";
+      source = "${args.pkgs-bundle.mpv-input-event}/inputevent.lua";
     };
 
   });

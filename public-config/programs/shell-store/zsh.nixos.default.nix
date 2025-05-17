@@ -1,6 +1,6 @@
-{ lib, config, host, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = (
-    with config.home-manager.users.${host.userDev.username};
+    with config.home-manager.users.${args.hostArgs.userDev.username};
     with profile.programs.zsh; (lib.mkIf (options.enabled) {
 
       # ZSH: Shell

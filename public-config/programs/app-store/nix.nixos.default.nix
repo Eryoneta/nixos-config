@@ -1,6 +1,6 @@
-{ lib, config, modules, host, pkgs, ... }@args: with args.config-utils; {
+{ config, lib, pkgs, ... }@args: with args.config-utils; {
 
-  imports = with modules; [
+  imports = with args.modules-directory; [
     nixos-modules."garbage-collector-notifier.nix"
   ];
 
@@ -25,7 +25,7 @@
         # Notifier ("garbage-collector-notifier.nix")
         notifier = {
           enable = (utils.mkDefault) true;
-          systemUser = host.userDev.username;
+          systemUser = args.hostArgs.userDev.username;
           informStart = {
             show = (utils.mkDefault) true;
             time = (utils.mkDefault) 15;

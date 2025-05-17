@@ -1,4 +1,4 @@
-{ lib, config, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.plasma; (lib.mkIf (options.enabled) {
 
     # Baloo: File indexer

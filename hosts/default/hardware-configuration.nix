@@ -1,4 +1,4 @@
-{ host, ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; {
 
   imports = [];
 
@@ -27,7 +27,7 @@
     networking.useDHCP = (utils.mkDefault) true;
 
     # Nix Packages
-    nixpkgs.hostPlatform = host.system.architecture;
+    nixpkgs.hostPlatform = args.hostArgs.system.architecture;
     
   };
 

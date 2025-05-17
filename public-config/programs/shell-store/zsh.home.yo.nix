@@ -1,4 +1,4 @@
-{ lib, config, userDev, auto-upgrade-pkgs, ... }@args: with args.config-utils; {
+{ config, lib, ... }@args: with args.config-utils; {
   config = with config.profile.programs.zsh; (lib.mkIf (options.enabled) {
 
     # ZSH: Shell
@@ -12,13 +12,13 @@
           systemProfile = {
             name = "system";
             path = "/nix/var/nix/profiles/${systemProfile.name}";
-            flakePath = "path:${userDev.configDevFolder}#${userDev.name}@${userDev.host.name}"; # "path:" = Ignores Git repository
+            flakePath = "path:${args.userDevArgs.configDevFolder}#${args.userDevArgs.name}@${args.userDevArgs.host.name}"; # "path:" = Ignores Git repository
             preStart = "";
           };
           upgradeProfile = {
             name = "System_Upgrades";
             path = "/nix/var/nix/profiles/system-profiles/${upgradeProfile.name}";
-            flakePath = "git+file://${userDev.configFolder}?submodules=1#${userDev.name}@${userDev.host.name}";
+            flakePath = "git+file://${args.userDevArgs.configFolder}?submodules=1#${args.userDevArgs.name}@${args.userDevArgs.host.name}";
             # Notice: The flag "submodules=1" is necessary to make the flake see Git submodules
             # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
             preStart = (
@@ -64,8 +64,8 @@
 
           upgradeSystemCommand = (
             let
-              inputs = (builtins.toString auto-upgrade-pkgs);
-              configFolderPath = userDev.configFolder;
+              inputs = (builtins.toString args.auto-upgrade-pkgs);
+              configFolderPath = args.userDevArgs.configFolder;
               # Important note: This whole command should be equivalent as set by "modules/nixos-modules/auto-upgrade-update-flake-lock.nix"!
             in (utils.replaceStr "\n" "" ''
               nx-ufl() {
@@ -73,7 +73,7 @@
                 nix flake update ${inputs} --flake "${configFolderPath}" --commit-lock-file;
                 cd "${configFolderPath}";
                 if [[ $(git diff --name-only HEAD HEAD~1) == "flake.lock" ]]; then
-                  git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${userDev.host.name}>";
+                  git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${args.userDevArgs.host.name}>";
                 fi;
                 cd -;
               };
