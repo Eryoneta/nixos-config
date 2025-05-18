@@ -2,20 +2,22 @@ let
   mkConfig = (moduleType: { config, lib, ... }: (
     let
 
-      cfg = config.setup;
+      cfg = config;
 
-      evalModule = (
+      getModuleToEval = typeMatch: (
         if (moduleType == "nixos") then (
-          "nixosConfiguration"
+          if (typeMatch) then "nixosConfigurationModules" else "homeConfigurationModules"
         ) else if (moduleType == "home") then (
-          "homeConfiguration"
+          if (typeMatch) then "homeConfigurationModules" else "nixosConfigurationModules"
         ) else ""
       );
+
+      moduleToEval = (getModuleToEval true);
+      moduleToNotEval = (getModuleToEval false);
 
     in {
 
       options = {
-        setup = {
 
           # Tags
           enabledTags = lib.mkOption {
@@ -30,7 +32,7 @@ let
           };
 
           # NixOS system config
-          nixosConfiguration = lib.mkOption {
+          nixosConfigurationModules = lib.mkOption {
             type = (lib.types.raw);
             readOnly = true;
             visible = false;
@@ -40,7 +42,7 @@ let
           };
 
           # Home-Manager system config
-          homeConfiguration = lib.mkOption {
+          homeConfigurationModules = lib.mkOption {
             type = (lib.types.raw);
             readOnly = true;
             visible = false;
@@ -51,7 +53,7 @@ let
 
           # Modules
           modules = lib.mkOption {
-            type = (lib.types.lazyAttrsOf (lib.types.submodule {
+            type = (lib.types.attrsOf (lib.types.submodule {
               options = {
 
                 # Module enabler
@@ -91,7 +93,7 @@ let
                 };
 
                 # Module attributes
-                attributes = lib.mkOption {
+                attr = lib.mkOption {
                   type = (lib.types.attrs);
                   default = {};
                   description = ''
@@ -102,21 +104,43 @@ let
                   '';
                 };
 
-                # Module system config
-                nixos = lib.mkOption {
-                  type = (lib.types.raw);
-                  default = {};
-                  description = ''
-                    ATTRS
-                  '';
-                  example = ''
-                    EXAMPLE
-                  '';
-                };
+                # Module setup
+                setup = lib.mkOption (
+                  let
+                    mkSetupConfig = {
+                    options = {
 
-                # Module home config
-                home = lib.mkOption {
-                  type = (lib.types.raw);
+                      # Module system config
+                      nixos = lib.mkOption {
+                        type = (lib.types.raw);
+                        default = {};
+                        description = ''
+                          ATTRS
+                        '';
+                        example = ''
+                          EXAMPLE
+                        '';
+                      };
+
+                      # Module home config
+                      home = lib.mkOption {
+                        type = (lib.types.raw);
+                        default = {};
+                        description = ''
+                          ATTRS
+                        '';
+                        example = ''
+                          EXAMPLE
+                        '';
+                      };
+
+                    };
+                  };
+                in {
+                  type = (lib.types.either
+                    (lib.types.functionTo (lib.types.submodule mkSetupConfig))
+                    (lib.types.submodule mkSetupConfig)
+                  );
                   default = {};
                   description = ''
                     ATTRS
@@ -124,7 +148,7 @@ let
                   example = ''
                     EXAMPLE
                   '';
-                };
+                });
 
               };
             }));
@@ -136,30 +160,25 @@ let
               EXAMPLE
             '';
           };
-        };
+
       };
 
-      config.setup.${evalModule} = (lib.pipe cfg.modules [
+      config.${moduleToEval} = (lib.pipe cfg.modules [
 
-        # For each module in "setup.modules", calls "nixos" and "home" using "attributes" (If those are functions)
+        # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.mapAttrs (moduleId: module: {
           inherit (module) enabled tags;
-          nixos = if(builtins.isFunction module.nixos) then (
-            module.nixos {
-              attributes = module.attributes;
+          setup = if(builtins.isFunction module.setup) then (
+            module.setup {
+              attr = module.attr;
             }
-          ) else module.nixos;
-          home = if(builtins.isFunction module.home) then (
-            module.home {
-              attributes = module.attributes;
-            }
-          ) else module.home;
+          ) else module.setup;
         }) x)
 
         # For each module, define if it should be included or not
         (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enabled nixos home;
-          included = ( # Default value, allows to be overriden
+          inherit (module) enabled setup;
+          included = (
             lib.pipe module.tags [
 
               # Check each tag with the list present in "config.setup.enabledTags"
@@ -174,22 +193,31 @@ let
           );
         }) x)
 
-        # For each module, define if it should be enabled or not
+        # For each module, define if it should be included or be empty
         (x: builtins.mapAttrs (moduleId: module: (
-          lib.mkIf (module.enabled && module.included) module.${moduleType}
+          if (module.enabled && module.included) then module.setup.${moduleType} else {}
         )) x)
 
         # Transforms the set of modules into a list of modules
-        (x: lib.attrsets.attrValues x)
-
-        # Merges everything into a single set
-        (x: lib.mkMerge x)
+        (x: builtins.attrValues x)
 
       ]);
+
+      config.${moduleToNotEval} = {};
+
+      config.modules."default" = {
+        enabled = true;
+        tags = [ "default" ];
+        setup.nixos = {};
+        setup.home = {};
+      };
+      # Note: A default module is included. That avoids 'homeConfigurationModules' or 'nixosConfigurationModules' from being empty
+      config.enabledTags = [ "default" ];
+      # Note: The "default" tag can be used to automatically include a module
 
     }
   ));
 in {
   nixosModules = (mkConfig "nixos");
-  homeManagerModules = (mkConfig "home");
+  homeModules = (mkConfig "home");
 }

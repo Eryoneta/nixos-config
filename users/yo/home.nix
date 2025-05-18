@@ -11,9 +11,6 @@
 
     config = {
 
-      setup.enabledTags = [ "yo" ];
-      # setup.modules."calibre".included = true;
-
       home.username = username;
 
       # Variables
