@@ -87,13 +87,7 @@
 
       # System_Label ([a-zA-Z0-9:_.-]*)
       # I change it at every rebuild. Very convenient for naming generations!
-      systemLabel = (
-        let
-          filePath = ./NIXOS_LABEL.txt;
-        in if (builtins.pathExists filePath) then (
-          builtins.readFile filePath
-        ) else "Initial Configuration: Requires private-config to be complete"
-      );
+      systemLabel = (builtins.readFile ./NIXOS_LABEL.txt);
 
       # Hosts
       LiCo = user-host-scheme.buildHost {
