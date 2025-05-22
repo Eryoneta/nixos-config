@@ -70,8 +70,8 @@ let
 
                 # Module includer
                 included = lib.mkOption {
-                  type = (lib.types.bool);
-                  default = true;
+                  type = (lib.types.nullOr (lib.types.bool));
+                  default = null;
                   description = ''
                     TAGS
                   '';
@@ -167,7 +167,7 @@ let
 
         # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enabled tags;
+          inherit (module) enabled included tags;
           setup = if(builtins.isFunction module.setup) then (
             module.setup {
               attr = module.attr;
@@ -179,17 +179,21 @@ let
         (x: builtins.mapAttrs (moduleId: module: {
           inherit (module) enabled setup;
           included = (
-            lib.pipe module.tags [
+            if (module.included != null) then (
+              module.included
+            ) else (
+              lib.pipe module.tags [
 
-              # Check each tag with the list present in "config.setup.enabledTags"
-              (x: builtins.map (tag: (
-                builtins.elem tag cfg.enabledTags
-              )) x)
+                # Check each tag with the list present in "config.setup.enabledTags"
+                (x: builtins.map (tag: (
+                  builtins.elem tag cfg.enabledTags
+                )) x)
 
-              # Check if any of the tags is present in the list
-              (x: builtins.elem true x)
+                # Check if any of the tags is present in the list
+                (x: builtins.elem true x)
 
-            ]
+              ]
+            )
           );
         }) x)
 
