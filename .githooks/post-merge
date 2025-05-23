@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+if [ $(git rev-parse --abbrev-ref HEAD) = "main" ]; then
+    echo "Updating submodules...";
+    git submodule update --recursive;
+fi;
