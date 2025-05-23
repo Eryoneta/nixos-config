@@ -2,6 +2,7 @@ flakePath: (
   let
 
     # Imports
+    setup = (builtins.import ./config-utils/setup-module/setup.nix);
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
@@ -17,6 +18,7 @@ flakePath: (
         userHostArgs = (user-host-scheme.buildSpecialArgs {
           inherit allUsers host;
         });
+        lib = inputs.nixpkgs.lib;
         configDomainArgs = (config-domain.buildSpecialArgs { # Config Domain
           configPath = if (userDev.configDevFolder != "") then userDev.configDevFolder else userDev.configFolder;
           # Note: Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
@@ -43,13 +45,27 @@ flakePath: (
           system = host.system.architecture;
           modules = [
 
+            # Setup Configuration
+            (setup.setupSystem {
+              inherit lib;
+              modules = [
+                "./hosts/${host.hostname}/configuration.nix"  # Loads host configuration
+              ];
+              specialArgs = {
+                inherit auto-upgrade-pkgs; # Auto-Upgrade
+                inherit pkgs-bundle; # Packages
+                inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
+                inherit (configDomainArgs) config-domain; # Config-Domain
+                inherit modules; # Modules Directory
+                inherit (configUtilsArgs) config-utils; # Config-Utils
+              };
+            }).nixosModules.setup # Loads all nixos modules from setup
+
             { # (NixOS-Module)
               config = {
                 nixpkgs.config.allowUnfree = true; # Allows unfree packages
               };
             }
-
-            "./hosts/${host.hostname}/configuration.nix"  # Loads host configuration
 
             # Home-Manager-Module Configuration
             inputs.home-manager.nixosModules.home-manager # Loads Home-Manager options
@@ -63,7 +79,19 @@ flakePath: (
                     # Prepare list to be converted to set
                     (x: builtins.map (user: {
                       name = user.username;
-                      value = (builtins.import "./users/${user.username}/home.nix");
+                      value = (setup.setupSystem { # Setup Configuration
+                        inherit lib;
+                        modules = [
+                          "./users/${user.username}/home.nix"  # Loads user configuration
+                        ];
+                        specialArgs = {
+                          inherit pkgs-bundle; # Packages
+                          inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
+                          inherit (configDomainArgs) config-domain; # Config-Domain
+                          inherit modules; # Modules Directory
+                          inherit (configUtilsArgs) config-utils; # Config-Utils
+                        };
+                      }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
 
                     # Convert list of users to attrs of users
@@ -75,13 +103,7 @@ flakePath: (
                     inputs.stylix.homeManagerModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
-                  extraSpecialArgs = {
-                    inherit pkgs-bundle; # Packages
-                    inherit (userHostArgs) userDevArgs; # User-Host-Scheme
-                    inherit (configDomainArgs) config-domain; # Config-Domain
-                    inherit modules; # Modules Directory
-                    inherit (configUtilsArgs) config-utils; # Config-Utils
-                  };
+                  extraSpecialArgs = {};
                 };
               };
             }
@@ -115,14 +137,7 @@ flakePath: (
             }
 
           ];
-          specialArgs = {
-            inherit auto-upgrade-pkgs; # Auto-Upgrade
-            inherit pkgs-bundle; # Packages
-            inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
-            inherit (configDomainArgs) config-domain; # Config-Domain
-            inherit modules; # Modules Directory
-            inherit (configUtilsArgs) config-utils; # Config-Utils
-          };
+          specialArgs = {};
         });
 
         # Home-Manager-Standalone Configuration
@@ -130,20 +145,27 @@ flakePath: (
           pkgs = inputs.nixpkgs-stable.legacyPackages.${host.system.architecture};
           modules = [
 
-            "./users/${userDev.username}/home.nix" # Loads user configuration
+            # Setup Configuration
+            (setup.setupSystem {
+              inherit lib;
+              modules = [
+                "./users/${user.username}/home.nix"  # Loads user configuration
+              ];
+              specialArgs = {
+                inherit pkgs-bundle; # Packages
+                inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
+                inherit (configDomainArgs) config-domain; # Config-Domain
+                inherit modules; # Modules Directory
+                inherit (configUtilsArgs) config-utils; # Config-Utils
+              };
+            }).homeManagerModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
             inputs.stylix.homeManagerModules.stylix # Loads Stylix options
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
           ];
-          extraSpecialArgs = {
-            inherit pkgs-bundle; # Packages
-            inherit (userHostArgs) userDevArgs; # User-Host-Scheme
-            inherit (configDomainArgs) config-domain; # Config-DomainS
-            inherit modules; # Modules Directory
-            inherit (configUtilsArgs) config-utils; # Config-Utils
-          };
+          extraSpecialArgs = {};
         });
 
       }
