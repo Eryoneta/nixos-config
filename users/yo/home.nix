@@ -4,7 +4,7 @@
   in {
 
     imports = [
-      (import ../default/home.nix username) # Imports default with the usrname. This avoids infinite recursion
+      (import ../default/home.nix username) # Imports default with the username. This avoids infinite recursion
       ./stylix.nix
       ./xdg-mime-apps.nix
     ];
@@ -12,7 +12,7 @@
     config = {
 
       home.username = username;
-      
+
       # Variables
       home.sessionVariables = {
         "DEFAULT_BROWSER" = with config.profile.programs.firefox-devedition; (
