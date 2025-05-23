@@ -19,9 +19,15 @@
           inherit specialArgs;
         });
       in {
-        nixosModules.setup = eval.config.nixosConfigurationModules;
-        homeManagerModules.setup = eval.config.homeConfigurationModules;
-        darwinModules.setup = eval.config.darwinConfigurationModules;
+        nixosModules.setup = { # (NixOS Module)
+          imports = eval.config.nixosConfigurationModules;
+        };
+        homeManagerModules.setup = { # (Home-Manager Module)
+          imports = eval.config.homeConfigurationModules;
+        };
+        darwinModules.setup = { # (Darwin Module)
+          imports = eval.config.darwinConfigurationModules;
+        };
       }
     );
   }
