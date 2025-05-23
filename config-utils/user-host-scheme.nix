@@ -124,47 +124,15 @@ flakePath: (
       })
     );
 
-    # Builder
-    build = { users ? [ default.user ], host ? default.host }: (
+    # Args Builder
+    buildSpecialArgs = { users ? [ default.user ], host ? default.host }: (
       let
         userDev = (builtins.head users);
         group = (buildGroup userDev users host);
       in {
-
-        # Override Home-Manager-Module Configuration
-        homeManagerModule = {
-          home-manager = {
-            users = (builtins.mapAttrs (
-              username: user: (import "${flakePath}/users/${username}/home.nix")
-            ) group.users);
-            extraSpecialArgs = {
-              userDevArgs = group.userDev;
-              usersArgs = group.users;
-            };
-          };
-        };
-
-        # Override Home-Manager-Standalone Configuration
-        homeManagerStandalone = username: {
-          modules = [
-            "${flakePath}/users/${username}/home.nix"
-          ];
-          extraSpecialArgs = {
-            userDevArgs = group.userDev;
-            usersArgs = group.users;
-          };
-        };
-
-        # Override System Configuration
-        nixosSystem = {
-          modules = [
-            "${flakePath}/hosts/${group.host.hostname}/configuration.nix"
-          ];
-          specialArgs = {
-            hostArgs = group.host;
-          };
-        };
-
+        userDevArgs = group.userDev;
+        usersArgs = group.users;
+        hostArgs = group.host;
       }
     );
 

@@ -48,8 +48,10 @@ flakePath: (
       )) directories
     );
 
-    # SpecialArg
-    specialArg = configPath: directories: {
+  in {
+
+    # Args Builder
+    buildSpecialArgs = { configPath, directories }: {
       config-domain = {
         public = (buildDomain configPath directories false "/public-config");
         private = (buildDomain configPath directories false "/private-config");
@@ -60,27 +62,5 @@ flakePath: (
       };
     };
 
-  in {
-    # Builder
-    build = { configPath, directories }: {
-
-      # Override Home-Manager-Module Configuration
-      homeManagerModule = {
-        home-manager = {
-          extraSpecialArgs = (specialArg configPath directories);
-        };
-      };
-
-      # Override Home-Manager-Standalone Configuration
-      homeManagerStandalone = {
-        extraSpecialArgs = (specialArg configPath directories);
-      };
-
-      # Override System Configuration
-      nixosSystem = {
-        specialArgs = (specialArg configPath directories);
-      };
-
-    };
   }
 )
