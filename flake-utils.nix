@@ -2,9 +2,10 @@ flakePath: (
   let
 
     # Imports
-    user-host-scheme = ((builtins.import ./modules/flake-specialArgs/user-host-scheme.nix) flakePath);
-    config-domain = ((builtins.import ./modules/flake-specialArgs/public-private-domains.nix) flakePath);
-    mapDir = (builtins.import ./modules/nix-modules/mapDir.nix).mapDir;
+    user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
+    config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
+    config-utils = (builtins.import ./config-utils/config-utils.nix);
+    mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix).mapDir;
 
   in {
     buildHost = user-host-scheme.buildHost;
@@ -30,6 +31,11 @@ flakePath: (
         });
         pkgs-bundle = (packages host.system.architecture); # Packages (Requires architecture)
         modules = (mapDir ./modules); # Modules Directory
+        configUtilsArgs = (config-utils.build {
+          nixpkgs-lib = inputs.nixpkgs.lib;
+          home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
+          home-manager-lib = inputs.home-manager.lib;
+        });
       in {
 
         # NixOS Configuration
@@ -74,6 +80,7 @@ flakePath: (
                     inherit (userHostArgs) userDevArgs; # User-Host-Scheme
                     inherit (configDomainArgs) config-domain; # Config-Domain
                     inherit modules; # Modules Directory
+                    inherit (configUtilsArgs) config-utils; # Config-Utils
                   };
                 };
               };
@@ -114,6 +121,7 @@ flakePath: (
             inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
             inherit (configDomainArgs) config-domain; # Config-Domain
             inherit modules; # Modules Directory
+            inherit (configUtilsArgs) config-utils; # Config-Utils
           };
         });
 
@@ -134,6 +142,7 @@ flakePath: (
             inherit (userHostArgs) userDevArgs; # User-Host-Scheme
             inherit (configDomainArgs) config-domain; # Config-DomainS
             inherit modules; # Modules Directory
+            inherit (configUtilsArgs) config-utils; # Config-Utils
           };
         });
 
