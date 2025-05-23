@@ -161,6 +161,7 @@
         name = "Eryoneta";
       };
 
+      # Config Builder
       buildConfiguration = config: (
         flake-utils.buildConfiguration (config // {
           inputs = args;
@@ -185,7 +186,7 @@
           host = nelico;
         }).nixosSystemConfig;
       };
-      
+
       # Home-Manager + Plasma-Manager + Agenix
       homeConfigurations = {
         "Yo@HyperV_VM" = (buildConfiguration {
