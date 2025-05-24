@@ -97,17 +97,17 @@
         inherit nurpkgs-firefox-addons;
       }));
 
-      # Packages Bundle
-      pkgs-bundle = architecture: (
+      # Package Bundle
+      package-bundle = architecture: (
         let
           nixpkgsConfig = {
             system = architecture;
             config.allowUnfree = true;
           };
         in (with args; {
-          system = (builtins.import nixpkgs nixpkgsConfig);
-          stable = (builtins.import nixpkgs-stable nixpkgsConfig);
-          unstable = (builtins.import nixpkgs-unstable nixpkgsConfig);
+          system = ((builtins.import nixpkgs) nixpkgsConfig);
+          stable = ((builtins.import nixpkgs-stable) nixpkgsConfig);
+          unstable = ((builtins.import nixpkgs-unstable) nixpkgsConfig);
           firefox-addons = {
             pkgs = nurpkgs-firefox-addons.packages.${architecture};
             buildFirefoxXpiAddon = nurpkgs-firefox-addons.lib.${architecture}.buildFirefoxXpiAddon;
@@ -165,7 +165,7 @@
       buildConfiguration = config: (
         flake-utils.buildConfiguration (config // {
           inputs = args;
-          inherit auto-upgrade-pkgs pkgs-bundle;
+          inherit auto-upgrade-pkgs package-bundle;
         })
       );
 

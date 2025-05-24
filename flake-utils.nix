@@ -10,7 +10,7 @@ flakePath: (
   in {
     buildHost = user-host-scheme.buildHost;
     buildUser = user-host-scheme.buildUser;
-    buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, pkgs-bundle }: (
+    buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, package-bundle }: (
       let
         allUsers = (if (users == null) then [ user ] else users);
         userDev = (builtins.head allUsers);
@@ -31,7 +31,7 @@ flakePath: (
             secrets = "/secrets";
           };
         });
-        pkgs = (pkgs-bundle host.system.architecture); # Packages (Requires architecture)
+        pkgs-bundle = (package-bundle host.system.architecture); # Packages (Requires architecture)
         configUtilsArgs = (config-utils.build {
           nixpkgs-lib = inputs.nixpkgs.lib;
           home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
@@ -48,10 +48,10 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "./hosts/${host.hostname}/configuration.nix"  # Loads host configuration
+                "${./.}/hosts/${host.hostname}/configuration.setup.nix" # Loads host configuration
               ];
               specialArgs = {
-                inherit pkgs; # Packages
+                inherit pkgs-bundle; # Package Bundle
                 inherit (configUtilsArgs) config-utils; # Config-Utils
                 inherit (userHostArgs) userDev users host; # User-Host-Scheme
                 inherit (configDomainArgs) config-domain; # Config-Domain
@@ -80,10 +80,10 @@ flakePath: (
                       value = (setup.setupSystem { # Setup Configuration
                         inherit lib;
                         modules = [
-                          "./users/${user.username}/home.nix"  # Loads user configuration
+                          "${./.}/users/${user.username}/home.setup.nix"  # Loads user configuration
                         ];
                         specialArgs = {
-                          inherit pkgs; # Packages
+                          inherit pkgs-bundle; # Package Bundle
                           inherit (configUtilsArgs) config-utils; # Config-Utils
                           inherit (userHostArgs) user; # User-Host-Scheme
                           inherit (configDomainArgs) config-domain; # Config-Domain
@@ -107,7 +107,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 home-manager.extraSpecialArgs = {
-                  pkgs = pkgs.stable; # Replace "pkgs" with a custom one
+                  pkgs = pkgs-bundle.stable; # Replace "pkgs" with a custom one
                   # Note: This allows all home-manager modules to use a different package from the system
                   #   Kernel and KDE Plasma are defined by NixOS. Nearly all apps are defined by Home-Manager
                 };
@@ -116,7 +116,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 environment.systemPackages = [
-                  pkgs.stable.home-manager # Home-Manager: Manages standalone home configurations
+                  pkgs-bundle.stable.home-manager # Home-Manager: Manages standalone home configurations
                 ];
               };
             }
@@ -146,10 +146,10 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "./users/${user.username}/home.nix"  # Loads user configuration
+                "${./.}/users/${user.username}/home.setup.nix"  # Loads user configuration
               ];
               specialArgs = {
-                inherit pkgs; # Packages
+                inherit pkgs-bundle; # Package Bundle
                 inherit (configUtilsArgs) config-utils; # Config-Utils
                 inherit (userHostArgs) user; # User-Host-Scheme
                 inherit (configDomainArgs) config-domain; # Config-Domain
