@@ -85,7 +85,7 @@ flakePath: (
                         specialArgs = {
                           inherit pkgs; # Packages
                           inherit (configUtilsArgs) config-utils; # Config-Utils
-                          inherit (userHostArgs) userDev host; # User-Host-Scheme
+                          inherit (userHostArgs) user; # User-Host-Scheme
                           inherit (configDomainArgs) config-domain; # Config-Domain
                         };
                       }).homeManagerModules.setup; # Loads all home modules from setup
@@ -151,7 +151,7 @@ flakePath: (
               specialArgs = {
                 inherit pkgs; # Packages
                 inherit (configUtilsArgs) config-utils; # Config-Utils
-                inherit (userHostArgs) userDev host; # User-Host-Scheme
+                inherit (userHostArgs) user; # User-Host-Scheme
                 inherit (configDomainArgs) config-domain; # Config-Domain
               };
             }).homeManagerModules.setup # Loads all home modules from setup
