@@ -130,9 +130,9 @@ flakePath: (
         userDev = (builtins.head users);
         group = (buildGroup userDev users host);
       in {
-        userDevArgs = group.userDev;
-        usersArgs = group.users;
-        hostArgs = group.host;
+        userDev = group.userDev;
+        users = group.users;
+        host = group.host;
       }
     );
 

@@ -97,8 +97,8 @@
         inherit nurpkgs-firefox-addons;
       }));
 
-      # Packages
-      packages = architecture: (
+      # Packages Bundle
+      pkgs-bundle = architecture: (
         let
           nixpkgsConfig = {
             system = architecture;
@@ -165,7 +165,7 @@
       buildConfiguration = config: (
         flake-utils.buildConfiguration (config // {
           inputs = args;
-          inherit auto-upgrade-pkgs packages;
+          inherit auto-upgrade-pkgs pkgs-bundle;
         })
       );
 

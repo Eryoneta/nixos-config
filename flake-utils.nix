@@ -6,17 +6,17 @@ flakePath: (
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
-    mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix).mapDir;
 
   in {
     buildHost = user-host-scheme.buildHost;
     buildUser = user-host-scheme.buildUser;
-    buildConfiguration = { inputs, user, users ? null, host, auto-upgrade-pkgs, packages }: (
+    buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, pkgs-bundle }: (
       let
         allUsers = (if (users == null) then [ user ] else users);
         userDev = (builtins.head allUsers);
         userHostArgs = (user-host-scheme.buildSpecialArgs {
-          inherit allUsers host;
+          inherit host;
+          users = allUsers;
         });
         lib = inputs.nixpkgs.lib;
         configDomainArgs = (config-domain.buildSpecialArgs { # Config Domain
@@ -31,8 +31,7 @@ flakePath: (
             secrets = "/secrets";
           };
         });
-        pkgs-bundle = (packages host.system.architecture); # Packages (Requires architecture)
-        modules = (mapDir ./modules); # Modules Directory
+        pkgs = (pkgs-bundle host.system.architecture); # Packages (Requires architecture)
         configUtilsArgs = (config-utils.build {
           nixpkgs-lib = inputs.nixpkgs.lib;
           home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
@@ -52,12 +51,11 @@ flakePath: (
                 "./hosts/${host.hostname}/configuration.nix"  # Loads host configuration
               ];
               specialArgs = {
-                inherit auto-upgrade-pkgs; # Auto-Upgrade
-                inherit pkgs-bundle; # Packages
-                inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
-                inherit (configDomainArgs) config-domain; # Config-Domain
-                inherit modules; # Modules Directory
+                inherit pkgs; # Packages
                 inherit (configUtilsArgs) config-utils; # Config-Utils
+                inherit (userHostArgs) userDev users host; # User-Host-Scheme
+                inherit (configDomainArgs) config-domain; # Config-Domain
+                inherit auto-upgrade-pkgs; # Auto-Upgrade
               };
             }).nixosModules.setup # Loads all nixos modules from setup
 
@@ -85,11 +83,10 @@ flakePath: (
                           "./users/${user.username}/home.nix"  # Loads user configuration
                         ];
                         specialArgs = {
-                          inherit pkgs-bundle; # Packages
-                          inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
-                          inherit (configDomainArgs) config-domain; # Config-Domain
-                          inherit modules; # Modules Directory
+                          inherit pkgs; # Packages
                           inherit (configUtilsArgs) config-utils; # Config-Utils
+                          inherit (userHostArgs) userDev host; # User-Host-Scheme
+                          inherit (configDomainArgs) config-domain; # Config-Domain
                         };
                       }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
@@ -110,7 +107,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 home-manager.extraSpecialArgs = {
-                  pkgs = pkgs-bundle.stable; # Replace "pkgs" with a custom one
+                  pkgs = pkgs.stable; # Replace "pkgs" with a custom one
                   # Note: This allows all home-manager modules to use a different package from the system
                   #   Kernel and KDE Plasma are defined by NixOS. Nearly all apps are defined by Home-Manager
                 };
@@ -119,7 +116,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 environment.systemPackages = [
-                  pkgs-bundle.stable.home-manager # Home-Manager: Manages standalone home configurations
+                  pkgs.stable.home-manager # Home-Manager: Manages standalone home configurations
                 ];
               };
             }
@@ -152,11 +149,10 @@ flakePath: (
                 "./users/${user.username}/home.nix"  # Loads user configuration
               ];
               specialArgs = {
-                inherit pkgs-bundle; # Packages
-                inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
-                inherit (configDomainArgs) config-domain; # Config-Domain
-                inherit modules; # Modules Directory
+                inherit pkgs; # Packages
                 inherit (configUtilsArgs) config-utils; # Config-Utils
+                inherit (userHostArgs) userDev host; # User-Host-Scheme
+                inherit (configDomainArgs) config-domain; # Config-Domain
               };
             }).homeManagerModules.setup # Loads all home modules from setup
 

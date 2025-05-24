@@ -117,6 +117,8 @@
           )
         );
 
+        nixos-modules = (builtins.attrNames (mapDir ./nixos-modules));
+
       };
 
       # It's a list of all my "nix-modules"
