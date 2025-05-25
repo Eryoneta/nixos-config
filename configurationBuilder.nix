@@ -129,6 +129,8 @@ inputs: flakePath: (
               plasma-manager
               stylix
             ]);
+            architecture = host.system.architecture;
+            systemPackage = inputs.nixpkgs-stable;
           });
 
         };
@@ -169,7 +171,11 @@ inputs: flakePath: (
                 flake-modules."home-manager-standalone.nix".build {
                   username = user.username;
                   package = inputs.home-manager;
-                  systemPackage = inputs.nixpkgs;
+                  #systemPackage = inputs.nixpkgs;
+
+                  systemPackage = inputs.nixpkgs-stable;
+                  # TODO: (Flake) Kernel 6.6.89 and later are weirdly slow. Change when a good one appears
+
                   modifiers = commonModifiers ++ (with modifiers; [
                     plasma-manager
                     stylix

@@ -7,10 +7,18 @@
 
     # System Inputs
     # NixOS (AutoUpgrade)
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+
+    nixpkgs.url = "github:NixOS/nixpkgs/3e362ce63e16b9572d8c2297c04f7c19ab6725a5";
+    # TODO: (Flake) Kernel 6.6.89 and later are weirdly slow. Change when a good one appears
+
     # Home-Manager (AutoUpgrade)
     home-manager.url = "github:nix-community/home-manager/release-24.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    #home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    # TODO: (Flake) Kernel 6.6.89 and later are slow. Undo when a good one appears
+
     # Plasma-Manager (AutoUpgrade)
     plasma-manager.url = "github:nix-community/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -79,13 +87,7 @@
 
       # System_Label ([a-zA-Z0-9:_.-]*)
       # I change it at every rebuild. Very convenient for naming generations!
-      systemLabel = (
-        let
-          filePath = ./NIXOS_LABEL.txt;
-        in if (builtins.pathExists filePath) then (
-          builtins.readFile filePath
-        ) else "Initial Configuration: Requires private-config to be complete"
-      );
+      systemLabel = (builtins.readFile ./NIXOS_LABEL.txt);
 
       # Hosts
       LiCo = user-host-scheme.buildHost {
