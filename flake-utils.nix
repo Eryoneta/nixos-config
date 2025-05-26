@@ -6,6 +6,7 @@ flakePath: (
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
+    mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix);
 
   in {
     buildHost = user-host-scheme.buildHost;
@@ -49,7 +50,7 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "${./.}/hosts/${host.hostname}/configuration.setup.nix" # Loads host configuration
+                "${flakePath}/hosts/${host.hostname}/configuration.setup.nix" # Loads host configuration
               ];
               specialArgs = {
                 inherit pkgs-bundle; # Package Bundle
@@ -82,7 +83,7 @@ flakePath: (
                       value = (setup.setupSystem { # Setup Configuration
                         inherit lib;
                         modules = [
-                          "${./.}/users/${user.username}/home.setup.nix"  # Loads user configuration
+                          "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
                         ];
                         specialArgs = {
                           inherit pkgs-bundle; # Package Bundle
@@ -149,7 +150,7 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "${./.}/users/${user.username}/home.setup.nix"  # Loads user configuration
+                "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
               ];
               specialArgs = {
                 inherit pkgs-bundle; # Package Bundle
