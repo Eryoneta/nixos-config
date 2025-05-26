@@ -1,0 +1,15 @@
+# Tags used by this system
+
+"default" = Included by default
+
+"core" = Only for the most essential modules
+"basic" = The bare minimum to have a useable configuration
+"default-user" = Default configuration for a user
+"default-host" = Default configuration for a host
+
+"yo" = User
+"eryoneta" = User
+
+"nelico" = Host
+"lico" = Host
+"hyper-v_vm" = Host
