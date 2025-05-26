@@ -32,6 +32,7 @@ flakePath: (
           };
         });
         pkgs-bundle = (package-bundle host.system.architecture); # Packages (Requires architecture)
+        nixos-modules = (mapDir ./config-utils/nixos-modules); # NixOS-Modules Directory
         configUtilsArgs = (config-utils.build {
           nixpkgs-lib = inputs.nixpkgs.lib;
           home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
@@ -55,6 +56,7 @@ flakePath: (
                 inherit (configUtilsArgs) config-utils; # Config-Utils
                 inherit (userHostArgs) userDev users host; # User-Host-Scheme
                 inherit (configDomainArgs) config-domain; # Config-Domain
+                inherit nixos-modules; # NixOS-Modules Directory
                 inherit auto-upgrade-pkgs; # Auto-Upgrade
               };
             }).nixosModules.setup # Loads all nixos modules from setup
@@ -87,6 +89,7 @@ flakePath: (
                           inherit (configUtilsArgs) config-utils; # Config-Utils
                           inherit (userHostArgs) user; # User-Host-Scheme
                           inherit (configDomainArgs) config-domain; # Config-Domain
+                          inherit nixos-modules; # NixOS-Modules Directory
                         };
                       }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
@@ -153,6 +156,7 @@ flakePath: (
                 inherit (configUtilsArgs) config-utils; # Config-Utils
                 inherit (userHostArgs) user; # User-Host-Scheme
                 inherit (configDomainArgs) config-domain; # Config-Domain
+                inherit nixos-modules; # NixOS-Modules Directory
               };
             }).homeManagerModules.setup # Loads all home modules from setup
 

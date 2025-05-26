@@ -61,6 +61,7 @@ flakePath: (
         system = {
           architecture = "x86_64-linux";
           label = "";
+          startVersion = "";
         };
         configFolder = "/etc/nixos";
         configFolderNixStore = flakePath; # Note: A flake gets copied into the NixStore before evaluation
