@@ -8,8 +8,6 @@
       listFiles = path: (utils.searchFiles path "" [ onlySetupConfig ] onlyNixFile);
     in with args.config-domain; (
       builtins.concatLists [
-        (listFiles ./configurations)
-        (listFiles ../hosts/configurations)
         (listFiles "${public.programs}")
         (
           # Check for "./private-config/programs"
