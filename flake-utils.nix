@@ -13,14 +13,20 @@ flakePath: (
     buildUser = user-host-scheme.buildUser;
     buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, package-bundle }: (
       let
+
+        # Library
+        lib = inputs.nixpkgs.lib;
+
+        # User-Host Scheme
         allUsers = (if (users == null) then [ user ] else users);
         userDev = (builtins.head allUsers);
         userHostArgs = (user-host-scheme.buildSpecialArgs {
           inherit host;
           users = allUsers;
         });
-        lib = inputs.nixpkgs.lib;
-        configDomainArgs = (config-domain.buildSpecialArgs { # Config Domain
+
+        # Configuration-Domains
+        configDomainArgs = (config-domain.buildSpecialArgs {
           configPath = if (userDev.configDevFolder != "") then userDev.configDevFolder else userDev.configFolder;
           # Note: Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
           #   But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
@@ -32,13 +38,38 @@ flakePath: (
             secrets = "/secrets";
           };
         });
-        pkgs-bundle = (package-bundle host.system.architecture); # Packages (Requires architecture)
-        nixos-modules = (mapDir ./config-utils/nixos-modules); # NixOS-Modules Directory
+
+        # Package-Bundle
+        pkgs-bundle = (package-bundle host.system.architecture); # (Requires architecture)
+
+        # NixOS-Modules Directory
+        nixos-modules = (mapDir ./config-utils/nixos-modules);
+
+        # Configuration-Utilities
         configUtilsArgs = (config-utils.build {
           nixpkgs-lib = inputs.nixpkgs.lib;
           home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
           home-manager-lib = inputs.home-manager.lib;
         });
+
+        # SpecialArgs
+        nixosSpecialArgs = {
+          inherit inputs; # Inputs
+          inherit pkgs-bundle; # Package-Bundle
+          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+          inherit (userHostArgs) userDev users host; # User-Host-Scheme
+          inherit (configDomainArgs) config-domain; # Configuration-Domains
+          inherit nixos-modules; # NixOS-Modules Directory
+          inherit auto-upgrade-pkgs; # Auto-Upgrade
+        };
+        homeManagerSpecialArgs = {
+          inherit pkgs-bundle; # Package Bundle
+          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+          inherit (userHostArgs) user; # User-Host-Scheme
+          inherit (configDomainArgs) config-domain; # Configuration-Domains
+          inherit nixos-modules; # NixOS-Modules Directory
+        };
+
       in {
 
         # NixOS Configuration
@@ -52,14 +83,7 @@ flakePath: (
               modules = [
                 "${flakePath}/hosts/${host.hostname}/configuration.setup.nix" # Loads host configuration
               ];
-              specialArgs = {
-                inherit pkgs-bundle; # Package Bundle
-                inherit (configUtilsArgs) config-utils; # Config-Utils
-                inherit (userHostArgs) userDev users host; # User-Host-Scheme
-                inherit (configDomainArgs) config-domain; # Config-Domain
-                inherit nixos-modules; # NixOS-Modules Directory
-                inherit auto-upgrade-pkgs; # Auto-Upgrade
-              };
+              specialArgs = nixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
             { # (NixOS-Module)
@@ -85,13 +109,7 @@ flakePath: (
                         modules = [
                           "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
                         ];
-                        specialArgs = {
-                          inherit pkgs-bundle; # Package Bundle
-                          inherit (configUtilsArgs) config-utils; # Config-Utils
-                          inherit (userHostArgs) user; # User-Host-Scheme
-                          inherit (configDomainArgs) config-domain; # Config-Domain
-                          inherit nixos-modules; # NixOS-Modules Directory
-                        };
+                        specialArgs = homeManagerSpecialArgs;
                       }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
 
@@ -104,7 +122,7 @@ flakePath: (
                     inputs.stylix.homeManagerModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
-                  extraSpecialArgs = {};
+                  extraSpecialArgs = homeManagerSpecialArgs;
                 };
               };
             }
@@ -138,7 +156,7 @@ flakePath: (
             }
 
           ];
-          specialArgs = {};
+          specialArgs = nixosSpecialArgs;
         });
 
         # Home-Manager-Standalone Configuration
@@ -152,13 +170,7 @@ flakePath: (
               modules = [
                 "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
               ];
-              specialArgs = {
-                inherit pkgs-bundle; # Package Bundle
-                inherit (configUtilsArgs) config-utils; # Config-Utils
-                inherit (userHostArgs) user; # User-Host-Scheme
-                inherit (configDomainArgs) config-domain; # Config-Domain
-                inherit nixos-modules; # NixOS-Modules Directory
-              };
+              specialArgs = homeManagerSpecialArgs;
             }).homeManagerModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
@@ -166,7 +178,7 @@ flakePath: (
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
           ];
-          extraSpecialArgs = {};
+          extraSpecialArgs = homeManagerSpecialArgs;
         });
 
       }
