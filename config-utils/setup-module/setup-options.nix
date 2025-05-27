@@ -2,7 +2,7 @@
   options = {
 
       # Tags
-      enabledTags = lib.mkOption {
+      includeTags = lib.mkOption {
         type = (lib.types.listOf (lib.types.str));
         default = [];
         description = ''
@@ -49,7 +49,7 @@
           options = {
 
             # Module enabler
-            enabled = lib.mkOption {
+            enable = lib.mkOption {
               type = (lib.types.bool);
               default = true;
               description = ''
@@ -61,7 +61,7 @@
             };
 
             # Module includer
-            included = lib.mkOption {
+            include = lib.mkOption {
               type = (lib.types.nullOr (lib.types.bool));
               default = null;
               description = ''
