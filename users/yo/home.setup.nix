@@ -1,10 +1,12 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
+  # Imports
   imports = [ ./default.setup.nix ];
   config.enabledTags = [ "default-user" "yo" ];
 
   config.modules."yo-user" = {
 
+    # Configuration
     tags = [ "yo" ];
     attr.firefox-devedition.packageChannel = config.modules."firefox-devedition".attr.packageChannel;
 
@@ -12,6 +14,7 @@
       home = { config, ... }: { # (Home-Manager Module)
         config = {
 
+          # Username
           home.username = args.user.username;
 
           # Variables
