@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; { # (NixOS Module)
   config = {
 
     # Users

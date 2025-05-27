@@ -1,4 +1,4 @@
-{ pkgs, ... }@args: with args.config-utils; {
+{ pkgs, ... }@args: with args.config-utils; { # (NixOS Module)
   config = {
 
     # Delays Grub to load the display

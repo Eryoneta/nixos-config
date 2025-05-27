@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; { # (NixOS Module)
   config = {
 
     # Hostname

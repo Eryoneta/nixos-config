@@ -1,4 +1,4 @@
-{ config, modulesPath, ... }@args: with args.config-utils; {
+{ config, modulesPath, ... }@args: with args.config-utils; { # (NixOS Module)
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")

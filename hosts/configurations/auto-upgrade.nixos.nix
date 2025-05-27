@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; {
+{ ... }@args: with args.config-utils; { # (NixOS Module)
 
   imports = with args; [
     nixos-modules."auto-upgrade-git-support.nix"
