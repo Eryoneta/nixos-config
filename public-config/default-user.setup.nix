@@ -3,17 +3,20 @@
 
     tags = [ "core" "basic" "default-user" ];
 
-    setup.home = {config, ...}: { # (Home-Manager Module)
+    setup.home = {config, user, ...}: { # (Home-Manager Module)
       config = {
 
         # Home-Manager
         home = {
 
+          # Username
+          username = user.username;
+
           # User home folder
           homeDirectory = "/home/${config.home.username}"; # Home should always be at "/home"
 
           # Start version
-          stateVersion = "${args.user.host.system.stateVersion}"; # Home-Manager start version. (Default options)
+          stateVersion = "${user.host.system.stateVersion}"; # Home-Manager start version. (Default options)
           # Note: As Home-Manager is always installed with NixOS here, the start version should be the same
 
         };

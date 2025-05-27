@@ -13,9 +13,6 @@
       home = { config, ... }: { # (Home-Manager Module)
         config = {
 
-          # Username
-          home.username = username;
-
           # Variables
           home.sessionVariables = {
             "MOZ_ENABLE_WAYLAND" = 0; # Disable wayland for Firefox

@@ -14,9 +14,6 @@
       home = { config, ... }: { # (Home-Manager Module)
         config = {
 
-          # Username
-          home.username = args.user.username;
-
           # Variables
           home.sessionVariables = {
             "DEFAULT_BROWSER" = with attr.firefox-devedition; (
