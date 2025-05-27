@@ -2,7 +2,7 @@
 
   # Imports
   imports = [ ./default.setup.nix ];
-  config.enabledTags = [ "default-user" "yo" ];
+  config.includeTags = [ "default-user" "yo" ];
 
   config.modules."yo-user" = {
 

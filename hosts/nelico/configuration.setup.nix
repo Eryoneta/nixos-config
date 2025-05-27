@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   imports = [ ../default.setup.nix ];
-  config.enabledTags = [ "nelico" ];
+  config.includeTags = [ "nelico" ];
 
   config.modules."nelico-host" = {
 

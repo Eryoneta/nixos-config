@@ -2,7 +2,7 @@
 
   # Imports
   imports = [ ./default.setup.nix ];
-  config.enabledTags = [ "default-user" "eryoneta" ];
+  config.includeTags = [ "default-user" "eryoneta" ];
 
   config.modules."eryoneta-user" = {
 

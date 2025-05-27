@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   imports = [ ../default.setup.nix ];
-  config.enabledTags = [ "lico" ];
+  config.includeTags = [ "lico" ];
 
   config.modules."lico-host" = {
 

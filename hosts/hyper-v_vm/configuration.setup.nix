@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   imports = [ ../default.setup.nix ];
-  config.enabledTags = [ "hyper-v_vm" ];
+  config.includeTags = [ "hyper-v_vm" ];
 
   config.modules."hyper-v_vm-host" = {
 
