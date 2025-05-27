@@ -1,14 +1,14 @@
 { config, ... }@args: with args.config-utils; {
 
-  imports = with args.modules-directory; [
-    ./features/auto-upgrade.nix
+  imports = with args; [
+    ./auto-upgrade.nixos.nix
     nixos-modules."link-to-source-config.nix"
     nixos-modules."swap-devices.nix"
     nixos-modules."swapfile-hibernation.nix"
   ];
 
   config = {
-    
+
     # Auto-login
     services.displayManager = {
       autoLogin.enable = (utils.mkDefault) false;

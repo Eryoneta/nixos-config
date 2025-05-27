@@ -10,7 +10,7 @@
       };
 
       timeout = (utils.mkDefault) 10; # 10 seconds before selecting default option
-      
+
     };
 
   };

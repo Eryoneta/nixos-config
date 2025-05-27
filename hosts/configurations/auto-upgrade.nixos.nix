@@ -1,6 +1,6 @@
 { ... }@args: with args.config-utils; {
 
-  imports = with args.modules-directory; [
+  imports = with args; [
     nixos-modules."auto-upgrade-git-support.nix"
     nixos-modules."auto-upgrade-update-flake-lock.nix"
     nixos-modules."auto-upgrade-alter-profile.nix"
@@ -8,6 +8,7 @@
   ];
 
   config = {
+
     # System AutoUpgrade
     system.autoUpgrade = {
       operation = "boot";
@@ -15,15 +16,15 @@
       persistent = true;
       dates = (utils.mkDefault) "Fri *-*-* 16:00:00"; # Every friday, 16h00
       randomizedDelaySec = (utils.mkDefault) "30min"; # Random delay of 30min (Its best to not upgrade right after booting)
-      flake = "git+file://${args.hostArgs.configFolder}?submodules=1#${args.hostArgs.userDev.name}@${args.hostArgs.name}";
+      flake = "git+file://${args.host.configFolder}?submodules=1#${args.host.userDev.name}@${args.host.name}";
       # Notice: The flake ignores submodules! The flag "submodules=1" is necessary
       # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
 
       # Git support ("auto-upgrade-git-support.nix")
       gitSupport = {
         enable = (utils.mkDefault) true;
-        systemUser = args.hostArgs.userDev.username;
-        directory = args.hostArgs.configFolder;
+        systemUser = args.host.userDev.username;
+        directory = args.host.configFolder;
         markDirectoryAsSafe = (utils.mkDefault) true;
         push = (utils.mkDefault) true;
       };
@@ -45,7 +46,7 @@
       # Notifier ("auto-upgrade-notifier.nix")
       notifier = {
         enable = (utils.mkDefault) true;
-        systemUser = args.hostArgs.userDev.username;
+        systemUser = args.host.userDev.username;
           informStart = {
             show = (utils.mkDefault) true;
             time = (utils.mkDefault) 15;
@@ -57,6 +58,7 @@
       };
 
     };
+
   };
 
 }

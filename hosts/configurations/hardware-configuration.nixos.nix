@@ -28,7 +28,7 @@
 
     # Nix Packages
     nixpkgs.hostPlatform = args.hostArgs.system.architecture;
-    
+
   };
 
 }
