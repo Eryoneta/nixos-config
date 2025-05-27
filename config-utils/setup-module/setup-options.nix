@@ -1,45 +1,51 @@
 { lib, ... }: { # (Setup-Module)
   options = {
 
-      # Tags
-      enabledTags = lib.mkOption {
+      # Included modules, by tags
+      includeTags = lib.mkOption {
         type = (lib.types.listOf (lib.types.str));
         default = [];
         description = ''
-          FINAL-TAGS
+          A list of tags from tagged modules to be included in the final configuration.
         '';
         example = ''
-          EXAMPLE
+          [ "development" ]
         '';
       };
 
-      # NixOS system config
+      # Final NixOS system config
       nixosConfigurationModules = lib.mkOption {
         type = (lib.types.raw);
         readOnly = true;
         visible = false;
         description = ''
-          ATTRS
+          The final configuration, a single NixOS Module that contains all the `nixos` configurations from the included modules.
+
+          This is the output. It returns a valid NixOS Module.
         '';
       };
 
-      # Home-Manager system config
+      # Final Home-Manager system config
       homeConfigurationModules = lib.mkOption {
         type = (lib.types.raw);
         readOnly = true;
         visible = false;
         description = ''
-          ATTRS
+          The final configuration, a single Home-Manager Module that contains all the `home` configurations from the included modules.
+
+          This is the output. It returns a valid Home-Manager Module.
         '';
       };
 
-      # Darwin system config
+      # Final Darwin system config
       darwinConfigurationModules = lib.mkOption {
         type = (lib.types.raw);
         readOnly = true;
         visible = false;
         description = ''
-          ATTRS
+          The final configuration, a single Darwin Module that contains all the `darwin` configurations from the included modules.
+
+          This is the output. It returns a valid Darwin Module.
         '';
       };
 
@@ -49,26 +55,30 @@
           options = {
 
             # Module enabler
-            enabled = lib.mkOption {
+            enable = lib.mkOption {
               type = (lib.types.bool);
               default = true;
               description = ''
-                ENABLE
+                Can be set to disable the module glabally.
+
+                It's true by default.
               '';
               example = ''
-                EXAMPLE
+                false
               '';
             };
 
             # Module includer
-            included = lib.mkOption {
+            include = lib.mkOption {
               type = (lib.types.nullOr (lib.types.bool));
               default = null;
               description = ''
-                TAGS
+                If set, includes or excludes the module. It overrides tag behaviour.
+
+                Very useful for excluding modules from a included tag.
               '';
               example = ''
-                EXAMPLE
+                true
               '';
             };
 
@@ -77,10 +87,12 @@
               type = (lib.types.listOf (lib.types.str));
               default = [];
               description = ''
-                TAGS
+                List of tags for this module.
+
+                When a tag is present in `config.includeTags`, then this module is included.
               '';
               example = ''
-                EXAMPLE
+                [ "development" ]
               '';
             };
 
@@ -89,10 +101,14 @@
               type = (lib.types.attrs);
               default = {};
               description = ''
-                ATTRS
+                A set of atributes for this module. Can be thought as a content of a `let in`.
+
+                It can also be used by other modules, allowing to share data between modules.
               '';
               example = ''
-                EXAMPLE
+                {
+                  gitUsername = "yo";
+                }
               '';
             };
 
@@ -107,10 +123,10 @@
                     type = (lib.types.raw);
                     default = {};
                     description = ''
-                      ATTRS
+                      A valid NixOS module. See [NixOS manual](https://nixos.org/manual/nixos/stable/#ch-configuration) for more information.
                     '';
                     example = ''
-                      EXAMPLE
+                      { config, ... }: { }
                     '';
                   };
 
@@ -119,10 +135,10 @@
                     type = (lib.types.raw);
                     default = {};
                     description = ''
-                      ATTRS
+                      A valid `home-manager` module. See [home-manager manual](https://nix-community.github.io/home-manager/) for more information.
                     '';
                     example = ''
-                      EXAMPLE
+                      { config, ... }: { }
                     '';
                   };
 
@@ -131,10 +147,10 @@
                     type = (lib.types.raw);
                     default = {};
                     description = ''
-                      ATTRS
+                      A valid `nix-darwin` module. See [nix-darwin manual](https://daiderd.com/nix-darwin/manual/index.html) for more information.
                     '';
                     example = ''
-                      EXAMPLE
+                      { config, ... }: { }
                     '';
                   };
 
@@ -147,10 +163,14 @@
               );
               default = {};
               description = ''
-                ATTRS
+                Either a set or a function that takes `{ attr }` as a argument.
               '';
               example = ''
-                EXAMPLE
+                { attr }: {
+                  nixos = { };
+                  home = { };
+                  darwin = { };
+                }
               '';
             });
 
@@ -158,10 +178,20 @@
         }));
         default = {};
         description = ''
-          MODULES
+          A module carries a valid module for NixOS, Home-Manager, and Darwin.
+
+          It can be included by `tags`, or by directly setting `include`.
+
+          When included, its modules are put in the final 3 sets that are the output.
         '';
         example = ''
-          EXAMPLE
+          {
+            tags = [ "development" ];
+            attr.gitUsername = "yo";
+            setup = { attr }: {
+              home = { };
+            };
+          }
         '';
       };
 

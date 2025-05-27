@@ -8,7 +8,7 @@
 
         # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enabled included tags;
+          inherit (module) enable include tags;
           setup = if(builtins.isFunction module.setup) then (
             module.setup {
               attr = module.attr;
@@ -18,16 +18,16 @@
 
         # For each module, define if it should be included or not
         (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enabled setup;
-          included = (
-            if (module.included != null) then (
-              module.included
+          inherit (module) enable setup;
+          include = (
+            if (module.include != null) then (
+              module.include
             ) else (
               lib.pipe module.tags [
 
-                # Check each tag with the list present in "config.setup.enabledTags"
+                # Check each tag with the list present in "config.includeTags"
                 (x: builtins.map (tag: (
-                  builtins.elem tag cfg.enabledTags
+                  builtins.elem tag cfg.includeTags
                 )) x)
 
                 # Check if any of the tags is present in the list
@@ -40,7 +40,7 @@
 
         # For each module, define if it should be included or be empty
         (x: builtins.mapAttrs (moduleId: module: (
-          if (module.enabled && module.included) then module.setup.${moduleType} else {}
+          if (module.enable && module.include) then module.setup.${moduleType} else {}
         )) x)
 
         # Transforms the set of modules into a list of modules
@@ -62,7 +62,7 @@
       darwinConfigurationModules = (evalModules "darwin");
 
       modules."default" = {
-        enabled = true;
+        enable = true;
         tags = [ "default" ];
         setup.nixos = {};
         setup.home = {};
@@ -70,7 +70,7 @@
       };
       # Note: A default module is included. That stops the readOnly config from being empty, if "config.modules" is empty
 
-      enabledTags = [ "default" ];
+      includeTags = [ "default" ];
       # Note: This "default" tag can be used to automatically include a module
 
     };
