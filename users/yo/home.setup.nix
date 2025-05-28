@@ -1,13 +1,9 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
-
-  # Imports
-  imports = [ ./default.setup.nix ];
-  config.includeTags = [ "default-user" "yo" ];
-
   config.modules."yo-user" = {
 
     # Configuration
     tags = [ "yo" ];
+    includeTags = [ "default-user" ];
     attr.firefox-devedition.packageChannel = config.modules."firefox-devedition".attr.packageChannel;
 
     setup = { attr }: {

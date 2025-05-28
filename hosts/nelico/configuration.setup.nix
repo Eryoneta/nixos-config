@@ -1,11 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-
-  imports = [ ../default.setup.nix ];
-  config.includeTags = [ "nelico" ];
-
   config.modules."nelico-host" = {
 
     tags = [ "nelico" ];
+    includeTags = [ "default-host" ];
 
     setup.nixos = { # (NixOS Module)
 

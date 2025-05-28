@@ -1,13 +1,9 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-
-  # Imports
-  imports = [ ./default.setup.nix ];
-  config.includeTags = [ "default-user" "eryoneta" ];
-
   config.modules."eryoneta-user" = {
 
     # Configuration
     tags = [ "eryoneta" ];
+    includeTags = [ "default-user" ];
 
     setup = {
       home = { config, ... }: { # (Home-Manager Module)

@@ -1,11 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-
-  imports = [ ../default.setup.nix ];
-  config.includeTags = [ "hyper-v_vm" ];
-
   config.modules."hyper-v_vm-host" = {
 
     tags = [ "hyper-v_vm" ];
+    includeTags = [ "default-host" ];
 
     setup.nixos = { # (NixOS Module)
 

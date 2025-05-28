@@ -81,7 +81,12 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "${flakePath}/hosts/${host.hostname}/configuration.setup.nix" # Loads host configuration
+                ./default.setup.nix # Imports all Setup modules
+                { # (Setup Module)
+                  config = {
+                    includeTags = [ "${host.hostname}" ] ++ (builtins.map (user: user.username) allUsers); # Includes host and user modules
+                  };
+                }
               ];
               specialArgs = nixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
@@ -107,7 +112,12 @@ flakePath: (
                       value = (setup.setupSystem { # Setup Configuration
                         inherit lib;
                         modules = [
-                          "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
+                          ./default.setup.nix # Imports all Setup modules
+                          { # (Setup Module)
+                            config = {
+                              includeTags = [ "${user.username}" ]; # Includes user modules
+                            };
+                          }
                         ];
                         specialArgs = homeManagerSpecialArgs;
                       }).homeManagerModules.setup; # Loads all home modules from setup
@@ -168,7 +178,12 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                "${flakePath}/users/${user.username}.setup.nix"  # Loads user configuration
+                ./default.setup.nix # Imports all Setup modules
+                { # (Setup Module)
+                  config = {
+                    includeTags = [ "${user.username}" ]; # Includes user modules
+                  };
+                }
               ];
               specialArgs = homeManagerSpecialArgs;
             }).homeManagerModules.setup # Loads all home modules from setup
