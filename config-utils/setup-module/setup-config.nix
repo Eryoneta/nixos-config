@@ -6,11 +6,8 @@
     validateModules = includedTags: (
       lib.pipe cfg.modules [
 
-        # Transforms the set of modules into a list of modules
-        (x: builtins.attrValues x)
-
         # For each module, define if it should be included or not
-        (x: builtins.map (module: {
+        (x: builtins.mapAttrs (moduleId: module: {
           inherit (module) enable includeTags setup;
           include = (
             if (module.include != null) then ( # If "include" is defined, then use it
@@ -32,43 +29,53 @@
         }) x)
 
         # For each module, define if it should be included or be null (Be unincluded)
-        (x: builtins.map (module: (
+        (x: builtins.mapAttrs (moduleId: module: (
           if (module.enable && module.include) then module else null
         )) x)
 
-        # Remove all null items
-        (x: lib.remove null x)
+        # Remove all null modules
+        (x: lib.filterAttrs (moduleId: module: (module != null)) x)
 
-        # Transforms each module into a list of modules
-        (x: builtins.map (module: (
-          let
-            finalIncludeTags = (lib.pipe module.includeTags [
+        # Transforms each module into a set of modules
+        (x: builtins.mapAttrs (moduleId: module: (
+          x // ( # By merging a set, a duplicate is overriden
+            let
+              finalIncludeTags = (lib.pipe module.includeTags [
 
-              # Remove all tags that are already included
-              (x: builtins.map (tag: (
-                if (builtins.elem tag includedTags) then null else tag
-              )) x)
+                # Remove all tags that are already included
+                (x: builtins.map (tag: (
+                  if (builtins.elem tag includedTags) then null else tag
+                )) x)
 
-              # Remove all null items
-              (x: lib.remove null x)
+                # Remove all null items
+                (x: lib.remove null x)
 
-            ]);
-          in (
-            # If there is new tags, reinterate modules to include new modules
-            if ((builtins.length finalIncludeTags) > 0) then (
-              [ module ] ++ (validateModules finalIncludeTags)
-            ) else [ module ]
+              ]);
+            in (
+              # If there is new tags, reinterate modules to include new modules
+              if ((builtins.length finalIncludeTags) > 0) then (
+                (validateModules finalIncludeTags)
+              ) else {}
+            )
           )
         )) x)
 
-        # Transforms the list of lists into a single list
-        (x: builtins.concatLists x)
+        # Transforms the set of sets of modules into a list of sets of modules
+        (x: builtins.attrValues x)
+
+        # Merges all sets of modules into a single set of modules
+        (x: builtins.foldl' (finalModules: modules: (
+          finalModules // modules # By merging sets, all duplicates are overriden
+        )) {} x)
 
       ]
     );
 
     evalModules = moduleType: (
       lib.pipe (validateModules cfg.includeTags) [
+
+        # Transforms the set of modules into a list of modules
+        (x: builtins.attrValues x)
 
         # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.map (module: {
