@@ -3,18 +3,11 @@
 
     # Configuration
     tags = [ "eryoneta" ];
-    includeTags = [ "default-user" ];
+    includeTags = [ "default-setup" ];
 
     setup = {
       home = { config, ... }: { # (Home-Manager Module)
         config = {
-
-          # Variables
-          home.sessionVariables = {
-            "MOZ_ENABLE_WAYLAND" = 0; # Disable wayland for Firefox
-            # Note: Bookmark dragging does NOT work under submenus! The menu keeps disappearing! Unusable!
-            # TODO: (Firefox) Enable wayland for Firefox when it works
-          };
 
           # Profile
           home.file.".face.icon" = with args.config-domain; {

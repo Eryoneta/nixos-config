@@ -1,8 +1,9 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."lico-host" = {
 
+    # Configuration
     tags = [ "lico" ];
-    includeTags = [ "default-host" ];
+    includeTags = [ "default-setup" ];
 
     setup.nixos = { # (NixOS Module)
 

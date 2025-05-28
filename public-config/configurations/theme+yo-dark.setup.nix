@@ -1,21 +1,23 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
-  imports = [ ./default-theme.setup.nix ];
+  # Imports
+  imports = [ ./theme.setup.nix ]; # Dependencies
 
   config.modules."yo-theme" = {
 
+    # Configuration
     tags = [ "yo" ];
-    attr.packageChannel = args.pkgs-bundle.stable;
+    attr.packageChannel = pkgs-bundle.stable;
 
     setup =  { attr }: {
       home = { # (Home-Manager Module)
-        config = {
+        config = { config-domain, ... }: {
 
           # Stylix: Themes and colors manager
           stylix = {
 
             # Wallpaper
-            image = with args.config-domain; ( # Wallpaper
+            image = with config-domain; ( # Wallpaper
               "${private.resources}/wallpapers/Window/006.png"
             );
             imageScalingMode = "fill"; # Fill background

@@ -1,7 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."default-file-associations" = {
 
-    tags = [ "default-user" ];
+    # Configuration
+    tags = [ "default-setup" ];
     attr.associateDefault = app: extensions: (utils.pipe extensions [
 
       # Invert the association: Each extension points to the app
@@ -17,6 +18,8 @@
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config = {
+
+          # Note: Programs that should be present: Firefox, KWrite, Kate, LibreOffice Writer, MPV
 
           # XDG Mime Apps
           xdg.mime.enable = true;

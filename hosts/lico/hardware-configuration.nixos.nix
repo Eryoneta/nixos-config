@@ -17,7 +17,7 @@
 
     # Firmware
     hardware.cpu.intel.updateMicrocode = (utils.mkDefault) config.hardware.enableRedistributableFirmware;
-    
+
   };
 
 }

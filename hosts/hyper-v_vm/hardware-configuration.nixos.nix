@@ -12,7 +12,7 @@
 
     # Firmware
     virtualisation.hypervGuest.enable = true;
-    
+
   };
 
 }

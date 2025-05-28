@@ -1,9 +1,11 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  imports = [ ./default-file-associations.setup.nix ];
+  # Imports
+  imports = [ ./file-associations.setup.nix ]; # Dependencies
 
   config.modules."firefox-dev-file-associations" = {
 
+    # Configuration
     tags = [ "yo" ];
     attr.associateDefault = config.modules."default-file-associations".attr.associateDefault;
 

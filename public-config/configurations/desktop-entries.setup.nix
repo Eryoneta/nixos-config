@@ -1,7 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."default-desktop-entries" = {
 
-    tags = [ "default-user" ];
+    # Configuration
+    tags = [ "default-setup" ];
 
     setup = {
       home = { # (Home-Manager Module)

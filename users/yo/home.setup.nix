@@ -1,24 +1,13 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."yo-user" = {
 
     # Configuration
     tags = [ "yo" ];
-    includeTags = [ "default-user" ];
-    attr.firefox-devedition.packageChannel = config.modules."firefox-devedition".attr.packageChannel;
+    includeTags = [ "default-setup" ];
 
-    setup = { attr }: {
+    setup = {
       home = { config, ... }: { # (Home-Manager Module)
         config = {
-
-          # Variables
-          home.sessionVariables = {
-            "DEFAULT_BROWSER" = with attr.firefox-devedition; (
-              "${packageChannel.firefox-devedition}/bin/firefox" # Default Browser
-            );
-            "MOZ_ENABLE_WAYLAND" = 0; # Disable wayland for Firefox
-            # Note: Bookmark dragging does NOT work under submenus! The menu keeps disappearing! Unusable!
-            # TODO: (Firefox) Enable wayland for Firefox when it works
-          };
 
           # Profile
           home.file.".face.icon" = with args.config-domain; {

@@ -32,7 +32,7 @@
 
         # Merge all items into a single set
         (x: builtins.listToAttrs x)
-        
+
         # Add root user configuration
         (x: x // {
           root = {

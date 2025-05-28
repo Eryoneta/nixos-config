@@ -19,6 +19,6 @@
     services.libinput.touchpad.additionalOptions = ''
       Option "SendEventsMode" "disabled"
     '';
-    
+
   };
 }

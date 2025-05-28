@@ -1,8 +1,9 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."default-theme" = {
 
-    tags = [ "default-user" ];
-    attr.packageChannel = args.pkgs-bundle.stable;
+    # Configuration
+    tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
 
     setup = { attr }: {
       home = { # (Home-Manager Module)
@@ -15,7 +16,7 @@
 
             # Wallpaper
             image = (utils.mkDefault) ( # Wallpaper
-              (args.pkgs-bundle.nixos-artwork)."wallpaper/nix-wallpaper-simple-blue.png"
+              (pkgs-bundle.nixos-artwork)."wallpaper/nix-wallpaper-simple-blue.png"
             );
             imageScalingMode = (utils.mkDefault) "fill"; # Fill background
 

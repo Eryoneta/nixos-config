@@ -1,7 +1,9 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-  config.modules."default-directories" = {
 
-    tags = [ "default-user" ];
+  config.modules."basic-directories" = {
+
+    # Configuration
+    tags = [ "basic-setup" ];
 
     setup = {
       home = { config, ... }: { # (Home-Manager Module)
@@ -33,4 +35,32 @@
       };
     };
   };
+
+  config.modules."personal-directory" = {
+
+    # Configuration
+    tags = [ "yo" ];
+
+    setup = {
+      home = { config, ... }: { # (Home-Manager Module)
+        config = {
+
+          # XDG Base Directory
+          xdg = {
+            userDirs = (
+              let
+                homePath = config.home.homeDirectory;
+              in {
+                extraConfig = {
+                  "XDG_PERSONAL_DIR" = "${homePath}/Personal";
+                };
+              }
+            );
+          };
+
+        };
+      };
+    };
+  };
+
 }
