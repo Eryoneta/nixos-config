@@ -72,11 +72,14 @@
 
         # For each module, define if it should be included or be empty (Be unincluded)
         (x: builtins.mapAttrs (moduleId: module: (
-          if (module.enable && module.include) then module.setup.${moduleType} else {}
+          if (module.enable && module.include) then module.setup.${moduleType} else null
         )) x)
 
         # Transforms the set of modules into a list of modules
         (x: builtins.attrValues x)
+
+        # Remove all null items
+        (x: lib.remove null x)
 
       ]
     );
