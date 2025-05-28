@@ -10,7 +10,14 @@
       builtins.concatLists [
         (listFiles ./hosts)
         (listFiles ./users)
+        (listFiles "${public.configurations}")
         (listFiles "${public.programs}")
+        (
+          # Check for "./private-config/configurations"
+          if (utils.pathExists private.configurations) then (
+            (listFiles "${private.configurations}")
+          ) else []
+        )
         (
           # Check for "./private-config/programs"
           if (utils.pathExists private.programs) then (

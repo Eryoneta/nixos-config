@@ -32,6 +32,7 @@ flakePath: (
           #   But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
           #   Important: Only absolute paths notices the dev folder
           directories = {
+            configurations = "/configurations";
             dotfiles = "/dotfiles";
             programs = "/programs";
             resources = "/resources";
