@@ -96,6 +96,18 @@
               '';
             };
 
+            # Module including other modules, by tags
+            includeTags = lib.mkOption {
+              type = (lib.types.listOf (lib.types.str));
+              default = [];
+              description = ''
+                A list of tags from tagged modules to be included if this module is.
+              '';
+              example = ''
+                [ "entertainment" ]
+              '';
+            };
+
             # Module attributes
             attr = lib.mkOption {
               type = (lib.types.attrs);
