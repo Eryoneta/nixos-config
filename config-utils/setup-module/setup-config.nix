@@ -3,63 +3,24 @@
 
     cfg = config;
 
-    mkIncludeTagsList = includedTags: (lib.pipe cfg.modules [
-
-      # For each module, define if it should be included or be empty (Be unincluded)
-      (x: builtins.mapAttrs (moduleId: module: (
-        if (module.enable && (module.include == null || module.include)) then module else null
-      )) x)
-
-      # Collects all included tags from the included modules
-      (x: builtins.mapAttrs (moduleId: module: module.includeTags) x)
-
-      # Transforms the set of includedTags into a list of includedTags
-      (x: builtins.attrValues x)
-
-      # Transforms the list of includedTags(Which is a list) into a single list of tags
-      (x: builtins.concatLists x)
-
-      # Remove all tags that are already included
-      (x: builtins.map (tag: (
-        if (builtins.elem tag includedTags) then null else tag
-      )) x)
-
-      # Remove all null items
-      (x: lib.remove null x)
-
-      # Return the given tags or reinterate to return the final list of tags
-      (x: if ((builtins.length x) > 0) then (
-        includedTags ++ (mkIncludeTagsList x)
-      ) else includedTags)
-
-    ]);
-    finalIncludeTags = (mkIncludeTagsList cfg.includeTags);
-
-    evalModules = moduleType: (
+    validateModules = includedTags: (
       lib.pipe cfg.modules [
 
-        # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
-        (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enable include tags;
-          setup = if (builtins.isFunction module.setup) then (
-            module.setup {
-              attr = module.attr;
-            }
-          ) else module.setup;
-        }) x)
+        # Transforms the set of modules into a list of modules
+        (x: builtins.attrValues x)
 
         # For each module, define if it should be included or not
-        (x: builtins.mapAttrs (moduleId: module: {
-          inherit (module) enable setup;
+        (x: builtins.map (module: {
+          inherit (module) enable includeTags setup;
           include = (
-            if (module.include != null) then (
+            if (module.include != null) then ( # If "include" is defined, then use it
               module.include
-            ) else (
+            ) else ( # If "include" is null, then check "tags"
               lib.pipe module.tags [
 
-                # Check each tag with the list present in "config.includeTags"
+                # Check each tag with the given tag list
                 (x: builtins.map (tag: (
-                  builtins.elem tag finalIncludeTags
+                  builtins.elem tag includedTags
                 )) x)
 
                 # Check if any of the tags is present in the list
@@ -70,16 +31,58 @@
           );
         }) x)
 
-        # For each module, define if it should be included or be empty (Be unincluded)
-        (x: builtins.mapAttrs (moduleId: module: (
-          if (module.enable && module.include) then module.setup.${moduleType} else null
+        # For each module, define if it should be included or be null (Be unincluded)
+        (x: builtins.map (module: (
+          if (module.enable && module.include) then module else null
         )) x)
-
-        # Transforms the set of modules into a list of modules
-        (x: builtins.attrValues x)
 
         # Remove all null items
         (x: lib.remove null x)
+
+        # Transforms each module into a list of modules
+        (x: builtins.map (module: (
+          let
+            finalIncludeTags = (lib.pipe module.includeTags [
+
+              # Remove all tags that are already included
+              (x: builtins.map (tag: (
+                if (builtins.elem tag includedTags) then null else tag
+              )) x)
+
+              # Remove all null items
+              (x: lib.remove null x)
+
+            ]);
+          in (
+            # If there is new tags, reinterate modules to include new modules
+            if ((builtins.length finalIncludeTags) > 0) then (
+              [ module ] ++ (validateModules finalIncludeTags)
+            ) else [ module ]
+          )
+        )) x)
+
+        # Transforms the list of lists into a single list
+        (x: builtins.concatLists x)
+
+      ]
+    );
+
+    evalModules = moduleType: (
+      lib.pipe (validateModules cfg.includeTags) [
+
+        # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
+        (x: builtins.map (module: {
+          setup = if (builtins.isFunction module.setup) then (
+            module.setup {
+              attr = module.attr;
+            }
+          ) else module.setup;
+        }) x)
+
+        # For each module, get the desired module inside "setup"
+        (x: builtins.map (module: (
+          module.setup.${moduleType}
+        )) x)
 
       ]
     );
