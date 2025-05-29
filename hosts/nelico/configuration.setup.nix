@@ -28,4 +28,13 @@
 
     };
   };
+
+  # Screen size
+  config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
+    utils.mkIf (config.includedModules."nelico-host") {
+      width = 1600;
+      height = 900;
+    }
+  );
+
 }

@@ -30,4 +30,13 @@
 
     };
   };
+
+  # Screen size
+  config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
+    utils.mkIf (config.includedModules."lico-host") {
+      width = 1366;
+      height = 768;
+    }
+  );
+
 }

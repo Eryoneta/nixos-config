@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."hyper-v_vm-host" = {
 
     # Configuration
@@ -30,4 +30,13 @@
 
     };
   };
+
+  # Screen size
+  config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
+    utils.mkIf (config.includedModules."hyper-v_vm-host") {
+      width = 800; # Stuck because of "nomodeset"
+      height = 600;
+    }
+  );
+
 }
