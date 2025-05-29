@@ -3,7 +3,10 @@
 
     # Configuration
     tags = [ "basic-setup" ];
-    includeTags = [ "core-setup" ];
+    includeTags = [
+      "core-setup"
+      "essential-tool"
+    ];
 
   };
 

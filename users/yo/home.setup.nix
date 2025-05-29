@@ -3,7 +3,11 @@
 
     # Configuration
     tags = [ "yo" ];
-    includeTags = [ "default-setup" ];
+    includeTags = [
+      "default-setup"
+      "development"
+      "tool"
+    ];
     attr.profileIcon = config.modules."default-user".attr.profileIcon;
     attr.defaultPassword = config.modules."default-user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."default-user".attr.hashedPasswordFilePath;

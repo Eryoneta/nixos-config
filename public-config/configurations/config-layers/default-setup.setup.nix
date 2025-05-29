@@ -3,7 +3,11 @@
 
     # Configuration
     tags = [ "default-setup" ];
-    includeTags = [ "core-setup" "basic-setup" ];
+    includeTags = [
+      "core-setup" "basic-setup"
+      "system-tool"
+      "tool-office"
+    ];
 
   };
 
