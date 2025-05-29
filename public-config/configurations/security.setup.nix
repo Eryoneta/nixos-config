@@ -19,19 +19,22 @@
           # Required for sound
           security.rtkit.enable = true;
 
-          # Agenix
-          age = with config-domain; ( # (Agenix option)
+          # User passwords
+          age = with config-domain; ( # (agenix option)
             # Check for "./private-config/secrets"
             utils.mkIf (utils.pathExists private.secrets) {
               identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
               secrets = (utils.pipe host.users [
+
+                # Transforms the set into a list
+                (x: builtins.attrValues x)
 
                 # Removes users with files that don't exists
                 (x: builtins.filter (user: (
                   builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
                 )) x)
 
-                # Set the value of each user to be a valid configuration
+                # Prepare each item to be transformed into a set
                 (x: builtins.map (user: {
                   name = "${user.username}-userPassword";
                   value = {
@@ -39,7 +42,7 @@
                   };
                 }) x)
 
-                # Merge all items into a single set
+                # Transforms the list into a set
                 (x: builtins.listToAttrs x)
 
                 # Add root user configuration

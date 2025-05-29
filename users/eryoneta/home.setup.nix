@@ -1,22 +1,40 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
   config.modules."eryoneta-user" = {
 
     # Configuration
     tags = [ "eryoneta" ];
     includeTags = [ "default-setup" ];
+    attr.profileIcon = config.modules."default-user".attr.profileIcon;
+    attr.defaultPassword = config.modules."default-user".attr.defaultPassword;
+    attr.hashedPasswordFilePath = config.modules."default-user".attr.hashedPasswordFilePath;
 
-    setup = {
+    setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
         config = {
 
           # Profile
-          home.file.".face.icon" = with args.config-domain; {
-            # Check for "./private-config/resources"
-            enable = (utils.pathExists private.resources);
-            source = with private; (
-              "${resources}/profiles/${config.home.username}/.face.icon"
-            );
-          };
+          home.file.".face.icon" = (attr.profileIcon config.home.username);
+
+        };
+      };
+      nixos = { config, users, ... }: { # (NixOS Module)
+        config = {
+
+          # System user
+          users.users = (
+            let
+              user = users."eryoneta";
+              hashedFilePath = config.age.secrets."${user.username}-userPassword".path or null; # (agenix option)
+            in {
+              "${user.username}" = {
+                description = user.name;
+                isNormalUser = true;
+                password = (attr.defaultPassword user.username hashedFilePath);
+                hashedPasswordFile = (attr.hashedPasswordFilePath user.username hashedFilePath);
+                extraGroups = [ "wheel" "networkmanager" ];
+              };
+            }
+          );
 
         };
       };

@@ -85,7 +85,7 @@ flakePath: (
                 ./default.setup.nix # Imports all Setup modules
                 { # (Setup Module)
                   config = {
-                    includeTags = [ "${host.hostname}" ] ++ (builtins.map (user: user.username) allUsers); # Includes host and user modules
+                    includeTags = [ "${host.hostname}" "root" ] ++ (builtins.map (user: user.username) allUsers); # Includes host, root, and user modules
                   };
                 }
               ];
