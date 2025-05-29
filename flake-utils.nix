@@ -70,6 +70,7 @@ flakePath: (
           inherit (configDomainArgs) config-domain; # Configuration-Domains
           inherit nixos-modules; # NixOS-Modules Directory
         };
+        setupSpecialArgs = nixosSpecialArgs // homeManagerSpecialArgs;
 
       in {
 
@@ -89,7 +90,7 @@ flakePath: (
                   };
                 }
               ];
-              specialArgs = nixosSpecialArgs;
+              specialArgs = setupSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
             { # (NixOS-Module)
@@ -120,7 +121,7 @@ flakePath: (
                             };
                           }
                         ];
-                        specialArgs = homeManagerSpecialArgs;
+                        specialArgs = setupSpecialArgs;
                       }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
 
@@ -186,7 +187,7 @@ flakePath: (
                   };
                 }
               ];
-              specialArgs = homeManagerSpecialArgs;
+              specialArgs = setupSpecialArgs;
             }).homeManagerModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
