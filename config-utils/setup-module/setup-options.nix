@@ -49,6 +49,17 @@
         '';
       };
 
+      # Final included modules
+      includedModules = lib.mkOption {
+        type = (lib.types.attrsOf (lib.types.bool));
+        readOnly = true;
+        description = ''
+          A set of all defined modules, where true means included in the final configuration.
+
+          It is read only.
+        '';
+      };
+
       # Modules
       modules = lib.mkOption {
         type = (lib.types.attrsOf (lib.types.submodule {
@@ -59,7 +70,7 @@
               type = (lib.types.bool);
               default = true;
               description = ''
-                Can be set to disable the module glabally.
+                Can be set to disable the module globally.
 
                 It's true by default.
               '';

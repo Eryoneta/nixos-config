@@ -3,7 +3,7 @@
 
     cfg = config;
 
-    validateModules = includedTags: (
+    includeModules = includedTags: (
       lib.pipe cfg.modules [
 
         # For each module, define if it should be included or not
@@ -54,7 +54,7 @@
             in (
               # If there is new tags, reinterate modules to include new modules
               if ((builtins.length finalIncludeTags) > 0) then (
-                (validateModules finalIncludeTags)
+                (includeModules finalIncludeTags)
               ) else {}
             )
           )
@@ -71,11 +71,31 @@
       ]
     );
 
+    includedModules = (
+      lib.pipe cfg.modules [
+
+        # Transforms each module into a boolean
+        (x: builtins.mapAttrs (moduleId: module: (
+          builtins.hasAttr moduleId (includeModules cfg.includeTags)
+        )) x)
+
+      ]
+    );
+
     evalModules = moduleType: (
-      lib.pipe (validateModules cfg.includeTags) [
+      lib.pipe cfg.includedModules [
+
+        (x: builtins.mapAttrs (moduleId: included: (
+          if (included) then (
+            cfg.modules.${moduleId}
+          ) else null
+        )) x)
 
         # Transforms the set of modules into a list of modules
         (x: builtins.attrValues x)
+
+        # Remove all unincluded modules
+        (x: builtins.filter (module: (module != null)) x)
 
         # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.map (module: {
@@ -102,12 +122,13 @@
 
     config = {
 
+      includedModules = includedModules;
+
       nixosConfigurationModules = (evalModules "nixos");
       homeConfigurationModules = (evalModules "home");
       darwinConfigurationModules = (evalModules "darwin");
 
       modules."default" = {
-        enable = true;
         tags = [ "default" ];
         setup.nixos = {};
         setup.home = {};
