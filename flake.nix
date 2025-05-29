@@ -61,8 +61,8 @@
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
     # Prism Launcher (Cracked) (Fixed)
-    primslauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
-    primslauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
+    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
+    prismlauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -121,7 +121,7 @@
             "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
           };
           mpv-input-event = mpv-input-event;
-          primslauncherCRK = primslauncherCRK;
+          prismlauncherCRK = prismlauncherCRK;
           powershell-prompt = powershell-prompt;
           git-tools = git-tools;
           firefox-scripts = firefox-scripts;
