@@ -15,12 +15,12 @@
       config = {
 
         # Features/Autologin
-        #services.displayManager.autoLogin.enable = true;
+        services.displayManager.autoLogin.enable = true;
 
         # Features/AlterProfile
         system.autoUpgrade.alterProfile.configurationLimit = 2; # Keep only 2 generations
 
-        # Boot-Loader
+        # Bootloader/OSProber
         boot.loader.grub.useOSProber = false; # No need for OS probing
 
         # Features/Swapfile
