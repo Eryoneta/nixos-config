@@ -23,7 +23,7 @@
         #   "--show-trace" is for full error messages
         #   "--print-build-logs --verbose" is for very detailed output
         #   "|& nom" passes the output to nix-output-monitor to prettify
-        
+
       ])
     );
 

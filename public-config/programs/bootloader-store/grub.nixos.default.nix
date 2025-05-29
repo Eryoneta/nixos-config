@@ -33,7 +33,7 @@
       extraEntriesBeforeNixOS = true; # Extra menus at the top
       default = 3; # Selects NixOS entry as default
       configurationLimit = (utils.mkDefault) 100; # Max itens shown
-      
+
       # Theme
       splashImage = null; # No background image
       theme = (utils.mkDefault) "${args.config-domain.public.dotfiles}/grub/blue-star-grub-theme/light";

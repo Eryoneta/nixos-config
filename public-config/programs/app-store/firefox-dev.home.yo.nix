@@ -84,7 +84,7 @@
         ));
 
       };
-      
+
     };
 
     # FX-AutoConfig: Custom JavaScript loader
@@ -170,7 +170,7 @@
 
           }
         );
-        
+
       }
     );
 

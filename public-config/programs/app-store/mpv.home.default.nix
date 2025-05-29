@@ -110,7 +110,7 @@
         # URLs
         "ytdl" = "yes"; # Uses "youtube-dl" or similars to open URLs
         "ytdl_path" = "yt-dlp"; # Uses "yt-dlp" to open URLs
-        
+
         # OSD (On-Screen Display)
         "osc" = "no"; # Control on screen
         "osd-bar" = "no"; # Do not show volume/time bar

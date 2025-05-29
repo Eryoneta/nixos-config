@@ -1,5 +1,5 @@
 { config, lib, ... }@args: with args.config-utils; {
-  
+
   options = {
     profile.programs.sddm = {
       options.enabled = (utils.mkBoolOption true);

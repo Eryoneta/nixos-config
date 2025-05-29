@@ -8,7 +8,6 @@ nix-lib: rec {
       - "withSuffix": A text suffix
     - Is the same as "listFiles", but it also includes sub-directories!
   */
-  #   
   searchFiles = dirPath: withPrefix: withInfix: withSuffix: (
     let
 

@@ -37,7 +37,7 @@
         ));
 
       };
-      
+
     };
 
     profile.programs.firefox = { # Load settings into my "firefox.options.defaults"

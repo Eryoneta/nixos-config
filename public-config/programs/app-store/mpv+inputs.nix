@@ -51,7 +51,7 @@ actions: (
 
     "Ctrl+Right" = actions.goForward.medium; # ctrl+right
     "Ctrl+Left" = actions.goBack.medium; # ctrl+left
-    
+
     "FORWARD" = actions.goForward.medium; # media_forward
     "REWIND" = actions.goBack.medium; # media_rewind
 
@@ -60,7 +60,7 @@ actions: (
 
     "." = actions.goForward.frame; # .
     "," = actions.goBack.frame; # ,
-    
+
     "End" = actions.goForward.end; # end
     "Home" = actions.goBack.start; # home
 

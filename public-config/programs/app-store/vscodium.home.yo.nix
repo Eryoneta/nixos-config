@@ -6,7 +6,7 @@
       # Nixd: Nix language server
       # Used by VSCodium to understand nix sintaxe
       nixd
-      
+
       # NixFmt: Nix language formatter
       # Used by VSCodium to format nix code
       nixfmt-rfc-style
@@ -85,7 +85,7 @@
         let
           vscode-marketplace-pkgs = (options.packageChannel).vscode-utils.extensionFromVscodeMarketplace;
           vscode-marketplace-extensions = {
-            
+
             # VSCode-Random: Includes many random generators
             jrebocho.vscode-random = vscode-marketplace-pkgs {
               publisher = "jrebocho";

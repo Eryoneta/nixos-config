@@ -119,7 +119,7 @@
             ${any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
           '')
         );
-        
+
       };
 
       # Powerlevel10k packages

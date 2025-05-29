@@ -109,7 +109,7 @@
       };
 
     };
-    
+
     hardware.configuration.screensize.verticalBars = [ # (Option of Hosts/Default/Hardware)
       options.defaults."panels"."main".panel.height
     ];

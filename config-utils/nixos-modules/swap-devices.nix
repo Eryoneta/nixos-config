@@ -9,7 +9,7 @@
 
     options = {
       swap = {
-        
+
         enable = lib.mkEnableOption ''
           Enables the use of swap devices.
         '';

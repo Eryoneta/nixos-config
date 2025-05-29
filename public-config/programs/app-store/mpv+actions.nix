@@ -21,7 +21,7 @@
       mpv-config.speeds
       [ mpv-config.speedMaxBoundary ]
     ]));
-    
+
     # Rotation
     rotationList = (utils.joinStr " " mpv-config.rotations);
 
@@ -73,7 +73,7 @@
     exit = (utils.joinStr ";" [ # = Exit
       "quit"
     ]);
-    
+
     # Seek
     goForward = {
       frame = (utils.joinStr ";" [ # Go +1 frame and pause

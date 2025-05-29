@@ -1,5 +1,5 @@
 { config, lib, ... }@args: with args.config-utils; {
-  
+
   options = {
     profile.programs.plymouth = {
       options.enabled = (utils.mkBoolOption true);
