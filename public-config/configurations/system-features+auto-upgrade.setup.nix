@@ -2,6 +2,8 @@
   config.modules."default-auto-upgrade" = {
 
     # Configuration
+    attr.configurationLimit = 12; # 12 seems like a good mumber, 3 months of weekly upgrades
+    attr.systemUpgradeProfileName = "System_Upgrades";
     tags = [ "default-setup" ];
 
     setup = {
@@ -48,8 +50,8 @@
             # Alter profile ("auto-upgrade-alter-profile.nix")
             alterProfile = {
               enable = (utils.mkDefault) true;
-              name = (utils.mkDefault) "System_Upgrades";
-              configurationLimit = (utils.mkDefault) 12; # 12 seems like a good mumber, 3 months of weekly upgrades
+              name = (utils.mkDefault) attr.systemUpgradeProfileName;
+              configurationLimit = (utils.mkDefault) attr.configurationLimit;
             };
 
             # Notifier ("auto-upgrade-notifier.nix")

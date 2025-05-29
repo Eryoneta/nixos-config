@@ -1,0 +1,21 @@
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+
+  # PowerShell: Shell
+  config.modules."powershell" = {
+    attr.packageChannel = pkgs-bundle.stable;
+    tags = [ "default-setup" ];
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+
+        config.home.packages = with attr.packageChannel; [ powershell ];
+
+        # My PowerShell-Prompt
+        config.xdg.configFile."powershell/Microsoft.PowerShell_profile.ps1" = {
+          source = "${pkgs-bundle.powershell-prompt}/Microsoft.PowerShell_profile.ps1";
+        };
+
+      };
+    };
+  };
+
+}
