@@ -7,11 +7,6 @@
     setup = {
       nixos = { # (NixOS Module)
 
-        imports = [
-          ./hardware-configuration.nixos.nix # Hardware scan
-          ./hardware-fixes.nixos.nix # Hardware fixes
-        ];
-
         # Features/Swapfile
         config.swap.devices."basicSwap".size = ((16 + 2) * 1024); # 16GB + 2GB = 18GB
 

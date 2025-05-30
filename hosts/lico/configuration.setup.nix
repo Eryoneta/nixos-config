@@ -7,11 +7,6 @@
     setup = {
       nixos = { # (NixOS Module)
 
-        imports = [
-          ./hardware-configuration.nixos.nix # Hardware scan
-          ./hardware-fixes.nixos.nix # Hardware fixes
-        ];
-
         # Features/Autologin
         config.services.displayManager.autoLogin.enable = true;
 
