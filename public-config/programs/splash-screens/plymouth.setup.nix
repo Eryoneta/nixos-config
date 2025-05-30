@@ -8,15 +8,15 @@
       nixos = { # (NixOS Module)
         config.boot = {
 
+          # Configuration
           plymouth = {
             enable = options.enabled;
             theme = "breeze";
           };
 
+          # Suppress messages
           consoleLogLevel = 0; # No messages
           initrd.verbose = false; # Surpress NixOS Stages messages
-
-          # Reference: https://wiki.nixos.org/wiki/Plymouth
           kernelParams = [
             "quiet" # Disable most log messages
             "splash" # There is a splash screen being shown, by "Plymouth"
@@ -26,6 +26,7 @@
             "rd.udev.log_level=3" # Print only the most important messages from device manager
             "udev.log_priority=3" # Print only the most important messages from device manager
           ];
+          # Reference: https://wiki.nixos.org/wiki/Plymouth
 
         };
       };

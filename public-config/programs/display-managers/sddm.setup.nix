@@ -13,7 +13,7 @@
     setup = { attr }: {
       nixos = { # (NixOS Module)
 
-        # SDDM
+        # Configuration
         config.services.displayManager.sddm = {
           enable = true;
           package = (utils.mkDefault) (attr.packageChannel).kdePackages.sddm;

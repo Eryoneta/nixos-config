@@ -1,9 +1,6 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  # Imports
-  imports = [ ./zsh.setup.nix ]; # Dependencies
-
-  # ZSH: Shell
+  # NX Function
   config.modules."nx-command" = {
     attr.configurationLimit = config.modules."default-auto-upgrade".attr.configurationLimit;
     attr.systemUpgradeProfileName = config.modules."default-auto-upgrade".attr.systemUpgradeProfileName;
@@ -11,7 +8,7 @@
     setup = { attr }: {
       home = { userDev, auto-upgrade-pkgs, ... }: { # (Home-Manager Module)
 
-        # NX Function
+        # Configuration
         config.programs.zsh.initExtra = (
           let
 

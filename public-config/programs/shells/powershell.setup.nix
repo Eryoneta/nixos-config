@@ -7,9 +7,10 @@
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
+        # Install
         config.home.packages = with attr.packageChannel; [ powershell ];
 
-        # My PowerShell-Prompt
+        # Dotfile: My PowerShell-Prompt
         config.xdg.configFile."powershell/Microsoft.PowerShell_profile.ps1" = {
           source = "${pkgs-bundle.powershell-prompt}/Microsoft.PowerShell_profile.ps1";
         };
