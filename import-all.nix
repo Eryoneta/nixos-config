@@ -1,12 +1,11 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Import ALL Setup modules
   imports = (
     let
-      onlySetupConfig = ".setup.";
       onlyNixFile = ".nix";
-      listFiles = path: (utils.searchFiles path "" [ onlySetupConfig ] onlyNixFile);
-    in with args.config-domain; (
+      listFiles = path: (utils.searchFiles path "" [] onlyNixFile);
+    in with config-domain; (
       builtins.concatLists [
         (listFiles ./hosts)
         (listFiles ./users)

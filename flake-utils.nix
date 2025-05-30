@@ -83,7 +83,7 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                ./default.setup.nix # Imports all Setup modules
+                ./import-all.nix # Imports all Setup modules
                 { # (Setup Module)
                   config = {
                     includeTags = [ "${host.hostname}" "root" ] ++ (builtins.map (user: user.username) allUsers); # Includes host, root, and user modules
@@ -114,7 +114,7 @@ flakePath: (
                       value = (setup.setupSystem { # Setup Configuration
                         inherit lib;
                         modules = [
-                          ./default.setup.nix # Imports all Setup modules
+                          ./import-all.nix # Imports all Setup modules
                           { # (Setup Module)
                             config = {
                               includeTags = [ "${user.username}" ]; # Includes user modules
@@ -180,7 +180,7 @@ flakePath: (
             (setup.setupSystem {
               inherit lib;
               modules = [
-                ./default.setup.nix # Imports all Setup modules
+                ./import-all.nix # Imports all Setup modules
                 { # (Setup Module)
                   config = {
                     includeTags = [ "${user.username}" ]; # Includes user modules
