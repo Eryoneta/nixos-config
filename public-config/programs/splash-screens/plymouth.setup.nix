@@ -6,6 +6,8 @@
     tags = [ "default-setup" ];
     setup = {
       nixos = { # (NixOS Module)
+
+        # Boot
         config.boot = {
 
           # Configuration
@@ -29,6 +31,7 @@
           # Reference: https://wiki.nixos.org/wiki/Plymouth
 
         };
+
       };
     };
   };

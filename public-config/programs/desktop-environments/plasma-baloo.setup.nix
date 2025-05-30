@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   # Baloo: File indexer
-  config.modules."baloo" = {
+  config.modules."plasma-baloo" = {
     tags = config.modules."plasma".tags;
     setup = {
       home = { # (Home-Manager Module)

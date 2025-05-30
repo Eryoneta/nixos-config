@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   # KScreenLocker: Screen locker for Plasma
-  config.modules."kscreenlocker" = {
+  config.modules."plasma-kscreenlocker" = {
     tags = config.modules."plasma".tags;
     setup = {
       home = { pkgs-bundle, ... }: { # (Home-Manager Module)

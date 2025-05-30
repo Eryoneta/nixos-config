@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   # PowerDevil: Power manager for Plasma
-  config.modules."powerdevil" = {
+  config.modules."plasma-powerdevil" = {
     tags = config.modules."plasma".tags;
     setup = {
       nixos = { # (NixOS Module)

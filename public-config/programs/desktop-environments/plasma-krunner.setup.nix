@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   # KRunner: Program starter for Plasma
-  config.modules."krunner" = {
+  config.modules."plasma-krunner" = {
     tags = config.modules."plasma".tags;
     setup = {
       home = { # (Home-Manager Module)

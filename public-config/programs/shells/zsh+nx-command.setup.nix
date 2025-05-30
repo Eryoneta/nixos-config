@@ -1,9 +1,9 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # NX Function
-  config.modules."nx-command" = {
-    attr.configurationLimit = config.modules."default-auto-upgrade".attr.configurationLimit;
-    attr.systemUpgradeProfileName = config.modules."default-auto-upgrade".attr.systemUpgradeProfileName;
+  config.modules."zsh+nx-command" = {
+    attr.configurationLimit = config.modules."system-features+auto-upgrade".attr.configurationLimit;
+    attr.systemUpgradeProfileName = config.modules."system-features+auto-upgrade".attr.systemUpgradeProfileName;
     tags = [ "yo" ];
     setup = { attr }: {
       home = { userDev, auto-upgrade-pkgs, ... }: { # (Home-Manager Module)

@@ -1,7 +1,7 @@
 { config-domain, ... }@args: with args.config-utils; { # (Setup Module)
-  config.modules."default-user" = {
 
-    # Configuration
+  # User
+  config.modules."user" = {
     attr.profileIcon = username: (with config-domain; { # Requires "resources/profiles/USERNAME/.face.icon" to exist!
       # Check for "./private-config/resources"
       enable = (utils.pathExists private.resources);
@@ -21,6 +21,6 @@
         hashedFilePath
       )
     ));
-
   };
+
 }

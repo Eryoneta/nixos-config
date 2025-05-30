@@ -1,7 +1,7 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Main panel
-  config.modules."plasma+window-rules+yo" = {
+  config.modules."plasma+yo+window-rules" = {
     attr.workArea = with config.hardware.configuration.screenSize.workArea; { # (From "configurations/screen-size.nix")
       width = builtins.toString (width);
       height = builtins.toString (height);

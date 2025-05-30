@@ -1,14 +1,13 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-  config.modules."basic-system-label" = {
 
-    # Configuration
+  # System label
+  config.modules."system-label" = {
     tags = [ "basic-setup" ];
-
-    setup.nixos = { host, inputs, ... }: { # (NixOS Module)
-      config = {
+    setup = {
+      nixos = { host, inputs, ... }: { # (NixOS Module)
 
         # Current-configuration label
-        system.nixos.label = (
+        config.system.nixos.label = (
           let
             self = inputs.self;
             hasGitHash = (builtins.stringLength (self.shortRev or self.dirtyShortRev or "") > 0);
@@ -23,7 +22,7 @@
         );
 
         # Current configuration revision
-        system.configurationRevision = (
+        config.system.configurationRevision = (
           let
             self = inputs.self;
           in (builtins.toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown"))
@@ -34,7 +33,7 @@
         );
 
       };
-
     };
   };
+
 }

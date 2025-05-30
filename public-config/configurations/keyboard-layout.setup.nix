@@ -1,22 +1,20 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
-  config.modules."basic-keyboard-layout" = {
 
-    # Configuration
+  # Keyboard layout
+  config.modules."keyboard-layout" = {
     tags = [ "basic-setup" ];
-
     setup = {
       nixos = { # (NixOS Module)
-        config = {
 
-          # Keyboard layout
-          services.xserver.xkb = {
-            layout = "br";
-            variant = ""; # All available at: "man xkeyboard-config"
-          };
-          console.keyMap = "br-abnt2";
-
+        # Keyboard layout
+        config.services.xserver.xkb = {
+          layout = "br";
+          variant = ""; # All available at: "man xkeyboard-config"
         };
+        config.console.keyMap = "br-abnt2";
+
       };
     };
   };
+
 }
