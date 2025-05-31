@@ -90,7 +90,7 @@
               toJSON = grid: (
                 utils.toJSON (builtins.attrValues grid)
               );
-              toBase64 = ((import "${config-domain.public.dotfiles}/plasma-widget-tiled-menu/base64.nix"){ inherit lib; }).toBase64;
+              toBase64 = ((builtins.import "${config-domain.public.dotfiles}/plasma-widget-tiled-menu/base64.nix"){ inherit lib; }).toBase64;
             in (toBase64 (toJSON (mkGrid apps gridModel)))
           );
         in {

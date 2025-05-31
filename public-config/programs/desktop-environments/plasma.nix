@@ -108,12 +108,6 @@
           # Windows
           windows.allowWindowsToRememberPositions = (utils.mkDefault) true; # Remember window positions
 
-          # Window rules
-          window-rules = (import ./plasma+window-rules.nix config.lib.hardware.configuration.screensize);
-
-          # Shortcuts
-          shortcuts = (import ./plasma+shortcuts.nix);
-
           # Language
           configFile."plasma-localerc" = { # Language: PT-BR
             "Formats" = {
