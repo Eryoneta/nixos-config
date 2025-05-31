@@ -25,6 +25,7 @@
                 "ComicShannsMono" # Like "Comic Sans MS", but monosized
                 "Meslo" # Programming font
                 "RobotoMono" # Programming font
+                "EnvyCodeR" # Programming font
               ];
             })
           ];

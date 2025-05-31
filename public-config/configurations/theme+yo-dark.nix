@@ -30,8 +30,10 @@
               package = (attr.packageChannel).noto-fonts-color-emoji;
             };
             monospace = {
-              name = "Noto Sans Mono";
-              package = (attr.packageChannel).noto-fonts;
+              name = "Envy Code R";
+              package = ((attr.packageChannel).nerdfonts.override {
+                fonts = [ "EnvyCodeR" ];
+              });
             };
             sansSerif = {
               name = "Noto Sans";
