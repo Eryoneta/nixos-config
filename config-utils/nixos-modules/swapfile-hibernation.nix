@@ -29,23 +29,27 @@
         };
 
         dataFile = lib.mkOption {
-          type = lib.types.submodule {
+          type = (lib.types.submodule {
             options = {
+
               systemUser = lib.mkOption {
                 type = lib.types.str;
                 description = "The system user to own the file.";
                 default = "root";
               };
+
               absolutePath = lib.mkOption {
                 type = lib.types.path;
                 description = "The absolute path to the file.";
               };
+
               storePath = lib.mkOption {
                 type = lib.types.path;
                 description = "The relative path to the file.";
               };
+
             };
-          };
+          });
           description = ''
             A file to carry hardware information.
 
@@ -129,7 +133,7 @@
                   '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
                 ) > "${cfg.dataFile.absolutePath}"
               fi
-              # Set "systemUser" as the owner (And the group)
+              # Set "systemUser" (and its group) as the owner
               chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
             fi
           '';

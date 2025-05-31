@@ -25,13 +25,15 @@
         };
 
         informStart = {
+
           show = lib.mkOption {
             type = lib.types.bool;
             description = "Show notification when a upgrade starts.";
             default = true;
           };
+
           time = lib.mkOption {
-            type = lib.types.either (lib.types.ints.between 1 86400) (lib.types.enum [ "infinite" ]);
+            type = (lib.types.either (lib.types.ints.between 1 86400) (lib.types.enum [ "infinite" ]));
             description = ''
               Time in seconds to show the notification.
 
@@ -39,16 +41,19 @@
             '';
             default = 15;
           };
+
         };
 
         informConclusion = {
+
           show = lib.mkOption {
             type = lib.types.bool;
             description = "Shows a notification when a upgrade ends, informing success or failure.";
             default = true;
           };
+
           time = lib.mkOption {
-            type = lib.types.either (lib.types.ints.between 1 86400) (lib.types.enum [ "infinite" ]);
+            type = (lib.types.either (lib.types.ints.between 1 86400) (lib.types.enum [ "infinite" ]));
             description = ''
               Time in seconds to show the notification.
 
@@ -56,6 +61,7 @@
             '';
             default = "infinite";
           };
+
         };
 
       };
@@ -85,7 +91,7 @@
               --expire-time ${timing.expireTime}
           '';
           mkTiming = time: {
-            urgency = if ((builtins.typeOf time) == "string" && time == "infinite") then "critical" else "normal";
+            urgency = (if ((builtins.typeOf time) == "string" && time == "infinite") then "critical" else "normal");
             expireTime = (builtins.toString (
               (if ((builtins.typeOf time) == "int" && time >= 1) then time else 1) * 1000) # Seconds -> Miliseconds
             );

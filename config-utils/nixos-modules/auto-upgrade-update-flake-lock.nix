@@ -27,7 +27,7 @@
         enable = lib.mkEnableOption "Enables updates to flake.lock file.";
 
         inputs = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
+          type = (lib.types.listOf (lib.types.str));
           default = [ ];
           example = [
             "nixpkgs"
@@ -74,7 +74,7 @@
       in {
 
         # Has to be "updateFlakeLock.directory = gitSupport.directory" as said
-        system.autoUpgrade.updateFlakeLock.directory = lib.mkDefault cfg_gs.directory;
+        system.autoUpgrade.updateFlakeLock.directory = (lib.mkDefault) cfg_gs.directory;
 
         assertions = [
           {
@@ -113,7 +113,7 @@
             set -eu
             # Nix Flake Update
             echo "Updating flake.lock..."
-            nix flake update ${toString cfg_ufl.inputs} ${lib.optionalString cfg_ufl.commitLockFile "--commit-lock-file"} --flake "${cfg_ufl.directory}"
+            nix flake update ${builtins.toString cfg_ufl.inputs} ${lib.optionalString (cfg_ufl.commitLockFile) "--commit-lock-file"} --flake "${cfg_ufl.directory}"
             # Git needs to be used to change the author name
             # Access folder
             cd "${cfg_ufl.directory}"
@@ -127,8 +127,8 @@
 
         # Has to happen between Git-Pull and Git-Push
         systemd.services."nixos-upgrade-git-prepare" = {
-          wants = lib.mkIf cfg_gs.enable [ "nixos-upgrade-update-flake-lock.service" ];
-          before = lib.mkIf cfg_gs.enable [ "nixos-upgrade-update-flake-lock.service" ];
+          wants = lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ];
+          before = lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ];
         };
         systemd.services."nixos-upgrade-update-flake-lock" = {
           # Internet access is needed
