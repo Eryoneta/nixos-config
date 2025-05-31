@@ -88,7 +88,7 @@
                 ) (builtins.removeAttrs apps [ "__" ]) # Ignore empty spaces
               );
               toJSON = grid: (
-                utils.toJSON (utils.attrsToList grid)
+                utils.toJSON (builtins.attrValues grid)
               );
               toBase64 = ((import "${config-domain.public.dotfiles}/plasma-widget-tiled-menu/base64.nix"){ inherit lib; }).toBase64;
             in (toBase64 (toJSON (mkGrid apps gridModel)))
