@@ -1,64 +1,64 @@
 nix-lib: rec {
-  # SearchFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/subDir/pre-mytext.ext" ]
+  # SearchFiles
   /*
     - List files that matches all filters
       - "dirPath": A path to a directory
       - "withPrefix": A text prefix
-      - "withInfix": A text infix. Can be also a list of texts
+      - "withInfix": A text infix. Can also be a list of texts
       - "withSuffix": A text suffix
     - Is the same as "listFiles", but it also includes sub-directories!
   */
   searchFiles = dirPath: withPrefix: withInfix: withSuffix: (
     let
 
-      # HasPrefix: ("text" "pre-text.ext") -> true
-      hasPrefix = value: (nix-lib.strings.hasPrefix withPrefix value);
+      # HasPrefix: ("pre" "pre-text") -> true
+      hasPrefix = text: (nix-lib.strings.hasPrefix withPrefix text);
 
-      # HasInfix: ("pre" "pre-text") -> true
-      hasInfix = value: (
+      # HasInfix: ("text" "pre-text.ext") -> true
+      hasInfix = text: (nix-lib.strings.hasInfix withInfix text);
+
+      # HasSuffix: (".ext" "pre-text.ext") -> true
+      hasSuffix = text: (nix-lib.strings.hasSuffix withSuffix text);
+
+      # HasInfix: ([ "text" ] "pre-text.ext") -> true
+      hasInfixList = text: (
         if (builtins.isString withInfix) then (
-          # HasInfix: ("pre" "pre-text") -> true
-          nix-lib.strings.hasInfix withInfix value
+          # If it's a string, do a regular check
+          hasInfix withInfix text
         ) else if (builtins.isList withInfix) then (
-            # All: [ true true ] -> true
-            builtins.all (
-              infixValue: (
-                # HasInfix: ("pre" "pre-text") -> true
-                nix-lib.strings.hasInfix infixValue value
-              )
-            ) withInfix
+          # If it's a list, do a check for each item
+          builtins.all (infixValue: (
+            hasInfix infixValue text
+          )) withInfix
         ) else false
       );
 
-      # HasSuffix: (".ext" "text.ext") -> true
-      hasSuffix = value: (nix-lib.strings.hasSuffix withSuffix value);
-
-      # Current directory
-      directory = (builtins.readDir dirPath);
-
     in (
-      # ConcatLists: [ [ "dirPath/file1.ext" ] [ "dirPath/subDir/file2.ext" ] ] -> [ "dirPath/file1.ext" "dirPath/subDir/file2.ext" ]
-      builtins.concatLists (
-        # Map: [ "file1.ext" "subDir" ] -> [ [ "dirPath/file1.ext" ] [ "dirPath/subDir/file2.ext" ] ]
-        builtins.map (value:
-          if (directory.${value} == "directory") then (
-            # [ "dirPath/subDir/file2.ext" ]
-            # Recursive
-            searchFiles ("${dirPath}/${value}") withPrefix withInfix withSuffix
+      nix-lib.pipe dirPath [
+
+        # Gets the path and returns a set. It only considers the first level
+        # dirPath -> { "file.ext" = "regular"; subdir = "directory"; }
+        (x: builtins.readDir x)
+
+        # Transforms each item into a list
+        (x: builtins.mapAttrs (filename: filetype: (
+          if (filetype == "directory") then (
+            # If it's a directory, search for its files
+            # Do a recursion
+            searchFiles "${dirPath}/${filename}" withPrefix withInfix withSuffix
           ) else (
-            # [ "dirPath/file1.ext" ]
-            if ((hasPrefix value) && (hasInfix value) && (hasSuffix value)) then (
-              [ "${dirPath}/${value}" ]
+            # If it's a file, include it only if it matches all filters
+            if ((hasPrefix filename) && (hasInfixList filename) && (hasSuffix filename)) then (
+              [ "${dirPath}/${filename}" ]
             ) else []
           )
-        ) (
-          # AttrNames: { "file1.ext" = "regular"; subDir = "directory"; } -> [ "file1.ext" "subDir" ]
-          builtins.attrNames (
-            # ReadDir: dirPath -> { "file1.ext" = "regular"; subDir = "directory"; }
-            directory
-          )
-        )
-      )
+          # The final result is a list, either empty or filled with paths
+        )) x)
+
+        # Transforms the list of lists into a single list
+        (x: builtins.concatLists x)
+
+      ]
     )
   );
 }
