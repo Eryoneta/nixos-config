@@ -59,12 +59,12 @@
                   # Suppress warnings
                   # In VSCodium, a popup shows the diagnostic name(After the warning)
                   "suppress" = [
-                    # # Unused "with"
-                    # ("with" is used to import "utils" in all my modules, so sometimes it's unused)
-                    "sema-extra-with"
-                    # Variable escapes "with"
-                    # (A lot of variables do not use my "utils")
-                    "sema-escaping-with" 
+                    "sema-extra-with" # Unused "with"
+                    # Note: "with" is used to import "utils" in all my modules, so sometimes it's unused
+                    "sema-escaping-with" # Variable escapes "with"
+                    # Note: A lot of variables do not use my "utils"
+                    "parse-redundant-paren" # Redundant parenthesis
+                    # Note: I use A LOT of parenthesis
                   ];
                   # TODO: (VsCodium/NixD) The warnings from "sema-extra-with" do not go away. Bug? Check later
                 };

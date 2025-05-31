@@ -32,11 +32,22 @@
           "window.titleBarStyle" = "custom"; # Do not use the OS decorations (Smaller context menu)
           # Random settings
           "git.openRepositoryInParentFolders" = "never"; # Only open repos in the current folder
+          "editor.tokenColorCustomizations" = {
+            "textMateRules" = [
+              { # Undo the italic of comments, as it makes reading too hard
+                "scope" = "comment";
+                "settings" = {
+                  "fontStyle" = "regular";
+                };
+              }
+            ];
+          };
           # Automatic settings
           "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
         } // (
+          # Stylix tweak
           let
-            sizes.terminal = 10;
+            sizes.terminal = 10; # Bigger font size
           in {
             # From https://github.com/danth/stylix/blob/release-24.11/modules/vscode/hm.nix
             "editor.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 + 0.5));
@@ -47,18 +58,6 @@
             "editor.minimap.sectionHeaderFontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 9 / 14 + 0.5));
             "scm.inputFontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 13 / 14 + 0.5));
             "screencastMode.fontSize" = (utils.mkForce) (builtins.floor (sizes.terminal * 4 / 3 * 56 / 14 + 0.5));
-            # TODO: (VSCodium) (25.05) Stylix sets the font to be too small, check if it's changed later
-            "editor.tokenColorCustomizations" = {
-              "textMateRules" = [
-                {
-                  "scope" = "comment";
-                  "settings" = {
-                    "fontStyle" = "regular";
-                  };
-                }
-              ];
-            };
-            # Note: Undone the italic of comments, as it makes reading too hard
           }
         )
       );

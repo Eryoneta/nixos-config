@@ -24,8 +24,10 @@
           package = (args.pkgs-bundle.stable).noto-fonts-color-emoji;
         };
         monospace = {
-          name = "Noto Sans Mono";
-          package = (args.pkgs-bundle.stable).noto-fonts;
+          name = "Envy Code R";
+          package = (args.pkgs-bundle.stable.nerdfonts.override {
+            fonts = [ "EnvyCodeR" ];
+          });
         };
         sansSerif = {
           name = "Noto Sans";

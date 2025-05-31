@@ -13,10 +13,12 @@
         #comic-relief # "Comic Sans MS" equivalent
         (nerdfonts.override {
           # List: https://www.nerdfonts.com/font-downloads
+          # Note: The name should be the same from the download url
           fonts = [
             "ComicShannsMono" # Like "Comic Sans MS", but monosized
             "Meslo" # Programming font
             "RobotoMono" # Programming font
+            "EnvyCodeR" # Programming font
           ];
         })
       ];
