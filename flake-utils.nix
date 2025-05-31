@@ -6,7 +6,6 @@ flakePath: (
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
-    mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix);
 
   in {
     buildHost = user-host-scheme.buildHost;
@@ -14,8 +13,9 @@ flakePath: (
     buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, package-bundle }: (
       let
 
-        # Library
+        # Utilities
         lib = inputs.nixpkgs.lib;
+        mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib);
 
         # User-Host Scheme
         allUsers = (if (users == null) then [ user ] else users);
@@ -106,7 +106,7 @@ flakePath: (
                 home-manager = {
                   useGlobalPkgs = false; # Ignore system nixpkgs configuration. Every one is configured separately
                   useUserPackages = true; # Save user packages in "/etc/profiles/per-user/$USERNAME" if it's already present in the system ("/etc/profiles/")
-                  users = (inputs.nixpkgs.lib.pipe allUsers [ # Loads all users configurations
+                  users = (lib.pipe allUsers [ # Loads all users configurations
 
                     # Prepare list to be converted to set
                     (x: builtins.map (user: {
@@ -149,8 +149,8 @@ flakePath: (
             }
             { # (NixOS-Module)
               config = {
-                environment.systemPackages = [
-                  pkgs-bundle.stable.home-manager # Home-Manager: Manages standalone home configurations
+                environment.systemPackages = with pkgs-bundle.stable; [
+                  home-manager # Home-Manager: Manages standalone home configurations
                 ];
               };
             }

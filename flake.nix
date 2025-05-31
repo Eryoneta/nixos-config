@@ -112,19 +112,19 @@
             pkgs = nurpkgs-firefox-addons.packages.${architecture};
             buildFirefoxXpiAddon = nurpkgs-firefox-addons.lib.${architecture}.buildFirefoxXpiAddon;
           };
-          fx-autoconfig = fx-autoconfig;
+          inherit fx-autoconfig;
           nixos-artwork = {
             "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
           };
-          tiledmenu = tiledmenu;
+          inherit tiledmenu;
           papirus-colors-icons = {
             "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
           };
-          mpv-input-event = mpv-input-event;
-          prismlauncherCRK = prismlauncherCRK;
-          powershell-prompt = powershell-prompt;
-          git-tools = git-tools;
-          firefox-scripts = firefox-scripts;
+          inherit mpv-input-event;
+          inherit prismlauncherCRK;
+          inherit powershell-prompt;
+          inherit git-tools;
+          inherit firefox-scripts;
         })
       );
 
