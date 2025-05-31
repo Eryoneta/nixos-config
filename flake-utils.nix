@@ -77,6 +77,8 @@ flakePath: (
         # NixOS Configuration
         nixosSystemConfig = (inputs.nixpkgs.lib.nixosSystem {
           system = host.system.architecture;
+          pkgs = pkgs-bundle.system; # Replace "pkgs" with a custom one
+          # Note: Not exactly necessary. It's here just to make sure "pkgs-bundle.system" and "pkgs" are the same
           modules = [
 
             # Setup Configuration
