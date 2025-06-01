@@ -1,50 +1,12 @@
-# User & Host Scheme
+# User/Host Scheme
 /*
-  - A flake-module modifier
-  - Defines "hostArgs" inside "specialArgs" and "userArgs" inside "extraSpecialArgs"
-    - Basically, NixOS gets "hostArgs" and Home-Manager gets "usersArgs" and "userDevArgs"
-  - "hostArgs" have a atribute "usersArgs", and each "usersArgs" have a atribute "hostArgs"
-    - One points to the other recursively
-      - Ex.: "hostArgs.userDev.host.userDev.host.userDev.username" is totally valid
-  - Both "users" and "host" need to be created before
-    - "buildHost" returns a valid "host"
-    - "buildUser" returns a valid "user" to be included in a list
-    - Then, both need to be passed to "build" to be used
-  - It can carry useful atributes like "system" or "username", and even custom atributes
-  - Ex.: At "flake.nix": ''
-    # ...
-    let
-      user-host-scheme = (import ./modules/flake-modules/user-host-scheme.nix self.outPath);
-      Machine1 = user-host-scheme.buildHost {
-        hostname = "machine1";
-        name = "Machine 1";
-      };
-      User1 = user-host-scheme.buildUser {
-        username = "user1";
-        name = "User 1";
-        configFolder = "/home/user1/.nixos-config";
-      };
-      Users = [ User1 ];
-    in {
-      nixosConfigurations = {
-        flake-modules."nixos-system.nix".build {
-          architecture = Machine1.system.architecture;
-          package = inputs.nixpkgs;
-          modifiers = [
-            # ...
-            (user-host-scheme.build {
-              users = Users;
-              host = Machine1;
-            })
-          ];
-        }
-      };
-    }
-    # ...
-  ''
-  - Also, is expected some folders to exist
-    - Ex.: "./users/user1/home.nix" must exist
-    - Ex.: "./hosts/machine1/configuration.nix" must exist
+  - Contains three functions:
+    - "buildHost" returns a host configuration
+    - "buildUser" returns a user configuration
+    - "buildSpecialArgs" returns a set with attributes that can be used by "specialArgs" and "extraSpecialArgs"
+      - It requires a host and a list of users
+      - It returns "user", "userDev", "users", and ""host"
+        - Note: "userDev" is defined as the first user of the given list of users
 */
 flakePath: (
   let
