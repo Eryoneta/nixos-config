@@ -23,6 +23,7 @@
 
 "test" = Is under a test phase
 "game" = Is game-related
+"interest" = Is for fun
 
 "essential-tool" = Tools that should not be missing
 "system-tool" = Tools used to maintain a host
