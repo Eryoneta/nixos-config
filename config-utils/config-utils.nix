@@ -88,6 +88,9 @@
           type = nix-lib.types.attrs;
         };
 
+        # Sets a package to override others in case of conflict
+        higherPriority = package: (nix-lib.hiPrio package);
+
         # Check if a path exists
         pathExists = path: (builtins.pathExists path);
 

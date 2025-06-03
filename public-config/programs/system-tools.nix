@@ -62,34 +62,4 @@
     };
   };
 
-
-
-
-
-  config.modules."essential-programs" = {
-
-    # Configuration
-    tags = [ "default-setup" ];
-
-    setup = {
-      nixos = { pkgs, pkgs-bundle, ... }: { # (NixOS Module)
-        config = {
-
-          # System programs
-          environment.systemPackages = with pkgs-bundle; (
-            (with unstable; [
-
-            ])
-            ++
-            (with stable; [
-              git # Git: Versioning
-
-            ])
-          );
-
-
-        };
-      };
-    };
-  };
 }

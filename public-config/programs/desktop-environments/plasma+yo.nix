@@ -1,10 +1,11 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
   config.modules."plasma+yo" = {
+    attr.papirus-colors-icons = pkgs-bundle.papirus-colors-icons;
     tags = [ "yo" ];
     setup = {
-      home = { config, pkgs-bundle, ... }: { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Configuration
         config.programs.plasma = { # (plasma-manager option)
@@ -76,8 +77,8 @@
 
         # Icon theme
         config.xdg.dataFile."icons/Papirus-Colors-Dark" = {
-          source = with pkgs-bundle; (
-            papirus-colors-icons."Papirus-Colors-Dark"
+          source = (
+            (attr.papirus-colors-icons)."Papirus-Colors-Dark"
           );
         };
 
