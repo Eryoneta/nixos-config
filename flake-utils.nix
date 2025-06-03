@@ -54,23 +54,22 @@ flakePath: (
         });
 
         # SpecialArgs
-        nixosSpecialArgs = {
+        commonSpecialArgs = {
           inherit inputs; # Inputs
           inherit pkgs-bundle; # Package-Bundle
-          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
-          inherit (userHostArgs) userDev users host; # User-Host-Scheme
           inherit (configDomainArgs) config-domain; # Configuration-Domains
+        };
+        nixosSpecialArgs = (commonSpecialArgs // {
+          inherit (userHostArgs) userDev users host; # User-Host-Scheme
           inherit nixos-modules; # NixOS-Modules Directory
           inherit auto-upgrade-pkgs; # Auto-Upgrade
-        };
-        homeManagerSpecialArgs = {
-          inherit pkgs-bundle; # Package Bundle
-          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+        });
+        homeManagerSpecialArgs = (commonSpecialArgs // {
           inherit (userHostArgs) user; # User-Host-Scheme
-          inherit (configDomainArgs) config-domain; # Configuration-Domains
-          inherit nixos-modules; # NixOS-Modules Directory
-        };
-        setupSpecialArgs = nixosSpecialArgs // homeManagerSpecialArgs;
+        });
+        setupSpecialArgs = (nixosSpecialArgs // homeManagerSpecialArgs // {
+          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+        });
 
       in {
 

@@ -133,6 +133,12 @@
       systemLabel = (builtins.readFile ./NIXOS_LABEL.txt);
 
       # Hosts
+      hyper-v_vm = flake-utils.buildHost {
+        hostname = "hyper-v_vm";
+        name = "HyperV_VM";
+        system.label = systemLabel;
+        system.stateVersion = "24.05";
+      };
       lico = flake-utils.buildHost {
         hostname = "lico";
         name = "LiCo";
@@ -142,12 +148,6 @@
       nelico = flake-utils.buildHost {
         hostname = "nelico";
         name = "NeLiCo";
-        system.label = systemLabel;
-        system.stateVersion = "24.05";
-      };
-      hyper-v_vm = flake-utils.buildHost {
-        hostname = "hyper-v_vm";
-        name = "HyperV_VM";
         system.label = systemLabel;
         system.stateVersion = "24.05";
       };
