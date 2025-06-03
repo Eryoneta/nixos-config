@@ -24,8 +24,8 @@
   # Screen size
   config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
     utils.mkIf (config.includedModules."nelico") {
-      width = 1600;
-      height = 900;
+      width = 1366;
+      height = 768;
     }
   );
 
