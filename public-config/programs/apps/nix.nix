@@ -5,7 +5,12 @@
     attr.packageChannel = pkgs-bundle.system;
     tags = [ "default-setup" ];
     setup = { attr }: {
-      nixos = { pkgs, inputs, ... }: { # (NixOS Module)
+      nixos = { pkgs, inputs, host, nixos-modules, ... }: { # (NixOS Module)
+
+        # Imports
+        imports = [
+          nixos-modules."garbage-collector-notifier.nix"
+        ];
 
         # Configuration
         config.nix = {
@@ -19,7 +24,7 @@
             # Notifier ("garbage-collector-notifier.nix")
             notifier = {
               enable = (utils.mkDefault) true;
-              systemUser = args.hostArgs.userDev.username;
+              systemUser = host.userDev.username;
               informStart = {
                 show = (utils.mkDefault) true;
                 time = (utils.mkDefault) 15;
