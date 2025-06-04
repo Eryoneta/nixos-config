@@ -167,8 +167,6 @@ flakePath: (
               };
             }
 
-            inputs.stylix.nixosModules.stylix # Loads Stylix options
-
             # Agenix Configuration
             inputs.agenix.nixosModules.default # Loads Agenix options
             { # (NixOS-Module)

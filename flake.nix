@@ -174,7 +174,7 @@
 
     in {
 
-      # NixOS + Home-Manager(+ Plasma-Manager + Agenix) + Agenix
+      # NixOS + Home-Manager(+ Plasma-Manager + Stylix + Agenix) + Agenix
       nixosConfigurations = {
         "HyperV_VM" = (buildConfiguration {
           users = [ yo ];
@@ -190,7 +190,7 @@
         }).nixosSystemConfig;
       };
 
-      # Home-Manager + Plasma-Manager + Agenix
+      # Home-Manager + Plasma-Manager + Stylix + Agenix
       homeConfigurations = {
         "Yo@HyperV_VM" = (buildConfiguration {
           user = yo;
