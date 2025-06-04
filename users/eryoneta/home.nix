@@ -6,7 +6,9 @@
     attr.defaultPassword = config.modules."user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;
     tags = [ "eryoneta" ];
-    includeTags = [ "default-setup" ];
+    includeTags = [
+      "default-setup"
+    ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 

@@ -59,16 +59,23 @@ flakePath: (
           inherit pkgs-bundle; # Package-Bundle
           inherit (configDomainArgs) config-domain; # Configuration-Domains
         };
+        setupSpecialArgs = {
+          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+        };
         nixosSpecialArgs = (commonSpecialArgs // {
           inherit (userHostArgs) userDev users host; # User-Host-Scheme
           inherit nixos-modules; # NixOS-Modules Directory
           inherit auto-upgrade-pkgs; # Auto-Upgrade
         });
-        homeManagerSpecialArgs = (commonSpecialArgs // {
-          inherit (userHostArgs) user; # User-Host-Scheme
+        homeManagerSpecialArgs = (commonSpecialArgs);
+        # Note: Unfortunadely, Home-Manager Module is used to load all users, as oposed to Home-Manager Standalone
+        #   That means, no single "user" argument
+        #   But Setup loads every user separately. So it can be used instead
+        setupNixosSpecialArgs = (nixosSpecialArgs // setupSpecialArgs // {
+          user = userHostArgs.userDev;
         });
-        setupSpecialArgs = (nixosSpecialArgs // homeManagerSpecialArgs // {
-          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+        setupHomeSpecialArgs = username: (nixosSpecialArgs // setupSpecialArgs // {
+          user = userHostArgs.users.${username}; # User-Host-Scheme
         });
 
       in {
@@ -87,11 +94,13 @@ flakePath: (
                 ./import-all.nix # Imports all Setup modules
                 { # (Setup Module)
                   config = {
-                    includeTags = [ "${host.hostname}" "root" ] ++ (builtins.map (user: user.username) allUsers); # Includes host, root, and user modules
+                    includeTags = [ "${host.hostname}" "root" ] ++ ( # Includes host, root, and user modules
+                      builtins.map (user: user.username) allUsers
+                    );
                   };
                 }
               ];
-              specialArgs = setupSpecialArgs;
+              specialArgs = setupNixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
             { # (NixOS-Module)
@@ -122,7 +131,7 @@ flakePath: (
                             };
                           }
                         ];
-                        specialArgs = setupSpecialArgs;
+                        specialArgs = (setupHomeSpecialArgs user.username);
                       }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
 
@@ -188,7 +197,7 @@ flakePath: (
                   };
                 }
               ];
-              specialArgs = setupSpecialArgs;
+              specialArgs = (setupHomeSpecialArgs user.username);
             }).homeManagerModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options

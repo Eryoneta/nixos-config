@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Core setup
   config.modules."core-setup" = {
@@ -47,7 +47,7 @@
 
         };
       };
-      home = { config, user, ... }: { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Home-Manager
         config.home = {

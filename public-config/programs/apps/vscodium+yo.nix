@@ -1,11 +1,11 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # VSCodium: (Medium) Code editor
   config.modules."vscodium+yo" = {
     attr.packageChannel = config.modules."vscodium".attr.packageChannel;
     tags = [ "yo" ];
     setup = { attr }: {
-      home = { user, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Extras
         config.home.packages = with attr.packageChannel; [

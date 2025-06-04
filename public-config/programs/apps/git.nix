@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ user, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Git: File versioning
   config.modules."git" = {
@@ -6,7 +6,7 @@
     attr.git-tools = pkgs-bundle.git-tools;
     tags = [ "basic-setup" ];
     setup = { attr }: {
-      home = { user, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Configuration
         config.programs.git = {
