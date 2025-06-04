@@ -7,8 +7,8 @@
       let
 
         # Args
-        mpv-config = config.modules."mpv".configuration;
-        pkgs = config.modules."mpv".packageChannel;
+        mpv-config = config.modules."mpv".attr.configuration;
+        pkgs = config.modules."mpv".attr.packageChannel;
 
         # UOSC
         uosc-flash-pause-indicator = "script-binding uosc/flash-pause-indicator"; # Flashes a big pause icon

@@ -37,7 +37,7 @@
       ];
 
     };
-    attr.actions = config.modules."mpv+actions".actions;
+    attr.actions = config.modules."mpv+actions".attr.actions;
     attr.windowPosition = with config.hardware.configuration.screenSize.workArea; { # (From "configurations/screen-size.nix")
       width =  builtins.toString (width / 2);
       height = builtins.toString (height - 32);

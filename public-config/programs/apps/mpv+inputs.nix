@@ -1,8 +1,8 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # MPV: Multimidia player
-  config.modules."mpv+actions" = {
-    attr.actions = config.modules."mpv+actions".actions;
+  config.modules."mpv+inputs" = {
+    attr.actions = config.modules."mpv+actions".attr.actions;
     attr.mpv-input-event = pkgs-bundle.mpv-input-event;
     tags = config.modules."mpv".tags;
     setup = { attr }: {

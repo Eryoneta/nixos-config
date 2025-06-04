@@ -1,10 +1,10 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # UOSC: MPV frontend
-  config.modules."calibre" = {
+  config.modules."mpv-uosc" = {
     attr.packageChannel = config.modules."mpv".attr.packageChannel;
-    attr.mpv-config = config.modules."mpv".configuration;
-    attr.mpv-actions = config.modules."mpv".actions;
+    attr.mpv-config = config.modules."mpv".attr.configuration;
+    attr.mpv-actions = config.modules."mpv".attr.actions;
     tags = config.modules."mpv".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
