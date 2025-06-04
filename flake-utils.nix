@@ -15,7 +15,7 @@ flakePath: (
 
         # Utilities
         lib = inputs.nixpkgs.lib;
-        mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib);
+        mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib).mapDir;
 
         # User-Host Scheme
         allUsers = (if (users == null) then [ user ] else users);
