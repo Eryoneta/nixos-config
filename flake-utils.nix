@@ -72,7 +72,7 @@ flakePath: (
         #   That means, no single "user" argument
         #   But Setup loads every user separately. So it can be used instead
         setupNixosSpecialArgs = (nixosSpecialArgs // setupSpecialArgs // {
-          user = userHostArgs.userDev;
+          user = userHostArgs.userDev; # User-Host-Scheme
         });
         setupHomeSpecialArgs = username: (nixosSpecialArgs // setupSpecialArgs // {
           user = userHostArgs.users.${username}; # User-Host-Scheme
@@ -103,19 +103,21 @@ flakePath: (
               specialArgs = setupNixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
-            { # (NixOS-Module)
-              config = {
-                nixpkgs.config.allowUnfree = true; # Allows unfree packages
-              };
-            }
+            # { # (NixOS-Module)
+            #   config = {
+            #     nixpkgs.config.allowUnfree = true; # Allows unfree packages
+            #   };
+            # }
+            # Note: Not needed, since "pkgs" is provided externally by "pkgs-bundle.system"
 
             # Home-Manager-Module Configuration
             inputs.home-manager.nixosModules.home-manager # Loads Home-Manager options
             { # (NixOS-Module)
               config = {
                 home-manager = {
+                  verbose = true; # Verbose output on activation
                   useGlobalPkgs = false; # Ignore system nixpkgs configuration. Every one is configured separately
-                  useUserPackages = true; # Save user packages in "/etc/profiles/per-user/$USERNAME" if it's already present in the system ("/etc/profiles/")
+                  useUserPackages = true; # Use "config.users.users.<user>.packages" to define packages
                   users = (lib.pipe allUsers [ # Loads all users configurations
 
                     # Prepare list to be converted to set
