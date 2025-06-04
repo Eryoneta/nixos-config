@@ -15,7 +15,7 @@ nix-lib: rec {
       hasPrefix = text: (nix-lib.strings.hasPrefix withPrefix text);
 
       # HasInfix: ("text" "pre-text.ext") -> true
-      hasInfix = text: (nix-lib.strings.hasInfix withInfix text);
+      hasInfix = infix: text: (nix-lib.strings.hasInfix withInfix text);
 
       # HasSuffix: (".ext" "pre-text.ext") -> true
       hasSuffix = text: (nix-lib.strings.hasSuffix withSuffix text);
@@ -54,6 +54,9 @@ nix-lib: rec {
           )
           # The final result is a list, either empty or filled with paths
         )) x)
+
+        # Transforms the set into a list
+        (x: builtins.attrValues x)
 
         # Transforms the list of lists into a single list
         (x: builtins.concatLists x)
