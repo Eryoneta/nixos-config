@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Main panel
   config.modules."plasma+panels" = {
@@ -152,9 +152,9 @@
   };
 
   # Decrease the height of the total work-area
-  config.hardware.configuration.screen-size.verticalBars = [ # (From "configurations/screen-size.nix")
-    (utils.mkIf (config.includedModules."plasma-panels") (
-      config.modules."plasma-panels".attr.mainPanel.height
+  config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
+    (utils.mkIf (config.includedModules."plasma+panels") (
+      config.modules."plasma+panels".attr.mainPanel.height
     ))
   ];
 

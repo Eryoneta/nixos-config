@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KScreenLocker: Screen locker for Plasma
   config.modules."plasma-kscreenlocker" = {

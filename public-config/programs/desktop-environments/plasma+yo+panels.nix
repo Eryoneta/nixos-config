@@ -122,7 +122,7 @@
   };
 
   # Decrease the height of the total work-area
-  config.hardware.configuration.screen-size.verticalBars = [ # (From "configurations/screen-size.nix")
+  config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
     (utils.mkIf (config.includedModules."plasma+yo+panels") (
       with config.modules."plasma+yo+panels"; (
         attr.mainPanel.height + attr.helperPanel.height

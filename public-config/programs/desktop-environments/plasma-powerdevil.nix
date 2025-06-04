@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # PowerDevil: Power manager for Plasma
   config.modules."plasma-powerdevil" = {

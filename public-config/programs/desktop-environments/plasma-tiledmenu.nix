@@ -1,4 +1,4 @@
-{ lib, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, lib, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
   config.modules."plasma-tiledmenu" = {
