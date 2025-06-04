@@ -23,7 +23,7 @@
         # Dotfile: Activities
         # Note: Old activities are not removed
         config.programs.plasma.configFile."kactivitymanagerdrc" = ( # (plasma-manager option)
-          attr.activities {
+          attr.activities rec {
             list = { # Note: The final result is alfabetically ordered
               "personal" = {
                 id = "personal-activity";

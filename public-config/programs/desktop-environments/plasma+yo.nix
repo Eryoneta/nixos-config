@@ -4,7 +4,7 @@
   config.modules."plasma+yo" = {
     attr.papirus-colors-icons = pkgs-bundle.papirus-colors-icons;
     tags = [ "yo" ];
-    setup = {
+    setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 
         # Configuration

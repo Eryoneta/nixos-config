@@ -4,7 +4,7 @@
   config.modules."lico-hardware" = {
     tags = [ "lico" ];
     setup = {
-      nixos = { pkgs, modulesPath, ... }: { # (NixOS Module)
+      nixos = { config, pkgs, modulesPath, ... }: { # (NixOS Module)
 
         # For the not-detected hardware
         imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];

@@ -80,7 +80,7 @@
       });
     };
     tags = config.modules."plasma+yo".tags;
-    setup = {
+    setup = { attr }: {
       home = { ... }: { # (Home-Manager Module)
 
         # Panels

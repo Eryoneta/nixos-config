@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, userDev, auto-upgrade-pkgs, ... }@args: with args.config-utils; { # (Setup Module)
 
   # NX Function
   config.modules."zsh+nx-command" = {
@@ -6,7 +6,7 @@
     attr.systemUpgradeProfileName = config.modules."system-features+auto-upgrade".attr.systemUpgradeProfileName;
     tags = [ "yo" ];
     setup = { attr }: {
-      home = { userDev, auto-upgrade-pkgs, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Configuration
         config.programs.zsh.initExtra = (

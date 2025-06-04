@@ -21,10 +21,10 @@
     hardware.configuration.screenSize.workArea = (with config.hardware.configuration.screenSize; {
       width = (builtins.foldl' (finalWidth: barWidth: (
         finalWidth - barWidth
-      )) baseWidth horizontalBars);
+      )) width horizontalBars);
       height = (builtins.foldl' (finalHeight: barHeight: (
         finalHeight - barHeight
-      )) baseHeight verticalBars);
+      )) height verticalBars);
     });
   };
 

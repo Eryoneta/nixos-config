@@ -4,7 +4,7 @@
   config.modules."nelico-hardware" = {
     tags = [ "nelico" ];
     setup = {
-      nixos = { modulesPath, ... }: { # (NixOS Module)
+      nixos = { config, modulesPath, ... }: { # (NixOS Module)
 
         # For the not-detected hardware
         imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];

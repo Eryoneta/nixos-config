@@ -1,10 +1,10 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ userDev, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SSH: Secure connection
   config.modules."ssh+yo" = {
     tags = [ "yo" ];
     setup = {
-      home = { userDev, config-domain, ... }: { # (Home-Manager Module)
+      home = { config-domain, ... }: { # (Home-Manager Module)
 
         # SSH identities
         config.programs.ssh.matchBlocks = {

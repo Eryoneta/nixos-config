@@ -1,11 +1,11 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ userDev, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Dolphin: File manager
   config.modules."dolphin" = {
     attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
     tags = [ "default-setup" ];
     setup = {
-      home = { config, userDev, config-domain, ... }: { # (Home-Manager Module)
+      home = { config, config-domain, ... }: { # (Home-Manager Module)
 
         # Dotfile
         config.programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)

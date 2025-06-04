@@ -3,10 +3,17 @@
   # Firefox Developer Edition: Internet browser for developers
   config.modules."firefox-devedition" = {
     attr.packageChannel = pkgs-bundle.unstable;
-    attr.firefox-addons = pkgs-bundle.firefox-addons;
     attr.fx-autoconfig = pkgs-bundle.fx-autoconfig;
     attr.firefox-scripts = pkgs-bundle.firefox-scripts;
-    attr.template = config.modules."firefox".attr.template;
+    attr.template = {
+      extensions = with (pkgs-bundle.firefox-addons).pkgs; (
+        (config.modules."firefox".attr.template).extensions ++ [
+          tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
+          sidebery # Sidebery: Sidebar with vertical tabs
+        ]
+      );
+      settings = config.modules."firefox-devedition+settings".attr.template.settings;
+    };
     tags = [ "yo" ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
@@ -55,7 +62,7 @@
                       ];
                     }
                   ];
-                  "icon" = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  "icon" = "${(attr.packageChannel).nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                   "definedAliases" = [ "@np" ];
                 };
                 "NixOS Wiki" = {
@@ -77,12 +84,7 @@
             };
 
             # Extensions
-            extensions = with (attr.firefox-addons).pkgs; (
-              (attr.template).extensions ++ [
-                tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
-                sidebery # Sidebery: Sidebar with vertical tabs
-              ]
-            );
+            extensions = (attr.template).extensions;
 
           };
 

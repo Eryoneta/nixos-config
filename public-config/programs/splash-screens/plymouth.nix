@@ -12,7 +12,7 @@
 
           # Configuration
           plymouth = {
-            enable = options.enabled;
+            enable = true;
             theme = "breeze";
           };
 

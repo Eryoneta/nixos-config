@@ -1,11 +1,11 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, userDev, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KWrite: (Light) Text editor
   config.modules."kwrite" = {
     attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
     tags = [ "default-setup" ];
     setup = {
-      home = { config, userDev, config-domain, ... }: { # (Home-Manager Module)
+      home = { config, config-domain, ... }: { # (Home-Manager Module)
 
         # Dotfile
         config.programs.plasma.configFile."kwriterc" = { # (plasma-manager option)

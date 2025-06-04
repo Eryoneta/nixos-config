@@ -91,7 +91,7 @@
         # Dotfile: Activities
         # Note: Old activities are not removed
         config.programs.plasma.configFile."kactivitymanagerdrc" = ( # (plasma-manager option)
-          (utils.mkDefault) attr.activities {
+          (utils.mkDefault) (attr.activities rec {
             list = { # Note: The final result is alfabetically ordered
               "main" = {
                 id = "main-activity";
@@ -105,7 +105,7 @@
               };
             };
             startId = list."main".id;
-          }
+          })
         );
 
         # Dotfile: Virtual desktops

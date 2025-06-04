@@ -5,9 +5,11 @@
     attr.packageChannel = pkgs-bundle.stable;
     attr.theme.backgroundPath = with config-domain; (
       # Check for "./private-config/programs"
-      utils.mkIfElse ((utils.pathExists private.programs) && config.includedModules."sddm.private") (
+      if ((utils.pathExists private.programs) && config.includedModules."sddm.private") then (
         config.modules."sddm.private".attr.theme.backgroundPath # Uses a attr defined by another module
-      ) "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}" # Default background image
+      ) else (
+        "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}" # Default background image
+      )
     );
     tags = [ "default-setup" ];
     setup = { attr }: {

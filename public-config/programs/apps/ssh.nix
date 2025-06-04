@@ -5,7 +5,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     tags = [ "default-setup" ];
     setup = { attr }: {
-      nixos = { # (NixOS Module)
+      nixos = { config, ... }: { # (NixOS Module)
 
         # Configuration
         config.programs.ssh = {

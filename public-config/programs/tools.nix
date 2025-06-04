@@ -66,7 +66,7 @@
     tags = [ "tool" "tool-video" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.obs-studio ];
+        config.home.packages = with attr.packageChannel; [ obs-studio ];
       };
     };
   };
@@ -77,7 +77,7 @@
     tags = [ "tool" "tool-office" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.krename ];
+        config.home.packages = with attr.packageChannel; [ krename ];
       };
     };
   };

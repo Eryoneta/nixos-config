@@ -12,7 +12,7 @@
         '';
 
       };
-      home = { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Configuration
         config.programs.plasma.powerdevil = { # (plasma-manager option)
