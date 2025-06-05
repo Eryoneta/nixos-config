@@ -1,25 +1,34 @@
-{ ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  imports = [
-    ../default/configuration.nix # Default
-    ./hardware-configuration.nix # Scan de hardware
-    ./hardware-fixes.nix # Hardware fixes
-  ];
+  # Hyper-V_VM host
+  config.modules."hyper-v_vm" = {
+    tags = [ "hyper-v_vm" ];
+    includeTags = [ "default-setup" ];
+    setup = {
+      nixos = { # (NixOS Module)
 
-  config = {
+        # Features/Autologin
+        config.services.displayManager.autoLogin.enable = true;
 
-    # Features/Autologin
-    #services.displayManager.autoLogin.enable = true;
+        # Features/AlterProfile
+        config.system.autoUpgrade.alterProfile.configurationLimit = 2; # Keep only 2 generations
 
-    # Features/AlterProfile
-    system.autoUpgrade.alterProfile.configurationLimit = 2; # Keep only 2 generations
+        # Bootloader/OSProber
+        config.boot.loader.grub.useOSProber = false; # No need for OS probing
 
-    # Boot-Loader
-    boot.loader.grub.useOSProber = false; # No need for OS probing
+        # Features/Swapfile
+        config.swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
 
-    # Features/Swapfile
-    swap.devices."basicSwap".size = ((4 + 2) * 1024); # 6GB
-
+      };
+    };
   };
+
+  # Screen size
+  config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
+    utils.mkIf (config.includedModules."hyper-v_vm") {
+      width = 800; # Stuck because of "nomodeset"
+      height = 600;
+    }
+  );
 
 }
