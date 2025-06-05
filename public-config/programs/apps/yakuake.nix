@@ -2,8 +2,8 @@
 
   # Yakuake: Drop-down terminal
   config.modules."yakuake" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

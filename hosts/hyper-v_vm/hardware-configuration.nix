@@ -1,8 +1,8 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Hyper-V_VM host
   config.modules."hyper-v_vm-hardware" = {
-    tags = [ "hyper-v_vm" ];
+    tags = config.modules."hyper-v_vm".tags;
     setup = {
       nixos = { # (NixOS Module)
 

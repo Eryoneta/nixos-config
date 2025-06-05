@@ -1,9 +1,9 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
-  config.modules."plasma+yo" = {
+  config.modules."plasma+personal" = {
+    tags = [ "personal-setup" ];
     attr.papirus-colors-icons = pkgs-bundle.papirus-colors-icons;
-    tags = [ "yo" ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 
@@ -12,22 +12,14 @@
 
           # Workspace
           workspace = {
+
             # Behaviour
             enableMiddleClickPaste = false; # Do not paste with middle-click (Too many accidents!)
+
             # Cursor
-            cursor = {
-              theme = null; # Managed by Stylix
-              size = null; # Managed by Stylix
-            };
-            # Wallpaper
-            wallpaper = null; # Managed by Stylix
-            wallpaperFillMode = null; # Managed by Stylix
-            # Themes
-            theme = null; # Managed by Stylix
-            lookAndFeel = null; # Managed by Stylix
-            colorScheme = null; # Managed by Stylix
             iconTheme = "Papirus-Colors-Dark"; # Icons theme
             soundTheme = "Ocean"; # Sound theme
+
           };
 
           # Mouse

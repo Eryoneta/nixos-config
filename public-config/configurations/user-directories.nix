@@ -2,7 +2,7 @@
 
   # User directories
   config.modules."user-directories" = {
-    tags = [ "basic-setup" ];
+    tags = [ "personal-setup" ];
     setup = {
       home = { config, ... }: { # (Home-Manager Module)
 
@@ -24,29 +24,6 @@
               videos = "${homePath}/Vídeos";
               publicShare = "${homePath}/Público";
               templates = "${homePath}/Modelos";
-            }
-          );
-        };
-
-      };
-    };
-  };
-
-  # Personal directory
-  config.modules."personal-directory" = {
-    tags = [ "yo" ];
-    setup = {
-      home = { config, ... }: { # (Home-Manager Module)
-
-        # XDG Base Directory
-        config.xdg = {
-          userDirs = (
-            let
-              homePath = config.home.homeDirectory;
-            in {
-              extraConfig = {
-                "XDG_PERSONAL_DIR" = "${homePath}/Personal";
-              };
             }
           );
         };

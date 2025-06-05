@@ -2,8 +2,8 @@
 
   # Nix: Package manager
   config.modules."nix" = {
-    attr.packageChannel = pkgs-bundle.system;
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # (Also included with NixOS)
     setup = { attr }: {
       nixos = { pkgs, inputs, host, nixos-modules, ... }: { # (NixOS Module)
 

@@ -2,6 +2,7 @@
 
   # File associations
   config.modules."file-associations" = {
+    tags = [ "default-setup" ];
     attr.associateDefault = app: extensions: (utils.pipe extensions [
 
       # Invert the association: Each extension points to the app
@@ -13,7 +14,6 @@
       (x: builtins.foldl' (x: y: (x // y)) {} x)
 
     ]);
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

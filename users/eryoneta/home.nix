@@ -2,18 +2,22 @@
 
   # Eryoneta user
   config.modules."eryoneta" = {
+    tags = [ "eryoneta" ];
+    includeTags = [
+      "work-setup"
+      "developer-setup"
+    ];
     attr.profileIcon = config.modules."user".attr.profileIcon;
     attr.defaultPassword = config.modules."user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;
-    tags = [ "eryoneta" ];
-    includeTags = [
-      "default-setup"
-    ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 
         # Profile
         config.home.file.".face.icon" = (attr.profileIcon config.home.username);
+
+        # Variables
+        config.home.sessionVariables = {};
 
       };
       nixos = { config, users, ... }: { # (NixOS Module)

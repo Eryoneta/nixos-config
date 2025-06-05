@@ -2,8 +2,8 @@
 
   # NPM: Package manager
   config.modules."npm" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "default-setup" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
 

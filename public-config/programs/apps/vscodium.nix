@@ -2,8 +2,8 @@
 
   # VSCodium: (Medium) Code editor
   config.modules."vscodium" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { config-domain, ... }: { # (Home-Manager Module)
 

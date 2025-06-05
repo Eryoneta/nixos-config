@@ -2,6 +2,7 @@
 
   # Firefox: Internet browser
   config.modules."firefox" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
     attr.template = {
       extensions = with pkgs-bundle.firefox-addons.pkgs; [
@@ -35,7 +36,6 @@
 
       };
     };
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

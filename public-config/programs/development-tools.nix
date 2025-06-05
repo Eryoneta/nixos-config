@@ -2,8 +2,9 @@
 
   # MySQL: MySQL Database v8.0
   config.modules."mysql" = {
+    enable = false; # Enable only when developing
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-database" "server" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
         config.services.mysql = {
@@ -16,8 +17,8 @@
 
   # MySQL Workbench: Tool for MySQL management
   config.modules."mysql-workbench" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-database" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config.home.packages = with attr.packageChannel; [ mysql-workbench ];
@@ -27,8 +28,8 @@
 
   # Python: Full Python environment v3
   config.modules."python" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-backend" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config.home.packages = with attr.packageChannel; [
@@ -45,8 +46,8 @@
 
   # Java: Java Development Kit v17
   config.modules."java" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-backend" "development-desktop" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
         config.programs.java = {
@@ -61,8 +62,8 @@
 
   # Eclipse(For Java): IDE for Java development
   config.modules."eclipse-java" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-desktop" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config.home.packages = with attr.packageChannel; [ eclipses.eclipse-java ];
@@ -72,8 +73,8 @@
 
   # Angular-Cli: Helper for Angular development
   config.modules."angular-cli" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-frontend" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config.home.packages = with attr.packageChannel; [ nodePackages."@angular/cli" ];
@@ -83,8 +84,8 @@
 
   # Hoppscotch: API tool
   config.modules."hoppscotch" = {
+    tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "development" "development-backend" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
         config.home.packages = with attr.packageChannel; [ hoppscotch ];

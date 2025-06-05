@@ -71,20 +71,15 @@ flakePath: (
 
     # Host Builder
     buildHost = host: (
-      default.host // (host // {
-        hostname = host.hostname;
-        name = host.name;
-        system = (default.host.system // host.system);
-      })
+      default.host // host // {
+        system = (default.host.system // (host.system or {}));
+        # Note: Subsets require to be merged explicitly
+      }
     );
 
     # User Builder
     buildUser = user: (
-      default.user // (user // {
-        username = user.username;
-        name = user.name;
-        configFolder = user.configFolder;
-      })
+      default.user // user
     );
 
     # Args Builder

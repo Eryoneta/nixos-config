@@ -1,8 +1,8 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # LiCo host
   config.modules."lico-hardware" = {
-    tags = [ "lico" ];
+    tags = config.modules."lico".tags;
     setup = {
       nixos = { config, pkgs, modulesPath, ... }: { # (NixOS Module)
 

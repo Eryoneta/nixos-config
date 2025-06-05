@@ -2,6 +2,7 @@
 
   # RSnapshot: Backup manager
   config.modules."rsnapshot" = {
+    tags = [ "personal-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     attr.mkRSnapshotConfig = (
       let
@@ -122,7 +123,6 @@
         # Note: Some options needs to be before others. These three chunks allow that
       ))
     );
-    tags = [ "yo" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

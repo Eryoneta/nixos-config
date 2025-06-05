@@ -2,10 +2,10 @@
 
   # UOSC: MPV frontend
   config.modules."mpv-uosc" = {
+    tags = config.modules."mpv".tags;
     attr.packageChannel = config.modules."mpv".attr.packageChannel;
     attr.mpv-config = config.modules."mpv".attr.configuration;
     attr.mpv-actions = config.modules."mpv".attr.actions;
-    tags = config.modules."mpv".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

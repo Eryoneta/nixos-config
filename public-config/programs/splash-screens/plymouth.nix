@@ -2,8 +2,8 @@
 
   # Plymouth: Splash screen
   config.modules."plymouth" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # Not used
     setup = {
       nixos = { # (NixOS Module)
 

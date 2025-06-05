@@ -1,10 +1,10 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KZones: KWin script for snapping windows into zones
-  config.modules."plasma-kwin-kzones+yo" = {
+  config.modules."plasma+personal-kwin-kzones" = {
     enable = false; # It causes a very rare, but fatal, crash everytime a window is dragged
+    tags = config.modules."plasma+personal-kwin".tags;
     attr.packageChannel = pkgs-bundle.stable;
-    tags = config.modules."plasma+yo".tags;
     setup = { attr }: {
       home = { config-domain, ... }: { # (Home-Manager Module)
 

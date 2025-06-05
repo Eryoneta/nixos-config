@@ -2,8 +2,8 @@
 
   # ZSH: Shell
   config.modules."zsh" = {
-    attr.packageChannel = pkgs-bundle.stable;
     tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system;
     setup = { attr }: {
       nixos = { # (NixOS Module)
 

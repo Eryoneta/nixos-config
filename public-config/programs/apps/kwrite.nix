@@ -2,10 +2,14 @@
 
   # KWrite: (Light) Text editor
   config.modules."kwrite" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
-    tags = [ "default-setup" ];
-    setup = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+    setup = { attr }: {
       home = { config, config-domain, ... }: { # (Home-Manager Module)
+
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.kate ];
+        # Note: "kdePackages.kate" provides BOTH Kate and KWrite!
 
         # Dotfile
         config.programs.plasma.configFile."kwriterc" = { # (plasma-manager option)

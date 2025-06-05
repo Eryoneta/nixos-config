@@ -2,6 +2,7 @@
 
   # MPV: Multimidia player
   config.modules."mpv+actions" = {
+    tags = config.modules."mpv".tags;
     # My custom functions, used by "mpv.bindings" or "mpv.scriptOpts.uosc"
     attr.actions = (
       let
@@ -332,7 +333,6 @@
 
       }
     );
-    tags = config.modules."mpv".tags;
   };
 
 }

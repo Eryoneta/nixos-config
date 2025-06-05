@@ -2,6 +2,7 @@
 
   # KWin: Window manager for Plasma
   config.modules."plasma-kwin" = {
+    tags = config.modules."plasma".tags;
     attr.activities = { list ? [], startId ? "" }: (
       let
         activityIds = (
@@ -31,7 +32,6 @@
         };
       }
     );
-    tags = config.modules."plasma".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

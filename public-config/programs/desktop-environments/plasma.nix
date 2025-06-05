@@ -2,8 +2,9 @@
 
   # Plasma: A Desktop Environment focused on customization
   config.modules."plasma" = {
-    attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "default-setup" ];
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system;
+    attr.themedByStylix = true;
     setup = { attr }: {
       nixos = { pkgs, ... }: { # (NixOS Module)
 
@@ -33,7 +34,7 @@
         ];
 
       };
-      home = { pkgs-bundle, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Note: To get current configurations with rc2nix: "nix run github:nix-community/plasma-manager > ~/Downloads/config.txt"
 
@@ -46,29 +47,11 @@
 
           # Workspace
           workspace = {
+
             # Behaviour
             enableMiddleClickPaste = (utils.mkDefault) true; # Middle-click paste
             clickItemTo = (utils.mkDefault) "select"; # When clicking files or folders, select them
-            # Cursor
-            cursor = {
-              theme = (utils.mkDefault) "Breeze"; # Cursor theme
-              size = (utils.mkDefault) 32; # Cursor size
-            };
-            # Wallpaper
-            wallpaper = (utils.mkDefault) ( # Wallpaper
-              pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
-            );
-            wallpaperFillMode = (utils.mkDefault) "preserveAspectCrop"; # Resize and cut excess
-            # TODO: (Plasma/Wallpaper)(24.11) Does not work(--fill-mode does not exist). Check later
-            # Themes
-            theme = (utils.mkDefault) "breeze-dark"; # Global Theme
-              # Run "plasma-apply-desktoptheme --list-themes" for options
-            lookAndFeel = (utils.mkDefault) "org.kde.breezedark.desktop"; # Theme
-              # Run "plasma-apply-lookandfeel --list" for options
-            colorScheme = (utils.mkDefault) "BreezeDark"; # Color theme
-              # Run "plasma-apply-colorscheme --list-schemes" for options
-            iconTheme = (utils.mkDefault) "Breeze-Dark"; # Icons theme
-            soundTheme = (utils.mkDefault) "Ocean"; # Sound theme
+
           };
 
           # Desktop

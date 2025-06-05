@@ -2,8 +2,9 @@
 
   # Samba: File sharing
   config.modules."samba" = {
+    enable = false; # Not used for now
+    tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "hyper-v_vm" ];
     setup = { attr }: {
       nixos = { config, host, ... }: { # (NixOS Module)
 

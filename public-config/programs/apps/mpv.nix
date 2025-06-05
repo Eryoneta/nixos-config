@@ -2,7 +2,15 @@
 
   # MPV: Multimidia player
   config.modules."mpv" = {
+    tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
+    attr.yt-dlp.packageChannel = (
+      if (builtins.hasAttr "yt-dlp" config.modules) then (
+        config.modules."yt-dlp".attr.packageChannel
+      ) else (
+        pkgs-bundle.unstable
+      )
+    );
     attr.configuration = {
 
       # UI
@@ -42,15 +50,13 @@
       width =  builtins.toString (width / 2);
       height = builtins.toString (height - 32);
     };
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { config, lib, ... }: { # (Home-Manager Module)
 
         config.home.packages = with attr.packageChannel; [
 
-          #yt-dlp # yt-dlp: YouTube downloader script
+          (attr.yt-dlp).packageChannel.yt-dlp # yt-dlp: YouTube downloader script
           # MPV uses this to open online videos
-          # Note: Already included
 
           xclip # xclip: Simple clipboard manager
           # MPV uses this to copy a file path

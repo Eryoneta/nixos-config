@@ -1,9 +1,8 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Klipper: Clipboard manager
-  config.modules."klipper" = {
-    attr.packageChannel = pkgs-bundle.stable;# Not used (Included with KDE Plasma)
-    tags = [ "default-setup" ];
+  config.modules."plasma-klipper" = {
+    tags = config.modules."plasma".tags;
     setup = {
       home = { # (Home-Manager Module)
 

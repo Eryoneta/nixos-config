@@ -1,8 +1,8 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # NeLiCo host
   config.modules."nelico-hardware" = {
-    tags = [ "nelico" ];
+    tags = config.modules."nelico".tags;
     setup = {
       nixos = { config, modulesPath, ... }: { # (NixOS Module)
 

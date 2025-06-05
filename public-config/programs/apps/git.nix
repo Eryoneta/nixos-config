@@ -1,10 +1,28 @@
-{ user, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ user, pkgs-bundle, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Git: File versioning
   config.modules."git" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     attr.git-tools = pkgs-bundle.git-tools;
-    tags = [ "basic-setup" ];
+    attr.userConfigByDir = profile: (with config-domain; (
+      # Check for "./private-config/secrets"
+      utils.mkIfElse (utils.pathExists private.secrets) (
+        let
+          userEmails = (utils.readJSONFile "${private.secrets}/${user.username}_emails.json");
+        in {
+          user = {
+            name = userEmails.${profile}.username;
+            email = userEmails.${profile}.address;
+          };
+        }
+      ) {
+        user = {
+          name = null;
+          email = null;
+        };
+      }
+    ));
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

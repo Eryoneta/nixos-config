@@ -7,6 +7,7 @@
       searchNixFiles = path: (utils.searchFiles path "" "" onlyNixFile);
     in with config-domain; (
       builtins.concatLists [
+        [ ./setups.nix ]
         (searchNixFiles ./hosts)
         (searchNixFiles ./users)
         (searchNixFiles "${public.configurations}")

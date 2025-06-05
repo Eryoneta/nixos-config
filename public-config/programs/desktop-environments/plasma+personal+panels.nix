@@ -1,7 +1,8 @@
 { config, user, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
-  config.modules."plasma+yo+panels" = {
+  config.modules."plasma+personal+panels" = {
+    tags = config.modules."plasma+personal".tags;
     attr = rec {
       default-widgets = config.modules."plasma+panels".attr.widgets;
       default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
@@ -51,7 +52,7 @@
       tiledmenu = with config-domain; (
         # Check for "./private-config/programs"
         utils.mkIfElse (utils.pathExists private.programs) (
-          with config.modules."plasma-tiledmenu+yo"; (attr.tiledmenu attr.apps attr.gridModel)
+          with config.modules."plasma+personal-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel)
         ) (
           with config.modules."plasma-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel) # Default
         )
@@ -79,7 +80,6 @@
         ];
       });
     };
-    tags = config.modules."plasma+yo".tags;
     setup = { attr }: {
       home = { ... }: { # (Home-Manager Module)
 
@@ -123,8 +123,8 @@
 
   # Decrease the height of the total work-area
   config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
-    (utils.mkIf (config.includedModules."plasma+yo+panels") (
-      with config.modules."plasma+yo+panels"; (
+    (utils.mkIf (config.includedModules."plasma+personal+panels") (
+      with config.modules."plasma+personal+panels"; (
         attr.mainPanel.height + attr.helperPanel.height
       )
     ))

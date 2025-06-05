@@ -2,8 +2,8 @@
 
   # Ghostwriter: Writer tool
   config.modules."ghostwriter" = {
+    tags = [ "personal-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "yo" ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 

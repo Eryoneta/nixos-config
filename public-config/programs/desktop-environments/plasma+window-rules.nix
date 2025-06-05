@@ -2,13 +2,13 @@
 
   # Main panel
   config.modules."plasma+window-rules" = {
+    tags = config.modules."plasma".tags;
     attr.workArea = with config.hardware.configuration.screenSize.workArea; { # (From "configurations/screen-size.nix")
       width = builtins.toString (width);
       height = builtins.toString (height);
       halfWidth =  builtins.toString (width / 2);
       halfHeight =  builtins.toString (height / 2);
     };
-    tags = config.modules."plasma".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

@@ -2,6 +2,7 @@
 
   # Firefox Developer Edition: Internet browser for developers
   config.modules."firefox-devedition" = {
+    tags = [ "personal-setup" "developer-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
     attr.fx-autoconfig = pkgs-bundle.fx-autoconfig;
     attr.firefox-scripts = pkgs-bundle.firefox-scripts;
@@ -14,7 +15,6 @@
       );
       settings = config.modules."firefox-devedition+settings".attr.template.settings;
     };
-    tags = [ "yo" ];
     setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
 
@@ -90,7 +90,7 @@
 
         };
 
-        # Dotfiles
+        # Dotfiles: Scripts
         config.home.file = (
           let
             fx-autoconfig = attr.fx-autoconfig;

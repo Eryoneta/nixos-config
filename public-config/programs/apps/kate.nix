@@ -2,8 +2,8 @@
 
   # Kate: (Light) Code editor
   config.modules."kate" = {
-    attr.packageChannel = pkgs-bundle.stable;
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

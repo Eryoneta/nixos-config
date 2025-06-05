@@ -2,9 +2,9 @@
 
   # Root user
   config.modules."root" = {
+    tags = [ "root" ];
     attr.defaultPassword = config.modules."user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;
-    tags = [ "root" ];
     setup = { attr }: {
       nixos = { config, ... }: { # (NixOS Module)
 

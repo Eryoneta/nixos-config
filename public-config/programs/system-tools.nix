@@ -2,8 +2,8 @@
 
   # FastFetch: Shows general system information
   config.modules."fastfetch" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "essential-tool" "system-tool" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
         config.environment.systemPackages = with attr.packageChannel; [ fastfetch ];
@@ -13,8 +13,8 @@
 
   # GParted: Manages partitions
   config.modules."gparted" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "essential-tool" "system-tool" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
         config.environment.systemPackages = with attr.packageChannel; [ gparted ];
@@ -22,10 +22,54 @@
     };
   };
 
+  # GSmartControl: Disk health inspection tool
+  config.modules."gsmartcontrol" = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        config.environment.systemPackages = with attr.packageChannel; [ gsmartcontrol ];
+      };
+    };
+  };
+
+  # SmartMonTools: Disk health inspection tools
+  config.modules."smartmontools" = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        config.environment.systemPackages = with attr.packageChannel; [ smartmontools ];
+      };
+    };
+  };
+
+  # KDiskMark: Disk speed tester
+  config.modules."kdiskmark" = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        config.environment.systemPackages = with attr.packageChannel; [ kdiskmark ];
+      };
+    };
+  };
+
+  # Filelight: Disk usage visualizer
+  config.modules."filelight" = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        config.environment.systemPackages = with attr.packageChannel; [ kdePackages.filelight ];
+      };
+    };
+  };
+
   # nix-output-monitor: Prettify nix output
   config.modules."nix-output-monitor" = {
+    tags = [ "sysdev-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "essential-tool" "system-tool" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
         config.environment.systemPackages = with attr.packageChannel; [ nix-output-monitor ];
@@ -40,24 +84,24 @@
     #   "|& nom" passes the output to nix-output-monitor to prettify
   };
 
-  # Filelight: Disk usage visualizer
-  config.modules."filelight" = {
+  # PulseAudio Volume Control: Tool for system audio
+  config.modules."pavucontrol" = {
+    tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "system-tool" ];
     setup = { attr }: {
       nixos = { # (NixOS Module)
-        config.environment.systemPackages = with attr.packageChannel; [ kdePackages.filelight ];
+        config.environment.systemPackages = with attr.packageChannel; [ pavucontrol ];
       };
     };
   };
 
-  # PulseAudio Volume Control: Tool for system audio
-  config.modules."pavucontrol" = {
+  # Mission Center: UI based process viewer
+  config.modules."mission-center" = {
+    tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "system-tool" ];
     setup = { attr }: {
-      nixos = { # (NixOS Module)
-        config.environment.systemPackages = with attr.packageChannel; [ pavucontrol ];
+      home = { # (Home-Manager Module)
+        config.home.packages = with attr.packageChannel; [ mission-center ];
       };
     };
   };

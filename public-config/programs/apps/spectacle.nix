@@ -2,10 +2,13 @@
 
   # Spectacle: Print-screen tool
   config.modules."spectacle" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
     tags = [ "default-setup" ];
-    setup = {
+    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+    setup = { attr }: {
       home = { config, ... }: { # (Home-Manager Module)
+
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.spectacle ];
 
         # Configuration
         config.programs.plasma.spectacle = { # (plasma-manager option)

@@ -1,10 +1,11 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KScreenLocker: Screen locker for Plasma
   config.modules."plasma-kscreenlocker" = {
     tags = config.modules."plasma".tags;
-    setup = {
-      home = { pkgs-bundle, ... }: { # (Home-Manager Module)
+    attr.nixos-artwork = pkgs-bundle.nixos-artwork;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
 
         # Configuration
         config.programs.plasma.kscreenlocker = { # (plasma-manager option)
@@ -14,7 +15,7 @@
             alwaysShowClock = (utils.mkDefault) true; # Show time
             showMediaControls = (utils.mkDefault) true; # Show media controls
             wallpaper = (utils.mkDefault) ( # Wallpaper
-              pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
+              attr.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"
             );
           };
 

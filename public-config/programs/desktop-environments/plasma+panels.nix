@@ -2,6 +2,7 @@
 
   # Main panel
   config.modules."plasma+panels" = {
+    tags = config.modules."plasma".tags;
     attr = rec {
       widgets = {
 
@@ -138,7 +139,6 @@
         ];
       };
     };
-    tags = config.modules."plasma".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

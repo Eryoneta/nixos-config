@@ -2,9 +2,9 @@
 
   # MPV: Multimidia player
   config.modules."mpv+inputs" = {
+    tags = config.modules."mpv".tags;
     attr.actions = config.modules."mpv+actions".attr.actions;
     attr.mpv-input-event = pkgs-bundle.mpv-input-event;
-    tags = config.modules."mpv".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

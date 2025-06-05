@@ -2,8 +2,8 @@
 
   # Grub: Bootloader
   config.modules."grub" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used
-    tags = [ "default-setup" ];
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # Not used
     setup = {
       nixos = { config-domain, ... }: { # (NixOS Module)
 

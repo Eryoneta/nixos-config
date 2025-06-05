@@ -1,12 +1,13 @@
-{ config, lib, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, lib, pkgs-bundle, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
   config.modules."plasma-tiledmenu" = {
+    tags = config.modules."plasma".tags;
     attr = rec {
+      tiledmenu-pkg = pkgs-bundle.tiledmenu; # Input
       apps = { # List of all apps to be present in the grid
         __ = ""; # Empty space
         # Browsers
-        Ch = "chromium-browser.desktop";
         Ff = "firefox.desktop";
         # System
         SS = "systemsettings.desktop";
@@ -22,24 +23,19 @@
         KW = "org.kde.kwrite.desktop";
         Ka = "org.kde.kate.desktop";
         Ko = "org.kde.konsole.desktop";
-        Ec = "Eclipse.desktop";
         Co = "codium.desktop";
-        Ho = "hoppscotch.desktop";
-        MW = "mysql-workbench.desktop";
         # Images
         KP = "org.kde.kolourpaint.desktop";
         # Videos
         Mp = "mpv.desktop";
-        Ob = "com.obsproject.Studio.desktop";
       };
       gridModel = (with apps; [ # The grid
-        [ Ch Ff __ KW KW Ka Ec __ KP KP ]
-        [ __ __ __ KW KW Ko __ __ KP KP ]
-        [ SS __ __ Co Co Ho __ __ __ __ ]
-        [ PA KC __ Co Co MW __ __ __ __ ]
-        [ EE Wr __ __ __ __ __ __ __ __ ]
-        [ KI Ca __ Mp Mp __ __ __ __ __ ]
-        [ MC __ __ Mp Mp Ob __ __ __ __ ]
+        [ Ff __ __ KW KW Ka __ KP KP ]
+        [ __ __ __ KW KW Ko __ KP KP ]
+        [ KC __ __ Co Co __ __ Mp Mp ]
+        [ Wr __ __ Co Co __ __ Mp Mp ]
+        [ Ca __ __ __ __ __ __ __ __ ]
+        [ SS PA EE KI MC __ __ __ __ ]
       ]);
       tiledmenu = apps: gridModel: (
         let
@@ -144,13 +140,12 @@
         }
       );
     };
-    tags = config.modules."plasma".tags;
-    setup = {
-      home = { pkgs-bundle, ... }: { # (Home-Manager Module)
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
 
         # Install
         config.xdg.dataFile."plasma/plasmoids/com.github.zren.tiledmenu" = {
-          source = "${pkgs-bundle.tiledmenu}/package";
+          source = "${attr.tiledmenu-pkg}/package";
         };
 
       };

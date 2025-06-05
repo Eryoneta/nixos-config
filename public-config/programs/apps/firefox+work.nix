@@ -1,7 +1,8 @@
 { config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Firefox: Internet browser
-  config.modules."firefox+work-profile" = {
+  config.modules."firefox+work" = {
+    tags = [ "personal-setup" "work-setup" ];
     attr.template = {
       extensions = with (pkgs-bundle.firefox-addons).pkgs; (
         (config.modules."firefox".attr.template).extensions ++ [
@@ -90,7 +91,6 @@
 
       });
     };
-    tags = [ "yo" "eryoneta" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

@@ -2,10 +2,13 @@
 
   # Konsole: Terminal
   config.modules."konsole" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
-    tags = [ "yo" ];
-    setup = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+    setup = { attr }: {
       home = { config-domain, ... }: { # (Home-Manager Module)
+
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.konsole ];
 
         # Configuration
         config.programs.plasma.configFile."konsolerc" = { # (plasma-manager option)

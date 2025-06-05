@@ -2,10 +2,13 @@
 
   # Dolphin: File manager
   config.modules."dolphin" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used (Included with KDE Plasma)
-    tags = [ "default-setup" ];
-    setup = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+    setup = { attr }: {
       home = { config, config-domain, ... }: { # (Home-Manager Module)
+
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.dolphin ];
 
         # Dotfile
         config.programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)

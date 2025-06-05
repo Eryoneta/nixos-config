@@ -2,8 +2,8 @@
 
   # PowerShell: Shell
   config.modules."powershell" = {
+    tags = [ "personal-setup" "developer-setup" "work-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "default-setup" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

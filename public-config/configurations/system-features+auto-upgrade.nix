@@ -2,9 +2,9 @@
 
   # Auto-upgrade
   config.modules."system-features+auto-upgrade" = {
+    tags = [ "default-setup" ];
     attr.configurationLimit = 12; # 12 seems like a good mumber, 3 months of weekly upgrades
     attr.systemUpgradeProfileName = "System_Upgrades";
-    tags = [ "default-setup" ];
     setup = { attr }: {
       nixos = { host, nixos-modules, auto-upgrade-pkgs, ... }: { # (NixOS Module)
 

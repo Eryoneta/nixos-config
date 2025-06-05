@@ -2,9 +2,9 @@
 
   # NX Function
   config.modules."zsh+nx-command" = {
+    tags = [ "sysdev-setup" ];
     attr.configurationLimit = config.modules."system-features+auto-upgrade".attr.configurationLimit;
     attr.systemUpgradeProfileName = config.modules."system-features+auto-upgrade".attr.systemUpgradeProfileName;
-    tags = [ "yo" ];
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

@@ -1,8 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
   # Git: File versioning
-  config.modules."git+yo" = {
-    tags = [ "yo" ];
+  config.modules."git+developer" = {
+    tags = [ "developer-setup" ];
     setup = {
       home = { # (Home-Manager Module)
 

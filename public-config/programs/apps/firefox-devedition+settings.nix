@@ -2,6 +2,7 @@
 
   # Firefox Developer Edition: Internet browser for developers
   config.modules."firefox-devedition+settings" = {
+    tags = config.modules."firefox-devedition".tags;
     attr.template = {
       extensions = (config.modules."firefox-devedition".attr.template).extensions;
       settings = ((config.modules."firefox".attr.template).settings // {
@@ -206,7 +207,6 @@
         }
       );
     };
-    tags = config.modules."firefox-devedition".tags;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 

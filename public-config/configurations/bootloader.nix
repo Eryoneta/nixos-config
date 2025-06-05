@@ -2,7 +2,7 @@
 
   # Bootloader
   config.modules."bootloader" = {
-    tags = [ "basic-setup" ];
+    tags = [ "default-setup" ];
     setup = {
       nixos = { # (NixOS Module)
 

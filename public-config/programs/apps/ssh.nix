@@ -2,8 +2,8 @@
 
   # SSH: Secure connection
   config.modules."ssh" = {
+    tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    tags = [ "default-setup" ];
     setup = { attr }: {
       nixos = { config, ... }: { # (NixOS Module)
 

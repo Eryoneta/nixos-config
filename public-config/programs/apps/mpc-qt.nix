@@ -3,8 +3,8 @@
   # MPC-QT: Multimidia player (A MPC-HC clone)
   config.modules."mpc-qt" = {
     enable = false; # DISABLED (Replaced by MPV)
-    attr.packageChannel = pkgs-bundle.unstable;
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.unstable;
     setup = { attr }: {
       home = { config-domain, ... }: { # (Home-Manager Module)
 

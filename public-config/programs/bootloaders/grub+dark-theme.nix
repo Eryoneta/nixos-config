@@ -2,8 +2,7 @@
 
   # Grub: Bootloader
   config.modules."grub+dark-theme" = {
-    attr.packageChannel = pkgs-bundle.stable; # Not used
-    tags = [ "lico" "nelico" ];
+    tags = [ "personal-setup" ];
     setup = {
       nixos = { config-domain, ... }: { # (NixOS Module)
 

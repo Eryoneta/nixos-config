@@ -1,12 +1,8 @@
 { ... }@args: with args.config-utils; { # (Setup Module)
 
-  # Basic setup
-  config.modules."basic-setup" = {
+  # Experimental features
+  config.modules."experimental-features" = {
     tags = [ "basic-setup" ];
-    includeTags = [
-      "core-setup"
-      "essential-tool"
-    ];
     setup = {
       nixos = { # (NixOS Module)
 
@@ -17,5 +13,4 @@
       };
     };
   };
-
 }
