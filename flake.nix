@@ -7,16 +7,16 @@
 
     # System Inputs
     # NixOS (Auto upgrade)
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/3e362ce63e16b9572d8c2297c04f7c19ab6725a5";
+    #nixpkgs.url = "github:NixOS/nixpkgs/3e362ce63e16b9572d8c2297c04f7c19ab6725a5";
     # TODO: (Flake) Kernel 6.6.89 and later are weirdly slow. Change when a good one appears
 
     # Home-Manager (Auto upgrade)
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
-    #home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    #home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
     # TODO: (Flake) Kernel 6.6.89 and later are slow. Undo when a good one appears
 
     # Plasma-Manager (Auto upgrade)
@@ -28,13 +28,13 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "home-manager";
     # Stylix (Auto upgrade)
-    stylix.url = "github:danth/stylix/release-24.11";
+    stylix.url = "github:danth/stylix/release-25.05";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home-manager";
 
     # Package Inputs
     # Stable Packages (Auto upgrade)
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     # Unstable Packages (Auto upgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
