@@ -1,18 +1,25 @@
-{ ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  imports = [ ];
+  # Hyper-V_VM host
+  config.modules."hyper-v_vm-hardware" = {
+    tags = config.modules."hyper-v_vm".tags;
+    setup = {
+      nixos = { # (NixOS Module)
 
-  config = {
+        # Kernel
+        config.boot.initrd.availableKernelModules = [ "sd_mod" "sr_mod" ];
+        config.boot.initrd.kernelModules = [ ];
+        config.boot.kernelModules = [ ];
+        config.boot.extraModulePackages = [ ];
 
-    # Kernel
-    boot.initrd.availableKernelModules = [ "sd_mod" "sr_mod" ];
-    boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ ];
-    boot.extraModulePackages = [ ];
+        # Firmware
+        config.virtualisation.hypervGuest.enable = true;
 
-    # Firmware
-    virtualisation.hypervGuest.enable = true;
-    
+        # Hardware-Fix: "Hyper-V" does NOT like "KDE Plasma". Only "NoModeSet" works...
+        config.boot.kernelParams = ["nomodeset"];
+
+      };
+    };
   };
 
 }

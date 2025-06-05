@@ -1,33 +1,45 @@
-{ config, ... }@args: with args.config-utils; (
-  let
-    username = "eryoneta";
-  in {
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
-    imports = [
-      (import ../default/home.nix username) # Imports default with the usrname. This avoids infinite recursion
+  # Eryoneta user
+  config.modules."eryoneta" = {
+    tags = [ "eryoneta" ];
+    includeTags = [
+      "work-setup"
+      "developer-setup"
     ];
+    attr.profileIcon = config.modules."user".attr.profileIcon;
+    attr.defaultPassword = config.modules."user".attr.defaultPassword;
+    attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;
+    setup = { attr }: {
+      home = { config, ... }: { # (Home-Manager Module)
 
-    config = {
+        # Profile
+        config.home.file.".face.icon" = (attr.profileIcon config.home.username);
 
-      home.username = username;
-      
-      # Variables
-      home.sessionVariables = {
-        "MOZ_ENABLE_WAYLAND" = 0; # Disable wayland for Firefox
-        # Note: Bookmark dragging does NOT work under submenus! The menu keeps disappearing! Unusable!
-        # TODO: (Firefox) Enable wayland for Firefox when it works
+        # Variables
+        config.home.sessionVariables = {};
+
       };
+      nixos = { config, users, ... }: { # (NixOS Module)
 
-      # Profile
-      home.file.".face.icon" = with args.config-domain; {
-        # Check for "./private-config/resources"
-        enable = (utils.pathExists private.resources);
-        source = with private; (
-          "${resources}/profiles/${config.home.username}/.face.icon"
+        # System user
+        config.users.users = (
+          let
+            user = users."eryoneta";
+            hashedFilePath = config.age.secrets."${user.username}-userPassword".path or null; # (agenix option)
+          in {
+            "${user.username}" = {
+              description = user.name;
+              isNormalUser = true;
+              password = (attr.defaultPassword user.username hashedFilePath);
+              hashedPasswordFile = (attr.hashedPasswordFilePath user.username hashedFilePath);
+              extraGroups = [ "wheel" "networkmanager" ];
+            };
+          }
         );
+
       };
-
     };
+  };
 
-  }
-)
+}
