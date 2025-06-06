@@ -162,7 +162,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdialog ];
+        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
       };
     };
   };

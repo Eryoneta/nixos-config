@@ -98,7 +98,7 @@
         config.programs.firefox.profiles."default" = {
 
           # Extensions
-          extensions = (attr.template).extensions;
+          extensions.packages = (attr.template).extensions;
 
           # Settings
           settings = (attr.template).settings;

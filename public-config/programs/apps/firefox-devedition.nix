@@ -49,10 +49,8 @@
             search = {
               force = true;
               engines = {
-                "Google" = {
-                  "metaData"."alias" = "@g";
-                };
-                "Nix Packages" = {
+                "nix-packages" = {
+                  "name" = "Nix Packages";
                   "urls" = [
                     {
                       "template" = "https://search.nixos.org/packages";
@@ -65,26 +63,32 @@
                   "icon" = "${(attr.packageChannel).nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                   "definedAliases" = [ "@np" ];
                 };
-                "NixOS Wiki" = {
+                "nixos-wiki" = {
+                  "name" = "NixOS Wiki";
                   "urls" = [
                     {
                       "template" = "https://nixos.wiki/index.php?search={searchTerms}";
                     }
                   ];
-                  "iconUpdateURL" = "https://nixos.wiki/favicon.png";
+                  "icon" = "https://nixos.wiki/favicon.png";
                   "updateInterval" = 24 * 60 * 60 * 1000; # Every day
                   "definedAlias" = [ "@nw" ];
                 };
+                "google"."metaData"."alias" = "@g";
+                "bing"."metaData"."hidden" = true;
+                "amazon"."metaData"."hidden" = true;
+                "ebay"."metaData"."hidden" = true;
+                "wikipedia"."metaData"."hidden" = true;
               };
-              default = "DuckDuckGo"; # Is more reliable than Google
+              default = "ddg"; # DuckDuckGo is more reliable than Google
               order = [
-                "DuckDuckGo"
-                "Google"
+                "ddg"
+                "google"
               ];
             };
 
             # Extensions
-            extensions = (attr.template).extensions;
+            extensions.packages = (attr.template).extensions;
 
           };
 
