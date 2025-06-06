@@ -137,7 +137,7 @@ flakePath: (
                           }
                         ];
                         specialArgs = (setupHomeSpecialArgs user.username);
-                      }).homeManagerModules.setup; # Loads all home modules from setup
+                      }).homeModules.setup; # Loads all home modules from setup
                     }) x)
 
                     # Convert list of users to attrs of users
@@ -201,7 +201,7 @@ flakePath: (
                 }
               ];
               specialArgs = (setupHomeSpecialArgs user.username);
-            }).homeManagerModules.setup # Loads all home modules from setup
+            }).homeModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
             inputs.stylix.homeManagerModules.stylix # Loads Stylix options
