@@ -25,8 +25,8 @@
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
             shown = [
-              "org.kde.plasma.mediacontroller" # Media Controller
               "org.kde.plasma.vault" # Plasma Vault
+              "org.kde.plasma.mediacontroller" # Media Controller
             ];
             hidden = (
               default-widgets.systemTray.systemTray.items.hidden ++ [
