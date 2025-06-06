@@ -14,6 +14,8 @@
 
           # Targets
           targets = {
+            qt.enable = false; # Bug: Plasma crash (Something about not finding KVantum)
+            # TODO: (Theme) Enable QT theming...? It causes crashes
             firefox.enable = (utils.mkDefault) false; # Firefox is customized through its own theme extension
           };
 
