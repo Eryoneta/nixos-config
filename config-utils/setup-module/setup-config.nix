@@ -85,6 +85,7 @@
     evalModules = moduleType: (
       lib.pipe cfg.includedModules [
 
+        # For each module, include the content or mark as unincluded
         (x: builtins.mapAttrs (moduleId: included: (
           if (included) then (
             cfg.modules.${moduleId}
@@ -99,7 +100,7 @@
 
         # For each module in "config.modules", calls "setup" using "attr" (If it's a function)
         (x: builtins.map (module: {
-          setup = if (builtins.isFunction module.setup) then (
+          setup = if (lib.isFunction module.setup) then (
             module.setup {
               attr = module.attr;
             }

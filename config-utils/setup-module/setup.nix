@@ -16,7 +16,7 @@
       nixosModules.setup = { # (NixOS Module)
         imports = eval.config.nixosConfigurationModules;
       };
-      homeManagerModules.setup = { # (Home-Manager Module)
+      homeModules.setup = { # (Home-Manager Module)
         imports = eval.config.homeConfigurationModules;
       };
       darwinModules.setup = { # (Darwin Module)
