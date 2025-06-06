@@ -16,6 +16,10 @@ flakePath: (
         # Utilities
         lib = inputs.nixpkgs.lib;
         mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib).mapDir;
+        homeChannel = { # Defines which input Home-Manager uses
+          forModule = pkgs-bundle.system;
+          forStandalone = inputs.nixpkgs.legacyPackages.${host.system.architecture};
+        };
 
         # User-Host Scheme
         allUsers = (if (users == null) then [ user ] else users);
@@ -83,7 +87,7 @@ flakePath: (
         # NixOS Configuration
         nixosSystemConfig = (inputs.nixpkgs.lib.nixosSystem {
           system = host.system.architecture;
-          pkgs = pkgs-bundle.system; # Replace "pkgs" with a external one
+          pkgs = homeChannel.forModule; # Replace "pkgs" with a external one
           modules = [
 
             # Setup Configuration
@@ -175,7 +179,7 @@ flakePath: (
 
         # Home-Manager-Standalone Configuration
         homeManagerConfig = (inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs-stable.legacyPackages.${host.system.architecture};
+          pkgs = homeChannel.forStandalone;
           modules = [
 
             # Setup Configuration
