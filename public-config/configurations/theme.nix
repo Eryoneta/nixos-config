@@ -12,6 +12,11 @@
           enable = true;
           autoEnable = (utils.mkDefault) true; # Automatically set for installed apps
 
+          # Targets
+          targets = {
+            firefox.enable = (utils.mkDefault) false; # Firefox is customized through its own theme extension
+          };
+
           # Wallpaper
           image = (utils.mkDefault) ( # Wallpaper
             (pkgs-bundle.nixos-artwork)."wallpaper/nix-wallpaper-simple-blue.png"
