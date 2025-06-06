@@ -9,7 +9,7 @@
       home = { # (Home-Manager Module)
 
         # Configuration
-        config.programs.zsh.initContent = (
+        config.programs.zsh.initExtra = (
           let
 
             version = "v1.2.0"; # Should be changed at each modification
