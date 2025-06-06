@@ -4,7 +4,6 @@
   config.modules."plasma" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system;
-    attr.themedByStylix = true;
     setup = { attr }: {
       nixos = { pkgs, ... }: { # (NixOS Module)
 
