@@ -18,8 +18,8 @@
 
         ];
 
-        # Default profile
-        config.programs.vscode.profiles.default = {
+        # Configuration
+        config.programs.vscode = {
 
           # Settings
           userSettings = (

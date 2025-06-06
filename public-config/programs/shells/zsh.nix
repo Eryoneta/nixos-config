@@ -116,7 +116,7 @@
             }
           ];
 
-          initContent = (
+          initExtra = (
             # Powerlevel10k: Custom theme
             (let
               p10kConfigPath = "${config.xdg.configHome}/zsh/.p10k.zsh";
