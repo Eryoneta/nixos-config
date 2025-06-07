@@ -7,17 +7,17 @@
 
     # System Inputs
     # NixOS (Auto upgrade)
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
 
-    #nixpkgs.url = "github:NixOS/nixpkgs/3e362ce63e16b9572d8c2297c04f7c19ab6725a5";
-    # TODO: (Flake) Kernel 6.6.89 and later are weirdly slow. Change when a good one appears
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/3e362ce63e16b9572d8c2297c04f7c19ab6725a5";
+    # TODO: (Flake) Upgrade when possible
 
     # Home-Manager (Auto upgrade)
     home-manager.url = "github:nix-community/home-manager/release-24.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    #home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
-    # TODO: (Flake) Kernel 6.6.89 and later are slow. Undo when a good one appears
+    #home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    # TODO: (Flake) Upgrade when possible
 
     # Plasma-Manager (Auto upgrade)
     plasma-manager.url = "github:nix-community/plasma-manager";
