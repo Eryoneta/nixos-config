@@ -7,7 +7,7 @@
       nixos = { # (NixOS Module)
 
         # Time after sleep, before hibernation
-        systemd.sleep.extraConfig = (utils.mkDefault) ''
+        config.systemd.sleep.extraConfig = (utils.mkDefault) ''
           HibernateDelaySec=4h
         '';
 
