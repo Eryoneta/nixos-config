@@ -13,7 +13,7 @@
       home = { # (Home-Manager Module)
 
         # Window rules
-        config.programs.plasma.window-rules = (utils.mkDefault) [ # (plasma-manager option)
+        config.programs.plasma.window-rules = [ # (plasma-manager option)
 
           # Instances
           {

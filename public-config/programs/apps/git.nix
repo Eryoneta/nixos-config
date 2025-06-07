@@ -24,6 +24,15 @@
       }
     ));
     setup = { attr }: {
+      nixos = {
+
+        # Configuration
+        config.programs.git = {
+          enable = true; # For all users
+          package = (utils.mkDefault) (attr.packageChannel).git;
+        };
+
+      };
       home = { # (Home-Manager Module)
 
         # Configuration

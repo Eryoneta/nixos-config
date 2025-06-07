@@ -4,6 +4,12 @@
   config.modules."session-variables" = {
     tags = [ "default-setup" ];
     setup = {
+      nixos = {
+
+        # Variables
+        config.environment.sessionVariables = {};
+
+      };
       home = { config, ... }: { # (Home-Manager Module)
 
         # Variables
