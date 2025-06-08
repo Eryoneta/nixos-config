@@ -58,8 +58,9 @@
         # Garbage Collector
         config.nix.gc = {
           automatic = (utils.mkDefault) true;
-          frequency = (utils.mkDefault) "*-*-* 17:00:00"; # Every day, 17h00
+          frequency = (utils.mkDefault) "*-*-* 19:00:00"; # Every day, 19h00
         };
+        # Note: This one collects user specific ones
 
       };
     };

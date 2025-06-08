@@ -81,7 +81,7 @@
       });
     };
     setup = { attr }: {
-      home = { ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Panels
         config.programs.plasma.panels = [# (plasma-manager option)
@@ -123,9 +123,14 @@
 
   # Decrease the height of the total work-area
   config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
+    (utils.mkIf (config.includedModules."plasma+panels") (
+      with config.modules."plasma+panels"; (
+        -attr.mainPanel.height # Subtracts default panel height
+      )
+    ))
     (utils.mkIf (config.includedModules."plasma+personal+panels") (
       with config.modules."plasma+personal+panels"; (
-        attr.mainPanel.height + attr.helperPanel.height
+        attr.mainPanel.height + attr.helperPanel.height # Adds custom panel height
       )
     ))
   ];
