@@ -17,13 +17,8 @@ flakePath: (
         lib = inputs.nixpkgs.lib;
         mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib).mapDir;
         homeChannel = { # Defines which input Home-Manager uses
-
-          #forModule = pkgs-bundle.system;
-          #forStandalone = inputs.nixpkgs.legacyPackages.${host.system.architecture};
-          forModule = pkgs-bundle.stable;
-          forStandalone = inputs.nixpkgs-stable.legacyPackages.${host.system.architecture};
-          # TODO: (Flake) Upgrade when possible
-
+          forModule = pkgs-bundle.system;
+          forStandalone = inputs.nixpkgs.legacyPackages.${host.system.architecture};
         };
 
         # User-Host Scheme
@@ -92,7 +87,7 @@ flakePath: (
         # NixOS Configuration
         nixosSystemConfig = (inputs.nixpkgs.lib.nixosSystem {
           system = host.system.architecture;
-          pkgs = pkgs-bundle.system; # Replace "pkgs" with a external one
+          pkgs = homeChannel.forModule; # Replace "pkgs" with a external one
           modules = [
 
             # Setup Configuration
@@ -111,11 +106,11 @@ flakePath: (
               specialArgs = setupNixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
-            { # (NixOS-Module)
-              config = {
-                #nixpkgs.config.allowUnfree = true; # Allows unfree packages
-              };
-            }
+            # { # (NixOS-Module)
+            #   config = {
+            #     nixpkgs.config.allowUnfree = true; # Allows unfree packages
+            #   };
+            # }
             # Note: Not needed, since "pkgs" is provided externally by "pkgs-bundle.system"
 
             # Home-Manager-Module Configuration
@@ -124,7 +119,7 @@ flakePath: (
               config = {
                 home-manager = {
                   verbose = true; # Verbose output on activation
-                  useGlobalPkgs = true; # Use system nixpkgs configuration
+                  useGlobalPkgs = false; # Ignore system nixpkgs configuration. Every one is configured separately
                   useUserPackages = true; # Use "config.users.users.<user>.packages" to define packages
                   users = (lib.pipe allUsers [ # Loads all users configurations
 
@@ -161,7 +156,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 home-manager.extraSpecialArgs = {
-                   pkgs = homeChannel.forModule; # Replace "pkgs" with a custom one
+                  pkgs = pkgs-bundle.stable; # Replace "pkgs" with a custom one
                   # Note: This allows all home-manager modules to use a different package from the system
                   #   Kernel and KDE Plasma are defined by NixOS. Nearly all apps are defined by Home-Manager
                 };
@@ -174,7 +169,7 @@ flakePath: (
                 ];
               };
             }
-            
+
             # Agenix Configuration
             inputs.agenix.nixosModules.default # Loads Agenix options
             { # (NixOS-Module)
