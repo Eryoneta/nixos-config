@@ -510,7 +510,7 @@
         "type": "github"
       }
     },
-    "prismlauncherCRK": {
+    "primslauncherCRK": {
       "inputs": {
         "libnbtplusplus": "libnbtplusplus",
         "nixpkgs": [
@@ -549,7 +549,7 @@
         "papirus-colors-icons": "papirus-colors-icons",
         "plasma-manager": "plasma-manager",
         "powershell-prompt": "powershell-prompt",
-        "prismlauncherCRK": "prismlauncherCRK",
+        "primslauncherCRK": "primslauncherCRK",
         "stylix": "stylix",
         "tiledmenu": "tiledmenu"
       }
