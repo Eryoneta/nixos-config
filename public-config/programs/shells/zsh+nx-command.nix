@@ -22,7 +22,7 @@
             upgradeProfile = {
               name = "${attr.systemUpgradeProfileName}";
               path = "/nix/var/nix/profiles/system-profiles/${upgradeProfile.name}";
-              flakePath = "git+file://${userDev.configFolder}?submodules=1#${userDev.host.name}";
+              flakePath = "git+file://${userDev.configFolder}?submodules=1";
               # Notice: The flag "submodules=1" is necessary to make the flake see Git submodules
               # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
               preStart = (

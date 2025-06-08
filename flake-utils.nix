@@ -87,7 +87,7 @@ flakePath: (
         # NixOS Configuration
         nixosSystemConfig = (inputs.nixpkgs.lib.nixosSystem {
           system = host.system.architecture;
-          pkgs = homeChannel.forModule; # Replace "pkgs" with a external one
+          pkgs = pkgs-bundle.system; # Replace "pkgs" with a external one
           modules = [
 
             # Setup Configuration
@@ -149,7 +149,7 @@ flakePath: (
             { # (NixOS-Module)
               config = {
                 home-manager.extraSpecialArgs = {
-                  pkgs = pkgs-bundle.stable; # Replace "pkgs" with a custom one
+                  pkgs = homeChannel.forModule; # Replace "pkgs" with a custom one
                   # Note: This allows all home-manager modules to use a different package from the system
                   #   Kernel and KDE Plasma are defined by NixOS. Nearly all apps are defined by Home-Manager
                 };
