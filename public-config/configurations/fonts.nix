@@ -19,15 +19,10 @@
             noto-fonts-color-emoji # Emoji font
             symbola # Emoji font
             #comic-relief # "Comic Sans MS" equivalent
-            (nerdfonts.override {
-              # List: https://www.nerdfonts.com/font-downloads
-              fonts = [
-                "ComicShannsMono" # Like "Comic Sans MS", but monosized
-                "Meslo" # Programming font
-                "RobotoMono" # Programming font
-                "EnvyCodeR" # Programming font
-              ];
-            })
+            nerd-fonts.envy-code-r # Programming font
+            nerd-fonts.comic-shanns-mono # Like "Comic Sans MS", but monosized
+            nerd-fonts.roboto-mono # Programming font
+            nerd-fonts.meslo-lg # Programming font
           ];
 
           # Font configurations

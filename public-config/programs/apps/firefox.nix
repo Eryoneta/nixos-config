@@ -75,15 +75,15 @@
             search = {
               force = true;
               engines = {
-                "Google" = {
+                "google" = {
                   "metaData"."alias" = "@g";
                 };
               };
-              default = "Google";
+              default = "google";
             };
 
             # Extensions
-            extensions = (utils.mkDefault) (attr.template).extensions;
+            extensions.packages = (utils.mkDefault) (attr.template).extensions;
 
             # Settings
             settings = (utils.mkDefault) (attr.template).settings;

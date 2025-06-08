@@ -106,13 +106,6 @@ flakePath: (
               specialArgs = setupNixosSpecialArgs;
             }).nixosModules.setup # Loads all nixos modules from setup
 
-            # { # (NixOS-Module)
-            #   config = {
-            #     nixpkgs.config.allowUnfree = true; # Allows unfree packages
-            #   };
-            # }
-            # Note: Not needed, since "pkgs" is provided externally by "pkgs-bundle.system"
-
             # Home-Manager-Module Configuration
             inputs.home-manager.nixosModules.home-manager # Loads Home-Manager options
             { # (NixOS-Module)
@@ -146,7 +139,7 @@ flakePath: (
                   ]);
                   sharedModules = [
                     inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
-                    inputs.stylix.homeManagerModules.stylix # Loads Stylix options
+                    inputs.stylix.homeModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
                   extraSpecialArgs = homeManagerSpecialArgs;
@@ -204,7 +197,7 @@ flakePath: (
             }).homeModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
-            inputs.stylix.homeManagerModules.stylix # Loads Stylix options
+            inputs.stylix.homeModules.stylix # Loads Stylix options
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
           ];
