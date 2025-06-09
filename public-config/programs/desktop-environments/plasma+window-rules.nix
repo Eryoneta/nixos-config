@@ -34,6 +34,20 @@
             };
           })
 
+          # VSCodium: Start dimension
+          (utils.mkIf (true) {
+            description = "VSCodium & Position/Size: Set start dimension";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "vscodium VSCodium");
+              window-role = (attr.mkMatch "exact" "browser-window");
+              window-types = [ "normal" ];
+            };
+            apply = { # What changes
+              "position" = (with attr.workArea; (attr.mkValue "initially" "0,0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${width},${height}")); # Set the window.size
+            };
+          })
+
           # MPV: On top
           (utils.mkIf (true) {
             description = "MPV & OnTop: Stick pinned windows on top";
@@ -94,39 +108,42 @@
             # TODO: (KWin/Rules/Firefox) Remove size rule once wayland works for Firefox
           })
 
-          # MPV: Start position
+          # MPV: Start dimension
           (utils.mkIf (true) {
-            description = "MPV & Position: Set start position";
+            description = "MPV & Position/Size: Set start dimension";
             match = { # What target
               window-class = (attr.mkMatch "exact" "mpv mpv");
               window-types = [ "normal" ];
             };
             apply = { # What changes
               "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
           })
 
-          # KWrite: Start position
+          # KWrite: Start dimension
           (utils.mkIf (true) {
-            description = "KWrite & Position: Set start position";
+            description = "KWrite & Position/Size: Set start dimension";
             match = { # What target
               window-class = (attr.mkMatch "exact" "kwrite org.kde.kwrite");
               window-types = [ "normal" ];
             };
             apply = { # What changes
               "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
           })
 
-          # SystemMonitor: Start position
+          # SystemMonitor: Start dimension
           (utils.mkIf (true) {
-            description = "SystemMonitor & Position: Set start position";
+            description = "SystemMonitor & Position/Size: Set start dimension";
             match = { # What target
               window-class = (attr.mkMatch "exact" "plasma-systemmonitor org.kde.plasma-systemmonitor");
               window-types = [ "normal" ];
             };
             apply = { # What changes
               "position" = (attr.mkValue "initially" "0,0"); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
           })
 
