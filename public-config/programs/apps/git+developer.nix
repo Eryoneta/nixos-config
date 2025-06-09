@@ -10,7 +10,10 @@
         config.programs.git = {
           extraConfig = {
             "merge" = {
-              "ff" = "false"; # Merge: Never fast-forward, always create a commit
+              "ff" = "false"; # Merge: Never fast-forward, always create a merge commit
+            };
+            "pull" = {
+              "ff" = "only"; # Pull: Only fast-forward, never create a merge commit
             };
           };
           aliases = {
