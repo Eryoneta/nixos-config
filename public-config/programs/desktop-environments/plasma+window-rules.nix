@@ -121,16 +121,17 @@
             };
           })
 
-          # KWrite: Start dimension
+          # KWrite: Start position
           (utils.mkIf (true) {
-            description = "KWrite & Position/Size: Set start dimension";
+            description = "KWrite & Position: Set start position";
             match = { # What target
               window-class = (attr.mkMatch "exact" "kwrite org.kde.kwrite");
               window-types = [ "normal" ];
             };
             apply = { # What changes
               "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
-              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+              #"size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+              # TODO: (Plasma/KWin/Rules/KWrite) Whenever it differentiates popups from windows, update the rule to set size too
             };
           })
 
