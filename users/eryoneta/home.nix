@@ -33,7 +33,10 @@
               isNormalUser = true;
               password = (attr.defaultPassword user.username hashedFilePath);
               hashedPasswordFile = (attr.hashedPasswordFilePath user.username hashedFilePath);
-              extraGroups = [ "wheel" "networkmanager" ];
+              extraGroups = [
+                "wheel" # Can use commands with sudo
+                "networkmanager" # Can change networking settings
+              ];
             };
           }
         );
