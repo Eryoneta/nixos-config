@@ -40,6 +40,18 @@
             };
           })
 
+          # Chromium: Start dimension
+          (utils.mkIf (true) {
+            description = "Chromium & Position/Size: Set start dimension";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "chromium-browser Chromium-browser");
+            };
+            apply = { # What changes
+              "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+            };
+          })
+
           # Firefox-Dev: PiP on all desktops
           (utils.mkIf (true) {
             description = "Firefox-Dev & Desktops: Stick PiP on all virtual desktops";

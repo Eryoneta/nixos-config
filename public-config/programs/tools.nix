@@ -114,6 +114,7 @@
 
   # MarkText: Markdown text editor
   config.modules."marktext" = {
+    enable = false; # Not used
     tags = [ "personal-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
