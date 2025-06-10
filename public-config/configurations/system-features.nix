@@ -59,7 +59,7 @@
           dataFile = {
             systemUser = host.userDev.username;
             absolutePath = "${host.configFolder}/hosts/${host.hostname}/hardware-data.json";
-            storePath = "${inputs.self.outPath}/${host.hostname}/hardware-data.json";
+            storePath = "${inputs.self.outPath}/hosts/${host.hostname}/hardware-data.json";
           };
         };
 
