@@ -16,7 +16,7 @@
             # Behaviour
             enableMiddleClickPaste = false; # Do not paste with middle-click (Too many accidents!)
 
-            # Cursor
+            # Themes
             iconTheme = "Papirus-Colors-Dark"; # Icons theme
             soundTheme = "Ocean"; # Sound theme
 

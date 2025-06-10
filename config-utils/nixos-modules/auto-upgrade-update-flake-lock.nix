@@ -127,8 +127,8 @@
 
         # Has to happen between Git-Pull and Git-Push
         systemd.services."nixos-upgrade-git-prepare" = {
-          wants = lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ];
-          before = lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ];
+          wants = (lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ]);
+          before = (lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ]);
         };
         systemd.services."nixos-upgrade-update-flake-lock" = {
           # Internet access is needed

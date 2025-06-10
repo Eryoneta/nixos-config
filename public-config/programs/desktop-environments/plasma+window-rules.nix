@@ -9,182 +9,144 @@
       halfWidth =  builtins.toString (width / 2);
       halfHeight =  builtins.toString (height / 2);
     };
+    attr.mkMatch = type: value: {
+      inherit value type;
+    };
+    attr.mkValue = apply: value: {
+      inherit value apply;
+    };
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
         # Window rules
-        config.programs.plasma.window-rules = (utils.mkDefault) [ # (plasma-manager option)
+        config.programs.plasma.window-rules = [ # (plasma-manager option)
 
-          # Launchers
-          {
-            description = "Fix VSCodium launcher not sticking instances";
+          # VSCodium: Launcher
+          (utils.mkIf (true) {
+            description = "VSCodium & Launcher: Fix instances";
             match = { # What target
-              window-class = {
-                value = "vscodium VSCodium"; # A VSCodium window
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
-              window-role = {
-                value = "browser-window";
-                type = "exact";
-              };
+              window-class = (attr.mkMatch "exact" "vscodium VSCodium");
+              window-role = (attr.mkMatch "exact" "browser-window");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "desktopfile" = {
-                value = "codium"; # Set the .desktop launcher
-                apply = "initially"; # On start
-              };
+              "desktopfile" = (attr.mkValue "initially" "codium"); # Set the .desktop launcher
             };
-          }
+          })
 
-          # MPV: OnTop
-          {
-            description = "Stick MPV windows on top";
+          # VSCodium: Start dimension
+          (utils.mkIf (true) {
+            description = "VSCodium & Position/Size: Set start dimension";
             match = { # What target
-              window-class = {
-                value = "mpv mpv"; # MPV
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
-              title = {
-                value = ".* - mpv \\<Pinned\\>$";
-                type = "regex";
-              };
+              window-class = (attr.mkMatch "exact" "vscodium VSCodium");
+              window-role = (attr.mkMatch "exact" "browser-window");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "above" = {
-                value = true; # Set the window.to be above
-                apply = "force"; # Force
-              };
+              "position" = (with attr.workArea; (attr.mkValue "initially" "0,0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${width},${height}")); # Set the window.size
             };
-          }
-          {
-            description = "Unstick MPV windows from top";
-            match = { # What target
-              window-class = {
-                value = "mpv mpv"; # MPV
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
-              title = {
-                value = ".* - mpv$";
-                type = "regex";
-              };
-            };
-            apply = { # What changes
-              "above" = {
-                value = false; # Set the window.to be above
-                apply = "force"; # Force
-              };
-            };
-          }
+          })
 
-          # Firefox: PiP onTop
-          # {
-          #   description = "Stick Firefox PiP windows on top";
-          #   match = { # What target
-          #     window-class = {
-          #       value = "firefox firefox"; # Firefox
-          #       type = "exact";
-          #     };
-          #     window-types = [ "normal" ]; # Normal window
-          #     title = {
-          #       value = "Picture-in-Picture";
-          #       type = "exact";
-          #     };
-          #   };
-          #   apply = { # What changes
-          #     "above" = {
-          #       value = true; # Set the window.to be above
-          #       apply = "initially"; # On start
-          #     };
-          #   };
-          # }
+          # MPV: On top
+          (utils.mkIf (true) {
+            description = "MPV & OnTop: Stick pinned windows on top";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "mpv mpv");
+              window-types = [ "normal" ];
+              title = (attr.mkMatch "regex" ".* - mpv \\<Pinned\\>$");
+            };
+            apply = { # What changes
+              "above" = (attr.mkValue "force" true); # Set the window.to be on top
+            };
+          })
+          (utils.mkIf (true) {
+            description = "MPV & OnTop: Unstick windows from top";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "mpv mpv");
+              window-types = [ "normal" ];
+              title = (attr.mkMatch "regex" ".* - mpv$");
+            };
+            apply = { # What changes
+              "above" = (attr.mkValue "force" false); # Set the window.to not be on top
+            };
+          })
 
-          # Set sizes
-          # {
-          #   description = "Start Firefox with a set size";
-          #   match = { # What target
-          #     window-class = {
-          #       value = "firefox firefox"; # Firefox
-          #       type = "exact";
-          #     };
-          #     window-types = [ "normal" ]; # Normal window
-          #   };
-          #   apply = { # What changes
-          #     "size" = {
-          #       value = "${attr.workArea.halfWidth},${attr.workArea.height}"; # Set the window.size
-          #       apply = "initially"; # On start
-          #     };
-          #   };
-          # }
-          {
-            description = "Start Firefox(XWayland) with a set size";
+          # Firefox: PiP on top
+          (utils.mkIf (false) { # DISABLED
+            description = "Firefox & OnTop: Stick PiP windows on top";
             match = { # What target
-              window-class = {
-                value = "Navigator firefox"; # A Firefox window
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
+              window-class = (attr.mkMatch "exact" "firefox firefox");
+              title = (attr.mkMatch "exact" "Picture-in-Picture");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "size" = {
-                value = "${attr.workArea.halfWidth},${attr.workArea.height}"; # Set the window.size
-                apply = "initially"; # On start
-              };
+              "above" = (attr.mkValue "initially" true); # Set the window.to be on top
             };
-            # TODO: (Firefox) Remove size rule once wayland works for Firefox
-          }
+          })
 
-          # Set positions
-          {
-            description = "Set MPV start position";
+          # Firefox: Start size
+          (utils.mkIf (false) { # DISABLED
+            description = "Firefox & Size: Start with a set size";
             match = { # What target
-              window-class = {
-                value = "mpv mpv"; # A MPV window
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
+              window-class = (attr.mkMatch "exact" "firefox firefox");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "position" = {
-                value = "${attr.workArea.halfWidth},0"; # Set the window.position
-                apply = "initially"; # On start
-              };
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
-          }
-          {
-            description = "Set KWrite start position";
+          })
+          (utils.mkIf (true) {
+            description = "Firefox(XWayland) & Size: Start with a set size";
             match = { # What target
-              window-class = {
-                value = "kwrite org.kde.kwrite"; # A KWrite window
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
+              window-class = (attr.mkMatch "exact" "Navigator firefox"); # A Firefox window
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "position" = {
-                value = "${attr.workArea.halfWidth},0"; # Set the window.position
-                apply = "initially"; # On start
-              };
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
-          }
-          {
-            description = "Set SystemMonitor start position";
+            # TODO: (KWin/Rules/Firefox) Remove size rule once wayland works for Firefox
+          })
+
+          # MPV: Start dimension
+          (utils.mkIf (true) {
+            description = "MPV & Position/Size: Set start dimension";
             match = { # What target
-              window-class = {
-                value = "plasma-systemmonitor org.kde.plasma-systemmonitor"; # A SystemMonitor window
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
+              window-class = (attr.mkMatch "exact" "mpv mpv");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
-              "position" = {
-                value = "0,0"; # Set the window.position
-                apply = "initially"; # On start
-              };
+              "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
-          }
+          })
+
+          # KWrite: Start position
+          (utils.mkIf (true) {
+            description = "KWrite & Position: Set start position";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "kwrite org.kde.kwrite");
+              window-types = [ "normal" ];
+            };
+            apply = { # What changes
+              "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              #"size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+              # TODO: (Plasma/KWin/Rules/KWrite) Whenever it differentiates popups from windows, update the rule to set size too
+            };
+          })
+
+          # SystemMonitor: Start dimension
+          (utils.mkIf (true) {
+            description = "SystemMonitor & Position/Size: Set start dimension";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "plasma-systemmonitor org.kde.plasma-systemmonitor");
+              window-types = [ "normal" ];
+            };
+            apply = { # What changes
+              "position" = (attr.mkValue "initially" "0,0"); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+            };
+          })
 
         ];
 

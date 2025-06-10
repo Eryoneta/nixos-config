@@ -9,114 +9,88 @@
       halfWidth =  builtins.toString (width / 2);
       halfHeight =  builtins.toString (height / 2);
     };
+    attr.mkMatch = config.modules."plasma+window-rules".attr.mkMatch;
+    attr.mkValue = config.modules."plasma+window-rules".attr.mkValue;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
         # Window rules
-        config.programs.plasma.window-rules = (utils.mkDefault) [ # (plasma-manager option)
+        config.programs.plasma.window-rules = [ # (plasma-manager option)
 
-          # Instances
-          {
-            description = "Fix Firefox-Dev launcher not sticking instances";
+          # Firefox-Dev: Launcher
+          (utils.mkIf (true) {
+            description = "Firefox-Dev & Launcher: Fix instances";
             match = { # What target
-              window-class = {
-                value = "Navigator firefox-dev"; # A Firefox-Dev window
-                type = "exact";
-              };
+              window-class = (attr.mkMatch "exact" "Navigator firefox-dev");
+              window-types = [ "normal" ];
+            };
+            apply = { # What changes
+              "desktopfile" = (attr.mkValue "initially" "firefox-devedition"); # Set the .desktop launcher
+            };
+          })
+
+          # Chromium: Focus
+          (utils.mkIf (true) {
+            description = "Chromium & Focus: Unfocusable";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "chromium-browser Chromium-browser");
+            };
+            apply = { # What changes
+              "fsplevel" = (attr.mkValue "force" 3); # Stops the app from stealing focus
+            };
+          })
+
+          # Chromium: Start dimension
+          (utils.mkIf (true) {
+            description = "Chromium & Position/Size: Set start dimension";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "chromium-browser Chromium-browser");
+            };
+            apply = { # What changes
+              "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
+            };
+          })
+
+          # Firefox-Dev: PiP on all desktops
+          (utils.mkIf (true) {
+            description = "Firefox-Dev & Desktops: Stick PiP on all virtual desktops";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "Toolkit firefox-devedition");
+              window-role = (attr.mkMatch "exact" "PictureInPicture");
+              window-types = [ "utility" ];
+              title = (attr.mkMatch "exact" "Picture-in-Picture");
+            };
+            apply = { # What changes
+              "desktops" = (attr.mkValue "initially" 0); # Set the window.to be on all virtual desktops
+            };
+          })
+
+          # Firefox-Dev: Size
+          (utils.mkIf (true) {
+            description = "Firefox-Dev & Size: Start with a set size";
+            match = { # What target
+              window-class = (attr.mkMatch "exact" "Navigator firefox-dev");
               window-types = [ "normal" ]; # Normal window
             };
             apply = { # What changes
-              "desktopfile" = {
-                value = "firefox-devedition"; # Set the .desktop launcher
-                apply = "initially"; # On start
-              };
+              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
-          }
+          })
 
-          # Focus
-          {
-            description = "Unfocusable Chromium";
+          # Alarm-Clock: Size
+          (utils.mkIf (true) {
+            description = "Alarm-Clock & Size: Fixed window size";
             match = { # What target
-              window-class = {
-                value = "chromium-browser Chromium-browser"; # Chromium
-                type = "exact";
-              };
-            };
-            apply = { # What changes
-              "fsplevel" = {
-                value = 3; # Stops the app from stealing focus
-                apply = "force"; # Force
-              };
-            };
-          }
-
-          # Firefox-Dev: PiP onTop
-          {
-            description = "Stick Firefox-Dev PiP on all virtual desktops";
-            match = { # What target
-              window-class = {
-                value = "Toolkit firefox-devedition"; # Firefox-Dev
-                type = "exact";
-              };
-              window-types = [ "utility" ]; # Utility window
-              window-role = {
-                value = "PictureInPicture"; # PiP
-                type = "exact";
-              };
-              title = {
-                value = "Picture-in-Picture";
-                type = "exact";
-              };
-            };
-            apply = { # What changes
-              "desktops" = {
-                value = 0; # Set the window.to be on all virtual desktops
-                apply = "initially"; # On start
-              };
-            };
-          }
-
-          # Set sizes
-          {
-            description = "Start Firefox-Dev with a set size";
-            match = { # What target
-              window-class = {
-                value = "Navigator firefox-dev"; # A Firefox-Dev window
-                type = "exact";
-              };
+              window-class = (attr.mkMatch "exact" "alarm-clock-applet Alarm-clock-applet");
               window-types = [ "normal" ]; # Normal window
             };
             apply = { # What changes
-              "size" = {
-                value = "${attr.workArea.halfWidth},${attr.workArea.height}"; # Set the window.size
-                apply = "initially"; # On start
-              };
+              "ignoregeometry" = (attr.mkValue "force" true); # Ignore programs size requests
+              "minsize" = (attr.mkValue "force" "380,500"); # Set the window.minimum size
+              "size" = (attr.mkValue "initially" "380,500"); # Set the window.size
             };
-          }
-          {
-            description = "Alarm Clock with a fixed window size";
-            match = { # What target
-              window-class = {
-                value = "alarm-clock-applet Alarm-clock-applet"; # Alarm Clock
-                type = "exact";
-              };
-              window-types = [ "normal" ]; # Normal window
-            };
-            apply = { # What changes
-              "ignoregeometry" = {
-                value = true; # Ignore programs size requests
-                apply = "force"; # Force
-              };
-              "minsize" = {
-                value = "380,500"; # Set the window.minimum size
-                apply = "force"; # On start
-              };
-              "size" = {
-                value = "380,500"; # Set the window.size
-                apply = "initially"; # On start
-              };
-            };
-          }
+          })
 
         ];
 

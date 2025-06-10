@@ -9,20 +9,20 @@
       home = { # (Home-Manager Module)
 
         # Configuration
-        config.programs.zsh.initExtra = (
+        config.programs.zsh.initContent = (
           let
 
-            version = "v1.1.0"; # Should be changed at each modification
+            version = "v1.2.0"; # Should be changed at each modification
             systemProfile = {
               name = "system";
               path = "/nix/var/nix/profiles/${systemProfile.name}";
-              flakePath = "path:${userDev.configDevFolder}#${userDev.host.name}"; # "path:" = Ignores Git repository
+              flakePath = "path:${userDev.configDevFolder}"; # "path:" = Ignores Git repository
               preStart = "";
             };
             upgradeProfile = {
               name = "${attr.systemUpgradeProfileName}";
               path = "/nix/var/nix/profiles/system-profiles/${upgradeProfile.name}";
-              flakePath = "git+file://${userDev.configFolder}?submodules=1#${userDev.host.name}";
+              flakePath = "git+file://${userDev.configFolder}?submodules=1";
               # Notice: The flag "submodules=1" is necessary to make the flake see Git submodules
               # TODO: (Config/AutoUpgrade) Remove once submodules are supported by default
               preStart = (
@@ -46,11 +46,11 @@
                     local flakePathArg;
                     if [[ $2 =~ ^sys$ ]]; then
                       profileNameArg="--profile-name ${upgradeProfile.name}";
-                      flakePathArg="--flake \"${upgradeProfile.flakePath}\"";
+                      flakePathArg="--flake \"${upgradeProfile.flakePath}#${userDev.host.name}\"";
                       preStart="${upgradeProfile.preStart}";
                     else
                       profileNameArg="--profile-name ${systemProfile.name}";
-                      flakePathArg="--flake \"${systemProfile.flakePath}\"";
+                      flakePathArg="--flake \"${systemProfile.flakePath}#${userDev.host.name}\"";
                       preStart="${systemProfile.preStart}";
                     fi;
                     eval "$preStart; sudo nixos-rebuild ${rebuildMode} $flakePathArg $profileNameArg ${args} ${nomOutput}";
@@ -60,10 +60,10 @@
               in "${promptSudo} && ${rebuildSystem}"
             );
 
-            rebuildHomeCommand = (
+            downgradeSystemCommand = (
               let
-                args = "--flake \"${systemProfile.flakePath}\" --print-build-logs --verbose";
-              in "home-manager switch ${args}"
+                args = "--rollback --use-remote-sudo --show-trace --print-build-logs --verbose";
+              in "sudo nixos-rebuild switch --flake \"${systemProfile.flakePath}#${userDev.host.name}\" ${args}"
             );
 
             upgradeSystemCommand = (
@@ -85,10 +85,11 @@
               '')
             );
 
-            downgradeSystemCommand = (
+            rebuildHomeCommand = (
               let
-                args = "--rollback --use-remote-sudo --show-trace --print-build-logs --verbose";
-              in "sudo nixos-rebuild switch --flake \"${systemProfile.flakePath}\" ${args}"
+                flakeArg = "--flake \"${systemProfile.flakePath}#${userDev.name}@${userDev.host.name}\"";
+                args = "${flakeArg} --show-trace --print-build-logs --verbose";
+              in "home-manager switch ${args}"
             );
 
             listGenerationsCommand = (
@@ -183,14 +184,14 @@
                     "build-vm")
                       ${rebuildSystemCommand "build-vm"} $@;
                     ;;
-                    "home")
-                      ${rebuildHomeCommand};
+                    "rollback")
+                      ${downgradeSystemCommand};
                     ;;
                     "upgrade")
                       ${upgradeSystemCommand};
                     ;;
-                    "rollback")
-                      ${downgradeSystemCommand};
+                    "home")
+                      ${rebuildHomeCommand};
                     ;;
                     "list")
                       ${listGenerationsCommand} $@;

@@ -114,6 +114,7 @@
 
   # MarkText: Markdown text editor
   config.modules."marktext" = {
+    enable = false; # Not used
     tags = [ "personal-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
@@ -162,7 +163,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdialog ];
+        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
       };
     };
   };

@@ -149,7 +149,8 @@
               "time_precision" = 3; # Timestamp precision after the second
               "buffered_time_threshold" = 120; # When streaming content, time in seconds before hiding the buffered parts(Ex. >60s)
               "adjust_osd_margins" = "yes"; # Adjust margins
-              "color" = ""; # Colors
+              #"color" = ""; # Colors
+              # Note: Color seems to be managed by Stylix
               "opacity" = ""; # Opacities
               "refine" = ""; # Refinements
 

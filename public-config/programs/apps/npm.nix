@@ -17,10 +17,10 @@
       home = { # (Home-Manager Module)
 
         # Configuration
-        config.programs.zsh.initExtra = (utils.mkAfter ''
+        config.programs.zsh.initContent = ''
           # Include executables from "~/.npm/bin"
           export PATH="$HOME/.npm/bin:$PATH"
-        '');
+        '';
 
       };
     };

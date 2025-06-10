@@ -3,7 +3,7 @@
   # Firefox: Internet browser
   config.modules."firefox" = {
     tags = [ "basic-setup" ];
-    attr.packageChannel = pkgs-bundle.unstable;
+    attr.packageChannel = pkgs-bundle.stable;
     attr.template = {
       extensions = with pkgs-bundle.firefox-addons.pkgs; [
         ublock-origin # UBlock-Origin: Adblocker
@@ -75,15 +75,15 @@
             search = {
               force = true;
               engines = {
-                "Google" = {
+                "google" = {
                   "metaData"."alias" = "@g";
                 };
               };
-              default = "Google";
+              default = "google";
             };
 
             # Extensions
-            extensions = (utils.mkDefault) (attr.template).extensions;
+            extensions.packages = (utils.mkDefault) (attr.template).extensions;
 
             # Settings
             settings = (utils.mkDefault) (attr.template).settings;
