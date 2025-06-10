@@ -20,7 +20,7 @@
         '';
 
         name = lib.mkOption {
-          type = lib.types.strMatching "[a-zA-Z0-9:_.-]*";
+          type = (lib.types.strMatching "[a-zA-Z0-9:_.-]*");
           description = ''
             The name of the profile.
 
@@ -53,11 +53,13 @@
         serviceConfig = {
           "User" = "root";
         };
-        path = [ pkgs.nix ];
+        path = with pkgs; [
+          nix
+        ];
         # The service "nixos-upgrade" has to run only after this one! That avoids dead symlinks in the boot menu
         #   The disadvantage is that this requires a minimum of 2 generations to work
         preStart = ''
-          nix-env --delete-generations +${toString (cfg_ap.configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${cfg_ap.name} || true
+          nix-env --delete-generations +${builtins.toString (cfg_ap.configurationLimit - 1)} --profile /nix/var/nix/profiles/system-profiles/${cfg_ap.name} || true
         '';
       };
 

@@ -1,15 +1,14 @@
 nix-lib: {
-  # FormatStr: "Configuration of João, today" -> "Configuration_of_Joao._today"
+  # FormatStr
   /*
-    - Formats a text so that it can be used safely
+    - Formats a text so that it can be safely used by "config.system.nixos.label"
       - "text": The text to be formatted
-    - Very useful for the option "config.system.nixos.label"!
   */
   formatStr = text: (
     let
 
       # All accepted characters and their respective valid counterparts
-      # Ex.: " " -> "_", since space is not allowed
+      # Example: " " is converted into "_", since space is not allowed
       characterMap = {
         " " = "_";
         "_" = "_";
@@ -90,7 +89,8 @@ nix-lib: {
       # Replace Invalid Characters
       # Makes sure to only allow allowed characters. Others are replaced with 'replacementChar'
       replaceInvalidChars = text: (
-        # StringAsChars: "A B!" -> "${characterMap."A"}${characterMap." "}${characterMap."B"}-" -> "A_B-"
+        # Transforms each character into a value from 'characterMap'
+        # "A B!" -> "${characterMap."A"}${characterMap." "}${characterMap."B"}-" -> "A_B-"
         nix-lib.strings.stringAsChars (
           char: (
             if (builtins.hasAttr "${char}" characterMap) then
@@ -101,14 +101,16 @@ nix-lib: {
       );
 
       # Replace Accented Characters
-      # Accented chars are actually multiple characters! Thus, stringAsChars can't understand them
+      # Accented chars are actually multiple characters! Thus, lib.strings.stringAsChars can't understand them
       replaceAccentedChars = text: (
         let
           accentedCharsList = (builtins.attrNames characterMap.accentedChars);
-          validCharsList = (builtins.map (char: characterMap.accentedChars."${char}") accentedCharsList);
+          allowedCharsList = (builtins.map (char: (
+            characterMap.accentedChars."${char}"
+          )) accentedCharsList);
         in (
-          # ReplaceStrings: ([ "ã" ] [ "a" ] "cão") -> "cao"
-          builtins.replaceStrings accentedCharsList validCharsList text
+          # Replace all invalid accented chars with valid ones
+          builtins.replaceStrings accentedCharsList allowedCharsList text
         )
       );
 

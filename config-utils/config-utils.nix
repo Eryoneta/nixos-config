@@ -11,10 +11,10 @@
       hm-lib = home-manager-lib;
 
       # Import
-      mapDir = (builtins.import ./nix-utils/mapDir.nix).mapDir;
+      mapDir = (builtins.import ./nix-utils/mapDir.nix nix-lib).mapDir;
 
       # It's a set with useful functions I use a lot
-      firstAttrSet = {
+      commonFuncs = {
 
         # Defines a default value
         mkDefault = value: (nix-lib.mkDefault value);
@@ -30,29 +30,29 @@
 
         # If condition
         mkIf = condition: content: (nix-lib.mkIf condition content);
-        # Note: It seems it cannot be used like "config = utils.mkIf" as it causes an infinte recursion
+        # Note: Using it like "config = utils.mkIf" causes an infinte recursion. That does not happen with "lib.mkIf"
         # Theory:
         #   Some config(override?) changes "pkgs"? That changes "pkgs.lib"?
         #   That changes "config-utils" (Which uses "nixpkgs.lib"(Which is "pkgs.lib"))?
         #   Infinite recursion: A config affects "pgks", and that causes "utils.mkIf" to "change" and affect the config...?
 
         # If else
-        mkIfElse = condition: content: elseContent: nix-lib.mkMerge [
-          (nix-lib.mkIf condition content)
-          (nix-lib.mkIf (!condition) elseContent)
-        ];
+        mkIfElse = condition: content: elseContent: (
+          nix-lib.mkMerge [
+            (nix-lib.mkIf condition content)
+            (nix-lib.mkIf (!condition) elseContent)
+          ]
+        );
 
-        # Merge arrays
+        # Merge values
         mkMerge = value: (nix-lib.mkMerge value);
 
         # Creates a symlink to files outside Nix Store
         # It's a recreation from: https://github.com/nix-community/home-manager/blob/master/modules/files.nix#L64-L69
-        # Scary! I hope it doesn't break...!
-        # All that to avoid requiring "config.lib.file" from every home-manager module that needs this
         mkOutOfStoreSymlink = absolutePath: (
           let
             pathStr = builtins.toString absolutePath;
-            name = hm-lib.hm.strings.storeFileName (builtins.baseNameOf pathStr);
+            name = (hm-lib.hm.strings.storeFileName (builtins.baseNameOf pathStr));
           in (
             hm-pkgs.runCommandLocal name {} ''ln -s ${nix-lib.strings.escapeShellArg pathStr} $out''
           )
@@ -88,6 +88,9 @@
           type = nix-lib.types.attrs;
         };
 
+        # Sets a package to override others in case of conflict
+        higherPriority = package: (nix-lib.hiPrio package);
+
         # Check if a path exists
         pathExists = path: (builtins.pathExists path);
 
@@ -119,33 +122,42 @@
 
       };
 
-      # It's a list of all my "nix-modules"
-      attrSets = (
-        # Map: [ "file1.nix" "file2.nix" "file3.nix" ] -> [ { ... } { ... } { ... } ]
-        builtins.map (
-          value: (
-            let
-              nixModule = (builtins.import (./nix-utils + "/${value}"));
-            in
-              if (builtins.isFunction nixModule) then (
-                # If its a function, then it requires "lib"
-                (nixModule nix-lib)
-              ) else nixModule
-          )
-        ) (builtins.attrNames (mapDir ./nix-utils))
-      );
+      # My NixOS modules from ./nixos-modules
+      nixosModules = {
+        nixos-modules = (mapDir ./nixos-modules);
+      };
+
+      # My nix functions from ./nix-utils
+      nixUtils = (nix-lib.pipe ./nix-utils [
+
+        # List all files as a set
+        (x: builtins.readDir x)
+
+        # Get the filenames
+        (x: builtins.attrNames x)
+
+        # Import each module
+        (x: builtins.map (filename: (
+          builtins.import "${./nix-utils}/${filename}"
+        )) x)
+
+        # For each module, if its a function, call it with "lib"
+        (x: builtins.map (module: (
+          if (builtins.isFunction module) then (
+            module nix-lib
+          ) else module
+        )) x)
+
+        # Merges everything into one huge set
+        (x: builtins.foldl' (finalSet: nixUtil: (
+          finalSet // nixUtil
+        )) {} x)
+
+      ]);
 
     in {
       config-utils = {
-        utils = (firstAttrSet // (
-          # Foldl': ( { ... }, [ { ... } { ... } ] ) -> { ... }
-          builtins.foldl' (
-            accumulator: modifier: (
-              # Merges everything into one huge set
-              accumulator // modifier
-            )
-          ) firstAttrSet attrSets
-        ));
+        utils = (commonFuncs // nixosModules // nixUtils);
       };
     }
   );

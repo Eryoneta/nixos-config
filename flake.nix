@@ -61,8 +61,8 @@
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
     # Prism Launcher (Cracked) (Fixed)
-    primslauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
-    primslauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
+    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
+    prismlauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -97,34 +97,34 @@
         inherit nurpkgs-firefox-addons;
       }));
 
-      # Packages
-      packages = architecture: (
+      # Package Bundle
+      package-bundle = architecture: (
         let
           nixpkgsConfig = {
             system = architecture;
             config.allowUnfree = true;
           };
         in (with args; {
-          system = (builtins.import nixpkgs nixpkgsConfig);
-          stable = (builtins.import nixpkgs-stable nixpkgsConfig);
-          unstable = (builtins.import nixpkgs-unstable nixpkgsConfig);
+          system = ((builtins.import nixpkgs) nixpkgsConfig);
+          stable = ((builtins.import nixpkgs-stable) nixpkgsConfig);
+          unstable = ((builtins.import nixpkgs-unstable) nixpkgsConfig);
           firefox-addons = {
             pkgs = nurpkgs-firefox-addons.packages.${architecture};
             buildFirefoxXpiAddon = nurpkgs-firefox-addons.lib.${architecture}.buildFirefoxXpiAddon;
           };
-          fx-autoconfig = fx-autoconfig;
+          inherit fx-autoconfig;
           nixos-artwork = {
             "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
           };
-          tiledmenu = tiledmenu;
+          inherit tiledmenu;
           papirus-colors-icons = {
             "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
           };
-          mpv-input-event = mpv-input-event;
-          primslauncherCRK = primslauncherCRK;
-          powershell-prompt = powershell-prompt;
-          git-tools = git-tools;
-          firefox-scripts = firefox-scripts;
+          inherit mpv-input-event;
+          inherit prismlauncherCRK;
+          inherit powershell-prompt;
+          inherit git-tools;
+          inherit firefox-scripts;
         })
       );
 
@@ -133,20 +133,23 @@
       systemLabel = (builtins.readFile ./NIXOS_LABEL.txt);
 
       # Hosts
+      hyper-v_vm = flake-utils.buildHost {
+        hostname = "hyper-v_vm";
+        name = "HyperV_VM";
+        system.label = systemLabel;
+        system.stateVersion = "24.05";
+      };
       lico = flake-utils.buildHost {
         hostname = "lico";
         name = "LiCo";
-        system.label = systemLabel; 
+        system.label = systemLabel;
+        system.stateVersion = "24.05";
       };
       nelico = flake-utils.buildHost {
         hostname = "nelico";
         name = "NeLiCo";
         system.label = systemLabel;
-      };
-      hyper-v_vm = flake-utils.buildHost {
-        hostname = "hyper-v_vm";
-        name = "HyperV_VM";
-        system.label = systemLabel;
+        system.stateVersion = "24.05";
       };
 
       # Users
@@ -165,13 +168,13 @@
       buildConfiguration = config: (
         flake-utils.buildConfiguration (config // {
           inputs = args;
-          inherit auto-upgrade-pkgs packages;
+          inherit auto-upgrade-pkgs package-bundle;
         })
       );
 
     in {
 
-      # NixOS + Home-Manager(+ Plasma-Manager + Agenix) + Agenix
+      # NixOS + Home-Manager(+ Plasma-Manager + Stylix + Agenix) + Agenix
       nixosConfigurations = {
         "HyperV_VM" = (buildConfiguration {
           users = [ yo ];
@@ -187,7 +190,7 @@
         }).nixosSystemConfig;
       };
 
-      # Home-Manager + Plasma-Manager + Agenix
+      # Home-Manager + Plasma-Manager + Stylix + Agenix
       homeConfigurations = {
         "Yo@HyperV_VM" = (buildConfiguration {
           user = yo;

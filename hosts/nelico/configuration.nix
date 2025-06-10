@@ -1,23 +1,32 @@
-{ ... }@args: with args.config-utils; {
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  imports = [
-    ../default/configuration.nix # Default
-    ./hardware-configuration.nix # Scan de hardware
-    ./hardware-fixes.nix # Hardware fixes
-  ];
+  # NeLiCo host
+  config.modules."nelico" = {
+    tags = [ "nelico" ];
+    includeTags = [ "default-setup" ];
+    setup = {
+      nixos = { # (NixOS Module)
 
-  config = {
+        # Features/Swapfile
+        config.swap.devices."basicSwap".size = ((16 + 2) * 1024); # 16GB + 2GB = 18GB
 
-    # Features/Swapfile
-    swap.devices."basicSwap".size = ((16 + 2) * 1024); # 18GB
+        # Bootloader/Grub: MemTest86
+        config.boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
 
-    # Bootloader/Grub: MemTest86
-    boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
+        # Features/AutoUpgrade
+        #config.system.autoUpgrade.alterProfile.configurationLimit = 8; # Upgrades are heavy! 256GB is not enough for 12 generations!
+        # Note: Maybe it can handle 12... Testing
 
-    # Features/AutoUpgrade
-    #system.autoUpgrade.alterProfile.configurationLimit = 8; # Upgrades are heavy! 256GB is not enough for 12 generations!
-    # Note: Maybe it can handle 12... Testing
-
+      };
+    };
   };
+
+  # Screen size
+  config.hardware.configuration.screenSize = ( # (From "configurations/screen-size.nix")
+    utils.mkIf (config.includedModules."nelico") {
+      width = 1366;
+      height = 768;
+    }
+  );
 
 }

@@ -1,5 +1,5 @@
 nix-lib: {
-  # ListFiles: (./path "pre-" "text" ".ext") -> [ "./path/pre-text.ext" "./path/pre-mytext.ext" ]
+  # ListFiles
   /*
     - List files that matches all filters
       - "dirPath": A path to a directory
@@ -7,36 +7,40 @@ nix-lib: {
       - "withInFix": A text infix
       - "withSuffix": A text suffix
   */
-  listFiles = dirPath: withPrefix: withInFix: withSuffix: (
-    builtins.map (
-      value: "${dirPath}/${value}"
-    ) (
-      let
+  listFiles = dirPath: withPrefix: withInfix: withSuffix: (
+    let
 
-        # HasPrefix: ("text" "pre-text.ext") -> true
-        hasPrefix = value: (nix-lib.strings.hasPrefix withPrefix value);
+      # HasPrefix: ("pre" "pre-text") -> true
+      hasPrefix = text: (nix-lib.strings.hasPrefix withPrefix text);
 
-        # HasInfix: ("pre" "pre-text") -> true
-        hasInfix = value: (nix-lib.strings.hasInfix withInFix value);
+      # HasInfix: ("text" "pre-text.ext") -> true
+      hasInfix = text: (nix-lib.strings.hasInfix withInfix text);
 
-        # HasSuffix: (".ext" "text.ext") -> true
-        hasSuffix = value: (nix-lib.strings.hasSuffix withSuffix value);
+      # HasSuffix: (".ext" "pre-text.ext") -> true
+      hasSuffix = text: (nix-lib.strings.hasSuffix withSuffix text);
 
-      in
-      # Filter: [ "valid" "invalid" ] -> [ "valid" ]
-      builtins.filter (
-        value: (
-          if ((hasPrefix value) && (hasInfix value) && (hasSuffix value)) then (
-            true
-          ) else false
-        )
-      ) (
-        # AttrNames: { "file1.ext" = "regular"; subDir = "directory"; } -> [ "file1.ext" "subDir" ]
-        builtins.attrNames (
-          # ReadDir: dirPath -> { "file1.ext" = "regular"; subDir = "directory"; }
-          builtins.readDir dirPath
-        )
-      )
+    in (
+      nix-lib.pipe dirPath [
+
+        # Gets the path and returns a set. It only considers the first level
+        # ./path -> { "file.nix" = "regular"; subdir = "directory"; }
+        (x: builtins.readDir x)
+
+        # Transforms the set of files into a list of filenames
+        # { "file.ext" = "regular"; subdir = "directory"; } -> [ "file.ext" "subdir" ]
+        (x: builtins.attrNames x)
+
+        # Includes only the files that matches all filters
+        (x: builtins.filter (filename: (
+          (hasPrefix filename) && (hasInfix filename) && (hasSuffix filename)
+        )) x)
+
+        # Transforms the list of filenames into a list of paths
+        (x: builtins.map (filename: (
+          "${dirPath}/${filename}"
+        )) x)
+
+      ]
     )
   );
 }

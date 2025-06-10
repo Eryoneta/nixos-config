@@ -109,12 +109,12 @@
           # Access folder
           cd "${cfg_gs.directory}"
           # Git Pull
-          ${lib.optionalString cfg_gs.pull ''
+          ${lib.optionalString (cfg_gs.pull) ''
             echo "Pulling the latest version..."
             git pull --recurse-submodules
           ''}
           # Git Commit
-          ${lib.optionalString cfg_gs.commit ''
+          ${lib.optionalString (cfg_gs.commit) ''
             echo "Committing changes..."
             git add -A
             git commit -m "${cfg_gs.commitMessage}"
@@ -134,7 +134,7 @@
           config.programs.ssh.package
         ];
         script = ''
-          ${lib.optionalString cfg_gs.push ''
+          ${lib.optionalString (cfg_gs.push) ''
             # Interrupts if there is an error or undefined variable
             set -eu
             # Access folder

@@ -2,68 +2,139 @@ flakePath: (
   let
 
     # Imports
+    setup = (builtins.import ./config-utils/setup-module/setup.nix);
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
-    mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix).mapDir;
 
   in {
     buildHost = user-host-scheme.buildHost;
     buildUser = user-host-scheme.buildUser;
-    buildConfiguration = { inputs, user, users ? null, host, auto-upgrade-pkgs, packages }: (
+    buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, package-bundle }: (
       let
+
+        # Utilities
+        lib = inputs.nixpkgs.lib;
+        mapDir = (builtins.import ./config-utils/nix-utils/mapDir.nix lib).mapDir;
+
+        # User-Host Scheme
         allUsers = (if (users == null) then [ user ] else users);
         userDev = (builtins.head allUsers);
         userHostArgs = (user-host-scheme.buildSpecialArgs {
-          inherit allUsers host;
+          inherit host;
+          users = allUsers;
         });
-        configDomainArgs = (config-domain.buildSpecialArgs { # Config Domain
+
+        # Configuration-Domains
+        configDomainArgs = (config-domain.buildSpecialArgs {
           configPath = if (userDev.configDevFolder != "") then userDev.configDevFolder else userDev.configFolder;
           # Note: Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
           #   But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
           #   Important: Only absolute paths notices the dev folder
           directories = {
+            configurations = "/configurations";
             dotfiles = "/dotfiles";
             programs = "/programs";
             resources = "/resources";
             secrets = "/secrets";
           };
         });
-        pkgs-bundle = (packages host.system.architecture); # Packages (Requires architecture)
-        modules = (mapDir ./modules); # Modules Directory
+
+        # Package-Bundle
+        pkgs-bundle = (package-bundle host.system.architecture); # (Requires architecture)
+
+        # NixOS-Modules Directory
+        nixos-modules = (mapDir ./config-utils/nixos-modules);
+
+        # Configuration-Utilities
         configUtilsArgs = (config-utils.build {
           nixpkgs-lib = inputs.nixpkgs.lib;
           home-manager-pkgs = inputs.nixpkgs.legacyPackages."${host.system.architecture}";
           home-manager-lib = inputs.home-manager.lib;
         });
+
+        # SpecialArgs
+        commonSpecialArgs = {
+          inherit inputs; # Inputs
+          inherit pkgs-bundle; # Package-Bundle
+          inherit (configDomainArgs) config-domain; # Configuration-Domains
+        };
+        setupSpecialArgs = {
+          inherit (configUtilsArgs) config-utils; # Configuration-Utilities
+        };
+        nixosSpecialArgs = (commonSpecialArgs // {
+          inherit (userHostArgs) userDev users host; # User-Host-Scheme
+          inherit nixos-modules; # NixOS-Modules Directory
+          inherit auto-upgrade-pkgs; # Auto-Upgrade
+        });
+        homeManagerSpecialArgs = (commonSpecialArgs);
+        # Note: Unfortunadely, Home-Manager Module is used to load all users, as oposed to Home-Manager Standalone
+        #   That means, no single "user" argument
+        #   But Setup loads every user separately. So it can be used instead
+        setupNixosSpecialArgs = (nixosSpecialArgs // setupSpecialArgs // {
+          user = userHostArgs.userDev; # User-Host-Scheme
+        });
+        setupHomeSpecialArgs = username: (nixosSpecialArgs // setupSpecialArgs // {
+          user = userHostArgs.users.${username}; # User-Host-Scheme
+        });
+
       in {
 
         # NixOS Configuration
         nixosSystemConfig = (inputs.nixpkgs.lib.nixosSystem {
           system = host.system.architecture;
+          pkgs = pkgs-bundle.system; # Replace "pkgs" with a custom one
+          # Note: Not exactly necessary. It's here just to make sure "pkgs-bundle.system" and "pkgs" are the same
           modules = [
 
-            { # (NixOS-Module)
-              config = {
-                nixpkgs.config.allowUnfree = true; # Allows unfree packages
-              };
-            }
+            # Setup Configuration
+            (setup.setupSystem {
+              inherit lib;
+              modules = [
+                ./import-all.nix # Imports all Setup modules
+                { # (Setup Module)
+                  config = {
+                    includeTags = [ "${host.hostname}" "root" ] ++ ( # Includes host, root, and user modules
+                      builtins.map (user: user.username) allUsers
+                    );
+                  };
+                }
+              ];
+              specialArgs = setupNixosSpecialArgs;
+            }).nixosModules.setup # Loads all nixos modules from setup
 
-            "./hosts/${host.hostname}/configuration.nix"  # Loads host configuration
+            # { # (NixOS-Module)
+            #   config = {
+            #     nixpkgs.config.allowUnfree = true; # Allows unfree packages
+            #   };
+            # }
+            # Note: Not needed, since "pkgs" is provided externally by "pkgs-bundle.system"
 
             # Home-Manager-Module Configuration
             inputs.home-manager.nixosModules.home-manager # Loads Home-Manager options
             { # (NixOS-Module)
               config = {
                 home-manager = {
+                  verbose = true; # Verbose output on activation
                   useGlobalPkgs = false; # Ignore system nixpkgs configuration. Every one is configured separately
-                  useUserPackages = true; # Save user packages in "/etc/profiles/per-user/$USERNAME" if it's already present in the system ("/etc/profiles/")
-                  users = (inputs.nixpkgs.lib.pipe allUsers [ # Loads all users configurations
+                  useUserPackages = true; # Use "config.users.users.<user>.packages" to define packages
+                  users = (lib.pipe allUsers [ # Loads all users configurations
 
                     # Prepare list to be converted to set
                     (x: builtins.map (user: {
                       name = user.username;
-                      value = (builtins.import "./users/${user.username}/home.nix");
+                      value = (setup.setupSystem { # Setup Configuration
+                        inherit lib;
+                        modules = [
+                          ./import-all.nix # Imports all Setup modules
+                          { # (Setup Module)
+                            config = {
+                              includeTags = [ "${user.username}" ]; # Includes user modules
+                            };
+                          }
+                        ];
+                        specialArgs = (setupHomeSpecialArgs user.username);
+                      }).homeManagerModules.setup; # Loads all home modules from setup
                     }) x)
 
                     # Convert list of users to attrs of users
@@ -75,13 +146,7 @@ flakePath: (
                     inputs.stylix.homeManagerModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
-                  extraSpecialArgs = {
-                    inherit pkgs-bundle; # Packages
-                    inherit (userHostArgs) userDevArgs; # User-Host-Scheme
-                    inherit (configDomainArgs) config-domain; # Config-Domain
-                    inherit modules; # Modules Directory
-                    inherit (configUtilsArgs) config-utils; # Config-Utils
-                  };
+                  extraSpecialArgs = homeManagerSpecialArgs;
                 };
               };
             }
@@ -96,13 +161,11 @@ flakePath: (
             }
             { # (NixOS-Module)
               config = {
-                environment.systemPackages = [
-                  pkgs-bundle.stable.home-manager # Home-Manager: Manages standalone home configurations
+                environment.systemPackages = with pkgs-bundle.stable; [
+                  home-manager # Home-Manager: Manages standalone home configurations
                 ];
               };
             }
-
-            inputs.stylix.nixosModules.stylix # Loads Stylix options
 
             # Agenix Configuration
             inputs.agenix.nixosModules.default # Loads Agenix options
@@ -115,14 +178,7 @@ flakePath: (
             }
 
           ];
-          specialArgs = {
-            inherit auto-upgrade-pkgs; # Auto-Upgrade
-            inherit pkgs-bundle; # Packages
-            inherit (userHostArgs) userDevArgs hostArgs; # User-Host-Scheme
-            inherit (configDomainArgs) config-domain; # Config-Domain
-            inherit modules; # Modules Directory
-            inherit (configUtilsArgs) config-utils; # Config-Utils
-          };
+          specialArgs = nixosSpecialArgs;
         });
 
         # Home-Manager-Standalone Configuration
@@ -130,20 +186,26 @@ flakePath: (
           pkgs = inputs.nixpkgs-stable.legacyPackages.${host.system.architecture};
           modules = [
 
-            "./users/${userDev.username}/home.nix" # Loads user configuration
+            # Setup Configuration
+            (setup.setupSystem {
+              inherit lib;
+              modules = [
+                ./import-all.nix # Imports all Setup modules
+                { # (Setup Module)
+                  config = {
+                    includeTags = [ "${user.username}" ]; # Includes user modules
+                  };
+                }
+              ];
+              specialArgs = (setupHomeSpecialArgs user.username);
+            }).homeManagerModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
             inputs.stylix.homeManagerModules.stylix # Loads Stylix options
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
           ];
-          extraSpecialArgs = {
-            inherit pkgs-bundle; # Packages
-            inherit (userHostArgs) userDevArgs; # User-Host-Scheme
-            inherit (configDomainArgs) config-domain; # Config-DomainS
-            inherit modules; # Modules Directory
-            inherit (configUtilsArgs) config-utils; # Config-Utils
-          };
+          extraSpecialArgs = homeManagerSpecialArgs;
         });
 
       }
