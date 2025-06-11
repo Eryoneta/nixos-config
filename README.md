@@ -5,25 +5,23 @@ Based on Linux, NixOS is quite a unique distro! It allows for a almost complete 
 
 My NixOS configuration is my first take on Linux. Not a conventional way to get familiar with the ecosystem, but the idea it proposes was way too tempting! An entire OS, <s>in the palm of my</s> configured __exactly__ how I want it to!
 
-### Highlights
+### Overview
 - _Flakes_: A way to declare the system's inputs and outputs. It allows my system to have many different repositories as inputs and many different hosts as outputs. Also, it pins the exact commit for each input, allowing for a precise recreation of the system, which is nice.
 - _Home-Manager_, both as standalone and as a NixOS module: It allows for quick edits on dotfiles (`home-manager switch`) without recreating the system, but it also allows the newly recreated system (`sudo nixos-rebuild switch`) to manage my home folder.
-  - _Plasma-Manager_: A module which allows to declare many of the options of _KDE Plasma_.
-  - _Stylix_: Declares colors, themes, and wallpapers for a bunch of programs. Its perfect to theme the environment without unholy hours of work.
+  - _Plasma-Manager_: A module which allows to declare _KDE Plasma_ configuration.
+  - _Stylix_: Declares colors, themes, and wallpapers for a bunch of programs. It's perfect to theme the environment without unholy hours of work.
 - _Agenix_: Stores secrets as encripted files, and decripts them at runtime. Nor _Git_ or _Nix_ knows the content, only _NixOS_ does, when its running.
 
-### Special Stuff
-- My flake might be clean, but a lot of the mess is hidden within `configurationBuilder.nix`.
-- My entire configuration is basically divided between `./public-config` and `./private-config`, which is a _Git_ submodule. Privacy and all that.
-  - The directory `./programs` inside contains all programs which require configuration. Its giant and messy. Its Perfect.
-    - They are all automatically imported based on the file names.
-- Both `./hosts` and `./users` contains a `./default` configuration, and specific configuration for each one.
-- Anything inside `./modules` is made to be portable.
-  - `./modules/flake-modules` contains a lot of utilities that abstracts contents of `flake.nix`.
-    - Starting from `nixos-system.nix`, they can be strung together to "modify" a basic configuration into a more complete one.
-    - For example, `home-manager-module.nix` can be used by `nixos-system.nix` to generate a _NixOS_ with _Home-Manager_ module installed.
-    - There is a bunch more.
-  - `./modules/nix-modules` are "simple" nix functions. Useful utilities and stuff.
-  - `./modules/nixos-modules` can be imported by a configuration. They add new options and functionalities.
- - System upgrades uses this `nixos-config`(`main`) repository, but all my development happens at `nixos-config-dev`(`develop`), which is a _Git_ worktree.
-   - Only working builds are merged into `main`. This avoids a surprise upgrade that uses an half-done configuration.
+### Highlights
+- My `flake.nix` is meant to be easy to read and edit. However, a lot of the necessary logic is hidden within `flake-utils.nix`.
+- My entire configuration is divided between `./public-config/` and `./private-config/` (Which is a _Git_ submodule. Privacy and all that).
+  - The directory `./programs/` inside contains all the programs I use. It's giant and messy. It's Perfect.
+- EVERYTHING is imported by `import-all.nix`.
+- `./config-utils/nixos-modules/` contains useful functionalities. These can be imported and used by a _NixOS_ configuration.
+- `./config-utils/nix-utils/` contains useful _Nix_ functions.
+- `./config-utils/config-utils.nix` contains all the _Nix_ functions my configuration uses, including from `nix-utils/`.
+- `./config-utils/setup-module/` contains my own module system, used by this configuration.
+  - All _Nix_ files here are _Setup_ modules.
+  - More can be read at [Setup-Module](./config-utils/setup-module/README.md).
+- [NX-Command](./public-config/programs/shells/zsh+nx-command.nix) is a ZSH function, used to easily run necessary commands to maintain a _NixOS_ configuration.
+- [AutoUpgrade](./public-config/configurations/system-features+auto-upgrade.nix) is also provided by a _NixOS_ module, but here it is improved with a few extra functionalities.
