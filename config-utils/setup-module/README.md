@@ -9,13 +9,13 @@ This here thingie is the solution for all that!
 
 _NixOS_ is configured by `.nix` files. Each one is a _NixOS_ module.
 
-Inside, many options can be declared and set. And, magically, they are all merged into a single, final output, which is used by _NixOS_ to create a new sistem.
+Inside, many options can be declared and set. And, magically, they are all merged into a single, final output, which is used by _NixOS_ to create a new system.
 
 Notably, _NixOS_ modules do not have options for declaring user stuff. It is for system only (I mean, that's the intention). Here, _Home-Manager_ is used to fill that gap.
 
 The problem? _Home-Manager_ have its own modules, and it allows the user stuff to be declared independently from the system. That's pretty cool! It means it can be used in any other system, as long as _Home-Manager_ is installed. ...But that requires keeping both modules apart from eachother, which is a bit of a pain.
 
-As a example, ZSH can be fully configured by _Home-Manager_, but only _NixOS_ can set it to be the users default shell. It requires two files to be fully declared. Multiply that for a few more other cases, and it can be quite distressing to see the amount of files with similar names.
+As a example, ZSH can be fully configured by _Home-Manager_, but only _NixOS_ can set it to be the user default shell. It requires two files to be fully declared. Multiply that for a few more other cases, and it can be quite distressing to see the amount of files with similar names.
 
 There should be a way to "merge" a _Home-Manager_ and _NixOS_ module together.
 
@@ -30,7 +30,7 @@ This module system contains no options set, only a empty `config` and `options`.
 
 This is the magician that allows all the _NixOS_ and _Home-Manager_ modules to function the way they do.
 
-There is nothing stopping you from creating yout own module system.
+There is nothing stopping you from creating your own module system.
 
 
 ## Features
@@ -41,7 +41,7 @@ There is nothing stopping you from creating yout own module system.
 - **Tags**:
     - `config.modules.*.tags` accepts a list of tags.
     - `config.includeTags` is a list of included tags. Any module with that tag is included.
-    - `config.modules.*.includeTags` lets a module add a tag if it's included.
+    - `config.modules.*.includeTags` lets a module add a tag, if it's included.
     - `config.includedModules` lists all the final included modules. It is read-only.
     - This allows a very dinamic way of creating a configuration.
         - Although, I suggest it's best to keep it simple. Too many tags can be quite confusing.
