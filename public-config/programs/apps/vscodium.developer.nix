@@ -1,7 +1,7 @@
 { config, user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # VSCodium: (Medium) Code editor
-  config.modules."vscodium+developer" = {
+  config.modules."vscodium.developer" = {
     tags = [ "developer-setup" ];
     attr.packageChannel = config.modules."vscodium".attr.packageChannel;
     setup = { attr }: {

@@ -1,7 +1,7 @@
 { userDev, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SSH: Secure connection
-  config.modules."ssh+developer" = {
+  config.modules."ssh.developer" = {
     tags = [ "sysdev-setup" "developer-setup" ];
     setup = {
       home = { config-domain, ... }: { # (Home-Manager Module)

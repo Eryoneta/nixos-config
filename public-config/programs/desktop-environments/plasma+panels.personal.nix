@@ -1,8 +1,8 @@
 { config, user, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
-  config.modules."plasma+personal+panels" = {
-    tags = config.modules."plasma+personal".tags;
+  config.modules."plasma+panels.personal" = {
+    tags = config.modules."plasma.personal".tags;
     attr = rec {
       default-widgets = config.modules."plasma+panels".attr.widgets;
       default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
@@ -62,7 +62,7 @@
       tiledmenu = with config-domain; (
         # Check for "./private-config/programs"
         utils.mkIfElse (utils.pathExists private.programs) (
-          with config.modules."plasma+personal-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel)
+          with config.modules."plasma-tiledmenu.personal"; (attr.tiledmenu attr.apps attr.gridModel)
         ) (
           with config.modules."plasma-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel) # Default
         )
@@ -157,8 +157,8 @@
         -attr.mainPanel.height # Subtracts default panel height
       )
     ))
-    (utils.mkIf (config.includedModules."plasma+personal+panels") (
-      with config.modules."plasma+personal+panels"; (
+    (utils.mkIf (config.includedModules."plasma+panels.personal") (
+      with config.modules."plasma+panels.personal"; (
         attr.mainPanel.height + attr.helperPanel.height # Adds custom panel height
       )
     ))

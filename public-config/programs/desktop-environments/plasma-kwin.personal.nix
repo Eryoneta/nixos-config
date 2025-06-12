@@ -1,8 +1,8 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KWin: Window manager for Plasma
-  config.modules."plasma+personal-kwin" = {
-    tags = config.modules."plasma+personal".tags;
+  config.modules."plasma-kwin.personal" = {
+    tags = config.modules."plasma.personal".tags;
     attr.activities = config.modules."plasma-kwin".attr.activities;
     setup = { attr }: {
       home = { # (Home-Manager Module)

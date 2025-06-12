@@ -1,7 +1,7 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
-  config.modules."plasma+personal" = {
+  config.modules."plasma.personal" = {
     tags = [ "personal-setup" ];
     attr.papirus-colors-icons = pkgs-bundle.papirus-colors-icons;
     setup = { attr }: {
