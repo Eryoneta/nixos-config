@@ -59,6 +59,7 @@
               "maxStripes" = 1; # Maximum of layers of apps
               #   Note: Two layers is good when there is a lot of open apps, but is harder to actually find anything as everything is smaller
               "indicateAudioStreams" = false; # Do not indicate apps that are playing sound
+              "interactiveMute" = false; # Do not use the sound icon to toggle the app sound
               "taskMaxWidth" = "Narrow"; # Maximum width of open apps
             };
           };
