@@ -78,20 +78,6 @@
             };
           })
 
-          # Alarm-Clock: Size
-          (utils.mkIf (true) {
-            description = "Alarm-Clock & Size: Fixed window size";
-            match = { # What target
-              window-class = (attr.mkMatch "exact" "alarm-clock-applet Alarm-clock-applet");
-              window-types = [ "normal" ]; # Normal window
-            };
-            apply = { # What changes
-              "ignoregeometry" = (attr.mkValue "force" true); # Ignore programs size requests
-              "minsize" = (attr.mkValue "force" "380,500"); # Set the window.minimum size
-              "size" = (attr.mkValue "initially" "380,500"); # Set the window.size
-            };
-          })
-
         ];
 
       };
