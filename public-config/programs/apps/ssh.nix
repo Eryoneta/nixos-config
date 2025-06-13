@@ -39,8 +39,8 @@
 
         # Dotfile: Add GitHub's public keys
         config.home.file.".ssh/known_hosts" = (utils.mkDefault) (with config-domain; {
-          source = with public; (
-            "${dotfiles}/ssh/.ssh/known_hosts"
+          source = (
+            "${public.dotfiles}/ssh/.ssh/known_hosts"
           );
         });
 

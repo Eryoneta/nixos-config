@@ -14,9 +14,9 @@
             # Hack incoming!: Replace proper package download with my own package in "dotfiles"
             # It is a newer, modified version
             #   (Here, zone indicators have priority over screen edges)
-            fetchFromGitHub = ignoredArgs: (
-              "${config-domain.public.dotfiles}/kwin/kzones"
-            );
+            fetchFromGitHub = ignoredArgs: (with config-domain; (
+              "${public.dotfiles}/kwin/kzones"
+            ));
           })
           #kdePackages.kzones
           # TODO: (Plasma/KWin/KZones) Remove hack once v0.10 is available?

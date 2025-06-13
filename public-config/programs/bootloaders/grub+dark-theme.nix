@@ -7,8 +7,8 @@
       nixos = { config-domain, ... }: { # (NixOS Module)
 
         # Theme
-        config.boot.loader.grub.theme = (
-          "${config-domain.public.dotfiles}/grub/blue-star-grub-theme/dark"
+        config.boot.loader.grub.theme = with config-domain; (
+          "${public.dotfiles}/grub/blue-star-grub-theme/dark"
         );
 
       };

@@ -20,7 +20,7 @@
         # User passwords
         config.age = with config-domain; ( # (agenix option)
           # Check for "./private-config/secrets"
-          utils.mkIf (utils.pathExists private.secrets) {
+          utils.mkIf ((utils.pathExists private.secrets) && !host.system.virtualDrive) {
             identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
             secrets = (utils.pipe host.users [
 
