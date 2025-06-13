@@ -1,9 +1,9 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # KZones: KWin script for snapping windows into zones
-  config.modules."plasma+personal-kwin-kzones" = {
+  config.modules."plasma-kwin-kzones.personal" = {
     enable = false; # It causes a very rare, but fatal, crash everytime a window is dragged
-    tags = config.modules."plasma+personal-kwin".tags;
+    tags = config.modules."plasma-kwin.personal".tags;
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { config-domain, ... }: { # (Home-Manager Module)
@@ -14,9 +14,9 @@
             # Hack incoming!: Replace proper package download with my own package in "dotfiles"
             # It is a newer, modified version
             #   (Here, zone indicators have priority over screen edges)
-            fetchFromGitHub = ignoredArgs: (
-              "${config-domain.public.dotfiles}/kwin/kzones"
-            );
+            fetchFromGitHub = ignoredArgs: (with config-domain; (
+              "${public.dotfiles}/kwin/kzones"
+            ));
           })
           #kdePackages.kzones
           # TODO: (Plasma/KWin/KZones) Remove hack once v0.10 is available?

@@ -12,7 +12,7 @@
         config.programs.zsh.initContent = (
           let
 
-            version = "v1.2.0"; # Should be changed at each modification
+            version = "v1.2.1"; # Should be changed at each modification
             systemProfile = {
               name = "system";
               path = "/nix/var/nix/profiles/${systemProfile.name}";
@@ -39,6 +39,7 @@
               let
                 promptSudo = "sudo ls /dev/null > /dev/null 2>&1"; # Makes the sudo prompt appear before (If later, nom hides the prompt)
                 args = "--use-remote-sudo --show-trace --print-build-logs --verbose";
+                vm = (if (rebuildMode == "build-vm") then "@VM" else "");
                 nomOutput = "|& nom"; # nix-output-monitor
                 rebuildSystem = (utils.replaceStr "\n" "" ''
                   nx-rs() {
@@ -46,11 +47,11 @@
                     local flakePathArg;
                     if [[ $2 =~ ^sys$ ]]; then
                       profileNameArg="--profile-name ${upgradeProfile.name}";
-                      flakePathArg="--flake \"${upgradeProfile.flakePath}#${userDev.host.name}\"";
+                      flakePathArg="--flake \"${upgradeProfile.flakePath}#${userDev.host.name}${vm}\"";
                       preStart="${upgradeProfile.preStart}";
                     else
                       profileNameArg="--profile-name ${systemProfile.name}";
-                      flakePathArg="--flake \"${systemProfile.flakePath}#${userDev.host.name}\"";
+                      flakePathArg="--flake \"${systemProfile.flakePath}#${userDev.host.name}${vm}\"";
                       preStart="${systemProfile.preStart}";
                     fi;
                     eval "$preStart; sudo nixos-rebuild ${rebuildMode} $flakePathArg $profileNameArg ${args} ${nomOutput}";

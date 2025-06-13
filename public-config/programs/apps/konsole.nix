@@ -5,7 +5,7 @@
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
-      home = { config-domain, ... }: { # (Home-Manager Module)
+      home = { host, config-domain, ... }: { # (Home-Manager Module)
 
         # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.konsole ];
@@ -19,8 +19,12 @@
 
         # Dotfile
         config.xdg.dataFile."konsole" = with config-domain; {
-          source = with outOfStore.public; (
-            utils.mkOutOfStoreSymlink "${dotfiles}/konsole/.local/share/konsole"
+          source = (
+            utils.mkIfElse (!host.system.virtualDrive) (
+              utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/konsole/.local/share/konsole"
+            ) (
+              "${public.dotfiles}/konsole/.local/share/konsole"
+            )
           );
         };
 

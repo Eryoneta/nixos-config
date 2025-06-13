@@ -13,13 +13,13 @@
 
         # Dotfiles
         config.xdg.configFile."mpc-qt/settings.json" = with config-domain; {
-          source = with public; (
-            "${dotfiles}/mpc-qt/.config/mpc-qt/settings.json"
+          source = (
+            "${public.dotfiles}/mpc-qt/.config/mpc-qt/settings.json"
           );
         };
         config.xdg.configFile."mpc-qt/keys_v2.json" = with config-domain; { # Huh, it's v2 now
-          source = with public; (
-            "${dotfiles}/mpc-qt/.config/mpc-qt/keys.json"
+          source = (
+            "${public.dotfiles}/mpc-qt/.config/mpc-qt/keys.json"
           );
         };
 

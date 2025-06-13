@@ -1,10 +1,10 @@
 { userDev, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SSH: Secure connection
-  config.modules."ssh+developer" = {
+  config.modules."ssh.developer" = {
     tags = [ "sysdev-setup" "developer-setup" ];
     setup = {
-      home = { config-domain, ... }: { # (Home-Manager Module)
+      home = { host, config-domain, ... }: { # (Home-Manager Module)
 
         # SSH identities
         config.programs.ssh.matchBlocks = {
@@ -36,8 +36,12 @@
         config.home.file.".ssh/known_hosts" = with config-domain; {
           # Check for "./private-config/dotfiles"
           enable = (utils.pathExists private.dotfiles);
-          source = with outOfStore.private; (
-            utils.mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
+          source = (
+            utils.mkIfElse (!host.system.virtualDrive) (
+              utils.mkOutOfStoreSymlink "${outOfStore.private.dotfiles}/ssh/.ssh/known_hosts"
+            ) (
+              "${private.dotfiles}/ssh/.ssh/known_hosts"
+            )
           );
         };
 

@@ -5,7 +5,7 @@
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
-      home = { config, config-domain, ... }: { # (Home-Manager Module)
+      home = { config, host, config-domain, ... }: { # (Home-Manager Module)
 
         # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.kate ];
@@ -49,7 +49,7 @@
         config.xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = with config-domain; {
           source = (
             # Only the developer should be able to modify the file
-            utils.mkIfElse (config.home.username == userDev.username) (
+            utils.mkIfElse (config.home.username == userDev.username && !host.system.virtualDrive) (
               utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"
             ) (
               "${public.dotfiles}/kwrite/.local/share/kxmlgui5/kwrite/kateui.rc"

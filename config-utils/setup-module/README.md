@@ -4,6 +4,8 @@ Do you have a lot of _Nix_ files in yout config? It is messy and hard to maintai
 
 This here thingie is the solution for all that!
 
+(Inspired by [nix-config-modules](https://github.com/chadac/nix-config-modules)).
+
 
 ## First, some context
 

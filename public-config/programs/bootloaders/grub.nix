@@ -34,7 +34,9 @@
 
           # Theme
           splashImage = null; # No background image
-          theme = (utils.mkDefault) "${config-domain.public.dotfiles}/grub/blue-star-grub-theme/light";
+          theme = (utils.mkDefault) (with config-domain;
+            "${public.dotfiles}/grub/blue-star-grub-theme/light"
+          );
 
         };
 
