@@ -133,11 +133,11 @@
     "firefox-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1740749503,
-        "narHash": "sha256-Fms3V7NOLNRVtj/uTJfb/gxWBrVlCl1k61TJGqeKMug=",
+        "lastModified": 1749917144,
+        "narHash": "sha256-Az0i1xyVWCj+UUhoBGTZbaddz9dtlozvIh2ZccoFMIM=",
         "owner": "Eryoneta",
         "repo": "Firefox-Scripts",
-        "rev": "90904ef08c860f8f39db0ff41be070003a98f930",
+        "rev": "e1c24ffa3e01c03e85336fe49254facb1cf99419",
         "type": "github"
       },
       "original": {
@@ -201,17 +201,17 @@
     "fx-autoconfig": {
       "flake": false,
       "locked": {
-        "lastModified": 1726991943,
-        "narHash": "sha256-baoPhJuHkM/8yfM7lStSEu/AW0ea0s/j2t+aSq+nhGE=",
+        "lastModified": 1745406806,
+        "narHash": "sha256-V/jY6cV8IQmQ3JvbOspsECPTlhPS6SEfS0j5SWUAcME=",
         "owner": "MrOtherGuy",
         "repo": "fx-autoconfig",
-        "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
+        "rev": "f1f61958491c18e690bed8e04e89dd3a8e4a6c4d",
         "type": "github"
       },
       "original": {
         "owner": "MrOtherGuy",
         "repo": "fx-autoconfig",
-        "rev": "fe783f2c72388f64fd7ea0ee67617c6fd32f2261",
+        "rev": "f1f61958491c18e690bed8e04e89dd3a8e4a6c4d",
         "type": "github"
       }
     },
