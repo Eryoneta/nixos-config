@@ -1,1 +1,1 @@
-FX-AutoConfig: Update
+Firefox-Scripts: Update
