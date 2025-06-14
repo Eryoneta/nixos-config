@@ -40,7 +40,7 @@
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
     # Firefox: FX-AutoConfig (Fixed)
-    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/fe783f2c72388f64fd7ea0ee67617c6fd32f2261";
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/f1f61958491c18e690bed8e04e89dd3a8e4a6c4d";
     fx-autoconfig.flake = false;
     # NixOS Artwork (Fixed)
     nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";

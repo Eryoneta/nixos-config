@@ -1,1 +1,1 @@
-Plasma/KWin: Rules
+FX-AutoConfig: Update
