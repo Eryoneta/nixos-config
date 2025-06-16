@@ -21,6 +21,16 @@
           };
         });
 
+        # Color Picker
+        colorPicker = {
+          name = "org.kde.plasma.colorpicker";
+          config = {
+            "General" = {
+              "defaultFormat" = "RRGGBB";
+            };
+          };
+        };
+
         # System tray
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
@@ -87,7 +97,7 @@
           default-widgets.separator
           widgets.toggleYakuake
           default-widgets.spacer
-          "org.kde.plasma.colorpicker"
+          widgets.colorPicker
           widgets.systemTray
         ];
       });
