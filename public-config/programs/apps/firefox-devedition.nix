@@ -72,7 +72,7 @@
                   ];
                   "icon" = "https://nixos.wiki/favicon.png";
                   "updateInterval" = 24 * 60 * 60 * 1000; # Every day
-                  "definedAlias" = [ "@nw" ];
+                  "definedAliases" = [ "@nw" ];
                 };
                 "google"."metaData"."alias" = "@g";
                 "bing"."metaData"."hidden" = true;
