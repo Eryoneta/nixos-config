@@ -2,8 +2,8 @@
 
   # Theme
   config.modules."theme" = {
-    attr.packageChannel = pkgs-bundle.stable;
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
