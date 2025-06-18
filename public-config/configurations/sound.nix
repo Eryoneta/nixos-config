@@ -6,16 +6,21 @@
     setup = {
       nixos = { # (NixOS Module)
 
-        # Sound
+        # PipeWire: Framework for sound
         config.services.pipewire = {
           enable = (utils.mkDefault) true;
-          pulse = {
+
+          # PulseAudio support
+          pulse = { # PulseAudio: Sound server
             enable = (utils.mkDefault) true;
           };
-          alsa = {
+
+          # ALSA support
+          alsa = { # ALSA: Sound drivers
             enable = (utils.mkDefault) true;
             support32Bit = (utils.mkDefault) true;
           };
+
         };
 
       };
