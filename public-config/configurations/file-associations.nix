@@ -23,8 +23,10 @@
         config.xdg.mime.enable = true;
         config.xdg.mimeApps = {
           enable = true;
-          defaultApplications = (
-            (attr.associateDefault "firefox.desktop" [ # Firefox
+          defaultApplications = (utils.mkMerge [
+
+            # Firefox
+            (attr.associateDefault "firefox.desktop" [
               "default-web-browser"
               "text/html"
               "x-scheme-handler/http"
@@ -32,20 +34,23 @@
               "x-scheme-handler/about"
               "x-scheme-handler/unknown"
             ])
-            //
-            (attr.associateDefault "org.kde.kwrite.desktop" [ # KWrite
+
+            # KWrite
+            (attr.associateDefault "org.kde.kwrite.desktop" [
               "text/plain"
               "text/markdown"
             ])
-            //
-            (attr.associateDefault "org.kde.kate.desktop" [ # Kate
+
+            # Kate
+            (attr.associateDefault "org.kde.kate.desktop" [
               "application/json"
               "application/x-yaml"
               "application/x-docbook+xml"
               "text/x-cmake"
             ])
-            //
-            (attr.associateDefault "writer.desktop" [ # LibreOffice Writer
+
+            # LibreOffice Writer
+            (attr.associateDefault "writer.desktop" [
               # As defined by "writer.desktop"
               "application/clarisworks"
               "application/docbook+xml"
@@ -90,8 +95,9 @@
               "application/x-t602"
               "text/rtf"
             ])
-            //
-            (attr.associateDefault "mpv.desktop" [ # MPV
+
+            # MPV
+            (attr.associateDefault "mpv.desktop" [
               # As defined by "KDE Plasma" in ~/config/mimeapps.list
               # Note: This is necessary as "UMPV" is INSISTENT in being the default, for some reason
               #   Extra note: "UMPV" is like "MPV", but all new medias are added into a playlist, instead of a new instance
@@ -150,7 +156,8 @@
               "video/x-theora"
               "video/x-theora+ogg"
             ])
-          );
+
+          ]);
         };
 
       };
