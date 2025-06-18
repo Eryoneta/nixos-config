@@ -1,9 +1,38 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config-domain, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Security
   config.modules."security" = {
     tags = [ "default-setup" ];
-    setup = {
+    attr.mkUserSecrets = users: (with config-domain; (utils.pipe users [
+
+      # Transforms the set into a list
+      (x: builtins.attrValues x)
+
+      # Removes users with files that don't exists
+      (x: builtins.filter (user: (
+        builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
+      )) x)
+
+      # Prepare each item to be transformed into a set
+      (x: builtins.map (user: {
+        name = "${user.username}-userPassword";
+        value = {
+          file = "${private.secrets}/${user.username}_user_password.age";
+        };
+      }) x)
+
+      # Transforms the list into a set
+      (x: builtins.listToAttrs x)
+
+      # Add root user configuration
+      (x: x // {
+        "root-userPassword" = {
+          file = "${private.secrets}/root_user_password.age";
+        };
+      })
+
+    ]));
+    setup = { attr }: {
       nixos = { host, config-domain, ... }: { # (NixOS Module)
 
         # Firewall
@@ -18,39 +47,11 @@
         config.security.rtkit.enable = true;
 
         # User passwords
-        config.age = with config-domain; ( # (agenix option)
+        config.age = ( # (agenix option)
           # Check for "./private-config/secrets"
-          utils.mkIf ((utils.pathExists private.secrets) && !host.system.virtualDrive) {
+          utils.mkIf ((utils.pathExists config-domain.private.secrets) && !host.system.virtualDrive) {
             identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
-            secrets = (utils.pipe host.users [
-
-              # Transforms the set into a list
-              (x: builtins.attrValues x)
-
-              # Removes users with files that don't exists
-              (x: builtins.filter (user: (
-                builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
-              )) x)
-
-              # Prepare each item to be transformed into a set
-              (x: builtins.map (user: {
-                name = "${user.username}-userPassword";
-                value = {
-                  file = "${private.secrets}/${user.username}_user_password.age";
-                };
-              }) x)
-
-              # Transforms the list into a set
-              (x: builtins.listToAttrs x)
-
-              # Add root user configuration
-              (x: x // {
-                "root-userPassword" = {
-                  file = "${private.secrets}/root_user_password.age";
-                };
-              })
-
-            ]);
+            secrets = (attr.mkUserSecrets host.users);
           }
         );
 
