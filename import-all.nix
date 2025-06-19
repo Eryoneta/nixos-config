@@ -5,23 +5,23 @@
     let
       onlyNixFile = ".nix";
       searchNixFiles = path: (utils.searchFiles path "" "" onlyNixFile);
-    in with config-domain; (
+    in (
       builtins.concatLists [
         [ ./setups.nix ]
         (searchNixFiles ./hosts)
         (searchNixFiles ./users)
-        (searchNixFiles "${public.configurations}")
-        (searchNixFiles "${public.programs}")
+        (searchNixFiles "${config-domain.public.configurations}")
+        (searchNixFiles "${config-domain.public.programs}")
         (
           # Check for "./private-config/configurations"
-          if (utils.pathExists private.configurations) then (
-            (searchNixFiles "${private.configurations}")
+          if (utils.pathExists config-domain.private.configurations) then (
+            (searchNixFiles "${config-domain.private.configurations}")
           ) else []
         )
         (
           # Check for "./private-config/programs"
-          if (utils.pathExists private.programs) then (
-            (searchNixFiles "${private.programs}")
+          if (utils.pathExists config-domain.private.programs) then (
+            (searchNixFiles "${config-domain.private.programs}")
           ) else []
         )
       ]

@@ -1,11 +1,12 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Konsole: Terminal
   config.modules."konsole" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+    attr.mkOutOfStoreSymlink = config.modules."configuration".attr.mkOutOfStoreSymlink;
     setup = { attr }: {
-      home = { host, config-domain, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.konsole ];
@@ -18,15 +19,9 @@
         };
 
         # Dotfile
-        config.xdg.dataFile."konsole" = with config-domain; {
-          source = (
-            utils.mkIfElse (!host.system.virtualDrive) (
-              utils.mkOutOfStoreSymlink "${outOfStore.public.dotfiles}/konsole/.local/share/konsole"
-            ) (
-              "${public.dotfiles}/konsole/.local/share/konsole"
-            )
-          );
-        };
+        config.xdg.dataFile."konsole" = (attr.mkOutOfStoreSymlink {
+          public-dotfile = "konsole/.local/share/konsole";
+        });
 
       };
     };

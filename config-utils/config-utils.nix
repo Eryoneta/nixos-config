@@ -103,7 +103,10 @@
         # Greatly simplify the use of functions
         pipe = startValue: listOfFunctions: (nix-lib.pipe startValue listOfFunctions);
 
-        # Check if a path exists
+        # Greatly simplify the use of functions
+        reverseList = list: (nix-lib.reverseList list);
+
+        # Creates a file
         toFile = fileName: content: (builtins.toFile fileName content);
 
         # Build a JSON format from a set

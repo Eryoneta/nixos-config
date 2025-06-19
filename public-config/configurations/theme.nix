@@ -1,9 +1,11 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Theme
   config.modules."theme" = {
-    attr.packageChannel = pkgs-bundle.stable;
     tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    attr.nixos-artwork = pkgs-bundle.nixos-artwork;
+    attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
@@ -20,9 +22,9 @@
           };
 
           # Wallpaper
-          image = (utils.mkDefault) ( # Wallpaper
-            (pkgs-bundle.nixos-artwork)."wallpaper/nix-wallpaper-simple-blue.png"
-          );
+          image = (utils.mkDefault) (attr.mkFilePath {
+            default-resource = (attr.nixos-artwork)."wallpaper/nix-wallpaper-simple-blue.png";
+          });
           imageScalingMode = (utils.mkDefault) "fill"; # Fill background
 
           # Cursor
@@ -61,12 +63,10 @@
           # Theme
           polarity = (utils.mkDefault) "light"; # Theme
           # Gallery: https://tinted-theming.github.io/base16-gallery/
-          base16Scheme = (utils.mkDefault) (
-            with attr.packageChannel; ( # Colors
-              "${base16-schemes}/share/themes/nord-light.yaml"
-              # Note: Between stable and unstable, some themes might not exist
-            )
-          );
+          base16Scheme = (utils.mkDefault) (with attr.packageChannel; ( # Colors
+            "${base16-schemes}/share/themes/nord-light.yaml"
+            # Note: Between stable and unstable, some themes might not exist
+          ));
 
         };
 

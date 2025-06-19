@@ -192,7 +192,7 @@ flakePath: (
                   };
                 }
               ];
-              specialArgs = (setupHomeSpecialArgs false user.username);
+              specialArgs = (setupHomeSpecialArgs user.username);
             }).homeModules.setup # Loads all home modules from setup
 
             inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options

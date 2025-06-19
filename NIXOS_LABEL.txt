@@ -1,1 +1,1 @@
-Firefox-Scripts: Update
+Refatoração: Funções

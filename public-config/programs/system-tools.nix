@@ -1,16 +1,5 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
-  # FastFetch: Shows general system information
-  config.modules."fastfetch" = {
-    tags = [ "basic-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      nixos = { # (NixOS Module)
-        config.environment.systemPackages = with attr.packageChannel; [ fastfetch ];
-      };
-    };
-  };
-
   # GParted: Manages partitions
   config.modules."gparted" = {
     tags = [ "basic-setup" ];
