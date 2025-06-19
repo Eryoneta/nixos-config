@@ -12,16 +12,28 @@ My NixOS configuration is my first take on Linux. Not a conventional way to get 
   - _Stylix_: Declares colors, themes, and wallpapers for a bunch of programs. It's perfect to theme the environment without unholy hours of work.
 - _Agenix_: Stores secrets as encripted files, and decripts them at runtime. Nor _Git_ or _Nix_ knows the content, only _NixOS_ does, when its running.
 
-### Highlights
-- My `flake.nix` is meant to be easy to read and edit. However, a lot of the necessary logic is hidden within `flake-utils.nix`.
-- My entire configuration is divided between `./public-config/` and `./private-config/` (Which is a _Git_ submodule. Privacy and all that).
-  - The directory `./programs/` inside contains all the programs I use. It's giant and messy. It's Perfect.
-- EVERYTHING is imported by `import-all.nix`.
-- `./config-utils/nixos-modules/` contains useful functionalities. These can be imported and used by a _NixOS_ configuration.
-- `./config-utils/nix-utils/` contains useful _Nix_ functions.
-- `./config-utils/config-utils.nix` contains all the _Nix_ functions my configuration uses, including from `nix-utils/`.
-- `./config-utils/setup-module/` contains my own module system, used by this configuration.
+### Structure
+- My [`flake.nix`](./flake.nix) is meant to be easy to read and edit. However, a lot of the necessary logic is hidden within [`flake-utils.nix`](./flake-utils.nix).
+- My entire configuration is divided between [`public-config/`](./public-config/) and [`private-config/`](./private-config/) (Which is a _Git_ submodule. Privacy and all that).
+- EVERYTHING is imported by [`import-all.nix`](./import-all.nix).
+- [`config-utils/nix-utils/`](./config-utils/nix-utils/) contains useful _Nix_ functions.
+- [`config-utils/nixos-modules/`](./config-utils/nixos-modules/) contains useful _NixOS_ modules.
+- [`config-utils/setup-module/`](./config-utils/setup-module/) contains my own module system, used by this configuration.
   - All _Nix_ files here are _Setup_ modules.
-  - More can be read at [Setup-Module](./config-utils/setup-module/README.md).
-- [NX-Command](./public-config/programs/shells/zsh+nx-command.nix) is a ZSH function, used to easily run necessary commands to maintain a _NixOS_ configuration.
-- [AutoUpgrade](./public-config/configurations/system-features+auto-upgrade.nix) is also provided by a _NixOS_ module, but here it is improved with a few extra functionalities.
+  - More can be read at [Setup-Module](./config-utils/setup-module/).
+  - All the tags I use are defined within [`setups.nix`](./setups.nix).
+- [`config-utils/config-utils.nix`](./config-utils/config-utils.nix) contains all the utilities my configuration uses, including from [`nixos-modules/`](./config-utils/nixos-modules/) and [`nix-utils/`](./config-utils/nix-utils/).
+  - All _Nix_ files here have it included by default.
+
+### Highlights
+- [NX-Command](./public-config/programs/shells/zsh+nx-command.nix): A ZSH function, used to easily run necessary commands to maintain a _NixOS_ configuration.
+- [Swapfile, ZRAM, and Hibernation](./public-config/configurations/system-features.nix): Configured for all hosts.
+- [NixOS Auto-Upgrade](./public-config/configurations/system-features+auto-upgrade.nix): Is also provided by a _NixOS_ module, but here it's improved with a few extra functionalities.
+- [Tiled Menu declaration](./public-config/programs/desktop-environments/plasma-tiledmenu.nix): Provides [Tiled Menu](https://github.com/Zren/plasma-applet-tiledmenu) with the menu fully declared. Very cool.
+- [KZones declaration](public-config/programs/desktop-environments/plasma-kwin-kzones.personal.nix): Provides [KZones](https://github.com/gerritdevriese/kzones) with snap zones declared.
+- [MPV configuration](./public-config/programs/apps/mpv.nix): Configures [MPV](https://mpv.io/) actions, shortcuts, and more. It's quite big.
+- [Firefox for work](./public-config/programs/apps/firefox.nix) and [Firefox-Developer for daily use](./public-config/programs/apps/firefox-devedition.nix): Two different versions of [Firefox](https://www.firefox.com) with A TON of settings.
+  - NixOS only allows one version to be used. That's very clear when the whole system crashes, or behaves weirdly.
+  - But when it works, it works. Having two "Firefoxes" is neat.
+- [GRUB with a theme](./public-config/programs/bootloaders/grub.nix): Declares a custom [GRUB](https://www.gnu.org/software/grub/) theme.
+- [Fastfetch configuration](./public-config/programs/apps/fastfetch.nix): Simplifies the configuration of [Fastfetch](https://github.com/fastfetch-cli/fastfetch).

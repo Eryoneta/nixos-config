@@ -212,8 +212,8 @@ flakePath: (
     buildHost = user-host-scheme.buildHost;
     buildUser = user-host-scheme.buildUser;
 
-    # Build configuration maker
-    buildConfigurationMaker = { inputs, auto-upgrade-pkgs, package-bundle }: {
+    # Make configuration builder
+    mkConfigBuilder = { inputs, auto-upgrade-pkgs, package-bundle }: {
 
       # Build all host configurations
       buildSystemConfigurations = { ... }@hosts: (
@@ -232,7 +232,7 @@ flakePath: (
               value = (config // {
                 host = (config.host // {
                   system = (config.host.system // {
-                    virtualDrive = true;
+                    virtualDrive = true; # Mark as a virtual machine
                   });
                 });
               });
