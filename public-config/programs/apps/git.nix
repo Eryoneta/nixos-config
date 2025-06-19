@@ -1,15 +1,17 @@
-{ user, pkgs-bundle, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Git: File versioning
   config.modules."git" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     attr.git-tools = pkgs-bundle.git-tools;
-    attr.userConfigByDir = profile: (with config-domain; (
-      # Check for "./private-config/secrets"
-      utils.mkIfElse (utils.pathExists private.secrets) (
+    attr.userConfigByDir = profile: (
+      utils.mkIfElse (config.modules."configuration".attr.isDomainLoaded "private" "secrets") (
         let
-          userEmails = (utils.readJSONFile "${private.secrets}/${user.username}_emails.json");
+          userEmails = (utils.readJSONFile (config.modules."configuration".attr.mkFilePath {
+            private-secret = "${user.username}_emails.json";
+            default-secret = "";
+          }));
         in {
           user = {
             name = userEmails.${profile}.username;
@@ -22,7 +24,7 @@
           email = null;
         };
       }
-    ));
+    );
     setup = { attr }: {
       nixos = {
 

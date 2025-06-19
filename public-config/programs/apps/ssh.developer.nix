@@ -1,10 +1,11 @@
-{ userDev, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, userDev, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SSH: Secure connection
-  config.modules."ssh+developer" = {
+  config.modules."ssh.developer" = {
     tags = [ "sysdev-setup" "developer-setup" ];
-    setup = {
-      home = { config-domain, ... }: { # (Home-Manager Module)
+    attr.mkOutOfStoreSymlink = config.modules."configuration".attr.mkOutOfStoreSymlink;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
 
         # SSH identities
         config.programs.ssh.matchBlocks = {
@@ -33,13 +34,9 @@
         };
 
         # Dotfile: Known hosts
-        config.home.file.".ssh/known_hosts" = with config-domain; {
-          # Check for "./private-config/dotfiles"
-          enable = (utils.pathExists private.dotfiles);
-          source = with outOfStore.private; (
-            utils.mkOutOfStoreSymlink "${dotfiles}/ssh/.ssh/known_hosts"
-          );
-        };
+        config.xdg.configFile.".ssh/known_hosts" = (attr.mkOutOfStoreSymlink {
+          private-dotfile = "ssh/.ssh/known_hosts";
+        });
 
       };
     };

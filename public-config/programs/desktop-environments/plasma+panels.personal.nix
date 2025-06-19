@@ -1,8 +1,8 @@
-{ config, user, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
-  config.modules."plasma+personal+panels" = {
-    tags = config.modules."plasma+personal".tags;
+  config.modules."plasma+panels.personal" = {
+    tags = config.modules."plasma.personal".tags;
     attr = rec {
       default-widgets = config.modules."plasma+panels".attr.widgets;
       default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
@@ -20,6 +20,16 @@
             });
           };
         });
+
+        # Color Picker
+        colorPicker = {
+          name = "org.kde.plasma.colorpicker";
+          config = {
+            "General" = {
+              "defaultFormat" = "RRGGBB";
+            };
+          };
+        };
 
         # System tray
         systemTray = (default-widgets.systemTray // {
@@ -45,16 +55,29 @@
           name = "org.kde.plasma.icon";
           config = {
             "localPath" = "/home/${user.username}/.local/share/plasma_icons/ShowGrid.desktop";
+            # Note: This is within Setup! There is no "config.xdg.dataHome" here!
+          };
+        };
+
+        # Toggle Yakuake
+        toggleYakuake = {
+          name = "org.kde.plasma.icon";
+          config = {
+            "localPath" = "/home/${user.username}/.local/share/plasma_icons/ToggleYakuake.desktop";
+            # Note: This is within Setup! There is no "config.xdg.dataHome" here!
           };
         };
 
       };
-      tiledmenu = with config-domain; (
-        # Check for "./private-config/programs"
-        utils.mkIfElse (utils.pathExists private.programs) (
-          with config.modules."plasma+personal-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel)
-        ) (
-          with config.modules."plasma-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel) # Default
+      tiledmenu = (
+        if (config.includedModules."plasma-tiledmenu.personal" or false) then (
+          with config.modules."plasma-tiledmenu.personal"; ( # Custom
+            attr.tiledmenu attr.apps attr.gridModel
+          )
+        ) else (
+          with config.modules."plasma-tiledmenu"; ( # Default
+            attr.tiledmenu attr.apps attr.gridModel
+          )
         )
       );
       mainPanel = (default-mainPanel // {
@@ -74,8 +97,10 @@
         widgets = [
           default-widgets.virtualDesktopsPager
           widgets.showGrid
+          default-widgets.separator
+          widgets.toggleYakuake
           default-widgets.spacer
-          "org.kde.plasma.colorpicker"
+          widgets.colorPicker
           widgets.systemTray
         ];
       });
@@ -117,6 +142,23 @@
           executable = true;
         };
 
+        # Toggle Yakuake
+        config.xdg.dataFile."plasma_icons/ToggleYakuake.desktop" = {
+          text = (
+            let
+              toggleYakuakeCommand = "yakuake";
+            in ''
+              [Desktop Entry]
+              Name=Yakuake
+              Icon=yakuake
+              Exec=${toggleYakuakeCommand}
+              Terminal=false
+              Type=Application
+            ''
+          );
+          executable = true;
+        };
+
       };
     };
   };
@@ -128,8 +170,8 @@
         -attr.mainPanel.height # Subtracts default panel height
       )
     ))
-    (utils.mkIf (config.includedModules."plasma+personal+panels") (
-      with config.modules."plasma+personal+panels"; (
+    (utils.mkIf (config.includedModules."plasma+panels.personal") (
+      with config.modules."plasma+panels.personal"; (
         attr.mainPanel.height + attr.helperPanel.height # Adds custom panel height
       )
     ))

@@ -1,9 +1,10 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SSH: Secure connection
   config.modules."ssh" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
+    attr.mkSymlink = config.modules."configuration".attr.mkSymlink;
     setup = { attr }: {
       nixos = { config, ... }: { # (NixOS Module)
 
@@ -26,7 +27,7 @@
         };
 
       };
-      home = { config-domain, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Configuration
         config.programs.ssh = {
@@ -38,10 +39,8 @@
         config.services.ssh-agent.enable = false; # The system already starts the agent
 
         # Dotfile: Add GitHub's public keys
-        config.home.file.".ssh/known_hosts" = (utils.mkDefault) (with config-domain; {
-          source = with public; (
-            "${dotfiles}/ssh/.ssh/known_hosts"
-          );
+        config.home.file.".ssh/known_hosts" = (utils.mkDefault) (attr.mkSymlink {
+          public-dotfile = "ssh/.ssh/known_hosts";
         });
 
       };

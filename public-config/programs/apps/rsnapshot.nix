@@ -131,7 +131,8 @@
 
         # Example
         /*
-          attr.mkRsnapshotConfig {
+          config.xdg.configFile."rsnapshot/my_backup.conf" = {
+            text = (attr.mkRsnapshotConfig {
               startBlock = {
                 "snapshot_root" = "/run/media/USERNAME/REMOVABLE_DEVICE_NAME/";
               };
@@ -143,10 +144,11 @@
               endBlock = {
                 "backup" = [
                   [ "/home/USERNAME/DIR_TO_BACKUP1/" "DIR_TO_BACKUP1/" ]
-                  [ "/home/USERNAME/DIR_TO_BACKUP2/" "DIR_TO_BACKUP2/" ]
+                  [ "/home/USERNAME/DIR_TO_BACKUP2/" "DIR_TO_BACKUP2/" "+rsync_long_args=--max-size=400MiB" ]
                 ];
               };
-            }
+            });
+          };
         */
 
       };

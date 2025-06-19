@@ -1,8 +1,8 @@
 { config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Main panel
-  config.modules."plasma+personal+window-rules" = {
-    tags = config.modules."plasma+personal".tags;
+  config.modules."plasma+window-rules.personal" = {
+    tags = config.modules."plasma.personal".tags;
     attr.workArea = with config.hardware.configuration.screenSize.workArea; { # (From "configurations/screen-size.nix")
       width = builtins.toString (width);
       height = builtins.toString (height);
@@ -75,20 +75,6 @@
             };
             apply = { # What changes
               "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
-            };
-          })
-
-          # Alarm-Clock: Size
-          (utils.mkIf (true) {
-            description = "Alarm-Clock & Size: Fixed window size";
-            match = { # What target
-              window-class = (attr.mkMatch "exact" "alarm-clock-applet Alarm-clock-applet");
-              window-types = [ "normal" ]; # Normal window
-            };
-            apply = { # What changes
-              "ignoregeometry" = (attr.mkValue "force" true); # Ignore programs size requests
-              "minsize" = (attr.mkValue "force" "380,500"); # Set the window.minimum size
-              "size" = (attr.mkValue "initially" "380,500"); # Set the window.size
             };
           })
 

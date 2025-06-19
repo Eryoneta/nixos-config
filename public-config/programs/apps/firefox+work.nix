@@ -1,7 +1,7 @@
 { config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Firefox: Internet browser
-  config.modules."firefox+work" = {
+  config.modules."firefox.work" = {
     tags = [ "personal-setup" "work-setup" ];
     attr.template = {
       extensions = with (pkgs-bundle.firefox-addons).pkgs; (

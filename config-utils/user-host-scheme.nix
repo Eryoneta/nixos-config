@@ -24,6 +24,7 @@ flakePath: (
           architecture = "x86_64-linux";
           label = "";
           startVersion = "";
+          virtualDrive = false;
         };
         configFolder = "/etc/nixos";
         configFolderNixStore = flakePath; # Note: A flake gets copied into the NixStore before evaluation

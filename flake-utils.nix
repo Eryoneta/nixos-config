@@ -7,10 +7,8 @@ flakePath: (
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
 
-  in {
-    buildHost = user-host-scheme.buildHost;
-    buildUser = user-host-scheme.buildUser;
-    buildConfiguration = { inputs, user ? null, users ? null, host, auto-upgrade-pkgs, package-bundle }: (
+    # Build configuration
+    buildConfiguration = { inputs, auto-upgrade-pkgs, package-bundle, user ? null, users ? null, host }: (
       let
 
         # Utilities
@@ -60,14 +58,15 @@ flakePath: (
         # SpecialArgs
         commonSpecialArgs = {
           inherit inputs; # Inputs
-          inherit pkgs-bundle; # Package-Bundle
           inherit (configDomainArgs) config-domain; # Configuration-Domains
+          inherit (userHostArgs) host; # User-Host-Scheme
         };
         setupSpecialArgs = {
+          inherit pkgs-bundle; # Package-Bundle
           inherit (configUtilsArgs) config-utils; # Configuration-Utilities
         };
         nixosSpecialArgs = (commonSpecialArgs // {
-          inherit (userHostArgs) userDev users host; # User-Host-Scheme
+          inherit (userHostArgs) userDev users; # User-Host-Scheme
           inherit nixos-modules; # NixOS-Modules Directory
           inherit auto-upgrade-pkgs; # Auto-Upgrade
         });
@@ -206,5 +205,56 @@ flakePath: (
 
       }
     );
+
+  in {
+
+    # User-Host Scheme functions
+    buildHost = user-host-scheme.buildHost;
+    buildUser = user-host-scheme.buildUser;
+
+    # Build configuration maker
+    buildConfigurationMaker = { inputs, auto-upgrade-pkgs, package-bundle }: {
+
+      # Build all host configurations
+      buildSystemConfigurations = { ... }@hosts: (
+        # Foreach host, create a valid NixOS configuration
+        builtins.mapAttrs (id: config: (
+          (buildConfiguration {
+            inherit inputs auto-upgrade-pkgs package-bundle;
+            inherit (config) users host;
+          }).nixosSystemConfig
+        )) (
+          # Merges hosts with VM-hosts
+          hosts // (
+            # Recreates the hosts set as a new set with renamed ids
+            builtins.listToAttrs (builtins.attrValues (builtins.mapAttrs (id: config: {
+              name = "${id}@VM";
+              value = (config // {
+                host = (config.host // {
+                  system = (config.host.system // {
+                    virtualDrive = true;
+                  });
+                });
+              });
+            }) hosts))
+            # Note: A VM do not have access to stuff outside it. This breaks Agenix secrets, and 'mkOutOfStoreSymlink'
+            #   This solution duplicates all hosts as @VM, where Agenix is not used, and dotfiles are insideOfStore
+            #   To call it: "nixos-rebuild build-vm --flake '<CONFIG_PATH>#<HOST_NAME>@VM'"
+          )
+        )
+      );
+
+      # Build all user configurations
+      buildHomeConfigurations = { ... }@users: (
+        # For each user, create a valid Home-Manager configuration
+        builtins.mapAttrs (id: config: (
+          (buildConfiguration {
+            inherit inputs auto-upgrade-pkgs package-bundle;
+            inherit (config) user host;
+          }).homeManagerConfig
+        )) users
+      );
+    };
+
   }
 )

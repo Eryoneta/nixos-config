@@ -72,7 +72,7 @@
                   ];
                   "icon" = "https://nixos.wiki/favicon.png";
                   "updateInterval" = 24 * 60 * 60 * 1000; # Every day
-                  "definedAlias" = [ "@nw" ];
+                  "definedAliases" = [ "@nw" ];
                 };
                 "google"."metaData"."alias" = "@g";
                 "bing"."metaData"."hidden" = true;
@@ -145,6 +145,15 @@
                   "${scripts}/chrome/CSS/addAccentColor.uc.css" \
                   > $out
               ''));
+            };
+            # Modified dotfile: Also hide Tab-Stash icon
+            "${profilePath}/chrome/CSS/improveSearchBarButtons.uc.css" = {
+              source = ((attr.packageChannel).runCommand "add-extra-item" {} ''
+                sed \
+                  -e 's/#picture-in-picture-button /#picture-in-picture-button, #pageAction-urlbar-tab-stash_condordes_net /' \
+                  "${scripts}/chrome/CSS/improveSearchBarButtons.uc.css" \
+                  > $out
+              '');
             };
           }
         );

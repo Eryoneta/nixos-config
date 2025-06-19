@@ -40,7 +40,7 @@
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
     # Firefox: FX-AutoConfig (Fixed)
-    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/fe783f2c72388f64fd7ea0ee67617c6fd32f2261";
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/f1f61958491c18e690bed8e04e89dd3a8e4a6c4d";
     fx-autoconfig.flake = false;
     # NixOS Artwork (Fixed)
     nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
@@ -159,46 +159,47 @@
       };
 
       # Config Builder
-      buildConfiguration = config: (
-        flake-utils.buildConfiguration (config // {
-          inputs = args;
-          inherit auto-upgrade-pkgs package-bundle;
-        })
-      );
+      configBuilder = (flake-utils.buildConfigurationMaker {
+        inputs = args;
+        inherit auto-upgrade-pkgs;
+        inherit package-bundle;
+      });
 
     in {
 
       # NixOS + Home-Manager(+ Plasma-Manager + Stylix + Agenix) + Agenix
-      nixosConfigurations = {
-        "HyperV_VM" = (buildConfiguration {
+      nixosConfigurations = (configBuilder.buildSystemConfigurations {
+        "HyperV_VM" = {
           users = [ yo ];
           host = hyper-v_vm;
-        }).nixosSystemConfig;
-        "LiCo" = (buildConfiguration {
+        };
+        "LiCo" = {
           users = [ yo ];
           host = lico;
-        }).nixosSystemConfig;
-        "NeLiCo" = (buildConfiguration {
+        };
+        "NeLiCo" = {
           users = [ yo eryoneta ];
           host = nelico;
-        }).nixosSystemConfig;
-      };
+        };
+        # Note: Each host is duplicated as a VM, for "nixos-rebuild build-vm"
+        #   Example: "NeLiCo@VM"
+      });
 
       # Home-Manager + Plasma-Manager + Stylix + Agenix
-      homeConfigurations = {
-        "Yo@HyperV_VM" = (buildConfiguration {
+      homeConfigurations = (configBuilder.buildHomeConfigurations {
+        "Yo@HyperV_VM" = {
           user = yo;
           host = hyper-v_vm;
-        }).homeManagerConfig;
-        "Yo@LiCo" = (buildConfiguration {
+        };
+        "Yo@LiCo" = {
           user = yo;
           host = lico;
-        }).homeManagerConfig;
-        "Yo@NeLiCo" = (buildConfiguration {
+        };
+        "Yo@NeLiCo" = {
           user = yo;
           host = nelico;
-        }).homeManagerConfig;
-      };
+        };
+      });
 
     }
   );
