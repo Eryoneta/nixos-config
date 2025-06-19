@@ -1,39 +1,37 @@
-{ config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Security
   config.modules."security" = {
     tags = [ "default-setup" ];
-    attr.mkUserSecrets = users: (with config-domain; (utils.pipe users [
+    attr.isAgenixSecretsLoaded = config.modules."configuration".attr.isAgenixSecretsLoaded;
+    attr.mkUserSecrets = users: (utils.pipe users [
 
       # Transforms the set into a list
       (x: builtins.attrValues x)
 
-      # Removes users with files that don't exists
-      (x: builtins.filter (user: (
-        builtins.pathExists "${private.secrets}/${user.username}_user_password.age"
-      )) x)
+      # Add root user into the list
+      (x: x ++ [
+        { # Root user
+          username = "root";
+        }
+      ])
 
       # Prepare each item to be transformed into a set
       (x: builtins.map (user: {
         name = "${user.username}-userPassword";
         value = {
-          file = "${private.secrets}/${user.username}_user_password.age";
+          file = (config.modules."configuration".attr.mkFilePath {
+            private-secret = "${user.username}_user_password.age";
+          });
         };
       }) x)
 
       # Transforms the list into a set
       (x: builtins.listToAttrs x)
 
-      # Add root user configuration
-      (x: x // {
-        "root-userPassword" = {
-          file = "${private.secrets}/root_user_password.age";
-        };
-      })
-
-    ]));
+    ]);
     setup = { attr }: {
-      nixos = { host, config-domain, ... }: { # (NixOS Module)
+      nixos = { host, ... }: { # (NixOS Module)
 
         # Firewall
         config.networking.firewall.enable = true;
@@ -48,8 +46,7 @@
 
         # User passwords
         config.age = ( # (agenix option)
-          # Check for "./private-config/secrets"
-          utils.mkIf ((utils.pathExists config-domain.private.secrets) && !host.system.virtualDrive) {
+          utils.mkIf (attr.isAgenixSecretsLoaded "private") {
             identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
             secrets = (attr.mkUserSecrets host.users);
           }

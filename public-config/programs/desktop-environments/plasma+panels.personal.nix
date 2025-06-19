@@ -1,4 +1,4 @@
-{ config, user, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Plasma: A Desktop Environment focused on customization
   config.modules."plasma+panels.personal" = {
@@ -69,12 +69,15 @@
         };
 
       };
-      tiledmenu = with config-domain; (
-        # Check for "./private-config/programs"
-        utils.mkIfElse (utils.pathExists private.programs) (
-          with config.modules."plasma-tiledmenu.personal"; (attr.tiledmenu attr.apps attr.gridModel)
-        ) (
-          with config.modules."plasma-tiledmenu"; (attr.tiledmenu attr.apps attr.gridModel) # Default
+      tiledmenu = (
+        if (config.includedModules."plasma-tiledmenu.personal" or false) then (
+          with config.modules."plasma-tiledmenu.personal"; ( # Custom
+            attr.tiledmenu attr.apps attr.gridModel
+          )
+        ) else (
+          with config.modules."plasma-tiledmenu"; ( # Default
+            attr.tiledmenu attr.apps attr.gridModel
+          )
         )
       );
       mainPanel = (default-mainPanel // {

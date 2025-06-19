@@ -1,27 +1,19 @@
-{ user, host, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
 
   # User
   config.modules."user" = {
     tags = [ "core-setup" ];
-    attr.profileIcon = username: (with config-domain; { # Requires "resources/profiles/USERNAME/.face.icon" to exist!
-      # Check for "./private-config/resources"
-      enable = (utils.pathExists private.resources);
-      source = (
-        "${private.resources}/profiles/${username}/.face.icon"
-      );
+    attr.profileIcon = username: (config.modules."configuration".attr.mkSymlink {
+      # Requires "resources/profiles/USERNAME/.face.icon" to exist
+      private-resource = "profiles/${username}/.face.icon";
+      public-resource = "profiles/${username}/.face.icon";
     });
-    attr.defaultPassword = username: hashedFilePath: (with config-domain; ( # Sets a default password if there is no hashedFile
-      # Check for "./private-config/secrets"
-      utils.mkIf (!(utils.pathExists private.secrets) || hashedFilePath == null || host.system.virtualDrive) (
-        "nixos"
-      )
-    ));
-    attr.hashedPasswordFilePath = username: hashedFilePath: (with config-domain; ( # Uses a hashedFile if it exists
-      # Check for "./private-config/secrets"
-      utils.mkIf ((utils.pathExists private.secrets) && hashedFilePath != null && !host.system.virtualDrive) (
-        hashedFilePath
-      )
-    ));
+    attr.defaultPassword = "nixos"; # The default password
+    attr.hashedPasswordFilePath = hashedFilePath: ( # Uses a hashedFile if it exists
+      config.modules."configuration".attr.mkSecret {
+        private = hashedFilePath;
+      }
+    );
     setup = {
       home = { config, ... }: { # (Home-Manager Module)
 

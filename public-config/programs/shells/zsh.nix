@@ -1,9 +1,10 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # ZSH: Shell
   config.modules."zsh" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system;
+    attr.mkSymlink = config.modules."configuration".attr.mkSymlink;
     setup = { attr }: {
       nixos = { # (NixOS Module)
 
@@ -22,7 +23,7 @@
         config.environment.pathsToLink = [ "/share/zsh" ];
 
       };
-      home = { config, config-domain, ... }: { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Configuration
         config.programs.zsh = {
@@ -151,9 +152,9 @@
         #   The file is already imported(If present) at the theme above
         #   Of course, HM will complain if there is a file where the symlink should be
         #     Just replace the one at "dotfiles"
-        config.xdg.configFile."zsh/.p10k.zsh" = with config-domain; {
-          source = "${public.dotfiles}/zsh/.config/zsh/.p10k.zsh";
-        };
+        config.xdg.configFile."zsh/.p10k.zsh" = (attr.mkSymlink {
+          public-dotfile = "zsh/.config/zsh/.p10k.zsh";
+        });
 
       };
     };

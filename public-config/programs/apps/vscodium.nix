@@ -1,11 +1,12 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # VSCodium: (Medium) Code editor
   config.modules."vscodium" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
+    attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = { attr }: {
-      home = { config-domain, ... }: { # (Home-Manager Module)
+      home = { # (Home-Manager Module)
 
         # Configuration
         config.programs.vscode = { # VSCode, but actually VSCodium
@@ -23,10 +24,13 @@
             enableExtensionUpdateCheck = (utils.mkDefault) true; # Warn about extension updates
 
             # Settings
-            userSettings = with config-domain; (
+            userSettings = (
               (
                 # Simple settings
-                utils.readJSONFile "${public.dotfiles}/vscodium/.config/VSCodium/User/settings.json"
+                utils.readJSONFile (attr.mkFilePath {
+                  public-dotfile = "vscodium/.config/VSCodium/User/settings.json";
+                  default-dotfile = "";
+                })
               ) // {
                 # Important settings
                 "window.zoomLevel" = -1; # Unzoom a little
@@ -67,10 +71,13 @@
             );
 
             # Shortcuts
-            keybindings = with config-domain; (
+            keybindings = (
               (
                 # Unbindings
-                utils.readJSONFile "${public.dotfiles}/vscodium/.config/VSCodium/User/keybindings.json"
+                utils.readJSONFile (attr.mkFilePath {
+                  public-dotfile = "vscodium/.config/VSCodium/User/keybindings.json";
+                  default-dotfile = "";
+                })
               ) ++ [
                 # Bindings
                 {

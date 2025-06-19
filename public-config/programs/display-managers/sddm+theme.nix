@@ -1,17 +1,18 @@
-{ config, pkgs-bundle, config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
 
   # SDDM: Display Manager
   config.modules."sddm+theme" = {
     tags = [ "default-setup" ];
     attr.packageChannel = config.modules."sddm".attr.packageChannel;
-    attr.backgroundPath = with config-domain; (
-      # Check for "./private-config/programs"
-      if ((utils.pathExists private.programs) && config.includedModules."sddm+theme.personal") then (
-        config.modules."sddm+theme.personal".attr.backgroundPath # Uses a attr defined by another module
-      ) else (
-        "${pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png"}" # Default background image
-      )
-    );
+    attr.backgroundPath = (config.modules."configuration".attr.mkFilePath {
+      default-resource = (
+        if (config.includedModules."sddm+theme.personal" or false) then (
+          config.modules."sddm+theme.personal".attr.backgroundPath # Uses a personal background
+        ) else (
+          pkgs-bundle.nixos-artwork."wallpaper/nix-wallpaper-simple-blue.png" # Default background image
+        )
+      );
+    });
     setup = { attr }: {
       nixos = { # (NixOS Module)
 

@@ -4,8 +4,9 @@
   config.modules."grub" = {
     tags = [ "basic-setup" ];
     attr.packageChannel = pkgs-bundle.system; # Not used
+    attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = {
-      nixos = { config-domain, ... }: { # (NixOS Module)
+      nixos = { # (NixOS Module)
 
         # Configuration
         config.boot.loader.grub = {
@@ -34,9 +35,9 @@
 
           # Theme
           splashImage = null; # No background image
-          theme = (utils.mkDefault) (with config-domain;
-            "${public.dotfiles}/grub/blue-star-grub-theme/light"
-          );
+          theme = (utils.mkDefault) (attr.mkFilePath {
+            public-dotfile = "grub/blue-star-grub-theme/light";
+          });
 
         };
 

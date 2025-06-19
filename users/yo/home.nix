@@ -37,13 +37,14 @@
         config.users.users = (
           let
             user = users."yo";
-            hashedFilePath = config.age.secrets."${user.username}-userPassword".path or null; # (agenix option)
           in {
             "${user.username}" = {
               description = user.name;
               isNormalUser = true;
-              password = (attr.defaultPassword user.username hashedFilePath);
-              hashedPasswordFile = (attr.hashedPasswordFilePath user.username hashedFilePath);
+              password = attr.defaultPassword;
+              hashedPasswordFile = (attr.hashedPasswordFilePath (
+                (config.age.secrets."${user.username}-userPassword".path or "") # (agenix option)
+              ));
               extraGroups = [
                 "wheel" # Can use commands with sudo
                 "networkmanager" # Can change networking settings

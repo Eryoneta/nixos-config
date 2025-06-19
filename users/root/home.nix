@@ -12,11 +12,12 @@
         config.users.users = (
           let
             username = "root";
-            hashedFilePath = config.age.secrets."${username}-userPassword".path or null; # (agenix option)
           in {
             "${username}" = {
-              password = (attr.defaultPassword username hashedFilePath);
-              hashedPasswordFile = (attr.hashedPasswordFilePath username hashedFilePath);
+              password = attr.defaultPassword;
+              hashedPasswordFile = (attr.hashedPasswordFilePath (
+                (config.age.secrets."${username}-userPassword".path or "") # (agenix option)
+              ));
             };
           }
         );
