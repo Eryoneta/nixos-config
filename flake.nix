@@ -55,8 +55,9 @@
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
     # Prism Launcher (Cracked) (Fixed)
-    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137"; # TODO: (Flake) Remove once I afford the original
+    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137";
     prismlauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
+    # TODO: (Flake/Prism-Launcher) Remove once I can afford the original
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -75,10 +76,10 @@
   outputs = { self, ... }@args: (
     let
 
-      # Imports
+      # Utilities
       flake-utils = ((builtins.import ./flake-utils.nix) self.outPath);
 
-      # Auto-Upgrade
+      # Auto-Upgrade list
       auto-upgrade-pkgs = (builtins.attrNames (with args; {
         inherit nixpkgs;
         inherit home-manager;
@@ -159,7 +160,7 @@
       };
 
       # Config Builder
-      configBuilder = (flake-utils.buildConfigurationMaker {
+      configBuilder = (flake-utils.mkConfigBuilder {
         inputs = args;
         inherit auto-upgrade-pkgs;
         inherit package-bundle;
@@ -182,6 +183,7 @@
           host = nelico;
         };
         # Note: Each host is duplicated as a VM, for "nixos-rebuild build-vm"
+        #   It is necessary, as a VM does not have access to secrets or symlinks out of store
         #   Example: "NeLiCo@VM"
       });
 
