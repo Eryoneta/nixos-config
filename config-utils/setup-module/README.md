@@ -1,6 +1,6 @@
 # Setup-Module
 
-Do you have a lot of _Nix_ files in yout config? It is messy and hard to maintain? Do you use _Home-Manager_ and wish you could just merge all of its configs with _NixOS_ instead of having them separated?
+Do you have a lot of _Nix_ files in yout config? It is messy and hard to maintain? Do you use _Home-Manager_ and wish you could just merge all of its configs with _NixOS_ but still keep _Home-Manager_ as a standalone system?
 
 This here thingie is the solution for all that!
 
@@ -30,7 +30,7 @@ Within all the functions within `lib`, there is `evalModules`. This beauty takes
 
 This module system contains no options set, only a empty `config` and `options`. New options can easily be declared and used. One module can import others, and a whole tree of modules can be evaluated into a final output.
 
-This is the magician that allows all the _NixOS_ and _Home-Manager_ modules to function the way they do.
+This is the magician that allows _NixOS_ and _Home-Manager_ modules to function the way they do.
 
 There is nothing stopping you from creating your own module system.
 
@@ -38,29 +38,30 @@ There is nothing stopping you from creating your own module system.
 ## Features
 
 - **Modules**:
-    - `config.modules.*` lets you set named modules.
+    - `config.modules.*` lets you declare named modules.
     - It allows the configuration to be divided into many different chunks which can be selectively included into the final configuration.
 - **Tags**:
     - `config.modules.*.tags` accepts a list of tags.
-    - `config.includeTags` is a list of included tags. Any module with that tag is included.
-    - `config.modules.*.includeTags` lets a module add a tag, if it's included.
+    - `config.modules.*.includeTags` lets a module add more tags, if it is included.
+    - `config.includeTags` is a list of included tags. Any module with that tag is included into the final configuration.
     - `config.includedModules` lists all the final included modules. It is read-only.
     - This allows a very dinamic way of creating a configuration.
         - Although, I suggest it's best to keep it simple. Too many tags can be quite confusing.
 - **Toggles**:
     - `config.modules.*.enable` can disable a module.
-    - `config.modules.*.include` can include a module regardless of its tags.
+    - `config.modules.*.include` can include or exclude a module regardless of its tags.
     - It allows a more fine control.
 - **Atributes**:
-    - `config.modules.*.attr` lets you declare whathever you want.
-        - Useful functions? Important values? Whathever it is, it can be stored in it.
-    - It is essencially a `let in`, but for a module, and it can be shared between them all.
+    - `config.modules.*.attr` lets you declare whatever you want.
+        - Useful functions? Important values? Whatever it is, it can be stored in it.
+    - It's essencially a `let in`, but for a module, and it can be shared with other modules.
 - **Setup**:
-    - `config.modules.*.setup` can be either a function with a `{ attr }` argument, or a mere set.
+    - `config.modules.*.setup` can be either a function with a `{ attr }` argument, or a set.
         - Here, `attr` is loaded with the contents of `config.modules.*.attr`.
     - `config.modules.*.setup.nixos` can be set with a _NixOS_ module.
     - `config.modules.*.setup.home` can be set with a _Home-Manager_ module.
     - `config.modules.*.setup.darwin` can be set with a _Darwin_ module.
+        - In theory. I've never tested it.
     - All the modules, at last together.
 - The output is `nixosModules.setup`, `homeModules.setup`, and `darwinModules.setup`. These are a valid _NixOS_/_Home-Manager_/_Darwin_ module.
 
