@@ -22,9 +22,13 @@ flakePath: (
     # Args Builder
     buildSpecialArgs = { configPath, directories }: {
       config-domain = {
+        publicPath = (flakePath + "/public-config");
+        privatePath = (flakePath + "/private-config");
         public = (buildPath flakePath "/public-config" directories);
         private = (buildPath flakePath "/private-config" directories);
         outOfStore = {
+          publicPath = (configPath + "/public-config");
+          privatePath = (configPath + "/private-config");
           public = (buildPath configPath "/public-config" directories);
           private = (buildPath configPath "/private-config" directories);
         };
