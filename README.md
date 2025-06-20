@@ -14,6 +14,7 @@ My NixOS configuration is my first take on Linux. Not a conventional way to get 
 
 ### Structure
 - My [`flake.nix`](./flake.nix) is meant to be easy to read and edit. However, a lot of the necessary logic is hidden within [`flake-utils.nix`](./flake-utils.nix).
+- [`users/`](./users/) and [`hosts/`](./hosts/) have specific configurations for each host and user.
 - My entire configuration is divided between [`public-config/`](./public-config/) and [`private-config/`](./private-config/) (Which is a _Git_ submodule. Privacy and all that).
 - EVERYTHING is imported by [`import-all.nix`](./import-all.nix).
 - [`config-utils/nix-utils/`](./config-utils/nix-utils/) contains useful _Nix_ functions.
