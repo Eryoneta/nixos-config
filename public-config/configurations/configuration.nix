@@ -192,12 +192,15 @@
             enable = (attr.isDomainLoaded domain "${type}s");
             source = (
               let
-                path = "${config-domain.${domain}.${"${type}s"}}/${extraConfigs.${"${domain}-${type}"}}";
+                domainInStore = config-domain.${domain}.${"${type}s"};
+                domainOutOfStore = config-domain.outOfStore.${domain}.${"${type}s"};
+                pathInStore = "${domainInStore}/${extraConfigs.${"${domain}-${type}"}}";
+                pathOutOfStore = "${domainOutOfStore}/${extraConfigs.${"${domain}-${type}"}}";
               in (
                 utils.mkIfElse (attr.isSymlinkOutOfStoreAllowed) (
-                  (utils.mkOutOfStoreSymlink path) # Editable
+                  (utils.mkOutOfStoreSymlink pathOutOfStore) # Editable
                 ) (
-                  path # Read-only
+                  pathInStore # Read-only
                 )
               )
             );

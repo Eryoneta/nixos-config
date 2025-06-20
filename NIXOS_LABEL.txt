@@ -1,1 +1,1 @@
-Refatoração: Funções
+Fix: mkOutOfStoreSymlink
