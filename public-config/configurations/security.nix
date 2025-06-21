@@ -3,7 +3,7 @@
   # Security
   config.modules."security" = {
     tags = [ "default-setup" ];
-    attr.isAgenixSecretsLoaded = config.modules."configuration".attr.isAgenixSecretsLoaded;
+    attr.isAgenixSecretsAllowed = config.modules."configuration".attr.isAgenixSecretsAllowed;
     attr.mkUserSecrets = users: (utils.pipe users [
 
       # Transforms the set into a list
@@ -46,7 +46,7 @@
 
         # User passwords
         config.age = ( # (agenix option)
-          utils.mkIf (attr.isAgenixSecretsLoaded "private") {
+          utils.mkIf (attr.isAgenixSecretsAllowed "private") {
             identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
             secrets = (attr.mkUserSecrets host.users);
           }
