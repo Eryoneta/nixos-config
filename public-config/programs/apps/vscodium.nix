@@ -33,9 +33,10 @@
                 })
               ) // {
                 # Important settings
-                "window.zoomLevel" = -1; # Unzoom a little
+                "window.zoomLevel" = -1; # Unzooms a little
                 "editor.selectionClipboard" = false; # Allows for multiline selections!
                 "workbench.editor.pinnedTabsOnSeparateRow" = true; # Pinned tabs on a separated row!
+                "workbench.layoutControl.enabled" = false; # Do not show layout buttons (Are not used)
                 "editor.renderWhitespace" = "all"; # Show spaces as dots
                 "window.titleBarStyle" = "custom"; # Do not use the OS decorations (Smaller context menu)
                 # Random settings
