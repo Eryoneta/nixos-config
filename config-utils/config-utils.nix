@@ -91,6 +91,9 @@
         # Sets a package to override others in case of conflict
         higherPriority = package: (nix-lib.hiPrio package);
 
+        # Sets a package to be overriden by others in case of conflict
+        lowerPriority = package: (nix-lib.lowPrio package);
+
         # Check if a path exists
         pathExists = path: (builtins.pathExists path);
 

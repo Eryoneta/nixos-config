@@ -13,9 +13,13 @@
         # Bootloader/Grub: MemTest86
         config.boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
 
-        # Features/AutoUpgrade
-        #config.system.autoUpgrade.alterProfile.configurationLimit = 8; # Upgrades are heavy! 256GB is not enough for 12 generations!
-        # Note: Maybe it can handle 12... Testing
+        # Virtual machine (build-vm)
+        config.virtualisation.vmVariant = {
+          "virtualisation" = {
+            "cores" = 6; # 6 CPU cores
+            "memorySize" = (6 * 1024); # 6GB of RAM
+          };
+        };
 
       };
     };

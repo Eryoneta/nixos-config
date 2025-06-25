@@ -5,7 +5,7 @@
     tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     attr.yt-dlp.packageChannel = (
-      if (builtins.hasAttr "yt-dlp" config.modules) then (
+      if (config.includedModules."yt-dlp" or false) then (
         config.modules."yt-dlp".attr.packageChannel
       ) else (
         pkgs-bundle.unstable

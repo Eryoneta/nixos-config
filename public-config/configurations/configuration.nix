@@ -22,44 +22,63 @@
           public-resource
         */
 
-        # Path
-        path = domain: type: (
-          "${config-domain.${domain}.${"${type}s"}}/${paths.${"${domain}-${type}"}}"
-        );
-
-        # Response
-        mkConditionalSymlink = domain: type: stopCondition: next: (
-          if ((paths.${"${domain}-${type}"} or null) != null) then ( # Path is provided
-            if (stopCondition) then ( # There is no other path
-              (response domain type) # No other path provided = Return this regardless
-            ) else (
-              if (utils.pathExists (path domain type)) then ( # Path exists
-                (response domain type) # Return this
-              ) else next # Path non-existent = Check another path
-            )
-          ) else next # Path not provided = Check another path
-        );
         # Note: Here, the argument "paths" will not have all the arguments from the input-set!
         #   Use "or null" to avoid errors. Calling the argument directly (That is, without "paths") is safe
+
+        # Response
+        mkConditionalSymlink = domain: type: next: (
+          let
+            path = domain: type: (
+              "${config-domain.${domain}.${"${type}s"}}/${paths.${"${domain}-${type}"}}"
+            );
+          in (
+            if ((paths.${"${domain}-${type}"} or null) != null) then ( # Path is provided
+              { # Switch case
+                "private" = (
+                  if (utils.pathExists (path domain type)) then ( # Path exists
+                    (response domain type)
+                  ) else (
+                    if ((paths.${"public-${type}"} or null) != null) then ( # There is another
+                      next
+                    ) else ( # There is no other path
+                      utils.mkIf (false) ( # Path is not acceptable
+                        (response domain type)
+                      )
+                    )
+                  )
+                );
+                "public" = (
+                  if (utils.pathExists (path domain type)) then ( # Path is acceptable
+                    (response domain type)
+                  ) else (
+                    utils.mkIf (false) ( # Path is not acceptable
+                      (response domain type)
+                    )
+                  )
+                );
+              }.${domain}
+            ) else next # Path not provided = Check another path
+          )
+        );
         symlink = (utils.pipe "" (
           # Note: "pipe" builds the structure starting from the bottom. It requires the list to be reversed first
           utils.reverseList [
             # Note: In here, the list is upside down for readability
 
             # Dotfiles
-            (x: mkConditionalSymlink "private" "dotfile" (public-dotfile == null && private-resource == null && public-resource == null) x)
-            (x: mkConditionalSymlink "public" "dotfile" (private-resource == null && public-resource == null) x)
+            (x: mkConditionalSymlink "private" "dotfile" x)
+            (x: mkConditionalSymlink "public" "dotfile" x)
 
             # Resources
-            (x: mkConditionalSymlink "private" "resource" (public-resource == null) x)
-            (x: mkConditionalSymlink "public" "resource" (true) x)
+            (x: mkConditionalSymlink "private" "resource" x)
+            (x: mkConditionalSymlink "public" "resource" x)
 
             # Empty
             (x: {})
 
           ]
-          # Note: It returns the first valid path. It does not check if it exits
-          #   It only checks if it exists if there is other paths, then it returns it or tries the other paths
+          # Note: It returns the first valid path
+          #   It might also return "mkIf (false) (...)" if there is no valid path
         ));
 
       in symlink
@@ -99,26 +118,43 @@
           default                       Final value with the path
         */
 
+        # Note: Here, the argument "paths" will not have all the arguments from the input-set!
+        #   Use "or null" to avoid errors. Calling the argument directly (That is, without "paths") is safe
+
         # Response
         mkConditionalPath = domain: type: next: (
           if ((paths.${"${domain}-${type}"} or null) != null) then ( # Path is provided
-            if (domain == "default") then (
-              paths.${"${domain}-${type}"}
-            ) else (
-              if ((paths.${"default-${type}"} or null) != null) then ( # With default = A final value will be given
-                if (condition domain type) then ( # Path exists
+            { # Switch case
+              "private" = (
+                if (condition domain type) then ( # Path is acceptable
                   (response domain type)
-                ) else next
-              ) else ( # No default = Value can be non-existent
-                utils.mkIfElse (condition domain type) ( # Path exists
+                ) else (
+                  if ((paths.${"public-${type}"} or paths.${"default-${type}"} or null) != null) then ( # There is others
+                    next
+                  ) else ( # There is no other path
+                    utils.mkIf (false) ( # Path is not acceptable
+                      (response domain type)
+                    )
+                  )
+                )
+              );
+              "public" = (
+                if (condition domain type) then ( # Path is acceptable
                   (response domain type)
-                ) next
-              )
-            )
-          ) else next
+                ) else (
+                  if ((paths.${"default-${type}"} or null) != null) then ( # There is another
+                    next
+                  ) else ( # There is no other path
+                    utils.mkIf (false) ( # Path is not acceptable
+                      (response domain type)
+                    )
+                  )
+                )
+              );
+              "default" = paths.${"${domain}-${type}"}; # Default path is always returned
+            }.${domain}
+          ) else next # Path not provided = Check another path
         );
-        # Note: Here, the argument "paths" will not have all the arguments from the input-set!
-        #   Use "or null" to avoid errors. Calling the argument directly (That is, without "paths") is safe
         path = (utils.pipe "" (
           # Note: "pipe" builds the structure starting from the bottom. It requires the list to be reversed first
           utils.reverseList [
@@ -128,12 +164,12 @@
             (x: (mkConditionalPath "private" "resource" x))
             (x: (mkConditionalPath "public" "resource" x))
             (x: (mkConditionalPath "default" "resource" x))
-            
+
             # Secrets
             (x: (mkConditionalPath "private" "secret" x))
             (x: (mkConditionalPath "public" "secret" x))
             (x: (mkConditionalPath "default" "secret" x))
-            
+
             # Dotfiles
             (x: (mkConditionalPath "private" "dotfile" x))
             (x: (mkConditionalPath "public" "dotfile" x))
@@ -144,8 +180,9 @@
 
           ]
           # Note: It returns the first valid path
-          #   If "default-*" is given, it uses "if then else". This is for Nix functions
-          #   If "default-*" is not given, it uses "mkIfElse". This is for NixOS/Home-Manager options
+          #   If "default-*" is given, it returns a final value
+          #   If "default-*" is not given, it might return "mkIf (false) (...)" if there is no valid path
+          #     This is for NixOS/Home-Manager options
         ));
 
       in path
@@ -156,26 +193,25 @@
       private-dotfile ? null, public-dotfile ? null,
       private-resource ? null, public-resource ? null,
       ...
-    }@extraConfigs: (
+    }@paths: (
       let
+
+        # Extra symlinks options
+        extraConfigs = paths;
 
         # Symlink
         symlink = (attr._mkGenericSymlink {
-          response = domain: type: {
+          response = domain: type: ({
             enable = (attr.isDomainLoaded domain "${type}s");
-            source = "${config-domain.${domain}.${"${type}s"}}/${extraConfigs.${"${domain}-${type}"}}"; # Read-only
-          };
-        } extraConfigs);
-
-      in (
-        if (symlink != {}) then (
-          symlink // (builtins.removeAttrs extraConfigs [
+            source = "${config-domain.${domain}.${"${type}s"}}/${paths.${"${domain}-${type}"}}"; # Read-only
+          } // (builtins.removeAttrs extraConfigs [
             "public-dotfile" "private-dotfile"
             "public-resource" "private-resource"
-          ])
+          ]));
           # Note: "extraConfigs" allows to include more options into the final set
-        ) else {}
-      )
+        } paths);
+
+      in symlink
     );
 
     # Creates a valid Home-Manager/XDG symlink to a file outside the Nix Store
@@ -183,19 +219,22 @@
       private-dotfile ? null, public-dotfile ? null,
       private-resource ? null, public-resource ? null,
       ...
-    }@extraConfigs: (
+    }@paths: (
       let
+
+        # Extra symlinks options
+        extraConfigs = paths;
 
         # Out of store symlink
         outOfStoreSymlink = (attr._mkGenericSymlink {
-          response = domain: type: {
+          response = domain: type: ({
             enable = (attr.isDomainLoaded domain "${type}s");
             source = (
               let
                 domainInStore = config-domain.${domain}.${"${type}s"};
                 domainOutOfStore = config-domain.outOfStore.${domain}.${"${type}s"};
-                pathInStore = "${domainInStore}/${extraConfigs.${"${domain}-${type}"}}";
-                pathOutOfStore = "${domainOutOfStore}/${extraConfigs.${"${domain}-${type}"}}";
+                pathInStore = "${domainInStore}/${paths.${"${domain}-${type}"}}";
+                pathOutOfStore = "${domainOutOfStore}/${paths.${"${domain}-${type}"}}";
               in (
                 utils.mkIfElse (attr.isSymlinkOutOfStoreAllowed) (
                   (utils.mkOutOfStoreSymlink pathOutOfStore) # Editable
@@ -204,18 +243,14 @@
                 )
               )
             );
-          };
-        } extraConfigs);
-
-      in (
-        if (outOfStoreSymlink != {}) then (
-          outOfStoreSymlink // (builtins.removeAttrs extraConfigs [
+          } // (builtins.removeAttrs extraConfigs [
             "public-dotfile" "private-dotfile"
             "public-resource" "private-resource"
-          ])
+          ]));
           # Note: "extraConfigs" allows to include more options into the final set
-        ) else {}
-      )
+        } paths);
+
+      in outOfStoreSymlink
     );
 
     # Creates a path to a file
@@ -248,16 +283,27 @@
         # Path
         secretPath = (attr._mkGenericPath {
           condition = domain: type: (
-            ((attr.isAgenixSecretsLoaded domain) && paths.${domain} != "")
+            ((attr.isAgenixSecretsAllowed domain) && paths.${domain} != "")
           );
           response = domain: type: (
+            utils.mkIf ((attr.isAgenixSecretsAllowed domain) && paths.${domain} != "")
             paths.${domain}
           );
-        } {
-          private-secret = private;
-          public-secret = public;
-          default-secret = default;
-        });
+        } (utils.pipe paths [
+
+          # Rename all arguments to be compliant with "attr._mkGenericPath"
+          (x: (builtins.mapAttrs (domain: path: {
+            name = "${domain}-secret";
+            value = path;
+          }) paths))
+
+          # Transforms the set into a list
+          (x: builtins.attrValues x)
+
+          # Transforms the list into a set
+          (x: builtins.listToAttrs x)
+
+        ]));
 
       in secretPath
     );
@@ -283,7 +329,7 @@
         };
       }.${domain}.${type}
     );
-    attr.isAgenixSecretsLoaded = domain: (
+    attr.isAgenixSecretsAllowed = domain: (
       ((attr.isDomainLoaded domain "secrets") && !host.system.virtualDrive)
       # Note: A VM do not have access to stuff outside it. This breaks Agenix secrets
     );

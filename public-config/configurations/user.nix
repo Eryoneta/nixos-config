@@ -4,7 +4,7 @@
   config.modules."user" = {
     tags = [ "core-setup" ];
     attr.profileIcon = username: (config.modules."configuration".attr.mkSymlink {
-      # Requires "resources/profiles/USERNAME/.face.icon" to exist
+      # Searches for "resources/profiles/USERNAME/.face.icon"
       private-resource = "profiles/${username}/.face.icon";
       public-resource = "profiles/${username}/.face.icon";
     });
