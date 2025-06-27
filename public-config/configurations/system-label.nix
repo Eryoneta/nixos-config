@@ -18,7 +18,7 @@
     attr.nixosLabel = self: nixpkgsRevision: freeLabel: (
       let
         hasGitRev = ((attr.gitRevision self) != "");
-        hasNixpkgsRev = (if (nixpkgsRevision != "") then nixpkgsRevision else "");
+        hasNixpkgsRev = (nixpkgsRevision != "");
       in (
         if (hasGitRev && hasNixpkgsRev) then (
           nixpkgsRevision
