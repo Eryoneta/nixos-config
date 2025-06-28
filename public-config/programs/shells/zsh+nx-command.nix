@@ -1,4 +1,4 @@
-{ config, userDev, auto-upgrade-pkgs, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, userDev, auto-upgrade-pkgs, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # NX Function
   config.modules."zsh+nx-command" = {

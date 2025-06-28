@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # MPC-QT: Multimidia player (A MPC-HC clone)
   config.modules."mpc-qt" = {

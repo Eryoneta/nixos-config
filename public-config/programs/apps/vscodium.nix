@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # VSCodium: (Medium) Code editor
   config.modules."vscodium" = {

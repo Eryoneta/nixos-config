@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Baloo: File indexer
   config.modules."plasma-baloo" = {

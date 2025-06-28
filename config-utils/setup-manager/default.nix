@@ -1,14 +1,15 @@
-# Setup Configuration
+# Setup-Manager
 /*
   - A complete modular system, independent from NixOS or Home-Manager
     - Perfect for modularizing the configuration
 */
-{ # (A Module)
+{
   setupSystem = { lib, modules ? [], specialArgs ? {}}: (
     let
       eval = (lib.evalModules { # Evaluation
         modules = [
-          ./setup-config.nix
+          ./config.nix
+          ./options.nix
         ] ++ modules;
         inherit specialArgs;
       });

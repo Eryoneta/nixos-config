@@ -1,1 +1,1 @@
-Ajuste: VSCodium
+Programs: scrcpy

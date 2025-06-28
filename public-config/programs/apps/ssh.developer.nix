@@ -1,4 +1,4 @@
-{ config, userDev, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, userDev, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # SSH: Secure connection
   config.modules."ssh.developer" = {

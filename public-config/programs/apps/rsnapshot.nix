@@ -1,4 +1,4 @@
-{ config, user, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # RSnapshot: Backup manager
   config.modules."rsnapshot" = {

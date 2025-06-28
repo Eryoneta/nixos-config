@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Firefox Developer Edition: Internet browser for developers
   config.modules."firefox-devedition+settings" = {

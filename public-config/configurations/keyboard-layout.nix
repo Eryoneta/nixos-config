@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Keyboard layout
   config.modules."keyboard-layout" = {

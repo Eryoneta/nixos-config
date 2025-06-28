@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Yo user
   config.modules."yo" = {
@@ -52,6 +52,7 @@
               extraGroups = [
                 "wheel" # Can use commands with sudo
                 "networkmanager" # Can change networking settings
+                "adbusers" # Can debug Android devices
               ];
             };
           }

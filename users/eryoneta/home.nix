@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Eryoneta user
   config.modules."eryoneta" = {
@@ -37,6 +37,7 @@
               extraGroups = [
                 "wheel" # Can use commands with sudo
                 "networkmanager" # Can change networking settings
+                "adbusers" # Can debug Android devices
               ];
             };
           }

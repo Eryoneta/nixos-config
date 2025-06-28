@@ -1,4 +1,4 @@
-{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Plasma: A Desktop Environment focused on customization
   config.modules."plasma+panels.personal" = {

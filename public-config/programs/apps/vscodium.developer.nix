@@ -1,4 +1,4 @@
-{ config, user, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, user, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # VSCodium: (Medium) Code editor
   config.modules."vscodium.developer" = {

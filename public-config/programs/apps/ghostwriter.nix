@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Ghostwriter: Writer tool
   config.modules."ghostwriter" = {
