@@ -104,7 +104,7 @@ There is nothing stopping you from creating your own module system.
                                     }
                                 };
                             })
-                            { # (Setup Module)
+                            { # (Setup-Manager Module)
                                 config.modules."default-thingie1" = {
                                     tags = [ "default-host-stuff" ];
                                     attr.usefulFunc = a: a + "b";
