@@ -19,9 +19,9 @@ My NixOS configuration is my first take on Linux. Not a conventional way to get 
 - EVERYTHING is imported by [`import-all.nix`](./import-all.nix).
 - [`config-utils/nix-utils/`](./config-utils/nix-utils/) contains useful _Nix_ functions.
 - [`config-utils/nixos-modules/`](./config-utils/nixos-modules/) contains useful _NixOS_ modules.
-- [`config-utils/setup-module/`](./config-utils/setup-module/) contains my own module system, used by this configuration.
-  - All _Nix_ files here are _Setup_ modules.
-  - More can be read at [Setup-Module](./config-utils/setup-module/).
+- [`config-utils/setup-manager/`](./config-utils/setup-manager/) contains my own module system, used by this configuration.
+  - All _Nix_ files here are _Setup-Manager_ modules.
+  - More can be read at [Setup-Manager](./config-utils/setup-manager/).
   - All the tags I use are defined within [`setups.nix`](./setups.nix).
 - [`config-utils/config-utils.nix`](./config-utils/config-utils.nix) contains all the utilities my configuration uses, including from [`nixos-modules/`](./config-utils/nixos-modules/) and [`nix-utils/`](./config-utils/nix-utils/).
   - All _Nix_ files here have it included by default.
