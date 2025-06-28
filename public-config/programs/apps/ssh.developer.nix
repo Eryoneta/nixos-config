@@ -34,7 +34,7 @@
         };
 
         # Dotfile: Known hosts
-        config.xdg.configFile.".ssh/known_hosts" = (attr.mkOutOfStoreSymlink {
+        config.home.file.".ssh/known_hosts" = (attr.mkOutOfStoreSymlink {
           private-dotfile = "ssh/.ssh/known_hosts";
         });
 

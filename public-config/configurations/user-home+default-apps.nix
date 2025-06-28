@@ -1,8 +1,8 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
-  # File associations
-  config.modules."file-associations" = {
-    tags = [ "default-setup" ];
+  # Default apps
+  config.modules."user-home+default-apps" = {
+    tags = config.modules."user-home".tags;
     attr.associateDefault = app: extensions: (utils.pipe extensions [
 
       # Invert the association: Each extension points to the app
@@ -14,10 +14,43 @@
       (x: builtins.foldl' (x: y: (x // y)) {} x)
 
     ]);
+    attr.associateDefaultDefault = app: extensions: (
+      utils.pipe (config.modules."user-home+default-apps".attr.associateDefault app extensions) [
+
+        # Set as default
+        (x: builtins.mapAttrs (extension: app: (
+          (utils.mkDefault) app
+        )) x)
+
+      ]
+    );
+    attr.includedModules = config.includedModules;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
-        # Note: Programs that should be present: Firefox, KWrite, Kate, LibreOffice Writer, MPV
+        # Assert the presence of the default apps
+        config.assertions = [
+          {
+            assertion = (attr.includedModules."firefox" or false);
+            message = "The configuration of default apps requires the module \"firefox\" to be included";
+          }
+          {
+            assertion = (attr.includedModules."kwrite" or false);
+            message = "The configuration of default apps requires the module \"kwrite\" to be included";
+          }
+          {
+            assertion = (attr.includedModules."kate" or false);
+            message = "The configuration of default apps requires the module \"kate\" to be included";
+          }
+          {
+            assertion = (attr.includedModules."libreoffice" or false);
+            message = "The configuration of default apps requires the module \"libreoffice\" to be included";
+          }
+          {
+            assertion = (attr.includedModules."mpv" or false);
+            message = "The configuration of default apps requires the module \"mpv\" to be included";
+          }
+        ];
 
         # XDG Mime Apps
         config.xdg.mime.enable = true;
@@ -26,7 +59,7 @@
           defaultApplications = (utils.mkMerge [
 
             # Firefox
-            (attr.associateDefault "firefox.desktop" [
+            (attr.associateDefaultDefault "firefox.desktop" [
               "default-web-browser"
               "text/html"
               "x-scheme-handler/http"
@@ -36,13 +69,13 @@
             ])
 
             # KWrite
-            (attr.associateDefault "org.kde.kwrite.desktop" [
+            (attr.associateDefaultDefault "org.kde.kwrite.desktop" [
               "text/plain"
               "text/markdown"
             ])
 
             # Kate
-            (attr.associateDefault "org.kde.kate.desktop" [
+            (attr.associateDefaultDefault "org.kde.kate.desktop" [
               "application/json"
               "application/x-yaml"
               "application/x-docbook+xml"
@@ -50,7 +83,7 @@
             ])
 
             # LibreOffice Writer
-            (attr.associateDefault "writer.desktop" [
+            (attr.associateDefaultDefault "writer.desktop" [
               # As defined by "writer.desktop"
               "application/clarisworks"
               "application/docbook+xml"
@@ -97,7 +130,7 @@
             ])
 
             # MPV
-            (attr.associateDefault "mpv.desktop" [
+            (attr.associateDefaultDefault "mpv.desktop" [
               # As defined by "KDE Plasma" in ~/config/mimeapps.list
               # Note: This is necessary as "UMPV" is INSISTENT in being the default, for some reason
               #   Extra note: "UMPV" is like "MPV", but all new medias are added into a playlist, instead of a new instance

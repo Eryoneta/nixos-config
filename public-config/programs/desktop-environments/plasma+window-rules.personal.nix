@@ -21,7 +21,7 @@
           (utils.mkIf (true) {
             description = "Firefox-Dev & Launcher: Fix instances";
             match = { # What target
-              window-class = (attr.mkMatch "exact" "Navigator firefox-dev");
+              window-class = (attr.mkMatch "exact" "Navigator firefox-devedition");
               window-types = [ "normal" ];
             };
             apply = { # What changes
@@ -70,7 +70,7 @@
           (utils.mkIf (true) {
             description = "Firefox-Dev & Size: Start with a set size";
             match = { # What target
-              window-class = (attr.mkMatch "exact" "Navigator firefox-dev");
+              window-class = (attr.mkMatch "exact" "Navigator firefox-devedition");
               window-types = [ "normal" ]; # Normal window
             };
             apply = { # What changes

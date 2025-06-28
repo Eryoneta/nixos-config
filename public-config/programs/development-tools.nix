@@ -88,7 +88,19 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ hoppscotch ];
+        # Desktop entry: Recreate with icon
+        config.xdg.desktopEntries."hoppscotch" = {
+          name = "Hoppscotch";
+          exec = "hoppscotch";
+          icon = "hoppscotch";
+          comment = "Desktop App for hoppscotch.io";
+          categories = [ "Development" ];
+          type = "Application";
+          terminal = false;
+          mimeType = [ "x-scheme-handler/io.hoppscotch.desktop" ];
+        };
       };
     };
   };

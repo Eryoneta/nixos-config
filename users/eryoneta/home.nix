@@ -37,6 +37,7 @@
               extraGroups = [
                 "wheel" # Can use commands with sudo
                 "networkmanager" # Can change networking settings
+                "adbusers" # Can debug Android devices
               ];
             };
           }

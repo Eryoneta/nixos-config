@@ -1,9 +1,10 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup Module)
 
   # Session variables
   config.modules."session-variables" = {
     tags = [ "default-setup" ];
-    setup = {
+    attr.includedModules = config.includedModules;
+    setup = { attr }: {
       nixos = {
 
         # Variables
@@ -11,6 +12,18 @@
 
       };
       home = { config, ... }: { # (Home-Manager Module)
+
+        # Assert the presence of the default apps
+        config.assertions = [
+          {
+            assertion = (attr.includedModules."kwrite" or false);
+            message = "The configuration of session variables requires the module \"kwrite\" to be included";
+          }
+          {
+            assertion = (attr.includedModules."firefox" or false);
+            message = "The configuration of session variables requires the module \"firefox\" to be included";
+          }
+        ];
 
         # Variables
         config.home.sessionVariables = {

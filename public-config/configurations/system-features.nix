@@ -53,7 +53,7 @@
 
         # Hibernation ("swapfile-hibernation.nix")
         config.system.hibernation = {
-          enable = (utils.mkDefault) true;
+          enable = (utils.mkDefault) (!host.system.virtualDrive);
           resumeDevice = config.fileSystems."/".device;
           swapfilePath = config.swap.devices."basicSwap".device;
           dataFile = {
