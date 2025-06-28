@@ -1,4 +1,4 @@
-# Setup-Module
+# Setup-Manager
 
 Do you have a lot of _Nix_ files in yout config? It is messy and hard to maintain? Do you use _Home-Manager_ and wish you could just merge all of its configs with _NixOS_ but still keep _Home-Manager_ as a standalone system?
 
@@ -21,7 +21,7 @@ As a example, ZSH can be fully configured by _Home-Manager_, but only _NixOS_ ca
 
 There should be a way to "merge" a _Home-Manager_ and _NixOS_ module together.
 
-Introducing, _Setup-Module_!
+Introducing, _Setup-Manager_!
 
 
 ## Eval the modules!
@@ -71,26 +71,26 @@ There is nothing stopping you from creating your own module system.
 
 ```nix
 {
-    description = "Setup example";
+    description = "Setup-Manager example";
     inputs = {
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     }
     outputs = { ... }@inputs: {
-        setup = (builtins.import ./config-utils/setup-module/setup.nix);
+        setup-manager = (builtins.import ./config-utils/setup-manager/setup-manager.nix);
         nixosConfigurations = {
             "MyHost" = (inputs.nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
 
-                    # Setup-Module
-                    (setup.setupSystem {
+                    # Setup-Manager
+                    (setup-manager.setupSystem {
                         inherit (inputs.nixpkgs) lib;
                         modules = [
-                            { # (Setup Module)
+                            { # (Setup-Manager Module)
                                 config.includeTags = [ "my-host" ];
                                 # Any module with the tag "my-host" is included
                             }
-                            ({ config, ... }: { # (Setup Module)
+                            ({ config, ... }: { # (Setup-Manager Module)
                                 config.modules."my-host" = {
                                     tags = [ "my-host" ];
                                     includeTags = [ "default-host-stuff" ];
@@ -122,7 +122,7 @@ There is nothing stopping you from creating your own module system.
                             # Other Setup modules...
 
                         ];
-                        specialArgs = { # This one is for Setup, not NixOS!
+                        specialArgs = { # This one is for Setup-Manager, not NixOS!
                             inherit inputs;
                         };
                     }).nixosModules.setup # Loads all NixOS modules from setup
