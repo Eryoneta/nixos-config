@@ -76,7 +76,7 @@ There is nothing stopping you from creating your own module system.
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     }
     outputs = { ... }@inputs: {
-        setup-manager = (builtins.import ./config-utils/setup-manager/setup-manager.nix);
+        setup-manager = (builtins.import ./config-utils/setup-manager);
         nixosConfigurations = {
             "MyHost" = (inputs.nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
