@@ -117,10 +117,6 @@
 
   in {
 
-    imports = [
-      ./setup-options.nix
-    ];
-
     config = {
 
       includedModules = includedModules;
