@@ -1,4 +1,4 @@
-{ config, lib, ... }: ( # (Setup-Module)
+{ config, lib, ... }: ( # (Setup-Manager Module)
   let
 
     cfg = config;
@@ -117,10 +117,6 @@
 
   in {
 
-    imports = [
-      ./setup-options.nix
-    ];
-
     config = {
 
       includedModules = includedModules;
@@ -129,16 +125,14 @@
       homeConfigurationModules = (evalModules "home");
       darwinConfigurationModules = (evalModules "darwin");
 
-      modules."default" = {
-        tags = [ "default" ];
+      modules."setup-manager-default-module" = {
+        # Note: Hopefully, nobody will use that name
+        include = true;
         setup.nixos = {};
         setup.home = {};
         setup.darwin = {};
       };
       # Note: A default module is included. That stops the readOnly config from being empty, if "config.modules" is empty
-
-      includeTags = [ "default" ];
-      # Note: This "default" tag can be used to automatically include a module
 
     };
 
