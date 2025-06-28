@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Plasma: A Desktop Environment focused on customization
   config.modules."plasma.personal" = {

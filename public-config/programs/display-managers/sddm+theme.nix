@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # SDDM: Display Manager
   config.modules."sddm+theme" = {

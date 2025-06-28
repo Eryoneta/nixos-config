@@ -1,4 +1,4 @@
-{ config, userDev, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, userDev, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Dolphin: File manager
   config.modules."dolphin" = {

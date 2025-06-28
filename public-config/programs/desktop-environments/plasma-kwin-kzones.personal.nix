@@ -1,4 +1,4 @@
-{  config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{  config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # KZones: KWin script for snapping windows into zones
   config.modules."plasma-kwin-kzones.personal" = {

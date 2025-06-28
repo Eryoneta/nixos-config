@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, userDev, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, pkgs-bundle, userDev, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # KWrite: (Light) Text editor
   config.modules."kwrite" = {
