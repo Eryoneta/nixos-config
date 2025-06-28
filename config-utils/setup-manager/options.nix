@@ -1,4 +1,4 @@
-{ lib, ... }: { # (Setup-Module)
+{ lib, ... }: { # (Setup-Manager Module)
   options = {
 
       # Included modules, by tags

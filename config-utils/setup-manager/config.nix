@@ -1,4 +1,4 @@
-{ config, lib, ... }: ( # (Setup-Module)
+{ config, lib, ... }: ( # (Setup-Manager Module)
   let
 
     cfg = config;
