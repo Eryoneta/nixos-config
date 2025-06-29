@@ -1,144 +1,144 @@
 { lib, ... }: { # (Setup-Manager Module)
   options = {
 
-      # Included modules, by tags
-      includeTags = lib.mkOption {
-        type = (lib.types.listOf (lib.types.str));
-        default = [];
-        description = ''
-          A list of tags from tagged modules to be included in the final configuration.
-        '';
-        example = ''
-          [ "development" ]
-        '';
-      };
+    # Included modules, by tags
+    includeTags = lib.mkOption {
+      type = (lib.types.listOf (lib.types.str));
+      default = [];
+      description = ''
+        A list of tags from tagged modules to be included in the final configuration.
+      '';
+      example = ''
+        [ "development" ]
+      '';
+    };
 
-      # Final NixOS system config
-      nixosConfigurationModules = lib.mkOption {
-        type = (lib.types.raw);
-        readOnly = true;
-        visible = false;
-        description = ''
-          The final configuration, a single NixOS Module that contains all the `nixos` configurations from the included modules.
+    # Final NixOS system config
+    nixosConfigurationModules = lib.mkOption {
+      type = (lib.types.raw);
+      readOnly = true;
+      visible = false;
+      description = ''
+        The final configuration, a single NixOS Module that contains all the `nixos` configurations from the included modules.
 
-          This is the output. It returns a valid NixOS Module.
-        '';
-      };
+        This is the output. It returns a valid NixOS Module.
+      '';
+    };
 
-      # Final Home-Manager system config
-      homeConfigurationModules = lib.mkOption {
-        type = (lib.types.raw);
-        readOnly = true;
-        visible = false;
-        description = ''
-          The final configuration, a single Home-Manager Module that contains all the `home` configurations from the included modules.
+    # Final Home-Manager system config
+    homeConfigurationModules = lib.mkOption {
+      type = (lib.types.raw);
+      readOnly = true;
+      visible = false;
+      description = ''
+        The final configuration, a single Home-Manager Module that contains all the `home` configurations from the included modules.
 
-          This is the output. It returns a valid Home-Manager Module.
-        '';
-      };
+        This is the output. It returns a valid Home-Manager Module.
+      '';
+    };
 
-      # Final Darwin system config
-      darwinConfigurationModules = lib.mkOption {
-        type = (lib.types.raw);
-        readOnly = true;
-        visible = false;
-        description = ''
-          The final configuration, a single Darwin Module that contains all the `darwin` configurations from the included modules.
+    # Final Darwin system config
+    darwinConfigurationModules = lib.mkOption {
+      type = (lib.types.raw);
+      readOnly = true;
+      visible = false;
+      description = ''
+        The final configuration, a single Darwin Module that contains all the `darwin` configurations from the included modules.
 
-          This is the output. It returns a valid Darwin Module.
-        '';
-      };
+        This is the output. It returns a valid Darwin Module.
+      '';
+    };
 
-      # Final included modules
-      includedModules = lib.mkOption {
-        type = (lib.types.attrsOf (lib.types.bool));
-        readOnly = true;
-        description = ''
-          A set of all defined modules, where true means included in the final configuration.
+    # Final included modules
+    includedModules = lib.mkOption {
+      type = (lib.types.attrsOf (lib.types.bool));
+      readOnly = true;
+      description = ''
+        A set of all defined modules, where true means included in the final configuration.
 
-          It is read only.
-        '';
-      };
+        It is read only.
+      '';
+    };
 
-      # Modules
-      modules = lib.mkOption {
-        type = (lib.types.attrsOf (lib.types.submodule {
-          options = {
+    # Modules
+    modules = lib.mkOption {
+      type = (lib.types.attrsOf (lib.types.submodule {
+        options = {
 
-            # Module enabler
-            enable = lib.mkOption {
-              type = (lib.types.bool);
-              default = true;
-              description = ''
-                Can be set to disable the module globally.
+          # Module enabler
+          enable = lib.mkOption {
+            type = (lib.types.bool);
+            default = true;
+            description = ''
+              Can be set to disable the module globally.
 
-                It's true by default.
-              '';
-              example = ''
-                false
-              '';
-            };
+              It's true by default.
+            '';
+            example = ''
+              false
+            '';
+          };
 
-            # Module includer
-            include = lib.mkOption {
-              type = (lib.types.nullOr (lib.types.bool));
-              default = null;
-              description = ''
-                If set, includes or excludes the module. It overrides tag behaviour.
+          # Module includer
+          include = lib.mkOption {
+            type = (lib.types.nullOr (lib.types.bool));
+            default = null;
+            description = ''
+              If set, includes or excludes the module. It overrides tag behaviour.
 
-                Very useful for excluding modules from a included tag.
-              '';
-              example = ''
-                true
-              '';
-            };
+              Very useful for excluding modules from a included tag.
+            '';
+            example = ''
+              true
+            '';
+          };
 
-            # Module tags
-            tags = lib.mkOption {
-              type = (lib.types.listOf (lib.types.str));
-              default = [];
-              description = ''
-                List of tags for this module.
+          # Module tags
+          tags = lib.mkOption {
+            type = (lib.types.listOf (lib.types.str));
+            default = [];
+            description = ''
+              List of tags for this module.
 
-                When a tag is present in `config.includeTags`, then this module is included.
-              '';
-              example = ''
-                [ "development" ]
-              '';
-            };
+              When a tag is present in `config.includeTags`, then this module is included.
+            '';
+            example = ''
+              [ "development" ]
+            '';
+          };
 
-            # Module including other modules, by tags
-            includeTags = lib.mkOption {
-              type = (lib.types.listOf (lib.types.str));
-              default = [];
-              description = ''
-                A list of tags from tagged modules to be included if this module is.
-              '';
-              example = ''
-                [ "entertainment" ]
-              '';
-            };
+          # Module including other modules, by tags
+          includeTags = lib.mkOption {
+            type = (lib.types.listOf (lib.types.str));
+            default = [];
+            description = ''
+              A list of tags from tagged modules to be included if this module is.
+            '';
+            example = ''
+              [ "entertainment" ]
+            '';
+          };
 
-            # Module attributes
-            attr = lib.mkOption {
-              type = (lib.types.attrs);
-              default = {};
-              description = ''
-                A set of atributes for this module. Can be thought as a content of a `let in`.
+          # Module attributes
+          attr = lib.mkOption {
+            type = (lib.types.attrs);
+            default = {};
+            description = ''
+              A set of atributes for this module. Can be thought as a content of a `let in`.
 
-                It can also be used by other modules, allowing to share data between modules.
-              '';
-              example = ''
-                {
-                  gitUsername = "yo";
-                }
-              '';
-            };
+              It can also be used by other modules, allowing to share data between modules.
+            '';
+            example = ''
+              {
+                gitUsername = "yo";
+              }
+            '';
+          };
 
-            # Module setup
-            setup = lib.mkOption (
-              let
-                mkSetupConfig = {
+          # Module setup
+          setup = lib.mkOption (
+            let
+              mkSetupConfig = {
                 options = {
 
                   # Module system config
@@ -195,28 +195,29 @@
                   darwin = { };
                 }
               '';
-            });
+            }
+          );
 
+        };
+      }));
+      default = {};
+      description = ''
+        A module carries a valid module for NixOS, Home-Manager, and Darwin.
+
+        It can be included by `tags`, or by directly setting `include`.
+
+        When included, its modules are put in the final 3 sets that are the output.
+      '';
+      example = ''
+        {
+          tags = [ "development" ];
+          attr.gitUsername = "yo";
+          setup = { attr }: {
+            home = { };
           };
-        }));
-        default = {};
-        description = ''
-          A module carries a valid module for NixOS, Home-Manager, and Darwin.
-
-          It can be included by `tags`, or by directly setting `include`.
-
-          When included, its modules are put in the final 3 sets that are the output.
-        '';
-        example = ''
-          {
-            tags = [ "development" ];
-            attr.gitUsername = "yo";
-            setup = { attr }: {
-              home = { };
-            };
-          }
-        '';
-      };
+        }
+      '';
+    };
 
   };
 }
