@@ -49,8 +49,6 @@
             type = (lib.types.oneOf [
               (lib.types.functionTo (lib.types.submodule (builtins.import ./options/content.nix))) # Directory
               (lib.types.submodule (builtins.import ./options/content.nix)) # Directory
-              (lib.types.submodule (builtins.import ./options/link.nix)) # Symlink/Hardlink
-              lib.types.str # Text file
             ]);
             default = {};
             description = ''

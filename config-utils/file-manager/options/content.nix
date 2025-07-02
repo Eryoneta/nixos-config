@@ -4,10 +4,23 @@
     # File system declaration
     content = lib.mkOption {
       type = (lib.types.oneOf [
-        (lib.types.functionTo (lib.types.attrsOf (lib.types.submodule (builtins.import ./content.nix)))) # Directory
-        (lib.types.attrsOf (lib.types.submodule (builtins.import ./content.nix))) # Directory
-        (lib.types.submodule (builtins.import ./link.nix)) # Symlink/Hardlink
-        lib.types.str # Text file
+        (lib.types.functionTo (lib.types.attrsOf (lib.types.oneOf [
+          (lib.types.enum [ "symlink" "hardlink" "copy" ]) # Symlink/Hardlink
+          (lib.types.path) # Symlink/Hardlink
+          (lib.types.submodule (builtins.import ./content.nix)) # Directory
+        ])))
+        (lib.types.attrsOf (lib.types.oneOf [
+          (lib.types.enum [ "symlink" "hardlink" "copy" ]) # Symlink/Hardlink/Copy
+          (lib.types.path) # Symlink/Hardlink
+          (lib.types.submodule (builtins.import ./content.nix)) # Directory
+        ]))
+        (lib.types.functionTo (lib.types.str)) # Text file
+        (lib.types.str) # Text file
+        # Note: "content" can have three different values:
+        #   Set = Directory or Link
+        #   Text = File
+        # The type cannot differentiate between a link and a directory
+        # A link should have "_type" and "_path"
       ]);
       default = "";
       description = ''

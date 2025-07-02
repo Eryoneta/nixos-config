@@ -6,9 +6,15 @@
     cfgLib = config.lib.file-manager;
 
     # 
+    isDirectory = content: ((lib.isAttrs content) && !(isLink content));
+    isLink = content: ((lib.isAttrs content) && (lib.hasAttr "_type" content) && (lib.hasAttr "_path" content));
+    isSymlink = content: ((isLink content) && content._type == "symlink");
+    isHardlink = content: ((isLink content) && content._type == "hardlink");
+    isCopy = content: ((isLink content) && content._type == "copy");
     mkDirectoryScript = path: directoryConfig: ''
       # Create a directory. Do nothing if it already exists
       mkdir --parents "${path}";
+      
       ${lib.pipe directoryConfig.content [
 
         # Gets the text of every child node
@@ -25,35 +31,37 @@
       ]}
     '';
     mkFileScript = fullpath: fileConfig: (
-      # Is a set is and a link = Link
-      # Othewise = File
-      if ((lib.isAttrs fileConfig.content) && (lib.hasAttr "_type" fileConfig.content)) then (
-        if (fileConfig.content._type == "symlink") then ''
+      { # Switch case
+        ${if (isSymlink fileConfig.content) then "true" else "non-symlink"} = ''
           # Create a symlink. Replace if it already exists
           ln --symbolic --force "${fileConfig.content._path}" "${fullpath}";
-        '' else (
-          if (fileConfig.content._type == "hardlink") then ''
+        '';
+        ${if (isHardlink fileConfig.content) then "true" else "non-hardlink"} = ''
           # Create a hardlink. Replace if it already exists
-            ln --force "${fileConfig.content._path}" "${fullpath}";
-          '' else ""
-        )
-      ) else ''
-          # Create a file
-          echo "${fileConfig.content}" > "${fullpath}";
+          ln --force "${fileConfig.content._path}" "${fullpath}";
+        '';
+        ${if (isCopy fileConfig.content) then "true" else "non-copy"} = ''
+          # Create a copy. Replace if it already exists
+          cp "${fileConfig.content._path}" "${fullpath}";
+        '';
+      }.${"true"} or ''
+        # Create a file
+        echo "${fileConfig.content}" > "${fullpath}";
       ''
     );
     mkNodeScript = fullpath: nodeConfig: (
-      # Is a set and not a link = Directory
-      # Othewise = File or link
-      if ((lib.isAttrs nodeConfig.content) && !(lib.hasAttr "_type" nodeConfig.content)) then (
+      if (isDirectory nodeConfig.content) then (
         (mkDirectoryScript fullpath nodeConfig)
-      ) else (mkFileScript fullpath nodeConfig)
+      ) else (
+        (mkFileScript fullpath nodeConfig)
+      )
     );
     mkScript = (mkDirectoryScript cfg.baseDirectory cfg.fileSystem);
 
   in { # (NixOS/Home-Manager Module)
-
     config = {
+      # Note: "config" cannot use "mkIf" as it sets "file-manager", which could set "enable" = Infinite recursion
+      #   Each option here should use a individual "mkIf"
 
       assertions = (lib.mkIf (cfg.enable) [
         {
@@ -69,7 +77,7 @@
 
       # Output
       # file-manager.output = mkScript;
-      file-manager.output = lib.mkIf (cfg.enable) mkScript;
+      file-manager.output = (lib.mkIf (cfg.enable) mkScript);
 
       # Test
       file-manager = {
@@ -83,6 +91,9 @@
               B1
               C1
             '';
+            "File.symlink".content = (config.lib.file-manager.mkSymlink "/home/yo/Imagens");
+            "File.hardlink".content = (config.lib.file-manager.mkHardlink "/home/yo/Imagens");
+            "File.copy".content = (config.lib.file-manager.mkCopy "/home/yo/Imagens");
           };
           "Teste2".content = {
             "SubT1".content = {
@@ -109,6 +120,5 @@
       };
 
     };
-
   }
 )
