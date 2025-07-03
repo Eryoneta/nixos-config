@@ -1,1 +1,1 @@
-Programs: scrcpy
+PRograms/Plasma: WindowTitle

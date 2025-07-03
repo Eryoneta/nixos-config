@@ -128,15 +128,15 @@
         hiding = "normalpanel"; # Stay on screen
         screen = "all"; # Appear on all screens
         opacity = "opaque"; # Opaque
-        widgets = [
-          widgets.startMenu
-          widgets.activityPager
-          widgets.virtualDesktopsPager
-          widgets.taskManager
-          widgets.separator
-          widgets.systemTray
-          widgets.clock
-          widgets.showDesktop
+        widgets = with widgets; [
+          startMenu
+          activityPager
+          virtualDesktopsPager
+          taskManager
+          separator
+          systemTray
+          clock
+          showDesktop
         ];
       };
     };

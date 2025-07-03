@@ -45,12 +45,15 @@
     # NixOS Artwork (Fixed)
     nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
     nixos-artwork.flake = false;
-    # Plasma/Plasmoid: TiledMenu (Fixed)
-    tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
-    tiledmenu.flake = false;
     # Plasma/Icons: Papirus Colors (Fixed)
     papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
     papirus-colors-icons.flake = false;
+    # Plasma/Plasmoid: TiledMenu (Fixed)
+    tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
+    tiledmenu.flake = false;
+    # Plasma/Plasmoid: Window-Title (Fixed)
+    windowtitle.url = "github:dhruv8sh/plasma6-window-title-applet/a6eaf5086a473919ed2fffc5d3b8d98237c2dd41";
+    windowtitle.flake = false;
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
@@ -111,10 +114,11 @@
           nixos-artwork = {
             "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
           };
-          inherit tiledmenu;
           papirus-colors-icons = {
             "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
           };
+          inherit tiledmenu;
+          inherit windowtitle;
           inherit mpv-input-event;
           inherit prismlauncherCRK;
           inherit powershell-prompt;

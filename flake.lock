@@ -576,7 +576,8 @@
         "powershell-prompt": "powershell-prompt",
         "prismlauncherCRK": "prismlauncherCRK",
         "stylix": "stylix",
-        "tiledmenu": "tiledmenu"
+        "tiledmenu": "tiledmenu",
+        "windowtitle": "windowtitle"
       }
     },
     "stylix": {
@@ -766,6 +767,23 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "windowtitle": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722184924,
+        "narHash": "sha256-pFXVySorHq5EpgsBz01vZQ0sLAy2UrF4VADMjyz2YLs=",
+        "owner": "dhruv8sh",
+        "repo": "plasma6-window-title-applet",
+        "rev": "a6eaf5086a473919ed2fffc5d3b8d98237c2dd41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dhruv8sh",
+        "repo": "plasma6-window-title-applet",
+        "rev": "a6eaf5086a473919ed2fffc5d3b8d98237c2dd41",
         "type": "github"
       }
     }

@@ -50,6 +50,12 @@
           });
         });
 
+        # Volume
+        volume = "org.kde.plasma.volume";
+
+        # Network
+        network = "org.kde.plasma.networkmanagement";
+
         # Show grid
         showGrid = {
           name = "org.kde.plasma.icon";
@@ -68,40 +74,47 @@
           };
         };
 
+        # TiledMenu
+        tiledmenu = (
+          if (config.includedModules."plasma-tiledmenu.personal" or false) then (
+            with config.modules."plasma-tiledmenu.personal"; ( # Custom
+              attr.tiledmenu attr.apps attr.gridModel
+            )
+          ) else (
+            with config.modules."plasma-tiledmenu"; ( # Default
+              attr.tiledmenu attr.apps attr.gridModel
+            )
+          )
+        );
+
+        # Window-Title
+        windowtitle = config.modules."plasma-windowtitle".attr.windowtitle;
+
       };
-      tiledmenu = (
-        if (config.includedModules."plasma-tiledmenu.personal" or false) then (
-          with config.modules."plasma-tiledmenu.personal"; ( # Custom
-            attr.tiledmenu attr.apps attr.gridModel
-          )
-        ) else (
-          with config.modules."plasma-tiledmenu"; ( # Default
-            attr.tiledmenu attr.apps attr.gridModel
-          )
-        )
-      );
-      mainPanel = (default-mainPanel // {
-        widgets = [
-          tiledmenu
-          default-widgets.activityPager
-          widgets.taskManager
-          default-widgets.separator
-          "org.kde.plasma.volume"
-          "org.kde.plasma.networkmanagement"
-          default-widgets.clock
-          default-widgets.showDesktop
-        ];
-      });
       helperPanel = (default-mainPanel // {
         height = 24; # Smaller
-        widgets = [
-          default-widgets.virtualDesktopsPager
-          widgets.showGrid
-          default-widgets.separator
-          widgets.toggleYakuake
-          default-widgets.spacer
-          widgets.colorPicker
-          widgets.systemTray
+        widgets = with default-widgets; with widgets; [
+          virtualDesktopsPager
+          showGrid
+          separator
+          toggleYakuake
+          spacer
+          windowtitle
+          spacer
+          colorPicker
+          systemTray
+        ];
+      });
+      mainPanel = (default-mainPanel // {
+        widgets = with default-widgets; with widgets; [
+          tiledmenu
+          activityPager
+          taskManager
+          separator
+          volume
+          network
+          clock
+          showDesktop
         ];
       });
     };
