@@ -54,6 +54,9 @@
     # Plasma/Plasmoid: Window-Title (Fixed)
     windowtitle.url = "github:dhruv8sh/plasma6-window-title-applet/a6eaf5086a473919ed2fffc5d3b8d98237c2dd41";
     windowtitle.flake = false;
+    # Plasma/Plasmoid: Configurable-Button (Fixed)
+    configurablebutton.url = "github:doncsugar/plasmoid-button/a03f0fe832ff6d3dd528ef263b7e1d4cec0b4440";
+    configurablebutton.flake = false;
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
@@ -119,6 +122,7 @@
           };
           inherit tiledmenu;
           inherit windowtitle;
+          inherit configurablebutton;
           inherit mpv-input-event;
           inherit prismlauncherCRK;
           inherit powershell-prompt;
