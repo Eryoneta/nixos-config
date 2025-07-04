@@ -12,6 +12,10 @@
           "scrollAllowed" = false; # Do not scroll windows
           "showTooltip" = false; # Do not show tooltip (Redundant)
         };
+        "Appearance" = {
+          "lengthKind" = 2; # Set maximum size
+          "fixedLength" = 700; # Size
+        };
       };
     };
     setup = { attr }: {
