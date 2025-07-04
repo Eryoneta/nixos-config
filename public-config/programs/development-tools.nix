@@ -1,5 +1,41 @@
 { pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
+  # KConfig: Tool for editing KDE config files
+  config.modules."kconfig" = {
+    tags = [ "sysdev-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.kconfig ];
+      };
+    };
+  };
+
+  # INotify-Tools: Bundle of event tools
+  config.modules."inotify-tools" = {
+    tags = [ "sysdev-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ inotify-tools ];
+      };
+    };
+  };
+
+  # KDialog: Popup tool
+  config.modules."kdialog" = {
+    tags = [ "sysdev-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
+      };
+    };
+  };
+
   # MySQL: MySQL Database v8.0
   config.modules."mysql" = {
     enable = false; # Enable only when developing

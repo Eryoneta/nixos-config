@@ -164,40 +164,4 @@
     };
   };
 
-  # KConfig: Tool for editing KDE config files
-  config.modules."kconfig" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ kdePackages.kconfig ];
-      };
-    };
-  };
-
-  # INotify-Tools: Bundle of event tools
-  config.modules."inotify-tools" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ inotify-tools ];
-      };
-    };
-  };
-
-  # KDialog: Popup tool
-  config.modules."kdialog" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
-      };
-    };
-  };
-
 }
