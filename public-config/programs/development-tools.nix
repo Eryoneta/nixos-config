@@ -7,6 +7,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Configuration
         config.services.mysql = {
           enable = true;
           package = (attr.packageChannel).mysql80;
@@ -21,6 +22,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ mysql-workbench ];
       };
     };
@@ -32,6 +34,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [
           (python3.withPackages (py-pkgs: (with py-pkgs; [
             pandas # Pandas: Library for data structures
@@ -50,6 +53,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Configuration
         config.programs.java = {
           enable = true;
           package = with attr.packageChannel; (lib.hiPrio zulu17); # Zulu: Java Development Kit v17
@@ -66,6 +70,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ eclipses.eclipse-java ];
       };
     };
@@ -77,6 +82,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ nodePackages."@angular/cli" ];
       };
     };
@@ -111,6 +117,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ devtoolbox ];
       };
     };

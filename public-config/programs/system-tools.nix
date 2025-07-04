@@ -6,6 +6,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ gparted ];
       };
     };
@@ -17,6 +18,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ gsmartcontrol ];
       };
     };
@@ -28,6 +30,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ smartmontools ];
       };
     };
@@ -39,6 +42,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ kdiskmark ];
       };
     };
@@ -50,6 +54,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ kdePackages.filelight ];
       };
     };
@@ -61,6 +66,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ nix-output-monitor ];
       };
     };
@@ -79,6 +85,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ pavucontrol ];
       };
     };
@@ -90,6 +97,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ mission-center ];
       };
     };
