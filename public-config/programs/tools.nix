@@ -17,7 +17,25 @@
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.gwenview ];
+        # Dotfile
+        config.programs.plasma.configFile."gwenviewrc" = { # (plasma-manager option)
+          "General" = {
+            "HistoryEnabled" = false; # Do not show history
+          };
+          "ImageView" = {
+            "MouseWheelBehavior" = "MouseWheelBehavior::Zoom"; # Mouse scroll = Zoom
+          };
+          "MainWindow" = {
+            "MenuBar" = "Disabled"; # Do not show menu
+          };
+          "ThumbnailView" = {
+            "LowResourceUsageMode" = true; # Speed above quality
+            "Sorting" = "Sorting::Date"; # Sort by date
+            "SortDescending" = true; # Newer first
+          };
+        };
       };
     };
   };

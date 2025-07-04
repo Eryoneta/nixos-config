@@ -92,6 +92,23 @@
         "type": "github"
       }
     },
+    "configurablebutton": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710993489,
+        "narHash": "sha256-eZgTzV7ttyWV4UxeLniboSL4dQpZDAPCkr2r+AfQfqo=",
+        "owner": "doncsugar",
+        "repo": "plasmoid-button",
+        "rev": "a03f0fe832ff6d3dd528ef263b7e1d4cec0b4440",
+        "type": "github"
+      },
+      "original": {
+        "owner": "doncsugar",
+        "repo": "plasmoid-button",
+        "rev": "a03f0fe832ff6d3dd528ef263b7e1d4cec0b4440",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -560,6 +577,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "configurablebutton": "configurablebutton",
         "firefox-scripts": "firefox-scripts",
         "fx-autoconfig": "fx-autoconfig",
         "git-tools": "git-tools",
@@ -576,7 +594,8 @@
         "powershell-prompt": "powershell-prompt",
         "prismlauncherCRK": "prismlauncherCRK",
         "stylix": "stylix",
-        "tiledmenu": "tiledmenu"
+        "tiledmenu": "tiledmenu",
+        "windowtitle": "windowtitle"
       }
     },
     "stylix": {
@@ -766,6 +785,23 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "windowtitle": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722184924,
+        "narHash": "sha256-pFXVySorHq5EpgsBz01vZQ0sLAy2UrF4VADMjyz2YLs=",
+        "owner": "dhruv8sh",
+        "repo": "plasma6-window-title-applet",
+        "rev": "a6eaf5086a473919ed2fffc5d3b8d98237c2dd41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dhruv8sh",
+        "repo": "plasma6-window-title-applet",
+        "rev": "a6eaf5086a473919ed2fffc5d3b8d98237c2dd41",
         "type": "github"
       }
     }
