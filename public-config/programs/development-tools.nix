@@ -36,6 +36,18 @@
     };
   };
 
+  # LibNotify: Notification tool
+  config.modules."libnotify" = {
+    tags = [ "sysdev-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ libnotify ];
+      };
+    };
+  };
+
   # MySQL: MySQL Database v8.0
   config.modules."mysql" = {
     enable = false; # Enable only when developing
