@@ -105,4 +105,15 @@
     };
   };
 
+  # Dev Toolbox: Useful tools for developers
+  config.modules."devtoolbox" = {
+    tags = [ "developer-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        config.home.packages = with attr.packageChannel; [ devtoolbox ];
+      };
+    };
+  };
+
 }
