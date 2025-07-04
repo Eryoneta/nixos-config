@@ -6,6 +6,7 @@
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.ark ];
       };
     };
@@ -46,6 +47,7 @@
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.okular ];
       };
     };
@@ -59,6 +61,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.kamoso ];
       };
     };
@@ -70,6 +73,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ krename ];
       };
     };
@@ -81,6 +85,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.kolourpaint ];
       };
     };
@@ -92,6 +97,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ keepassxc ];
       };
     };
@@ -103,6 +109,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.kalk ];
       };
     };
@@ -114,6 +121,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ obs-studio ];
       };
     };
@@ -125,6 +133,7 @@
     attr.packageChannel = pkgs-bundle.unstable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ xdg-ninja ];
       };
     };
@@ -137,6 +146,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ marktext ];
       };
     };
@@ -148,40 +158,8 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ imagemagick ];
-      };
-    };
-  };
-
-  # KConfig: Tool for editing KDE config files
-  config.modules."kconfig" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kconfig ];
-      };
-    };
-  };
-
-  # INotify-Tools: Bundle of event tools
-  config.modules."inotify-tools" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ inotify-tools ];
-      };
-    };
-  };
-
-  # KDialog: Popup tool
-  config.modules."kdialog" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
       };
     };
   };

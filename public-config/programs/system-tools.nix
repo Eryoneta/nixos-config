@@ -6,6 +6,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ gparted ];
       };
     };
@@ -17,6 +18,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ gsmartcontrol ];
       };
     };
@@ -28,6 +30,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ smartmontools ];
       };
     };
@@ -39,6 +42,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ kdiskmark ];
       };
     };
@@ -50,27 +54,10 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ kdePackages.filelight ];
       };
     };
-  };
-
-  # nix-output-monitor: Prettify nix output
-  config.modules."nix-output-monitor" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      nixos = { # (NixOS Module)
-        config.environment.systemPackages = with attr.packageChannel; [ nix-output-monitor ];
-      };
-    };
-    # Note: Best usage is "sudo ls /dev/null > /dev/null 2>&1 && sudo nixos-rebuild switch --flake <PATH>#<HOSTNAME> --use-remote-sudo --show-trace --print-build-logs --verbose |& nom"
-    #   "sudo ls /dev/null > /dev/null 2>&1" requires sudo password, and passes that to "nixos-rebuild"
-    #     Otherwise, the password prompt is invisible
-    #   "--use-remote-sudo" means only use sudo at the end
-    #   "--show-trace" is for full error messages
-    #   "--print-build-logs --verbose" is for very detailed output
-    #   "|& nom" passes the output to nix-output-monitor to prettify
   };
 
   # PulseAudio Volume Control: Tool for system audio
@@ -79,6 +66,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       nixos = { # (NixOS Module)
+        # Install
         config.environment.systemPackages = with attr.packageChannel; [ pavucontrol ];
       };
     };
@@ -90,6 +78,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ mission-center ];
       };
     };
