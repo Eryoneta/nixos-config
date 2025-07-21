@@ -7,7 +7,6 @@
     attr.mkRSnapshotConfig = (
       let
         pkgs = config.modules."rsnapshot".attr.packageChannel;
-        lockfilePath = "/home/${user.username}/rsnapshot.pid";
         mkRsnapshotConfigChunk = configChunk: (
           let
 
@@ -92,7 +91,7 @@
           (x: x + "\n")
 
         ]));
-        rsnapshotConfig = {
+        rsnapshotConfig = configName: {
           "config_version" = "1.2";
           "cmd_cp" = "${pkgs.coreutils}/bin/cp";
           "cmd_rm" = "${pkgs.coreutils}/bin/rm";
@@ -101,7 +100,7 @@
           "cmd_logger" = "${pkgs.inetutils}/bin/logger";
           "cmd_du" = "${pkgs.coreutils}/bin/du";
           "cmd_rsnapshot_diff" = "${pkgs.rsnapshot}/bin/rsnapshot-diff";
-          "lockfile" = lockfilePath;
+          "lockfile" = "/home/${user.username}/rsnapshot_${configName}.pid";
           "link_dest" = 1;
         };
         basicConfig = {
@@ -114,9 +113,9 @@
           ]);
           "verbose" = 4; # Show all action messages
         };
-      in ({ startBlock ? {}, middleBlock ? {}, endBlock ? {} }: (
+      in ({ name, startBlock ? {}, middleBlock ? {}, endBlock ? {} }: (
         "# Auto-generated configuration file. Do not edit\n\n"
-        + (mkRsnapshotConfigChunk (rsnapshotConfig // basicConfig))
+        + (mkRsnapshotConfigChunk ((rsnapshotConfig name) // basicConfig))
         + (mkRsnapshotConfigChunk startBlock)
         + (mkRsnapshotConfigChunk middleBlock)
         + (mkRsnapshotConfigChunk endBlock)
@@ -133,6 +132,7 @@
         /*
           config.xdg.configFile."rsnapshot/my_backup.conf" = {
             text = (attr.mkRsnapshotConfig {
+              name = "my_backup";
               startBlock = {
                 "snapshot_root" = "/run/media/USERNAME/REMOVABLE_DEVICE_NAME/";
               };
