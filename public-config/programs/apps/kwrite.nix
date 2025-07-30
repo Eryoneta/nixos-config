@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, userDev, ... }@args: with args.config-utils; { # (Setup-Manager Module)
+{ config, userDev, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # KWrite: (Light) Text editor
   config.modules."kwrite" = {
@@ -48,13 +48,12 @@
         };
 
         # Dotfile: Toolbar and shortcuts
-        config.xdg.dataFile."kxmlgui5/kwrite/kateui.rc" = (
+        config.xdg.dataFile."kxmlgui5/kwrite" = (
           # Only the developer should be able to modify the file
           (if (config.home.username == userDev.username) then attr.mkOutOfStoreSymlink else attr.mkSymlink) {
-            public-dotfile = "kwrite/.local/share/kxmlgui5/kwrite/kateui.rc";
+            public-dotfile = "kwrite/.local/share/kxmlgui5/kwrite";
           }
         );
-        # TODO: (KWrite) Watch out for the dotfile name! Currently, KWrite uses "kateui.rc"
 
       };
     };
