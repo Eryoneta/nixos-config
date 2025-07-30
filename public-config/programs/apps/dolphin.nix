@@ -72,10 +72,10 @@
         };
 
         # Dotfile: Toolbar and shortcuts
-        config.xdg.dataFile."kxmlgui5/dolphin/dolphinui.rc" = (
+        config.xdg.dataFile."kxmlgui5/dolphin" = (
           # Only the developer should be able to modify the file
           (if (config.home.username == userDev.username) then attr.mkOutOfStoreSymlink else attr.mkSymlink) {
-            public-dotfile = "dolphin/.local/share/kxmlgui5/dolphin/dolphinui.rc";
+            public-dotfile = "dolphin/.local/share/kxmlgui5/dolphin";
           }
         );
 
