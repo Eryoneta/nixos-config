@@ -1,1 +1,1 @@
-Firefox-Dev: No group tabs
+VSCodium/nixD: Sem eval
