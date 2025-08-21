@@ -28,9 +28,11 @@
               "problems.decorations.enabled" = false; # Do not paint files and directories with warnings!
             } // ( 
               let
+                /*
                 flakeGetter = "(builtins.getFlake \"${user.configFolder}\")";
                 nixosConfigName = "\"${user.host.name}\"";
                 homeConfigName = "\"${user.name}@${user.host.name}\"";
+                */ # Note: Evaluation is memory heavy and not really used here
               in {
                 # Nix IDE extension configuration
                 "nix.serverPath" = "nixd";
@@ -40,17 +42,20 @@
                   # Documentation: "https://github.com/nix-community/nixd'
                   # Note: There might be differences between the stable and unstable versions!
                   "nixd" = {
+
+                    /*
                     "nixpkgs" = { # Use "pkgs" and "lib" from NixOS
                       # My packages from "pkgs-bundle" are not included. It seems "pkgs" is hardcoded...
                       # The same goes for my "config-utils"
                       "expr" = "import ${flakeGetter}.inputs.nixpkgs {}";
-                      # TODO: (VSCodium/NixD) Include the content of "pkgs-bundle" into "pkgs.channels"?
-                      # TODO: (VSCodium/NixD) Include the content of "config-utils" into "lib.config-utils"?
-                      # TODO: (VSCodium/NixD) instead of "inputs", read a "output.nixpkgs-modified"?
                     };
+                    */ # Note: Evaluation is memory heavy and not really used here
+
                     "formatting" = { # Auto-format
                       "command" = [ "nixfmt" ];
                     };
+
+                    /*
                     "options" = { # Use "options" from my configurations
                       # Note: The names are used to show where the suggestion came from
                       "nixos-options" = {
@@ -60,6 +65,12 @@
                         "expr" = "${flakeGetter}.homeConfigurations.${homeConfigName}.options";
                       };
                     };
+                    */ # Note: Evaluation is memory heavy and not really used here
+
+                    # Note: NixD can be used to eval packages/options and list them
+                    #   The price is a few evaluations beforehand, which takes CPU and memory
+                    #   Packages and options can be seen online, so... Eh
+
                     "diagnostics" = {
                       # Suppress warnings
                       # In VSCodium, a popup shows the diagnostic name(After the warning)

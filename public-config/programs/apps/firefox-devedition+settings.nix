@@ -23,6 +23,7 @@
           # Tabs
           "browser.tabs.tabMinWidth" = 32; # Tab minimum size
           "browser.tabs.tabClipWidth" = 64; # Tab minimum size before hiding details
+          "browser.tabs.groups.enabled" = false; # No group tabs
           # Icons actions at URLbar
           "browser.pageActions.persistedActions" = (
             let
