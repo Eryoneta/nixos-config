@@ -1,1 +1,1 @@
-VSCodium/nixD: Sem eval
+Plasma/Panel: Weather
