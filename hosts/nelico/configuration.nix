@@ -20,7 +20,7 @@
         config.virtualisation.vmVariant = {
           "virtualisation" = {
             "cores" = 6; # 6 CPU cores
-            "memorySize" = (6 * 1024); # 6GB of RAM
+            "memorySize" = (4 * 1024); # 4GB of RAM
           };
         };
 
