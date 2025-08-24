@@ -10,6 +10,9 @@
         # Features/Swapfile
         config.swap.devices."basicSwap".size = ((16 + 2) * 1024); # 16GB + 2GB = 18GB
 
+        # Features/ZRAM
+        config.zramSwap.memoryPercent = 50; # 16GB * 0.5 = 8GB
+
         # Bootloader/Grub: MemTest86
         config.boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
 
