@@ -126,9 +126,9 @@
             "Ctrl+Enter" = actions.togglePitchCorrection;
 
             # Zoom
-            "Alt+Shift+f" = actions.resetZoom; # ctrl+shift+f
+            "Ctrl+Shift+f" = actions.resetZoom; # ctrl+shift+f
 
-            "Alt+f" = actions.zoomIn; # ctrl+f
+            "Ctrl+f" = actions.zoomIn; # ctrl+f
             "Shift+f" = actions.zoomOut; # shift+f
 
             "Ctrl+WHEEL_UP" = actions.zoomIn; # ctrl+wheel_up
