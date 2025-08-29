@@ -31,6 +31,20 @@
           };
         };
 
+        # Weather
+        weather = {
+          name = "org.kde.plasma.weather";
+          config = {
+            "Appearance" = {
+              "showHumidityInTooltip" = false; # Display only temperature and wind speed in tooltip
+              "showTemperatureInCompactMode" = true; # Show temperature alongside
+            };
+            "WeatherStation" = {
+              "source" = "bbcukmet|weather|São Paulo, Brazil, BR|3448439"; # Location and weather station id
+            };
+          };
+        };
+
         # System tray
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
@@ -87,6 +101,7 @@
           windowtitle
           spacer
           colorPicker
+          weather
           systemTray
         ];
       });
