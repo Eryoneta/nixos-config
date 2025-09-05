@@ -51,8 +51,8 @@
 
           # Actions before an end
           # Brightness in %
-          AC.displayBrightness = (utils.mkDefault) 80;
-          battery.displayBrightness = (utils.mkDefault) 60;
+          AC.displayBrightness = (utils.mkDefault) 60;
+          battery.displayBrightness = (utils.mkDefault) 40;
           lowBattery.displayBrightness = (utils.mkDefault) 20;
           # Dim the screen
           AC.dimDisplay = {
