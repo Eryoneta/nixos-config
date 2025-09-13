@@ -38,6 +38,10 @@
             };
           };
 
+          # Note:
+          #   New fonts can be placed at "$XDG_DATA_HOME/fonts"
+          #   "fc-cache -f -v" reloads the font cache
+
         };
 
       };
