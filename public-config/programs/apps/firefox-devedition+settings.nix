@@ -14,6 +14,7 @@
           "browser.compactmode.show" = true; # Allows to use compact-view
           "browser.uidensity" = 1; # Use compact-view
           "media.videocontrols.picture-in-picture-video-toggle-enable" = true; # Picture-In-Picture
+          "widget.gtk.overlay-scrollbars.enabled" = false; # Do not hide scrollbar, always show
           # Theme
           "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org"; # Dark theme!
           # New page
