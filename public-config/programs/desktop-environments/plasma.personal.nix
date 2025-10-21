@@ -39,7 +39,7 @@
           ];
           configFile."kcminputrc" = {
             "ButtonRebinds/Mouse" = {
-              "ExtraButton1" = "Key,Meta+Space"; # Button 9 = Meta + Space
+              "ExtraButton1" = "Key,Meta+K"; # Button 9 = Meta + K
               "ExtraButton2" = "Key,Ctrl+S"; # Button 8 = Ctrl + S
             };
           };

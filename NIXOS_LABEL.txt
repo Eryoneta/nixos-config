@@ -1,1 +1,1 @@
-MySQL ON
+Kando: Fix shortcut
