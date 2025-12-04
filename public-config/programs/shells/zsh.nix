@@ -40,18 +40,7 @@
           };
 
           # Configuration
-          dotDir = (
-            let
-              homePath = config.home.homeDirectory;
-              configPath = config.xdg.configHome;
-              # Warning: It replaces all instances of "/home/USER/"!
-              # That might affect weird XDG-configHome paths like "/home/USER/something/home/USER/my-config"
-              # But, "xdg.configHome" is almost always "/home/USER/.config", so... eh
-              configRelPath = (builtins.replaceStrings [ "${homePath}/" ] [ "" ] configPath);
-            in (
-              "${configRelPath}/zsh" # Does not accept absolute paths
-            )
-          );
+          dotDir = "${config.xdg.configHome}/zsh";
           enableVteIntegration = true;
 
           # Syntax Highlight

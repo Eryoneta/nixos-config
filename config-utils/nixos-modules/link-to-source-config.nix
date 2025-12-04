@@ -43,7 +43,7 @@
 
       # Link to source configuration
       # Available at "/run/current-system/src"
-      system.extraSystemBuilderCmds = "ln -s ${cfg.configurationPath} $out/src";
+      system.systemBuilderCommands = "ln -s ${cfg.configurationPath} $out/src";
 
     };
   }

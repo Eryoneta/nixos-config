@@ -3,7 +3,7 @@
   # VSCodium: (Medium) Code editor
   config.modules."vscodium" = {
     tags = [ "basic-setup" ];
-    attr.packageChannel = pkgs-bundle.unstable;
+    attr.packageChannel = pkgs-bundle.stable;
     attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = { attr }: {
       home = { # (Home-Manager Module)

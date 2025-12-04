@@ -13,7 +13,7 @@
           # Installed fonts
           packages = with pkgs; [
             corefonts # Microsoft fonts for websites(Includes "Comic Sans MS"! Yay!)
-            vistafonts # More fonts from Microsoft
+            vista-fonts # More fonts from Microsoft
             liberation_ttf # Liberation fonts, equivalent for "Times New Roman", "Arial", and "Courier New"
             noto-fonts # Font for many languages
             noto-fonts-color-emoji # Emoji font

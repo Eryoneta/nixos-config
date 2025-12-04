@@ -1,4 +1,4 @@
-[![NixOS Stable](https://img.shields.io/badge/NixOS-25.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
+[![NixOS Stable](https://img.shields.io/badge/NixOS-25.11-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
 # My NixOS Configuration
 
 Based on Linux, NixOS is quite a unique distro! It allows for a almost complete control over the entire system with the use of a single configuration file (That get a bit too big, so you inevitably end up breaking it into parts, of course) and that brings a unique possibility: Recreating an entire OS with only a configuration file (And Internet access).

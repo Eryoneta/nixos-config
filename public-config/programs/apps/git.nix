@@ -41,9 +41,11 @@
         config.programs.git = {
           enable = true;
           package = (utils.mkDefault) (attr.packageChannel).git;
-          userName = (utils.mkDefault) user.name;
-          userEmail = (utils.mkDefault) "${user.username}@${user.host.hostname}";
-          extraConfig = {
+          settings = {
+            "user" = {
+              "name" = (utils.mkDefault) user.name;
+              "email" = (utils.mkDefault) "${user.username}@${user.host.hostname}";
+            };
             "init" = {
               "defaultBranch" = "main";
             };
@@ -57,19 +59,20 @@
             }
           ];
 
-          # Delta: Git diff highlighter
-          delta = {
-            enable = (utils.mkDefault) true;
-            package = (utils.mkDefault) (attr.packageChannel).delta;
-            options = (utils.mkDefault) {
-              "line-numbers" = true; # Show numbers
-              "side-by-side" = true; # git diff shows changes side-by-side
-              #"hyperlinks" = true; # Clickable links
-              #"hyperlinks-file-link-format" = "vscode://file/{path}:{line}";
-              # TODO: (ZSH/Delta) Check hyperlinks. Useful?
-            };
-          };
+        };
 
+        # Delta: Git diff highlighter
+        config.programs.delta = {
+          enable = (utils.mkDefault) true;
+          enableGitIntegration = true;
+          package = (utils.mkDefault) (attr.packageChannel).delta;
+          options = (utils.mkDefault) {
+            "line-numbers" = true; # Show numbers
+            "side-by-side" = true; # git diff shows changes side-by-side
+            #"hyperlinks" = true; # Clickable links
+            #"hyperlinks-file-link-format" = "vscode://file/{path}:{line}";
+            # TODO: (ZSH/Delta) Check hyperlinks. Useful?
+          };
         };
 
       };
