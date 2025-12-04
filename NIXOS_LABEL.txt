@@ -1,1 +1,1 @@
-Impressora
+NixOS 25.11, Xantusia
