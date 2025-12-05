@@ -11,8 +11,9 @@
           name = "org.kde.plasma.kickoff";
           config = {
             "General" = {
-              "icon" = "nix-snowflake"; # Icon
+              "icon" = "nix-snowflake-white"; # Icon
               "alphaSort" = true; # Sort by alphabet
+              "highlightNewlyInstalledApps" = false; # Do not mark new apps
             };
           };
         };
