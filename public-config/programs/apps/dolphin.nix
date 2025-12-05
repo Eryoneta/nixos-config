@@ -49,7 +49,7 @@
             # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
             # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
             "MaximumTextLines" = 5; # Allowed number of lines for the filename
-            "TextWidthIndex" = 1; # (Menu index option) Text width per item
+            "TextWidthIndex" = 0; # (Menu index option) Text width per item
           };
           "CompactMode" = {
             "IconSize" = 16; # Icon size
