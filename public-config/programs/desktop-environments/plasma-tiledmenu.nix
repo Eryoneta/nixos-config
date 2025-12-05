@@ -2,6 +2,7 @@
 
   # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
   config.modules."plasma-tiledmenu" = {
+    enable = false; # DISABLED (Does not work with Plasma 6.5 and beyound)
     tags = config.modules."plasma".tags;
     attr = rec {
       tiledmenu-pkg = pkgs-bundle.tiledmenu; # Input

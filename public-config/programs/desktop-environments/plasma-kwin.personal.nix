@@ -15,7 +15,6 @@
             "Primary Desktop"
             "Auxiliary Desktop"
             "Extra Desktop"
-            "Emergency Desktop"
           ];
 
         };

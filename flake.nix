@@ -57,6 +57,9 @@
     # Plasma/Plasmoid: Configurable-Button (Fixed)
     configurablebutton.url = "github:doncsugar/plasmoid-button/a03f0fe832ff6d3dd528ef263b7e1d4cec0b4440";
     configurablebutton.flake = false;
+    # Plasma/Plasmoid: Weather Widget Plus (Fixed)
+    weatherwidgetplus.url = "github:tully-t/weather-widget-plus/a020306b7ef132fb0575752ff1f7de7a141ee8db";
+    weatherwidgetplus.flake = false;
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
@@ -123,6 +126,7 @@
           inherit tiledmenu;
           inherit windowtitle;
           inherit configurablebutton;
+          inherit weatherwidgetplus;
           inherit mpv-input-event;
           inherit prismlauncherCRK;
           inherit powershell-prompt;
