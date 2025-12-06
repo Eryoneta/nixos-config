@@ -114,7 +114,7 @@
             "Rows" = 1; # Order in a singular row
           };
           "Windows" = {
-            "ElectricBorders" = 2; # Move between virtual desktops by moving to the edges
+            "ElectricBorders" = 1; # Move between virtual desktops only when dragging a window
             "ElectricBorderDelay" = 350; # Delay in ms before the border action running
             "ElectricBorderCooldown" = 1000; # Delay in ms before doing another action
           };
