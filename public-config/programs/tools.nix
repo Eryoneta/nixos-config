@@ -62,18 +62,6 @@
     };
   };
 
-  # Kalk: Calculator
-  config.modules."kalk" = {
-    tags = [ "default-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ kdePackages.kalk ];
-      };
-    };
-  };
-
   # OBS Studio: Video streamer
   config.modules."obs-studio" = {
     tags = [ "personal-setup" ];
@@ -119,6 +107,36 @@
       home = { # (Home-Manager Module)
         # Install
         config.home.packages = with attr.packageChannel; [ imagemagick ];
+      };
+    };
+  };
+
+  # Qalculate: Calculator
+  config.modules."qalculate" = {
+    tags = [ "default-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ qalculate-qt ];
+        # Desktop Entry: Recreate without the "Education" category
+        config.xdg.desktopEntries."io.github.Qalculate.qalculate-qt" = {
+          name = "Qalculate! (Qt)";
+          exec = "qalculate-qt";
+          icon = "qalculate-qt";
+          categories = [ "Utility" ];
+          type = "Application";
+          terminal = false;
+          settings = {
+            "GenericName" = "Calculator";
+            "GenericName[pt_BR]" = "Calculadora";
+            "Comment" = "Powerful and easy to use calculator";
+            "Comment[pt_BR]" = "Calculadora potente e fácil de usar";
+            "StartupNotify" = "true";
+          };
+          # Note: As defined by the package
+          #   (Can be seen at "~/.local/state/nix/profiles/home-manager-<GENERATION>-link/home-path/share/applications/")
+        };
       };
     };
   };
