@@ -39,6 +39,31 @@
           }
         );
 
+        # Dotfile: Favorites
+        # Note: This does not work!
+        #   "/home/USERNAME/.config/kactivitymanagerd-statsrc" needs to be manually tweaked
+        config.programs.plasma.configFile."kactivitymanagerd-statsrc" = ( # (plasma-manager option)
+          let
+            appList = [
+              "applications:chromium-browser.desktop" # Chromium
+              "applications:steam.desktop" # Steam
+              "applications:org.pulseaudio.pavucontrol.desktop," # PulseAudio
+              "applications:com.github.wwmm.easyeffects.desktop" # Easy Effects
+              "applications:io.missioncenter.MissionCenter.desktop" # Mission Center
+              "applications:onboard.desktop" # OnBoard
+              "applications:org.kde.kwrite.desktop" # KWrite
+              "applications:io.github.Qalculate.qalculate-qt.desktop" # Qalculate
+              "applications:org.kde.krita.desktop" # Krita
+              "applications:org.kde.kolourpaint.desktop" # KolourPaint
+              "applications:org.bunkus.mkvtoolnix-gui.desktop" # MKVToolNix
+            ];
+          in {
+            "Favorites-org.kde.plasma.kickoff.favorites.instance-RANDOM_ID-global" = {
+              ordering = (utils.joinStr "," appList);
+            };
+          }
+        );
+
       };
     };
   };

@@ -49,6 +49,9 @@
             enable = (utils.mkDefault) true;
             package = (utils.mkDefault) (attr.packageChannel).zsh-syntax-highlighting;
             highlighters = [ "root" "brackets" "cursor" ];
+            styles = {
+              "cursor" = "bg=black";
+            };
           };
 
           # History
