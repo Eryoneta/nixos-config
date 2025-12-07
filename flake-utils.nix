@@ -124,7 +124,7 @@ flakePath: (
                           ./import-all.nix # Imports all Setup-Manager modules
                           { # (Setup-Manager Module)
                             config = {
-                              includeTags = [ "${user.username}" ]; # Includes user modules
+                              includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
                             };
                           }
                         ];
@@ -188,7 +188,7 @@ flakePath: (
                 ./import-all.nix # Imports all Setup-Manager modules
                 { # (Setup-Manager Module)
                   config = {
-                    includeTags = [ "${user.username}" ]; # Includes user modules
+                    includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
                   };
                 }
               ];
