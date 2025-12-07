@@ -34,6 +34,9 @@
         "permissions.default.microphone" = 0; # Always ask
         "permissions.default.desktop-notification" = 0; # Always ask
 
+        # Security
+        "network.IDN_show_punycode" = true; # Show real address characters
+
       };
     };
     setup = { attr }: {
