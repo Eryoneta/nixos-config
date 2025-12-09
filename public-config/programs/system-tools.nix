@@ -7,7 +7,10 @@
     setup = { attr }: {
       nixos = { # (NixOS Module)
         # Install
-        config.environment.systemPackages = with attr.packageChannel; [ gparted ];
+        config.environment.systemPackages = with attr.packageChannel; [
+          gparted
+          exfatprogs # ExFAT utilities
+        ];
       };
     };
   };
