@@ -63,10 +63,6 @@
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
-    # Prism Launcher (Cracked) (Fixed)
-    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137";
-    prismlauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
-    # TODO: (Flake/Prism-Launcher) Remove once I can afford the original
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -128,7 +124,6 @@
           inherit configurablebutton;
           inherit weatherwidgetplus;
           inherit mpv-input-event;
-          inherit prismlauncherCRK;
           inherit powershell-prompt;
           inherit git-tools;
           inherit firefox-scripts;
