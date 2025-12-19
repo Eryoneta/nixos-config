@@ -5,6 +5,7 @@
     tags = [ "sysdev-setup" ];
     attr.configurationLimit = config.modules."system-features+auto-upgrade".attr.configurationLimit;
     attr.systemUpgradeProfileName = config.modules."system-features+auto-upgrade".attr.systemUpgradeProfileName;
+    attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
@@ -12,7 +13,7 @@
         config.programs.zsh.initContent = (
           let
 
-            version = "v1.2.1"; # Should be changed at each modification
+            version = "v1.2.2"; # Should be changed at each modification
             systemProfile = {
               name = "system";
               path = "/nix/var/nix/profiles/${systemProfile.name}";
@@ -96,6 +97,25 @@
             listGenerationsCommand = (
               utils.replaceStr "\n" "" ''
                 nx-lg() {
+                  if [[ $2 =~ ^sys$ ]]; then
+                    profile=${upgradeProfile.path} ${(attr.mkFilePath {
+                      public-dotfile = "zsh/list-generations-fix.sh";
+                      default-dotfile = "";
+                    })};
+                  else
+                    profile=${systemProfile.path} ${(attr.mkFilePath {
+                      public-dotfile = "zsh/list-generations-fix.sh";
+                      default-dotfile = "";
+                    })};
+                  fi;
+                };
+                nx-lg
+              ''
+            );
+            # Note: It uses a custom script, as "nixos-rebuild list-generations" does not work with "--profile-name", for some reason
+            /*listGenerationsCommand = (
+              utils.replaceStr "\n" "" ''
+                nx-lg() {
                   local profileNameArg;
                   if [[ $2 =~ ^sys$ ]]; then
                     profileNameArg="--profile-name ${upgradeProfile.name}";
@@ -106,7 +126,8 @@
                 };
                 nx-lg
               ''
-            );
+            );*/
+            # TODO: (ZSH) Use "nixos-rebuild list-generations", when it works again
 
             deleteGenerationsCommand = (
               let
