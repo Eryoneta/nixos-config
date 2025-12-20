@@ -48,7 +48,15 @@
         config.age = ( # (agenix option)
           utils.mkIf (attr.isAgenixSecretsAllowed "private") {
             identityPaths = [ "/home/${host.userDev.username}/.ssh/id_ed25519_agenix" ];
-            secrets = (attr.mkUserSecrets host.users);
+            secrets = (attr.mkUserSecrets host.users) // {
+              flakeUpdateToken = {
+                file = (config.modules."configuration".attr.mkFilePath {
+                  private-secret = "flake_update_token.age";
+                });
+                owner = host.userDev.username;
+                group = "users";
+              };
+            };
           }
         );
 
