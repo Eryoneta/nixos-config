@@ -5,7 +5,7 @@
     tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.system; # (Also included with NixOS)
     setup = { attr }: {
-      nixos = { pkgs, inputs, host, nixos-modules, ... }: { # (NixOS Module)
+      nixos = { config, pkgs, inputs, host, nixos-modules, ... }: { # (NixOS Module)
 
         # Imports
         imports = [
@@ -49,6 +49,10 @@
           # This means "nix shell" uses "nixpkgs" from this flake and not necessarily "github:NixOS/nixpkgs/nixpkgs-unstable"
           #registry.nixpkgs.flake = inputs.nixpkgs;
           # Apparently, NixOS already does that: https://github.com/NixOS/nixpkgs/blob/release-24.05/nixos/modules/misc/nixpkgs-flake.nix
+
+          extraOptions = ''
+            !include ${config.age.secrets.flakeUpdateToken.path or ""}
+          '';
 
         };
 
