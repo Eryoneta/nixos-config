@@ -13,7 +13,7 @@
         config.programs.zsh.initContent = (
           let
 
-            version = "v1.2.2"; # Should be changed at each modification
+            version = "v1.2.3"; # Should be changed at each modification
             systemProfile = {
               name = "system";
               path = "/nix/var/nix/profiles/${systemProfile.name}";
@@ -99,13 +99,13 @@
                 nx-lg() {
                   if [[ $2 =~ ^sys$ ]]; then
                     profile=${upgradeProfile.path} ${(attr.mkFilePath {
-                      public-dotfile = "zsh/list-generations-fix.sh";
-                      default-dotfile = "";
+                      public-resource = "zsh/list-generations-fix.sh";
+                      default-resource = "";
                     })};
                   else
                     profile=${systemProfile.path} ${(attr.mkFilePath {
-                      public-dotfile = "zsh/list-generations-fix.sh";
-                      default-dotfile = "";
+                      public-resource = "zsh/list-generations-fix.sh";
+                      default-resource = "";
                     })};
                   fi;
                 };

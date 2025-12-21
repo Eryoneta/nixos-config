@@ -89,8 +89,8 @@
               );
               toBase64 = (
                 (builtins.import (config.modules."configuration".attr.mkFilePath {
-                  public-dotfile = "plasma-widget-tiled-menu/base64.nix";
-                  default-dotfile = "";
+                  public-resource = "plasma/plasma-widget-tiled-menu/base64.nix";
+                  default-resource = "";
                 })) {
                   inherit lib;
                 }

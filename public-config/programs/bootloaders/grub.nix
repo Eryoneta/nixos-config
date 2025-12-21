@@ -36,7 +36,7 @@
           # Theme
           splashImage = null; # No background image
           theme = (utils.mkDefault) (attr.mkFilePath {
-            public-dotfile = "grub/blue-star-grub-theme/light";
+            public-resource = "grub/blue-star-grub-theme/light";
           });
 
         };
