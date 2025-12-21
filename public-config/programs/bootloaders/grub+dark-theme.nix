@@ -9,7 +9,7 @@
 
         # Theme
         config.boot.loader.grub.theme = (attr.mkFilePath {
-          public-dotfile = "grub/blue-star-grub-theme/dark";
+          public-resource = "grub/blue-star-grub-theme/dark";
         });
 
       };

@@ -16,8 +16,8 @@
             # It is a newer, modified version
             #   (Here, zone indicators have priority over screen edges)
             fetchFromGitHub = ignoredArgs: (attr.mkFilePath {
-              public-dotfile = "kwin/kzones";
-              default-dotfile = "";
+              public-resource = "kwin/kzones";
+              default-resource = "";
             });
           })
           #kdePackages.kzones
