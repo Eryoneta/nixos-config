@@ -63,8 +63,6 @@
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
-    # Plasma-Vault (Fixed)
-    plasma-vault.url = "github:NixOS/nixpkgs/09eb77e94fa25202af8f3e81ddc7353d9970ac1b";
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -129,7 +127,6 @@
           inherit powershell-prompt;
           inherit git-tools;
           inherit firefox-scripts;
-          plasma-vault = ((builtins.import plasma-vault) nixpkgsConfig);
         })
       );
 
