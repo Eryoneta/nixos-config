@@ -14,8 +14,8 @@
         ];
 
         # Configuration
-        #config.programs.adb.enable = true; # Starts ADB server
-        # Note: Note really necessary for everyday use
+        #config.programs.adb.enable = true; # Starts the ADB server
+        # Note: Not really necessary, as the server can be started by scrcpy
         config.boot = {
           kernelModules = [ "v4l2loopback" ]; # Adds a "Video4Linux" module
           extraModulePackages = [ (attr.packageChannel).linuxPackages.v4l2loopback ];
@@ -32,8 +32,11 @@
         config.xdg.desktopEntries."virtcam" = {
           name = "Android Virtual Camera";
           icon = "camera-web-symbolic";
-          comment = "Use a Android device as a virtual webcam";
-          exec = "scrcpy --camera-facing=back --video-source=camera --no-audio --v4l2-sink=/dev/video0 -m1024";
+          comment = "Feed a Android device camera into a virtual webcam feed";
+          exec = "scrcpy --video-source=camera --camera-facing=back --no-audio --v4l2-sink=/dev/video0 --max-size=1024";
+          # Note: Get the camera (The back camera), without audio, and shove the results into "video0"
+          #   "--max-size=1024" is here so it doesn't crash
+          #   Running this, allows any other app to read "video0" to get a video feed
           categories = [ "Office" ];
           type = "Application";
           terminal = false;
@@ -45,6 +48,7 @@
         #     5 Taps into "Settings" > "About phone" generally enables "Developer Mode"
         #     "Developer options" allows to enable "USB debugging"
         #   Important: After connected, the USB connection needs to be in "Transfer files mode"!
+        #     ...Maybe? Not really?
         #   A popup requests a USB debug permission
         #     Might require to try again, after accepting
 
