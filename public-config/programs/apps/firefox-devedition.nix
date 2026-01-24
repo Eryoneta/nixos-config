@@ -3,7 +3,7 @@
   # Firefox Developer Edition: Internet browser for developers
   config.modules."firefox-devedition" = {
     tags = [ "personal-setup" "developer-setup" ];
-    attr.packageChannel = pkgs-bundle.unstable;
+    attr.packageChannel = pkgs-bundle.firefox-dev-fix;
     attr.fx-autoconfig = pkgs-bundle.fx-autoconfig;
     attr.firefox-scripts = pkgs-bundle.firefox-scripts;
     attr.template = {

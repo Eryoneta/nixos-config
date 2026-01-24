@@ -319,6 +319,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-firefox-dev": {
+      "locked": {
+        "lastModified": 1768661221,
+        "narHash": "sha256-MJwOjrIISfOpdI9x4C+5WFQXvHtOuj5mqLZ4TMEtk1M=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3327b113f2ef698d380df83fbccefad7e83d7769",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3327b113f2ef698d380df83fbccefad7e83d7769",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1769089682,
@@ -486,6 +502,7 @@
         "mpv-input-event": "mpv-input-event",
         "nixos-artwork": "nixos-artwork",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-firefox-dev": "nixpkgs-firefox-dev",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unfree-unstable": "nixpkgs-unfree-unstable",
         "nixpkgs-unstable": "nixpkgs-unstable",

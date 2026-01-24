@@ -32,6 +32,9 @@
     # Unstable Packages (Auto upgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Firefox-Dev-Fix
+    nixpkgs-firefox-dev.url = "github:NixOS/nixpkgs/3327b113f2ef698d380df83fbccefad7e83d7769";
+
     # Extra Inputs
     # Unstable Unfree Packages (Auto upgrade)
     nixpkgs-unfree-unstable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
@@ -127,6 +130,7 @@
           inherit powershell-prompt;
           inherit git-tools;
           inherit firefox-scripts;
+          firefox-dev-fix = ((builtins.import nixpkgs-firefox-dev) nixpkgsConfig);
         })
       );
 
