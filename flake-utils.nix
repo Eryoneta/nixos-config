@@ -137,7 +137,7 @@ flakePath: (
 
                   ]);
                   sharedModules = [
-                    inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
+                    inputs.plasma-manager.homeModules.plasma-manager # Loads Plasma-Manager options
                     inputs.stylix.homeModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
@@ -195,7 +195,7 @@ flakePath: (
               specialArgs = (setupHomeSpecialArgs user.username);
             }).homeModules.setup # Loads all home modules from setup
 
-            inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
+            inputs.plasma-manager.homeModules.plasma-manager # Loads Plasma-Manager options
             inputs.stylix.homeModules.stylix # Loads Stylix options
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
