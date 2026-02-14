@@ -125,6 +125,12 @@
 
             "Ctrl+Enter" = actions.togglePitchCorrection;
 
+            # Pitch
+            "Ctrl+Shift+0" = actions.resetPitch; # ctrl+shift+0
+
+            "Ctrl+Shift+Up" = actions.pitchUp; # ctrl+shift+up
+            "Ctrl+Shift+Down" = actions.pitchDown; # ctrl+shift+down
+
             # Zoom
             "Ctrl+Shift+f" = actions.resetZoom; # ctrl+shift+f
 

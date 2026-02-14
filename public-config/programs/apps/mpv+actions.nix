@@ -31,6 +31,13 @@
           [ mpv-config.speedMaxBoundary ]
         ]));
 
+        # Pitch
+        pitchesList = (utils.joinStr " " (builtins.concatLists [
+          [ mpv-config.pitchMinBoundary ]
+          mpv-config.pitches
+          [ mpv-config.pitchMaxBoundary ]
+        ]));
+
         # Rotation
         rotationList = (utils.joinStr " " mpv-config.rotations);
 
@@ -206,6 +213,20 @@
         speedUpNoOSC = "no-osd cycle-values speed ${speedsList}"; # Increase speed (For UOSC)
         speedDownNoOSC = "no-osd cycle-values !reverse speed ${speedsList}"; # Decrease speed (For UOSC)
         resetSpeedNoOSC = "no-osd set speed 1"; # Reset speed (For UOSC)
+
+        # Pitch
+        pitchUp = (utils.joinStr ";" [ # Increase pitch
+          "no-osd cycle-values pitch ${pitchesList}"
+          ''show-text "Pitch: ''${pitch}x"''
+        ]);
+        pitchDown = (utils.joinStr ";" [ # Decrease pitch
+          "no-osd cycle-values !reverse pitch ${pitchesList}"
+          ''show-text "Pitch: ''${pitch}x"''
+        ]);
+        resetPitch = (utils.joinStr ";" [ # Reset pitch
+          "no-osd set pitch 1"
+          ''show-text "Pitch: ''${pitch}x"''
+        ]);
 
         # Zoom
         zoomIn = (utils.joinStr ";" [ # Zoom in
