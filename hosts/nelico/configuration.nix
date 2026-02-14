@@ -16,6 +16,9 @@
         # Bootloader/Grub: MemTest86
         config.boot.loader.grub.memtest86.enable = false; # Note: Enable if necessary
 
+        # Features/AutoUpgrade
+        config.system.autoUpgrade.alterProfile.configurationLimit = 8; # Just 8 is fine
+
         # Virtual machine (build-vm)
         config.virtualisation.vmVariant = {
           "virtualisation" = {
