@@ -35,6 +35,15 @@
       speedMinBoundary = "0.03124"; # Smaller than the smallest speed, triggers the limit
       speedMaxBoundary = "16.00001"; # Bigger than the biggest speed, triggers the limit
 
+      # Pitch
+      pitches = [ # All available pitches
+        "0.1" "0.3" "0.5" "0.7" "0.8" "0.9"
+          "1"
+            "1.1" "1.2" "1.3" "1.5" "1.8" "2"
+      ];
+      pitchMinBoundary = "0.09999"; # Smaller than the smallest pitch, triggers the limit
+      pitchMaxBoundary = "2.00001"; # Bigger than the biggest pitch, triggers the limit
+
       # Zoom
       zoomStep = "0.05"; # Zoom: +-5%
       moveStep = "0.01"; # Move screen: +-1%
@@ -141,6 +150,16 @@
               "profile-desc" = "Limits the maximum speed";
               "profile-cond" = "speed >= ${attr.configuration.speedMaxBoundary}"; # If the boundary is reached
               "speed" = (lib.lists.last attr.configuration.speeds); # Limit the speed to a maximum
+            };
+            "min_pitch_limit" = {
+              "profile-desc" = "Limits the minimum pitch";
+              "profile-cond" = "pitch <= ${attr.configuration.pitchMinBoundary}"; # If the boundary is reached
+              "pitch" = (builtins.head attr.configuration.pitches); # Limit the pitch to a minimum
+            };
+            "max_pitch_limit" = {
+              "profile-desc" = "Limits the maximum pitch";
+              "profile-cond" = "pitch >= ${attr.configuration.pitchMaxBoundary}"; # If the boundary is reached
+              "pitch" = (lib.lists.last attr.configuration.pitches); # Limit the pitch to a maximum
             };
           };
 
