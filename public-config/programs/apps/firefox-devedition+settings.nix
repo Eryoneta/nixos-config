@@ -132,9 +132,6 @@
           "full-screen-api.transition-duration.leave" = "0 0"; # No delay before exiting
           # Audio
           "media.audio.playbackrate.muting_threshold" = 16; # Mute audio only at speeds above x16
-          "media.audio.playbackrate.soundtouch_seekwindow_ms" = 15; # Time-window for the algorithm to find points to cut the audio
-          "media.audio.playbackrate.soundtouch_sequence_ms" = 25; # How much the original audio can be cut
-          "media.audio.playbackrate.soundtouch_overlap_ms" = 28; # How much overlap can happen between the cut audios
           # URLbar
           "browser.urlbar.trimHttps" = false; # Do not trim "https://"
           "browser.urlbar.autoFill" = false; # Do not auto-complete urls
