@@ -1,2 +1,4 @@
 public-config/dotfiles/** linguist-generated=true
+public-config/resources/** linguist-generated=true
+public-config/secrets/** linguist-generated=true
 .githooks/** linguist-generated=true
