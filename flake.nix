@@ -32,9 +32,6 @@
     # Unstable Packages (Auto upgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Firefox-Dev-Fix
-    nixpkgs-firefox-dev.url = "github:NixOS/nixpkgs/3327b113f2ef698d380df83fbccefad7e83d7769";
-
     # Extra Inputs
     # Unstable Unfree Packages (Auto upgrade)
     nixpkgs-unfree-unstable.url = "github:numtide/nixpkgs-unfree/nixos-unstable";
@@ -43,7 +40,7 @@
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
     # Firefox: FX-AutoConfig (Fixed)
-    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/f1f61958491c18e690bed8e04e89dd3a8e4a6c4d";
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/76232083171a8d609bf0258549d843b0536685e1";
     fx-autoconfig.flake = false;
     # NixOS Artwork (Fixed)
     nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
@@ -130,7 +127,6 @@
           inherit powershell-prompt;
           inherit git-tools;
           inherit firefox-scripts;
-          firefox-dev-fix = ((builtins.import nixpkgs-firefox-dev) nixpkgsConfig);
         })
       );
 
