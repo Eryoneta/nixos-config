@@ -12,11 +12,31 @@
 
           # Dotfile: Virtual desktops
           virtualDesktops.names = [ # List of virtual desktops
+            "Extra Desktop"
             "Primary Desktop"
             "Auxiliary Desktop"
-            "Extra Desktop"
           ];
 
+        };
+
+        # Autostart: Set the virtual desktop to be the middle one
+        # Note: This allows to move windows either to the left or to the right, when moving between VirtDesks
+        config.xdg.configFile."autostart/pick-middle-virtual-desktop.desktop" = {
+          text = utils.toINI {
+            "Desktop Entry" = {
+              "Name" = "Use Middle Virtual Desktop";
+              "Icon" = "dialog-scripts-symbolic";
+              "Exec" = (
+                let
+                  desktopIndex = "2";
+                in ''
+                  qdbus org.kde.kglobalaccel /VirtualDesktopManager org.kde.KWin.VirtualDesktopManager.current "Desktop_${desktopIndex}"
+                ''
+              );
+              "Type" = "Application";
+              "Terminal" = false;
+            };
+          };
         };
 
         # Dotfile: Activities
