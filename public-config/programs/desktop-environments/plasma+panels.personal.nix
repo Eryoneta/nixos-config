@@ -102,11 +102,20 @@
               "highlightType" = 2; # Square format
               "animationDuration" = 60; # 60ms of animation
               "wrapOn" = false; # Do not cicle back at the end
+              "type" = 2; # Goes from 0 to 2. Here it actually refers to type3
             };
-            "type2" = {
+            "type2" = { # Text label option
               "fixedLen" = 24; # Indicator height
               "labelSource" = 0; # Show virtual desktop number
+            }; # Note: Not used
+            "type3" = { # Icon option
+              "iconsList" = (utils.joinStr "\n" [
+                "internet-services"
+                "starred"
+                "format-text-code"
+              ]);
             };
+            # Note: "typeN" goes from 1 to 3
           };
         };
 
