@@ -27,6 +27,13 @@
         "app.update.service.enabled" = false; # Do not update on background
         "app.update.silent" = false; # Alert if an update happens
         "extensions.update.autoUpdateDefault" = false; # Do not auto-update by default
+        # AI
+        "browser.ai.control.default" = "blocked"; # Block all AI stuff
+        "browser.ai.control.linkPreviewKeyPoints" = "blocked"; # Block preview when hovering an link
+        "browser.ai.control.pdfjsAltText" = "blocked"; # Block PDF description
+        "browser.ai.control.sidebarChatbot" = "blocked"; # Block chatbot icon at the sidebar
+        "browser.ai.control.smartTabGroups" = "blocked"; # Block tab group suggestions
+        "browser.ai.control.translations" = "blocked"; # Block AI translations
 
         # Privacy
         "permissions.default.geo" = 0; # Always ask
