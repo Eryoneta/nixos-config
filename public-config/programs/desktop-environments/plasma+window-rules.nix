@@ -73,8 +73,8 @@
           })
 
           # Firefox: PiP on top
-          (utils.mkIf (false) { # DISABLED
-            description = "Firefox & OnTop: Stick PiP windows on top";
+          (utils.mkIf (true) {
+            description = "Firefox & OnTop/Desktops: Stick PiP windows on top of all desktops";
             match = { # What target
               window-class = (attr.mkMatch "exact" "firefox firefox");
               title = (attr.mkMatch "exact" "Picture-in-Picture");
@@ -82,11 +82,12 @@
             };
             apply = { # What changes
               "above" = (attr.mkValue "initially" true); # Set the window.to be on top
+              "desktops" = (attr.mkValue "initially" 0); # Set the window.to be on all virtual desktops
             };
           })
 
           # Firefox: Start size
-          (utils.mkIf (false) { # DISABLED
+          (utils.mkIf (true) {
             description = "Firefox & Size: Start with a set size";
             match = { # What target
               window-class = (attr.mkMatch "exact" "firefox firefox");
@@ -95,17 +96,6 @@
             apply = { # What changes
               "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
             };
-          })
-          (utils.mkIf (true) {
-            description = "Firefox(XWayland) & Size: Start with a set size";
-            match = { # What target
-              window-class = (attr.mkMatch "exact" "Navigator firefox"); # A Firefox window
-              window-types = [ "normal" ];
-            };
-            apply = { # What changes
-              "size" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},${height}")); # Set the window.size
-            };
-            # TODO: (KWin/Rules/Firefox) Remove size rule once wayland works for Firefox
           })
 
           # MPV: Start dimension
