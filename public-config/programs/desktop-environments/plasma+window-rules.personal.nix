@@ -17,18 +17,6 @@
         # Window rules
         config.programs.plasma.window-rules = [ # (plasma-manager option)
 
-          # Firefox-Dev: Launcher
-          (utils.mkIf (true) {
-            description = "Firefox-Dev & Launcher: Fix instances";
-            match = { # What target
-              window-class = (attr.mkMatch "exact" "Navigator firefox-devedition");
-              window-types = [ "normal" ];
-            };
-            apply = { # What changes
-              "desktopfile" = (attr.mkValue "initially" "firefox-devedition"); # Set the .desktop launcher
-            };
-          })
-
           # Chromium: Focus
           (utils.mkIf (true) {
             description = "Chromium & Focus: Unfocusable";
@@ -44,7 +32,7 @@
           (utils.mkIf (true) {
             description = "Chromium & Position/Size: Set start dimension";
             match = { # What target
-              window-class = (attr.mkMatch "exact" "chromium-browser Chromium-browser");
+              window-class = (attr.mkMatch "exact" "chromium chromium-browser");
             };
             apply = { # What changes
               "position" = (with attr.workArea; (attr.mkValue "initially" "${halfWidth},0")); # Set the window.position
@@ -54,14 +42,14 @@
 
           # Firefox-Dev: PiP on all desktops
           (utils.mkIf (true) {
-            description = "Firefox-Dev & Desktops: Stick PiP on all virtual desktops";
+            description = "Firefox-Dev & OnTop/Desktops: Stick PiP windows on top of all desktops";
             match = { # What target
-              window-class = (attr.mkMatch "exact" "Toolkit firefox-devedition");
-              window-role = (attr.mkMatch "exact" "PictureInPicture");
-              window-types = [ "utility" ];
+              window-class = (attr.mkMatch "exact" "firefox-devedition firefox-devedition");
               title = (attr.mkMatch "exact" "Picture-in-Picture");
+              window-types = [ "normal" ];
             };
             apply = { # What changes
+              "above" = (attr.mkValue "initially" true); # Set the window.to be on top
               "desktops" = (attr.mkValue "initially" 0); # Set the window.to be on all virtual desktops
             };
           })
@@ -70,7 +58,7 @@
           (utils.mkIf (true) {
             description = "Firefox-Dev & Size: Start with a set size";
             match = { # What target
-              window-class = (attr.mkMatch "exact" "Navigator firefox-devedition");
+              window-class = (attr.mkMatch "exact" "firefox-devedition firefox-devedition");
               window-types = [ "normal" ]; # Normal window
             };
             apply = { # What changes
