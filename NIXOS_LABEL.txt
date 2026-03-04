@@ -1,1 +1,1 @@
-Plasma/Kwin/Rules: Fix
+Firefox: Block AI
