@@ -69,7 +69,7 @@
 
   # MySQL: MySQL Database v8.0
   config.modules."mysql" = {
-    enable = false; # Enable only when developing
+    enable = true; # Enable only when developing
     tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
