@@ -58,6 +58,7 @@
             informStart = {
               show = (utils.mkDefault) true;
               time = (utils.mkDefault) 15;
+              promptConfirmation = (utils.mkDefault) true;
             };
             informConclusion = {
               show = (utils.mkDefault) true;
