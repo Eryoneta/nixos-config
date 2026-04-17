@@ -42,6 +42,16 @@
             default = 15;
           };
 
+          promptConfirmation = lib.mkOption {
+            type = lib.types.bool;
+            description = ''
+              Instead of a notification, it's a confirmation prompt.
+
+              This allows to cancel the upgrade, if desired.
+            '';
+            default = false;
+          };
+
         };
 
         informConclusion = {
@@ -78,17 +88,40 @@
 
       systemd = (
         let
-          mkScript = {text, icon, timing}: ''
+          mkScript = {text, icon, timing, promptConfirmation ? false}: ''
             # Interrupts if there is an error or undefined variable
             set -eu
             # Loads access
             export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/''${UID}/bus"
             # Send notification
-            notify-send "NixOS Upgrade" \
-              "${text}" \
-              --icon "${icon}" \
-              --urgency "${timing.urgency}" \
-              --expire-time ${timing.expireTime}
+            ${if (promptConfirmation) then (''
+              # Prompt for upgrade
+              action=$(notify-send "NixOS Upgrade" \
+                "Execute system upgrade?" \
+                --icon "${icon}" \
+                --action "1=Execute" \
+                --action "0=Ignore" \
+                --urgency "critical")
+              # Action
+              if [[ $action -eq 1 ]]; then
+                notify-send "NixOS Upgrade" \
+                  "${text}" \
+                  --icon "${icon}" \
+                  --urgency "${timing.urgency}" \
+                  --expire-time ${timing.expireTime}
+              else
+                notify-send "NixOS Upgrade" \
+                  "Upgrade cancelled" \
+                  --icon "info"
+                exit 1 # Trigger a failure. This should cancel nixos-upgrade
+              fi
+            '') else (''
+              notify-send "NixOS Upgrade" \
+                "${text}" \
+                --icon "${icon}" \
+                --urgency "${timing.urgency}" \
+                --expire-time ${timing.expireTime}
+            '')}
           '';
           mkTiming = time: {
             urgency = (if ((builtins.typeOf time) == "string" && time == "infinite") then "critical" else "normal");
@@ -112,6 +145,7 @@
               text = "Performing system upgrade...\nIt should be available in the next boot";
               icon = "system-upgrade";
               timing = (mkTiming cfg_n.informStart.time);
+              promptConfirmation = cfg_n.informStart.promptConfirmation;
             });
           };
 
@@ -151,7 +185,7 @@
 
           # NixOS-Upgrade calls the services as needed
           services."nixos-upgrade" = {
-            wants = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
+            bindsTo = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
             after = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
             onSuccess = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-success.service");
             onFailure = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-failure.service");
