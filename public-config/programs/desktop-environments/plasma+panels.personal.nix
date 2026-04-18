@@ -58,8 +58,7 @@
               default-widgets.systemTray.systemTray.items.hidden ++ [
                 "Yakuake" # Yakuake
                 "Easy Effects" # Easy Effects
-                "chrome_status_icon_1" # Kando
-                # TODO: (Kando) Watchout for the widget. The name might change!
+                "kando_status_icon_1" # Kando
                 "org.kde.plasma.volume" # System volume
                 "org.kde.plasma.networkmanagement" # Network status
               ]
