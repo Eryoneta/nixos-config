@@ -38,14 +38,14 @@
     };
   };
 
-  # KolourPaint: Basic image editor
-  config.modules."kolourpaint" = {
+  # Pinta: Basic image editor
+  config.modules."pinta" = {
     tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
         # Install
-        config.home.packages = with attr.packageChannel; [ kdePackages.kolourpaint ];
+        config.home.packages = with attr.packageChannel; [ pinta ];
       };
     };
   };
