@@ -1,6 +1,6 @@
 { config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
-  # Plasma: A Desktop Environment focused on customization
+  # Plasma theme
   config.modules."plasma+theme" = {
     tags = config.modules."plasma".tags;
     attr.applyTheme = false; # The theme is managed by Stylix

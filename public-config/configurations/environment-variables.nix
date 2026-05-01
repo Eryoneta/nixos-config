@@ -1,7 +1,7 @@
 { config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
-  # Session variables
-  config.modules."session-variables" = {
+  # Environment-variables
+  config.modules."environment-variables" = {
     tags = [ "default-setup" ];
     attr.includedModules = config.includedModules;
     setup = { attr }: {

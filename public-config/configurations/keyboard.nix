@@ -1,7 +1,7 @@
 { ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
-  # Keyboard layout
-  config.modules."keyboard-layout" = {
+  # Keyboard
+  config.modules."keyboard" = {
     tags = [ "basic-setup" ];
     setup = {
       nixos = { # (NixOS Module)
