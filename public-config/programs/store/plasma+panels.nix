@@ -244,7 +244,6 @@
             )
           )
         );
-        # Note: Not used
 
         # Configurable-Button
         configurablebutton = config.modules."plasma-configurablebutton".attr.configurablebutton;
@@ -339,7 +338,7 @@
       });
       mainPanel = (default-mainPanel // {
         widgets = with default-widgets; with widgets; [
-          startMenu
+          tiledmenu
           activityPager
           separator
           configurablebutton.showGrid

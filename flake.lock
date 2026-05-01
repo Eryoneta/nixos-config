@@ -567,17 +567,17 @@
     "tiledmenu": {
       "flake": false,
       "locked": {
-        "lastModified": 1718670194,
-        "narHash": "sha256-hLXQmQ88rdcd5bfPijnjh9yffdu+7y42IUK9bADBjW4=",
-        "owner": "Zren",
+        "lastModified": 1777270805,
+        "narHash": "sha256-IvdsZ5WgGh5k8iakcWSNK/hYaGG8FzUUO0BRdlTdkZA=",
+        "owner": "nirwin81",
         "repo": "plasma-applet-tiledmenu",
-        "rev": "73e03bd9ff523b01abb31a7c72901ba25918f9d8",
+        "rev": "57f05a368bc7da1eb64da9bca1d544d12cd306e1",
         "type": "github"
       },
       "original": {
-        "owner": "Zren",
+        "owner": "nirwin81",
         "repo": "plasma-applet-tiledmenu",
-        "rev": "73e03bd9ff523b01abb31a7c72901ba25918f9d8",
+        "rev": "57f05a368bc7da1eb64da9bca1d544d12cd306e1",
         "type": "github"
       }
     },

@@ -2,6 +2,7 @@
 
   # Window Title: Plasmoid for Plasma, is a neat label that shows the title of the focused window
   config.modules."plasma-windowtitle" = {
+    enable = false; # DISABLED: Not used, since Plasma does not support stacking panels anymore
     tags = config.modules."plasma".tags;
     attr.windowtitle-pkg = pkgs-bundle.windowtitle;
     attr.windowtitle = {
