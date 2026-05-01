@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup-Manager Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # System features
   config.modules."system-features" = {
@@ -69,7 +69,7 @@
 
   # Auto-upgrade
   config.modules."system-features+auto-upgrade" = {
-    tags = [ "default-setup" ];
+    tags = config.modules."system-features".tags;
     attr.configurationLimit = 12; # 12 seems like a good mumber, 3 months of weekly upgrades
     attr.systemUpgradeProfileName = "System_Upgrades";
     setup = { attr }: {
