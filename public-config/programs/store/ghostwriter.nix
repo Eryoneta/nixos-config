@@ -2,7 +2,7 @@
 
   # Ghostwriter: Writer tool
   config.modules."ghostwriter" = {
-    enable = false;
+    enable = false; # DISABLED: Does not work
     tags = [ "personal-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
