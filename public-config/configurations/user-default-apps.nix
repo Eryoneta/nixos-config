@@ -1,8 +1,8 @@
 { config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Default apps
-  config.modules."user-home+default-apps" = {
-    tags = config.modules."user-home".tags;
+  config.modules."user-default-apps" = {
+    tags = [ "default-setup" ];
     attr.associateDefault = app: extensions: (utils.pipe extensions [
 
       # Invert the association: Each extension points to the app
@@ -15,7 +15,7 @@
 
     ]);
     attr.associateDefaultDefault = app: extensions: (
-      utils.pipe (config.modules."user-home+default-apps".attr.associateDefault app extensions) [
+      utils.pipe (config.modules."user-default-apps".attr.associateDefault app extensions) [
 
         # Set as default
         (x: builtins.mapAttrs (extension: app: (
@@ -192,6 +192,41 @@
 
           ]);
         };
+
+      };
+    };
+  };
+
+  # Default apps
+  config.modules."user-default-apps.personal" = {
+    tags = config.modules."user-home.personal".tags;
+    attr.associateDefault = config.modules."user-default-apps".attr.associateDefault;
+    attr.includedModules = config.includedModules;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+
+        # Assert the presence of the default apps
+        config.assertions = [
+          {
+            assertion = (attr.includedModules."firefox-devedition" or false);
+            message = "The configuration of default apps requires the module \"firefox-devedition\" to be included";
+          }
+        ];
+
+        # XDG Mime Apps
+        config.xdg.mimeApps.defaultApplications = (utils.mkMerge [
+
+          # Firefox Developer-Edition
+          (attr.associateDefault "firefox-devedition.desktop" [
+            "default-web-browser"
+            "text/html"
+            "x-scheme-handler/http"
+            "x-scheme-handler/https"
+            "x-scheme-handler/about"
+            "x-scheme-handler/unknown"
+          ])
+
+        ]);
 
       };
     };

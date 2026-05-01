@@ -1,6 +1,6 @@
 { config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
-  # Main panel
+  # Plasma shortcuts
   config.modules."plasma+shortcuts" = {
     tags = config.modules."plasma".tags;
     setup = {

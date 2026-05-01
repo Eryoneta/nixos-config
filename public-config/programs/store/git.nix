@@ -79,4 +79,29 @@
     };
   };
 
+  # Git: File versioning
+  config.modules."git.developer" = {
+    tags = [ "developer-setup" ];
+    setup = {
+      home = { # (Home-Manager Module)
+
+        # Configuration
+        config.programs.git = {
+          settings = {
+            "merge" = {
+              "ff" = "false"; # Merge: Never fast-forward, always create a merge commit
+            };
+            "pull" = {
+              "ff" = "only"; # Pull: Only fast-forward, never create a merge commit
+            };
+            "alias" = {
+              "merge-no-edit" = "merge --no-edit"; # Don't edit commits of merges
+            };
+          };
+        };
+
+      };
+    };
+  };
+
 }
