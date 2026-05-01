@@ -286,6 +286,9 @@
               ];
             };
 
+            # Settings
+            settings = (attr.template).settings;
+
             # Extensions
             extensions.packages = (attr.template).extensions;
 
