@@ -49,8 +49,9 @@
     papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
     papirus-colors-icons.flake = false;
     # Plasma/Plasmoid: TiledMenu (Fixed)
-    tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
+    tiledmenu.url = "github:nirwin81/plasma-applet-tiledmenu/57f05a368bc7da1eb64da9bca1d544d12cd306e1";
     tiledmenu.flake = false;
+    # Note: It's created by Zren, and forked by nirwin81
     # Plasma/Plasmoid: Window-Title (Fixed)
     windowtitle.url = "github:dhruv8sh/plasma6-window-title-applet/a6eaf5086a473919ed2fffc5d3b8d98237c2dd41";
     windowtitle.flake = false;

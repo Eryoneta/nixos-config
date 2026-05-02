@@ -2,7 +2,6 @@
 
   # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
   config.modules."plasma-tiledmenu" = {
-    enable = false; # DISABLED (Does not work with Plasma 6.5 and beyound)
     tags = config.modules."plasma".tags;
     attr = rec {
       tiledmenu-pkg = pkgs-bundle.tiledmenu; # Input
@@ -17,7 +16,7 @@
         KI = "org.kde.kinfocenter.desktop";
         MC = "io.missioncenter.MissionCenter.desktop";
         # Utilities
-        KC = "org.kde.kalk.desktop";
+        Qa = "io.github.Qalculate.qalculate-qt.desktop";
         Wr = "writer.desktop";
         Ca = "calc.desktop";
         # Development
@@ -26,17 +25,17 @@
         Ko = "org.kde.konsole.desktop";
         Co = "codium.desktop";
         # Images
-        KP = "org.kde.kolourpaint.desktop";
+        Pi = "pinta.desktop";
         # Videos
         Mp = "mpv.desktop";
       };
       gridModel = (with apps; [ # The grid
-        [ Ff __ __ KW KW Ka __ KP KP ]
-        [ __ __ __ KW KW Ko __ KP KP ]
-        [ KC __ __ Co Co __ __ Mp Mp ]
-        [ Wr __ __ Co Co __ __ Mp Mp ]
-        [ Ca __ __ __ __ __ __ __ __ ]
-        [ SS PA EE KI MC __ __ __ __ ]
+        [ Ff __ KW KW Ka __ Pi Pi ]
+        [ __ __ KW KW Ko __ Pi Pi ]
+        [ Qa __ Co Co __ __ Mp Mp ]
+        [ Wr __ Co Co __ __ Mp Mp ]
+        [ Ca __ __ __ __ __ __ __ ]
+        [ SS PA EE KI MC __ __ __ ]
       ]);
       tiledmenu = apps: gridModel: (
         let
@@ -98,7 +97,7 @@
             in (toBase64 (toJSON (mkGrid apps gridModel)))
           );
         in {
-          name = "com.github.zren.tiledmenu";
+          name = "com.github.nirwin81.tiledmenu";
           config = (
             let
               gridWidth = (builtins.length (builtins.head gridModel));
@@ -152,7 +151,7 @@
       home = { # (Home-Manager Module)
 
         # Install
-        config.xdg.dataFile."plasma/plasmoids/com.github.zren.tiledmenu" = {
+        config.xdg.dataFile."plasma/plasmoids/com.github.nirwin81.tiledmenu" = {
           source = "${attr.tiledmenu-pkg}/package";
         };
 
