@@ -67,11 +67,11 @@ EOF
             jq --slurp -r '.[] | [
                     ([.generation, (if .current == true then "current" else "" end)] | join(" ")),
                     (.date | fromdate | strflocaltime("%Y-%m-%d %H:%M:%S")),
-                    .nixosVersion, .kernelVersion, .configurationRevision,
-                    (.specialisations | join(" "))
+                    .nixosVersion, .kernelVersion, .configurationRevision
                 ] | @tsv' |
-                column --separator $'\t' --table --table-columns "Generation,Build-date,NixOS version,Kernel,Configuration Revision,Specialisation"
+                column --separator $'\t' --table --table-columns "Generation,Build-date,NixOS label,Kernel,Build Revision"
         else
             jq --slurp .
         fi
+        # Note: Removed "Specializations" field
     exit 0
