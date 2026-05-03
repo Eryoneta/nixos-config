@@ -13,7 +13,7 @@
         config.programs.zsh.initContent = (
           let
 
-            version = "v1.2.3"; # Should be changed at each modification
+            version = "v1.3.0"; # Should be changed at each modification
             systemProfile = {
               name = "system";
               path = "/nix/var/nix/profiles/${systemProfile.name}";
