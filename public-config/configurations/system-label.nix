@@ -53,7 +53,17 @@
       nixos = { inputs, host, ... }: { # (NixOS Module)
 
         # Current-configuration label
-        config.system.nixos.label = (attr.nixosLabel inputs.self (inputs.nixpkgs.rev or "") host.system.label);
+        config.system.nixos.label = (
+          let
+            stableRev = (inputs.nixpkgs-stable.rev or "");
+            unstableRev = (inputs.nixpkgs-unstable.rev or "");
+            nixpkgsRevision = (
+              if (stableRev != "" && unstableRev != "") then (
+                "stable-${stableRev}/unstable-${unstableRev}"
+              ) else ""
+            );
+          in (attr.nixosLabel inputs.self nixpkgsRevision host.system.label)
+        );
 
         # Current configuration revision
         config.system.configurationRevision = (attr.configurationRevision inputs.self);
