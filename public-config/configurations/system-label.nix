@@ -59,7 +59,7 @@
             unstableRev = (inputs.nixpkgs-unstable.rev or "");
             nixpkgsRevision = (
               if (stableRev != "" && unstableRev != "") then (
-                "stable-${stableRev}:unstable-${unstableRev}"
+                "${stableRev}:${unstableRev}"
               ) else ""
             );
           in (attr.nixosLabel inputs.self nixpkgsRevision host.system.label)
