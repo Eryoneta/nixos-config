@@ -90,9 +90,9 @@
         let
           mkScript = {text, icon, timing, promptConfirmation ? false}: ''
             # Interrupts if there is an error or undefined variable
-            set -eu
+            set -eu;
             # Loads access
-            export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/''${UID}/bus"
+            export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/''${UID}/bus";
             # Send notification
             ${if (promptConfirmation) then (''
               # Prompt for upgrade
@@ -101,26 +101,27 @@
                 --icon "${icon}" \
                 --action "1=Execute" \
                 --action "0=Ignore" \
-                --urgency "critical")
+                --urgency "critical");
               # Action
               if [[ $action -eq 1 ]]; then
                 notify-send "NixOS Upgrade" \
                   "${text}" \
                   --icon "${icon}" \
                   --urgency "${timing.urgency}" \
-                  --expire-time ${timing.expireTime}
+                  --expire-time ${timing.expireTime};
               else
                 notify-send "NixOS Upgrade" \
                   "Upgrade cancelled" \
-                  --icon "info"
-                exit 1 # Trigger a failure. This should cancel nixos-upgrade
+                  --icon "info";
+                exit 1; # Trigger a failure. This should cancel nixos-upgrade
               fi
+              exit 0; # Continue
             '') else (''
               notify-send "NixOS Upgrade" \
                 "${text}" \
                 --icon "${icon}" \
                 --urgency "${timing.urgency}" \
-                --expire-time ${timing.expireTime}
+                --expire-time ${timing.expireTime};
             '')}
           '';
           mkTiming = time: {
@@ -185,7 +186,7 @@
 
           # NixOS-Upgrade calls the services as needed
           services."nixos-upgrade" = {
-            bindsTo = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
+            requires = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
             after = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
             onSuccess = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-success.service");
             onFailure = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-failure.service");
