@@ -86,16 +86,18 @@
                 "org.kde.plasma.networkmanagement" # Network status
               ];
               hidden = [
-                "org.kde.plasma.brightness"
-                "org.kde.kscreen"
-                "org.kde.plasma.battery"
-                "org.kde.plasma.printmanager"
-                "org.kde.plasma.keyboardlayout"
-                "org.kde.plasma.keyboardindicator"
-                "org.kde.plasma.clipboard"
-                "org.kde.plasma.manage-inputmethod"
-                "org.kde.plasma.mediacontroller"
-                "org.kde.plasma.vault"
+                "org.kde.plasma.brightness" # Screen brightness
+                "org.kde.kscreen" # Screen manager
+                "org.kde.plasma.battery" # Battery indicator
+                "org.kde.plasma.printmanager" # Print manager
+                "org.kde.plasma.keyboardlayout" # Keyboard layout
+                "org.kde.plasma.keyboardindicator" # Keyboard
+                "org.kde.plasma.clipboard" # Clipboard manager
+                "org.kde.plasma.manage-inputmethod" # Inputs
+                "org.kde.plasma.mediacontroller" # Media controller
+                "org.kde.plasma.vault" # Plasma-Vault
+                "Yakuake" # Yakuake
+                "Easy Effects" # Easy Effects
               ];
             };
           };
@@ -216,8 +218,6 @@
             ];
             hidden = (
               default-widgets.systemTray.systemTray.items.hidden ++ [
-                "Yakuake" # Yakuake
-                "Easy Effects" # Easy Effects
                 "kando_status_icon_1" # Kando
                 "org.kde.plasma.volume" # System volume
                 "org.kde.plasma.networkmanagement" # Network status
