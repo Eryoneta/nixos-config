@@ -1,0 +1,15 @@
+.config/mindsort/Cache/
+.config/mindsort/Code Cache/
+.config/mindsort/Crashpad/
+.config/mindsort/DIPS
+.config/mindsort/DawnGraphiteCache/
+.config/mindsort/DawnWebGPUCache/
+.config/mindsort/Dictionaries/
+.config/mindsort/GPUCache/
+.config/mindsort/Local Storage/
+.config/mindsort/Network Persistent State
+.config/mindsort/Preferences
+.config/mindsort/Session Storage/
+.config/mindsort/Shared Dictionary/
+.config/mindsort/Trust Tokens
+.config/mindsort/Trust Tokens-journal
