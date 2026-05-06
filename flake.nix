@@ -165,6 +165,7 @@
       eryoneta = flake-utils.buildUser {
         username = "eryoneta";
         name = "Eryoneta";
+        configFolder = "/home/sharePoint/Tools/nixos-config";
       };
 
       # Config Builder
@@ -207,6 +208,10 @@
         };
         "Yo@NeLiCo" = {
           user = yo;
+          host = nelico;
+        };
+        "Eryoneta@NeLiCo" = {
+          user = eryoneta;
           host = nelico;
         };
       });
