@@ -38,15 +38,17 @@
           # Icons actions at URLbar
           "browser.pageActions.persistedActions" = (
             let
-              # "Tab Stash" extension
-              tab-stash-id = "tab-stash_condordes_net";
-              # "Sidebery" extension
-              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+              extensions = {
+                # "Tab Stash" extension
+                tab-stash-id = "tab-stash_condordes_net";
+                # "Sidebery" extension
+                sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+              };
             in {
               "ids" = [ # Lists ids of icons
                 "bookmark" # Bookmark star
-                tab-stash-id
-                sidebery-id
+                extensions.tab-stash-id
+                extensions.sidebery-id
               ];
               "idsInUrlbar" = [ # Lists icons in the URLbar
                 "bookmark"
@@ -61,17 +63,19 @@
           # User interface
           "browser.uiCustomization.state" = (
             let
-              extensionCount = 5;
-              # "Ublock-Origin" extension
-              ublock-origin-id = "ublock0_raymondhill_net-browser-action";
-              # "Tab Stash" extension
-              tab-stash-id = "tab-stash_condordes_net-browser-action";
-              # "Sidebery" extension
-              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
-              # "Plasma Integration" extension
-              plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
-              # "KeePassXC" extension
-              keepassxc-id = "keepassxc-browser_keepassxc_org-browser-action";
+              extensions = {
+                # "Ublock-Origin" extension
+                ublock-origin-id = "ublock0_raymondhill_net-browser-action";
+                # "Tab Stash" extension
+                tab-stash-id = "tab-stash_condordes_net-browser-action";
+                # "Sidebery" extension
+                sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
+                # "Plasma Integration" extension
+                plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
+                # "KeePassXC" extension
+                keepassxc-id = "keepassxc-browser_keepassxc_org-browser-action";
+              };
+              extensionCount = (builtins.length (builtins.attrValues extensions));
             in {
               "placements" = {
                 "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -87,20 +91,20 @@
                   "forward-button" # Go-forward button
                   "stop-reload-button" # Reload button
                   "customizableui-special-spring1" # Stretch space
-                  tab-stash-id
+                  extensions.tab-stash-id
                   "urlbar-container" # URLbar
                   "customizableui-special-spring2" # Stretch space
                   "downloads-button" # Downloads button
                   "developer-button" # Developer tools button
                   "history-panelmenu" # History button
-                  keepassxc-id
+                  extensions.keepassxc-id
                   "unified-extensions-button" # Extensions button
                 ];
                 "widget-overflow-fixed-list" = [];
                 "unified-extensions-area" = [ # List of extensions not in the bars
-                  ublock-origin-id
-                  plasma-integration-id
-                  sidebery-id
+                  extensions.ublock-origin-id
+                  extensions.plasma-integration-id
+                  extensions.sidebery-id
                 ];
                 "PersonalToolbar" = [ # The bar that contains bookmars
                   "sidebar-button" # Sidebar button
