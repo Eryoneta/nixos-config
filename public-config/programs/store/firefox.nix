@@ -114,10 +114,12 @@
   # Firefox: Internet browser
   config.modules."firefox.work" = {
     tags = [ "personal-setup" "work-setup" ];
+    attr.keepassxc.packageChannel = config.modules."keepassxc".attr.packageChannel;
     attr.template = {
       extensions = with (pkgs-bundle.firefox-addons).pkgs; (
         (config.modules."firefox".attr.template).extensions ++ [
           tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
+          keepassxc-browser # KeePassXC Browser: Browser password management support
         ]
       );
       settings = ((config.modules."firefox".attr.template).settings // {
@@ -129,13 +131,15 @@
         # User interface
         "browser.uiCustomization.state" = (
           let
-            extensionCount = 3;
+            extensionCount = 4;
             # "Ublock-Origin" extension
             ublock-origin-id = "ublock0_raymondhill_net-browser-action";
             # "Tab Stash" extension
             tab-stash-id = "tab-stash_condordes_net-browser-action";
             # "Plasma Integration" extension
             plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
+            # "KeePassXC" extension
+            keepassxc-id = "keepassxc-browser_keepassxc_org-browser-action";
           in {
             "placements" = {
               "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -157,6 +161,7 @@
                 "downloads-button" # Downloads button
                 "developer-button" # Developer tools button
                 "history-panelmenu" # History button
+                keepassxc-id
                 "unified-extensions-button" # Extensions button
               ];
               "widget-overflow-fixed-list" = [];
@@ -205,14 +210,50 @@
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
-        # Default profile
-        config.programs.firefox.profiles."default" = {
+        # Configuration
+        config.programs.firefox = {
 
-          # Extensions
-          extensions.packages = (attr.template).extensions;
+          # Default profile
+          profiles."default" = {
 
-          # Settings
-          settings = (attr.template).settings;
+            # Containers
+            containersForce = true;
+            containers = {
+              "Pessoal" = {
+                id = 1;
+                icon = "circle";
+                color = "blue";
+              };
+              "Público" = {
+                id = 2;
+                icon = "circle";
+                color = "red";
+              };
+              "Profissional" = {
+                id = 3;
+                icon = "circle";
+                color = "purple";
+              };
+              "Outro" = {
+                id = 4;
+                icon = "circle";
+                color = "green";
+              };
+            };
+
+            # Extensions
+            extensions.packages = (attr.template).extensions;
+
+            # Settings
+            settings = (attr.template).settings;
+
+          };
+
+          # Messaging Hosts
+          # nativeMessagingHosts = with (attr.keepassxc).packageChannel; [
+          #   keepassxc # KeePassXC
+          # ];
+          # Note: KeePassXC does NOT like it being read-only
 
         };
 

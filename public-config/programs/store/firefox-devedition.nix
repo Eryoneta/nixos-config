@@ -4,6 +4,7 @@
   config.modules."firefox-devedition" = {
     tags = [ "personal-setup" "developer-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
+    attr.keepassxc.packageChannel = config.modules."keepassxc".attr.packageChannel;
     attr.fx-autoconfig = pkgs-bundle.fx-autoconfig;
     attr.firefox-scripts = pkgs-bundle.firefox-scripts;
     attr.template = {
@@ -11,6 +12,7 @@
         (config.modules."firefox".attr.template).extensions ++ [
           tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
           sidebery # Sidebery: Sidebar with vertical tabs
+          keepassxc-browser # KeePassXC Browser: Browser password management support
         ]
       );
       settings = ((config.modules."firefox".attr.template).settings // {
@@ -59,7 +61,7 @@
           # User interface
           "browser.uiCustomization.state" = (
             let
-              extensionCount = 4;
+              extensionCount = 5;
               # "Ublock-Origin" extension
               ublock-origin-id = "ublock0_raymondhill_net-browser-action";
               # "Tab Stash" extension
@@ -68,6 +70,8 @@
               sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
               # "Plasma Integration" extension
               plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
+              # "KeePassXC" extension
+              keepassxc-id = "keepassxc-browser_keepassxc_org-browser-action";
             in {
               "placements" = {
                 "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -89,6 +93,7 @@
                   "downloads-button" # Downloads button
                   "developer-button" # Developer tools button
                   "history-panelmenu" # History button
+                  keepassxc-id
                   "unified-extensions-button" # Extensions button
                 ];
                 "widget-overflow-fixed-list" = [];
@@ -244,6 +249,10 @@
             #name = "Yo"; # HAS to be "dev-edition-default"
             isDefault = false;  # Only one can be the default
 
+            # Containers
+            containersForce = config.programs.firefox.profiles."default".containersForce;
+            containers = config.programs.firefox.profiles."default".containers;
+
             # Search engines
             search = {
               force = true;
@@ -286,13 +295,19 @@
               ];
             };
 
-            # Settings
-            settings = (attr.template).settings;
-
             # Extensions
             extensions.packages = (attr.template).extensions;
 
+            # Settings
+            settings = (attr.template).settings;
+
           };
+
+          # Messaging Hosts
+          # nativeMessagingHosts = with (attr.keepassxc).packageChannel; [
+          #   keepassxc # KeePassXC
+          # ];
+          # Note: KeePassXC does NOT like it being read-only
 
         };
 
