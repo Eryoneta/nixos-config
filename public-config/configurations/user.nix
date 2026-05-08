@@ -5,8 +5,8 @@
     tags = [ "core-setup" ];
     attr.profileIcon = username: (config.modules."configuration".attr.mkSymlink {
       # Searches for "resources/profiles/USERNAME/.face.icon"
-      private-resource = "profiles/${username}/.face.icon";
-      public-resource = "profiles/${username}/.face.icon";
+      private-resource = "user-profiles/${username}/.face.icon";
+      public-resource = "user-profiles/${username}/.face.icon";
     });
     attr.defaultPassword = "nixos"; # The default password
     attr.hashedPasswordFilePath = hashedFilePath: ( # Uses a hashedFile if it exists
