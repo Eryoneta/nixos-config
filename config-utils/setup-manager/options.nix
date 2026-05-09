@@ -13,6 +13,18 @@
       '';
     };
 
+    # Included modules, by tags
+    excludeTags = lib.mkOption {
+      type = (lib.types.listOf (lib.types.str));
+      default = [];
+      description = ''
+        A list of tags from tagged modules to be excluded in the final configuration.
+      '';
+      example = ''
+        [ "personal" ]
+      '';
+    };
+
     # Final NixOS system config
     nixosConfigurationModules = lib.mkOption {
       type = (lib.types.raw);
@@ -81,7 +93,7 @@
 
           # Module includer
           include = lib.mkOption {
-            type = (lib.types.nullOr (lib.types.bool));
+            type = (lib.types.nullOr lib.types.bool);
             default = null;
             description = ''
               If set, includes or excludes the module. It overrides tag behaviour.
@@ -116,6 +128,20 @@
             '';
             example = ''
               [ "entertainment" ]
+            '';
+          };
+
+          # Module excluding other modules, by tags
+          excludeTags = lib.mkOption {
+            type = (lib.types.listOf (lib.types.str));
+            default = [];
+            description = ''
+              A list of tags from tagged modules to be excluded if this module is included.
+
+              Note that this takes priority over includeTags.
+            '';
+            example = ''
+              [ "private" ]
             '';
           };
 
