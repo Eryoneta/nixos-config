@@ -1,1 +1,1 @@
-SharePoint
+Setup-Manager: ExcludeTags

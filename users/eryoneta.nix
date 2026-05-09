@@ -7,9 +7,6 @@
       "work-setup"
       "developer-setup"
     ];
-    excludeTags = [
-      "private"
-    ];
     attr.profileIcon = config.modules."user".attr.profileIcon;
     attr.defaultPassword = config.modules."user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;

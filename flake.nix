@@ -166,6 +166,7 @@
         username = "eryoneta";
         name = "Eryoneta";
         configFolder = "/home/sharePoint/Tools/nixos-config";
+        usePublicOnly = true; # Do not use private configs
       };
 
       # Config Builder
