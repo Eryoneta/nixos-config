@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Fonts
   config.modules."fonts" = {
@@ -13,7 +13,7 @@
           # Installed fonts
           packages = with pkgs; [
             corefonts # Microsoft fonts for websites(Includes "Comic Sans MS"! Yay!)
-            vistafonts # More fonts from Microsoft
+            vista-fonts # More fonts from Microsoft
             liberation_ttf # Liberation fonts, equivalent for "Times New Roman", "Arial", and "Courier New"
             noto-fonts # Font for many languages
             noto-fonts-color-emoji # Emoji font
@@ -37,6 +37,10 @@
               style = (utils.mkDefault) "full"; # Font sharpness
             };
           };
+
+          # Note:
+          #   New fonts can be placed at "$XDG_DATA_HOME/fonts"
+          #   "fc-cache -f -v" reloads the font cache
 
         };
 

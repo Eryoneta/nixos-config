@@ -1,4 +1,4 @@
-{ config-domain, host, ... }@args: with args.config-utils; { # (Setup Module)
+{ config-domain, host, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Configuration
   config.modules."configuration" = rec {

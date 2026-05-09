@@ -7,10 +7,10 @@
 
     # System Inputs
     # NixOS (Auto upgrade)
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     # Home-Manager (Auto upgrade)
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # Plasma-Manager (Auto upgrade)
@@ -22,13 +22,13 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "home-manager";
     # Stylix (Auto upgrade)
-    stylix.url = "github:danth/stylix/release-25.05";
+    stylix.url = "github:danth/stylix/release-25.11";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.inputs.home-manager.follows = "home-manager";
+    #stylix.inputs.home-manager.follows = "home-manager";
 
     # Package Inputs
     # Stable Packages (Auto upgrade)
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Unstable Packages (Auto upgrade)
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -40,24 +40,30 @@
     nurpkgs-firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     nurpkgs-firefox-addons.inputs.nixpkgs.follows = "nixpkgs-unfree-unstable"; # Some extensions are unfree
     # Firefox: FX-AutoConfig (Fixed)
-    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/f1f61958491c18e690bed8e04e89dd3a8e4a6c4d";
+    fx-autoconfig.url = "github:MrOtherGuy/fx-autoconfig/76232083171a8d609bf0258549d843b0536685e1";
     fx-autoconfig.flake = false;
     # NixOS Artwork (Fixed)
     nixos-artwork.url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/wallpapers/nix-wallpaper-simple-blue.png";
     nixos-artwork.flake = false;
-    # Plasma/Plasmoid: TiledMenu (Fixed)
-    tiledmenu.url = "github:Zren/plasma-applet-tiledmenu/73e03bd9ff523b01abb31a7c72901ba25918f9d8";
-    tiledmenu.flake = false;
     # Plasma/Icons: Papirus Colors (Fixed)
     papirus-colors-icons.url = "github:varlesh/papirus-colors/ae694e120110ab30ead27c66abc68e74dfd4e4f5";
     papirus-colors-icons.flake = false;
+    # Plasma/Plasmoid: TiledMenu (Fixed)
+    tiledmenu.url = "github:nirwin81/plasma-applet-tiledmenu/57f05a368bc7da1eb64da9bca1d544d12cd306e1";
+    tiledmenu.flake = false;
+    # Note: It's created by Zren, and forked by nirwin81
+    # Plasma/Plasmoid: Window-Title (Fixed)
+    windowtitle.url = "github:dhruv8sh/plasma6-window-title-applet/a6eaf5086a473919ed2fffc5d3b8d98237c2dd41";
+    windowtitle.flake = false;
+    # Plasma/Plasmoid: Configurable-Button (Fixed)
+    configurablebutton.url = "github:doncsugar/plasmoid-button/a03f0fe832ff6d3dd528ef263b7e1d4cec0b4440";
+    configurablebutton.flake = false;
+    # Plasma/Plasmoid: Weather Widget Plus (Fixed)
+    weatherwidgetplus.url = "github:tully-t/weather-widget-plus/a020306b7ef132fb0575752ff1f7de7a141ee8db";
+    weatherwidgetplus.flake = false;
     # MPV Scripts: InputEvent (Fixed)
     mpv-input-event.url = "github:natural-harmonia-gropius/input-event/refs/tags/v1.3";
     mpv-input-event.flake = false;
-    # Prism Launcher (Cracked) (Fixed)
-    prismlauncherCRK.url = "github:Diegiwg/PrismLauncher-Cracked/062a55639b4b18e8123a1306e658834ba0ffc137";
-    prismlauncherCRK.inputs.nixpkgs.follows = "nixpkgs";
-    # TODO: (Flake/Prism-Launcher) Remove once I can afford the original
 
     # My Utilities
     # PowerShell Prompt (Manual upgrade)
@@ -111,12 +117,14 @@
           nixos-artwork = {
             "wallpaper/nix-wallpaper-simple-blue.png" = nixos-artwork;
           };
-          inherit tiledmenu;
           papirus-colors-icons = {
             "Papirus-Colors-Dark" = "${papirus-colors-icons}/Papirus-Colors-Dark";
           };
+          inherit tiledmenu;
+          inherit windowtitle;
+          inherit configurablebutton;
+          inherit weatherwidgetplus;
           inherit mpv-input-event;
-          inherit prismlauncherCRK;
           inherit powershell-prompt;
           inherit git-tools;
           inherit firefox-scripts;
@@ -157,6 +165,7 @@
       eryoneta = flake-utils.buildUser {
         username = "eryoneta";
         name = "Eryoneta";
+        configFolder = "/home/sharePoint/Tools/nixos-config";
       };
 
       # Config Builder
@@ -199,6 +208,10 @@
         };
         "Yo@NeLiCo" = {
           user = yo;
+          host = nelico;
+        };
+        "Eryoneta@NeLiCo" = {
+          user = eryoneta;
           host = nelico;
         };
       });

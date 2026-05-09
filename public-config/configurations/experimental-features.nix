@@ -1,4 +1,4 @@
-{ ... }@args: with args.config-utils; { # (Setup Module)
+{ ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Experimental features
   config.modules."experimental-features" = {

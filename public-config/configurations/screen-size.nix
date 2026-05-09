@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup Module)
+{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Note: This is useful for setting window apps to be an exact desired size relative to screen size
 

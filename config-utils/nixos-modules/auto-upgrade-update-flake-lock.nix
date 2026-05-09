@@ -111,6 +111,9 @@
           script = ''
             # Interrupts if there is an error or undefined variable
             set -eu
+            # Sleep
+            echo "Waiting 10 seconds... to make sure Internet access is up..."
+            sleep 10
             # Nix Flake Update
             echo "Updating flake.lock..."
             nix flake update ${builtins.toString cfg_ufl.inputs} ${lib.optionalString (cfg_ufl.commitLockFile) "--commit-lock-file"} --flake "${cfg_ufl.directory}"

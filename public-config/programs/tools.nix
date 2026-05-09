@@ -1,4 +1,4 @@
-{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup Module)
+{ pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Ark: File archiver
   config.modules."ark" = {
@@ -6,29 +6,8 @@
     attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.ark ];
-      };
-    };
-  };
-
-  # Gwenview: Image viewer
-  config.modules."gwenview" = {
-    tags = [ "default-setup" ];
-    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.gwenview ];
-      };
-    };
-  };
-
-  # Okular: Document viewer
-  config.modules."okular" = {
-    tags = [ "default-setup" ];
-    attr.packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.okular ];
       };
     };
   };
@@ -41,6 +20,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ kdePackages.kamoso ];
       };
     };
@@ -52,18 +32,20 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ krename ];
       };
     };
   };
 
-  # KolourPaint: Basic image editor
-  config.modules."kolourpaint" = {
+  # Pinta: Basic image editor
+  config.modules."pinta" = {
     tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kolourpaint ];
+        # Install
+        config.home.packages = with attr.packageChannel; [ pinta ];
       };
     };
   };
@@ -74,40 +56,8 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ keepassxc ];
-      };
-    };
-  };
-
-  # Kalk: Calculator
-  config.modules."kalk" = {
-    tags = [ "default-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kalk ];
-      };
-    };
-  };
-
-  # OBS Studio: Video streamer
-  config.modules."obs-studio" = {
-    tags = [ "personal-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ obs-studio ];
-      };
-    };
-  };
-
-  # xdg-ninja: Scans $HOME for uncompliant XDG files
-  config.modules."xdg-ninja" = {
-    tags = [ "personal-setup" ];
-    attr.packageChannel = pkgs-bundle.unstable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ xdg-ninja ];
       };
     };
   };
@@ -119,6 +69,7 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ marktext ];
       };
     };
@@ -130,40 +81,53 @@
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
+        # Install
         config.home.packages = with attr.packageChannel; [ imagemagick ];
       };
     };
   };
 
-  # KConfig: Tool for editing KDE config files
-  config.modules."kconfig" = {
-    tags = [ "sysdev-setup" ];
+  # Qalculate: Calculator
+  config.modules."qalculate" = {
+    tags = [ "default-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kconfig ];
+        # Install
+        config.home.packages = with attr.packageChannel; [ qalculate-qt ];
+        # Desktop Entry: Recreate without the "Education" category
+        config.xdg.desktopEntries."io.github.Qalculate.qalculate-qt" = {
+          name = "Qalculate! (Qt)";
+          exec = "qalculate-qt";
+          icon = "qalculate-qt";
+          categories = [ "Utility" ];
+          type = "Application";
+          terminal = false;
+          settings = {
+            "GenericName" = "Calculator";
+            "GenericName[pt_BR]" = "Calculadora";
+            "Comment" = "Powerful and easy to use calculator";
+            "Comment[pt_BR]" = "Calculadora potente e fácil de usar";
+            "StartupNotify" = "true";
+          };
+          # Note: As defined by the package
+          #   (Can be seen at "~/.local/state/nix/profiles/home-manager-<GENERATION>-link/home-path/share/applications/")
+        };
       };
     };
   };
 
-  # INotify-Tools: Bundle of event tools
-  config.modules."inotify-tools" = {
-    tags = [ "sysdev-setup" ];
+  # Zoom: Video conferencing app
+  config.modules."zoom" = {
+    tags = [ "work-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ inotify-tools ];
-      };
-    };
-  };
-
-  # KDialog: Popup tool
-  config.modules."kdialog" = {
-    tags = [ "sysdev-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        config.home.packages = with attr.packageChannel; [ kdePackages.kdialog ];
+      nixos = { # (NixOS Module)
+        # Configuration
+        config.programs.zoom-us = {
+          enable = true;
+          package = (attr.packageChannel).zoom-us;
+        };
       };
     };
   };

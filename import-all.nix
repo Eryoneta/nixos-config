@@ -1,4 +1,4 @@
-{ config-domain, ... }@args: with args.config-utils; { # (Setup Module)
+{ config-domain, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Import ALL Setup modules
   imports = (

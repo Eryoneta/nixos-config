@@ -2,7 +2,7 @@ flakePath: (
   let
 
     # Imports
-    setup = (builtins.import ./config-utils/setup-module/setup.nix);
+    setup-manager = (builtins.import ./config-utils/setup-manager);
     user-host-scheme = ((builtins.import ./config-utils/user-host-scheme.nix) flakePath);
     config-domain = ((builtins.import ./config-utils/public-private-domains.nix) flakePath);
     config-utils = (builtins.import ./config-utils/config-utils.nix);
@@ -89,12 +89,12 @@ flakePath: (
           pkgs = pkgs-bundle.system; # Replace "pkgs" with a external one
           modules = [
 
-            # Setup Configuration
-            (setup.setupSystem {
+            # Setup-Manager Configuration
+            (setup-manager.setupSystem {
               inherit lib;
               modules = [
-                ./import-all.nix # Imports all Setup modules
-                { # (Setup Module)
+                ./import-all.nix # Imports all Setup-Manager modules
+                { # (Setup-Manager Module)
                   config = {
                     includeTags = [ "${host.hostname}" "root" ] ++ ( # Includes host, root, and user modules
                       builtins.map (user: user.username) allUsers
@@ -118,13 +118,13 @@ flakePath: (
                     # Prepare list to be converted to set
                     (x: builtins.map (user: {
                       name = user.username;
-                      value = (setup.setupSystem { # Setup Configuration
+                      value = (setup-manager.setupSystem { # Setup-Manager Configuration
                         inherit lib;
                         modules = [
-                          ./import-all.nix # Imports all Setup modules
-                          { # (Setup Module)
+                          ./import-all.nix # Imports all Setup-Manager modules
+                          { # (Setup-Manager Module)
                             config = {
-                              includeTags = [ "${user.username}" ]; # Includes user modules
+                              includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
                             };
                           }
                         ];
@@ -137,7 +137,7 @@ flakePath: (
 
                   ]);
                   sharedModules = [
-                    inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
+                    inputs.plasma-manager.homeModules.plasma-manager # Loads Plasma-Manager options
                     inputs.stylix.homeModules.stylix # Loads Stylix options
                     inputs.agenix.homeManagerModules.default # Loads Agenix options
                   ];
@@ -181,21 +181,21 @@ flakePath: (
           pkgs = homeChannel.forStandalone;
           modules = [
 
-            # Setup Configuration
-            (setup.setupSystem {
+            # Setup-Manager Configuration
+            (setup-manager.setupSystem {
               inherit lib;
               modules = [
-                ./import-all.nix # Imports all Setup modules
-                { # (Setup Module)
+                ./import-all.nix # Imports all Setup-Manager modules
+                { # (Setup-Manager Module)
                   config = {
-                    includeTags = [ "${user.username}" ]; # Includes user modules
+                    includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
                   };
                 }
               ];
               specialArgs = (setupHomeSpecialArgs user.username);
             }).homeModules.setup # Loads all home modules from setup
 
-            inputs.plasma-manager.homeManagerModules.plasma-manager # Loads Plasma-Manager options
+            inputs.plasma-manager.homeModules.plasma-manager # Loads Plasma-Manager options
             inputs.stylix.homeModules.stylix # Loads Stylix options
             inputs.agenix.homeManagerModules.default # Loads Agenix options
 
