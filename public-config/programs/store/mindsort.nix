@@ -1,4 +1,4 @@
-{ config, pkgs-bundle, ... }@args: with args.config-utils; { # (Setup-Manager Module)
+{ config, pkgs-bundle, userDev, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # MindSort: My own mindmap program
   config.modules."mindsort" = {
@@ -9,7 +9,7 @@
     attr.isDomainLoaded = config.modules."configuration".attr.isDomainLoaded;
     attr.mkFilePath = config.modules."configuration".attr.mkFilePath;
     setup = { attr }: {
-      home = { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # mindsort = pkgs.stdenv.mkDerivation {
         #   name = "mindsort";
@@ -43,33 +43,31 @@
           in {
 
             # Desktop entry
-            desktopEntries."mindsort" = (
-              utils.mkIf (attr.isDomainLoaded "private" "dotfiles") {
-                name = "MindSort";
-                genericName = "Mind Map Editor";
-                icon = (attr.mkFilePath {
-                  private-resource = "mindsort/Icon.png";
-                  default-resource = "";
-                });
-                exec = (
-                  let
-                    exec = (attr.mkFilePath {
-                      private-resource = "mindsort/MindSort-Linux_Patched.jar";
-                      default-resource = "";
-                    });
-                  in ''
-                    java -jar "${exec}" %U
-                  ''
-                );
-                terminal = false;
-                categories = [ "Utility" ];
-                mimeType = [ mind-mimeType ];
-              }
-            );
+            desktopEntries."mindsort" = {
+              name = "MindSort";
+              genericName = "Mind Map Editor";
+              icon = (attr.mkFilePath {
+                public-resource = "mindsort/Icon.png";
+                default-resource = "";
+              });
+              exec = (
+                let
+                  exec = (attr.mkFilePath {
+                    public-resource = "mindsort/MindSort-Linux_Patched.jar";
+                    default-resource = "";
+                  });
+                in ''
+                  java -jar "${exec}" %U
+                ''
+              );
+              terminal = false;
+              categories = [ "Utility" ];
+              mimeType = [ mind-mimeType ];
+            };
 
             # Icon
             dataFile."icons/hicolor/${mind-icon-size}/mimetypes/${mind-icon-name}.png" = (attr.mkSymlink {
-              private-resource = "mindsort/Icon.png";
+              public-resource = "mindsort/Icon.png";
             });
 
             # Mime type: "application/mind"
@@ -93,9 +91,12 @@
             };
 
             # Dotfiles
-            configFile."mindsort" = (attr.mkOutOfStoreSymlink {
-              public-dotfile = "mindsort/.config/mindsort";
-            });
+            configFile."mindsort" = (
+              # Only the developer should be able to modify the file
+              (if (config.home.username == userDev.username) then attr.mkOutOfStoreSymlink else attr.mkSymlink) {
+                public-dotfile = "mindsort/.config/mindsort";
+              }
+            );
 
           }
         );
