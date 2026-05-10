@@ -109,7 +109,7 @@
               #popupWidth = (border + menuWidth + listWidth + border + (tileSize * gridWidth) + border);
               #popupHeight = (border + (tileSize * gridHeight) + border);
               popupWidth = (menuWidth + listWidth + border + (tileSize * gridWidth));
-              popupHeight = (tileSize * gridHeight);
+              popupHeight = ((tileSize * gridHeight) + border);
               # Note: It seems like the popup already have borders?
             in {
               "popupWidth" = popupWidth; # Menu width
