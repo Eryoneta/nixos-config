@@ -11,7 +11,7 @@
           name = "org.kde.plasma.kickoff";
           config = {
             "General" = {
-              "icon" = "nix-snowflake-white"; # Icon
+              "icon" = "nix-snowflake"; # Icon
               "alphaSort" = true; # Sort by alphabet
               "highlightNewlyInstalledApps" = false; # Do not mark new apps
             };
@@ -113,6 +113,7 @@
               "fontWeight" = 400; # Font
               "showSeconds" = "Always"; # Show seconds
               "use24hFormat" = 2; # Show 24h
+              "dateDisplayFormat" = "BelowTime"; # Show date below clock
               "enabledCalendarPlugins" = "holidaysevents"; # Show holidays
             };
           };
@@ -154,13 +155,6 @@
       };
     };
   };
-
-  # Decrease the height of the total work-area
-  config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
-    (utils.mkIf (config.includedModules."plasma+panels") (
-      config.modules."plasma+panels".attr.mainPanel.height
-    ))
-  ];
 
   # Plasma panels
   config.modules."plasma+panels.personal" = {
@@ -374,6 +368,105 @@
       };
     };
   };
+
+  # Plasma panels
+  config.modules."plasma+panels.work" = {
+    tags = [ "work-setup" ];
+    attr = rec {
+      packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
+      default-widgets = config.modules."plasma+panels".attr.widgets;
+      default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
+      widgets = {
+
+        # Bar of apps
+        taskManager = (default-widgets.taskManager // {
+          config = {
+            "General" = (default-widgets.taskManager.config."General" // {
+              "launchers" = (utils.joinStr "," [ # Pinned apps
+                "applications:org.kde.dolphin.desktop" # Dolphin
+                "applications:firefox.desktop" # Firefox
+                "applications:Zoom.desktop" # Zoom
+              ]);
+            });
+          };
+        });
+
+        # Color Picker
+        colorPicker = {
+          name = "org.kde.plasma.colorpicker";
+          config = {
+            "General" = {
+              "defaultFormat" = "RRGGBB";
+            };
+          };
+        };
+
+        # System tray
+        systemTray = (default-widgets.systemTray // {
+          systemTray.items = (default-widgets.systemTray.systemTray.items // {
+            shown = [
+              "org.kde.plasma.mediacontroller" # Media Controller
+            ];
+            hidden = (
+              default-widgets.systemTray.systemTray.items.hidden ++ [
+                "org.kde.plasma.volume" # System volume
+                "org.kde.plasma.networkmanagement" # Network status
+              ]
+            );
+          });
+        });
+
+        # Volume
+        volume = "org.kde.plasma.volume";
+
+        # Network
+        network = "org.kde.plasma.networkmanagement";
+
+        # TiledMenu
+        tiledmenu = (
+          if (config.includedModules."plasma-tiledmenu.work" or false) then (
+            with config.modules."plasma-tiledmenu.work"; ( # Custom
+              attr.tiledmenu attr.apps attr.gridModel
+            )
+          ) else (
+            with config.modules."plasma-tiledmenu"; ( # Default
+              attr.tiledmenu attr.apps attr.gridModel
+            )
+          )
+        );
+
+      };
+      mainPanel = (default-mainPanel // {
+        widgets = with default-widgets; with widgets; [
+          tiledmenu
+          activityPager
+          virtualDesktopsPager
+          taskManager
+          separator
+          systemTray
+          clock
+          showDesktop
+        ];
+      });
+    };
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+
+        # Panels
+        config.programs.plasma.panels = [# (plasma-manager option)
+          attr.mainPanel # Main panel
+        ];
+
+      };
+    };
+  };
+
+  # Decrease the height of the total work-area
+  config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")
+    (utils.mkIf (config.includedModules."plasma+panels") (
+      config.modules."plasma+panels".attr.mainPanel.height
+    ))
+  ];
 
   # Decrease the area of the total work-area
   #config.hardware.configuration.screenSize.verticalBars = [ # (From "configurations/screen-size.nix")

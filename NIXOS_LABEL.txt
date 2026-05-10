@@ -1,1 +1,1 @@
-Setup-Manager: ExcludeTags
+Plasma-Panels: Work
