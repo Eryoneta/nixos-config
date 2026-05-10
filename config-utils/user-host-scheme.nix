@@ -36,7 +36,6 @@ flakePath: (
         name = "nixos";
         host = default.host;
         configFolder = default.host.configFolder;
-        configDevFolder = "";
       };
 
     };

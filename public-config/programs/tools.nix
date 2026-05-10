@@ -62,30 +62,6 @@
     };
   };
 
-  # OBS Studio: Video streamer
-  config.modules."obs-studio" = {
-    tags = [ "personal-setup" ];
-    attr.packageChannel = pkgs-bundle.stable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ obs-studio ];
-      };
-    };
-  };
-
-  # xdg-ninja: Scans $HOME for uncompliant XDG files
-  config.modules."xdg-ninja" = {
-    tags = [ "personal-setup" ];
-    attr.packageChannel = pkgs-bundle.unstable;
-    setup = { attr }: {
-      home = { # (Home-Manager Module)
-        # Install
-        config.home.packages = with attr.packageChannel; [ xdg-ninja ];
-      };
-    };
-  };
-
   # MarkText: Markdown text editor
   config.modules."marktext" = {
     enable = false; # Not used
@@ -136,6 +112,21 @@
           };
           # Note: As defined by the package
           #   (Can be seen at "~/.local/state/nix/profiles/home-manager-<GENERATION>-link/home-path/share/applications/")
+        };
+      };
+    };
+  };
+
+  # Zoom: Video conferencing app
+  config.modules."zoom" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        # Configuration
+        config.programs.zoom-us = {
+          enable = true;
+          package = (attr.packageChannel).zoom-us;
         };
       };
     };

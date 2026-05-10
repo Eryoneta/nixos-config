@@ -159,4 +159,54 @@
     };
   };
 
+  # TiledMenu: Plasmoid for Plasma, is a start menu that shows apps in neat tiles
+  config.modules."plasma-tiledmenu.work" = {
+    tags = [ "work-setup" ];
+    attr = rec {
+      apps = { # List of all apps to be present in the grid
+        __ = ""; # Empty space
+        # Browsers
+        Ch = "chromium-browser.desktop";
+        Ff = "firefox.desktop";
+        FD = "firefox-devedition.desktop";
+        # System
+        SS = "systemsettings.desktop";
+        PA = "org.pulseaudio.pavucontrol.desktop";
+        EE = "com.github.wwmm.easyeffects.desktop";
+        KI = "org.kde.kinfocenter.desktop";
+        MC = "io.missioncenter.MissionCenter.desktop";
+        SM = "org.kde.plasma-systemmonitor.desktop";
+        # Utilities
+        Qa = "io.github.Qalculate.qalculate-qt.desktop";
+        Wr = "writer.desktop";
+        Ca = "calc.desktop";
+        OB = "onboard.desktop";
+        # Development
+        KW = "org.kde.kwrite.desktop";
+        Ka = "org.kde.kate.desktop";
+        Ko = "org.kde.konsole.desktop";
+        Ec = "Eclipse.desktop";
+        Co = "codium.desktop";
+        Ho = "hoppscotch.desktop";
+        MW = "mysql-workbench.desktop";
+        DT = "me.iepure.devtoolbox.desktop";
+        # Images
+        Pi = "pinta.desktop";
+        # Videos
+        Mp = "mpv.desktop";
+      };
+      gridModel = (with apps; [ # The grid
+        [ Ch Ff FD __ __ Pi Pi ]
+        [ __ __ __ __ __ __ __ ]
+        [ SS Qa __ KW KW Ka Ec ]
+        [ PA __ __ KW KW Ko DT ]
+        [ EE OB __ Co Co Ho __ ]
+        [ KI Wr __ Co Co MW __ ]
+        [ MC Ca __ __ __ __ __ ]
+        [ SM __ __ __ __ Mp Mp ]
+      ]);
+      tiledmenu = config.modules."plasma-tiledmenu".attr.tiledmenu;
+    };
+  };
+
 }

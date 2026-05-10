@@ -4,6 +4,7 @@
   config.modules."firefox-devedition" = {
     tags = [ "personal-setup" "developer-setup" ];
     attr.packageChannel = pkgs-bundle.unstable;
+    attr.keepassxc.packageChannel = config.modules."keepassxc".attr.packageChannel;
     attr.fx-autoconfig = pkgs-bundle.fx-autoconfig;
     attr.firefox-scripts = pkgs-bundle.firefox-scripts;
     attr.template = {
@@ -11,6 +12,7 @@
         (config.modules."firefox".attr.template).extensions ++ [
           tab-stash # Tab Stash: Easily stash tabs inside a bookmark folder
           sidebery # Sidebery: Sidebar with vertical tabs
+          keepassxc-browser # KeePassXC Browser: Browser password management support
         ]
       );
       settings = ((config.modules."firefox".attr.template).settings // {
@@ -36,15 +38,17 @@
           # Icons actions at URLbar
           "browser.pageActions.persistedActions" = (
             let
-              # "Tab Stash" extension
-              tab-stash-id = "tab-stash_condordes_net";
-              # "Sidebery" extension
-              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+              extensions = {
+                # "Tab Stash" extension
+                tab-stash-id = "tab-stash_condordes_net";
+                # "Sidebery" extension
+                sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_";
+              };
             in {
               "ids" = [ # Lists ids of icons
                 "bookmark" # Bookmark star
-                tab-stash-id
-                sidebery-id
+                extensions.tab-stash-id
+                extensions.sidebery-id
               ];
               "idsInUrlbar" = [ # Lists icons in the URLbar
                 "bookmark"
@@ -59,15 +63,19 @@
           # User interface
           "browser.uiCustomization.state" = (
             let
-              extensionCount = 4;
-              # "Ublock-Origin" extension
-              ublock-origin-id = "ublock0_raymondhill_net-browser-action";
-              # "Tab Stash" extension
-              tab-stash-id = "tab-stash_condordes_net-browser-action";
-              # "Sidebery" extension
-              sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
-              # "Plasma Integration" extension
-              plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
+              extensions = {
+                # "Ublock-Origin" extension
+                ublock-origin-id = "ublock0_raymondhill_net-browser-action";
+                # "Tab Stash" extension
+                tab-stash-id = "tab-stash_condordes_net-browser-action";
+                # "Sidebery" extension
+                sidebery-id = "_3c078156-979c-498b-8990-85f7987dd929_-browser-action";
+                # "Plasma Integration" extension
+                plasma-integration-id = "plasma-browser-integration_kde_org-browser-action";
+                # "KeePassXC" extension
+                keepassxc-id = "keepassxc-browser_keepassxc_org-browser-action";
+              };
+              extensionCount = (builtins.length (builtins.attrValues extensions));
             in {
               "placements" = {
                 "toolbar-menubar" = [ # The bar at the top(Alt)
@@ -83,19 +91,20 @@
                   "forward-button" # Go-forward button
                   "stop-reload-button" # Reload button
                   "customizableui-special-spring1" # Stretch space
-                  tab-stash-id
+                  extensions.tab-stash-id
                   "urlbar-container" # URLbar
                   "customizableui-special-spring2" # Stretch space
                   "downloads-button" # Downloads button
                   "developer-button" # Developer tools button
                   "history-panelmenu" # History button
+                  extensions.keepassxc-id
                   "unified-extensions-button" # Extensions button
                 ];
                 "widget-overflow-fixed-list" = [];
                 "unified-extensions-area" = [ # List of extensions not in the bars
-                  ublock-origin-id
-                  plasma-integration-id
-                  sidebery-id
+                  extensions.ublock-origin-id
+                  extensions.plasma-integration-id
+                  extensions.sidebery-id
                 ];
                 "PersonalToolbar" = [ # The bar that contains bookmars
                   "sidebar-button" # Sidebar button
@@ -244,6 +253,10 @@
             #name = "Yo"; # HAS to be "dev-edition-default"
             isDefault = false;  # Only one can be the default
 
+            # Containers
+            containersForce = config.programs.firefox.profiles."default".containersForce;
+            containers = config.programs.firefox.profiles."default".containers;
+
             # Search engines
             search = {
               force = true;
@@ -286,13 +299,19 @@
               ];
             };
 
-            # Settings
-            settings = (attr.template).settings;
-
             # Extensions
             extensions.packages = (attr.template).extensions;
 
+            # Settings
+            settings = (attr.template).settings;
+
           };
+
+          # Messaging Hosts
+          # nativeMessagingHosts = with (attr.keepassxc).packageChannel; [
+          #   keepassxc # KeePassXC
+          # ];
+          # Note: KeePassXC does NOT like it being read-only
 
         };
 

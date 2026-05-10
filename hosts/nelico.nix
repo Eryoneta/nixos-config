@@ -27,6 +27,11 @@
           };
         };
 
+        # Shared folder
+        config.users.extraGroups = {
+          "sharepoint" = {};
+        };
+
       };
     };
   };

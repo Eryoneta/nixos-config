@@ -29,7 +29,7 @@ flakePath: (
 
         # Configuration-Domains
         configDomainArgs = (config-domain.buildSpecialArgs {
-          configPath = if (userDev.configDevFolder != "") then userDev.configDevFolder else userDev.configFolder;
+          configPath = if (userDev.configDevFolder or "" != "") then userDev.configDevFolder else userDev.configFolder;
           # Note: Allows development in 'develop' branch while "AutoUpgrade" updates 'main' branch
           #   But dotfiles changes (caused by installed programs) should always happen in 'develop' (It's convenient!)
           #   Important: Only absolute paths notices the dev folder
@@ -125,6 +125,13 @@ flakePath: (
                           { # (Setup-Manager Module)
                             config = {
                               includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
+                            };
+                          }
+                          { # (Setup-Manager Module)
+                            config = {
+                              excludeTags = ( # Exclude private stuff, if it's a public user
+                                if (user.usePublicOnly or false) then [ "private" ] else []
+                              );
                             };
                           }
                         ];

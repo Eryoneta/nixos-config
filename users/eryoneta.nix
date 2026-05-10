@@ -36,6 +36,7 @@
               ));
               extraGroups = [
                 "wheel" # Can use commands with sudo
+                "sharepoint" # Can use the shared folder
                 "networkmanager" # Can change networking settings
                 "adbusers" # Can debug Android devices
                 "scanner" "lp" # Can use the scanner or scanner&printer

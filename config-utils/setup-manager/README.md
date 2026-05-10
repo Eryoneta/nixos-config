@@ -43,7 +43,9 @@ There is nothing stopping you from creating your own module system.
 - **Tags**:
     - `config.modules.*.tags` accepts a list of tags.
     - `config.modules.*.includeTags` lets a module add more tags, if it is included.
+    - `config.modules.*.excludeTags` lets a module exclude tags, if it is included.
     - `config.includeTags` is a list of included tags. Any module with that tag is included into the final configuration.
+    - `config.excludeTags` is a list of excluded tags. Any module with that tag is excluded from the final configuration.
     - `config.includedModules` lists all the final included modules. It is read-only.
     - This allows a very dinamic way of creating a configuration.
         - Although, I suggest it's best to keep it simple. Too many tags can be quite confusing.
