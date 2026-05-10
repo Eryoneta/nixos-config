@@ -31,7 +31,7 @@
               };
               informConclusion = {
                 show = (utils.mkDefault) true;
-                time = (utils.mkDefault) 30;
+                time = (utils.mkDefault) 20;
               };
             };
 
