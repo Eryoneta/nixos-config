@@ -195,6 +195,7 @@
         Pi = "pinta.desktop";
         # Videos
         Mp = "mpv.desktop";
+        Zo = "Zoom.desktop";
       };
       gridModel = (with apps; [ # The grid
         [ Ch Ff FD __ __ Pi Pi ]
@@ -204,7 +205,7 @@
         [ EE OB __ Co Co Ho __ ]
         [ KI Wr __ Co Co MW __ ]
         [ MC Ca __ __ __ __ __ ]
-        [ SM __ __ __ __ Mp Mp ]
+        [ SM __ __ Zo __ Mp Mp ]
       ]);
       tiledmenu = config.modules."plasma-tiledmenu".attr.tiledmenu;
     };

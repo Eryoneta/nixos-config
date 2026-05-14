@@ -375,6 +375,7 @@
     attr = rec {
       packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
       default-widgets = config.modules."plasma+panels".attr.widgets;
+      personal-widgets = config.modules."plasma+panels.personal".attr.widgets;
       default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
       widgets = {
 
@@ -385,28 +386,14 @@
               "launchers" = (utils.joinStr "," [ # Pinned apps
                 "applications:org.kde.dolphin.desktop" # Dolphin
                 "applications:firefox.desktop" # Firefox
-                "applications:Zoom.desktop" # Zoom
               ]);
             });
           };
         });
 
-        # Color Picker
-        colorPicker = {
-          name = "org.kde.plasma.colorpicker";
-          config = {
-            "General" = {
-              "defaultFormat" = "RRGGBB";
-            };
-          };
-        };
-
         # System tray
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
-            shown = [
-              "org.kde.plasma.mediacontroller" # Media Controller
-            ];
             hidden = (
               default-widgets.systemTray.systemTray.items.hidden ++ [
                 "org.kde.plasma.volume" # System volume
@@ -415,12 +402,6 @@
             );
           });
         });
-
-        # Volume
-        volume = "org.kde.plasma.volume";
-
-        # Network
-        network = "org.kde.plasma.networkmanagement";
 
         # TiledMenu
         tiledmenu = (
@@ -444,6 +425,9 @@
           taskManager
           separator
           systemTray
+          personal-widgets.weatherwidgetplus
+          personal-widgets.volume
+          personal-widgets.network
           clock
           showDesktop
         ];
