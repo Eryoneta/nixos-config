@@ -13,7 +13,7 @@
         config.home.packages = with attr.packageChannel; [ kdePackages.dolphin ];
 
         # Dotfile
-        config.programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)
+        config.programs.plasma.configFile."dolphinrc" = (utils.mkDefault) { # (plasma-manager option)
           "General" = {
             "ShowFullPathInTitlebar" = false; # Do not show path in window title
             "ShowFullPath" = true; # Show full path in address
@@ -43,9 +43,9 @@
           };
           # View modes
           "IconsMode" = {
-            "IconSize" = 96; # Icon size
+            "IconSize" = 112; # Icon size
             #"PreviewSize" = 32; # Preview content icon size
-            "PreviewSize" = 96; # Preview content icon size
+            "PreviewSize" = 112; # Preview content icon size
             # Note: It seems that "IconSize" means nothing? And "PreviewSize" is the actual icon size?
             # TODO: (Dolphin) Check if "PreviewSize" is corrected to be the actual size of the tiny icons
             "MaximumTextLines" = 5; # Allowed number of lines for the filename
@@ -84,6 +84,25 @@
           "PreviewSettings" = {
             "EnableRemoteFolderThumbnail" = false; # Show thumbnails for remote
             "MaximumRemoteSize" = 10485760; # 10MB: Max file size allowed to get a thumbnail
+          };
+        };
+
+      };
+    };
+  };
+
+  # Dolphin: File manager
+  config.modules."dolphin.work" = {
+    tags = [ "work-setup" ];
+    setup = {
+      home = { # (Home-Manager Module)
+
+        # Dotfile
+        config.programs.plasma.configFile."dolphinrc" = { # (plasma-manager option)
+          # View modes
+          "IconsMode" = {
+            "IconSize" = 96; # Icon size
+            "PreviewSize" = 96; # Preview content icon size
           };
         };
 
