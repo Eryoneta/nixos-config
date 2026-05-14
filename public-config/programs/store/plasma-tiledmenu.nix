@@ -106,10 +106,11 @@
               tileSize = 64; # 4px + 56px + 4px
               menuWidth = 48; # 48px
               listWidth = 300; # 300px
+              heightAdjust = 1; # 1px. A single pixel. Weird
               #popupWidth = (border + menuWidth + listWidth + border + (tileSize * gridWidth) + border);
               #popupHeight = (border + (tileSize * gridHeight) + border);
               popupWidth = (menuWidth + listWidth + border + (tileSize * gridWidth));
-              popupHeight = ((tileSize * gridHeight) + border);
+              popupHeight = ((tileSize * gridHeight) + heightAdjust);
               # Note: It seems like the popup already have borders?
             in {
               "popupWidth" = popupWidth; # Menu width
