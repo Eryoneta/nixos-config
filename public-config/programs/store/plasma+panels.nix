@@ -404,7 +404,6 @@
       mainPanel = (default-mainPanel // {
         widgets = with default-widgets; with widgets; [
           tiledmenu
-          activityPager
           virtualDesktopsPager
           taskManager
           separator
