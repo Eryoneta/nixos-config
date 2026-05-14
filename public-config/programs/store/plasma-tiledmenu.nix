@@ -5,39 +5,7 @@
     tags = config.modules."plasma".tags;
     attr = rec {
       tiledmenu-pkg = pkgs-bundle.tiledmenu; # Input
-      apps = { # List of all apps to be present in the grid
-        __ = ""; # Empty space
-        # Browsers
-        Ff = "firefox.desktop";
-        # System
-        SS = "systemsettings.desktop";
-        PA = "org.pulseaudio.pavucontrol.desktop";
-        EE = "com.github.wwmm.easyeffects.desktop";
-        KI = "org.kde.kinfocenter.desktop";
-        MC = "io.missioncenter.MissionCenter.desktop";
-        # Utilities
-        Qa = "io.github.Qalculate.qalculate-qt.desktop";
-        Wr = "writer.desktop";
-        Ca = "calc.desktop";
-        # Development
-        KW = "org.kde.kwrite.desktop";
-        Ka = "org.kde.kate.desktop";
-        Ko = "org.kde.konsole.desktop";
-        Co = "codium.desktop";
-        # Images
-        Pi = "pinta.desktop";
-        # Videos
-        Mp = "mpv.desktop";
-      };
-      gridModel = (with apps; [ # The grid
-        [ Ff __ KW KW Ka __ Pi Pi ]
-        [ __ __ KW KW Ko __ Pi Pi ]
-        [ Qa __ Co Co __ __ Mp Mp ]
-        [ Wr __ Co Co __ __ Mp Mp ]
-        [ Ca __ __ __ __ __ __ __ ]
-        [ SS PA EE KI MC __ __ __ ]
-      ]);
-      tiledmenu = apps: gridModel: (
+      mkTiledmenu = apps: gridModel: (
         let
           gridFactory = apps: gridModel: (
             let
@@ -147,6 +115,39 @@
           );
         }
       );
+      apps = { # List of all apps to be present in the grid
+        __ = ""; # Empty space
+        # Browsers
+        Ff = "firefox.desktop";
+        # System
+        SS = "systemsettings.desktop";
+        PA = "org.pulseaudio.pavucontrol.desktop";
+        EE = "com.github.wwmm.easyeffects.desktop";
+        KI = "org.kde.kinfocenter.desktop";
+        MC = "io.missioncenter.MissionCenter.desktop";
+        # Utilities
+        Qa = "io.github.Qalculate.qalculate-qt.desktop";
+        Wr = "writer.desktop";
+        Ca = "calc.desktop";
+        # Development
+        KW = "org.kde.kwrite.desktop";
+        Ka = "org.kde.kate.desktop";
+        Ko = "org.kde.konsole.desktop";
+        Co = "codium.desktop";
+        # Images
+        Pi = "pinta.desktop";
+        # Videos
+        Mp = "mpv.desktop";
+      };
+      gridModel = (with apps; [ # The grid
+        [ Ff __ KW KW Ka __ Pi Pi ]
+        [ __ __ KW KW Ko __ Pi Pi ]
+        [ Qa __ Co Co __ __ Mp Mp ]
+        [ Wr __ Co Co __ __ Mp Mp ]
+        [ Ca __ __ __ __ __ __ __ ]
+        [ SS PA EE KI MC __ __ __ ]
+      ]);
+      tiledmenu = (mkTiledmenu apps gridModel);
     };
     setup = { attr }: {
       home = { # (Home-Manager Module)
@@ -207,7 +208,9 @@
         [ MC Ca __ __ __ __ __ ]
         [ SM __ __ Zo __ Mp Mp ]
       ]);
-      tiledmenu = config.modules."plasma-tiledmenu".attr.tiledmenu;
+      tiledmenu = ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel) // {
+        config."General"."icon" = "nix-snowflake"; # Icon with color
+      };
     };
   };
 

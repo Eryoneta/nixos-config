@@ -229,15 +229,9 @@
         # TiledMenu
         tiledmenu = (
           if (config.includedModules."plasma-tiledmenu.personal" or false) then (
-            with config.modules."plasma-tiledmenu.personal"; ( # Custom
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          ) else (
-            with config.modules."plasma-tiledmenu"; ( # Default
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          )
-        );
+            (config.modules."plasma-tiledmenu.personal") # Custom
+          ) else (config.modules."plasma-tiledmenu") # Default
+        ).attr.tiledmenu;
 
         # Configurable-Button
         configurablebutton = config.modules."plasma-configurablebutton".attr.configurablebutton;
@@ -404,17 +398,7 @@
         });
 
         # TiledMenu
-        tiledmenu = (
-          if (config.includedModules."plasma-tiledmenu.work" or false) then (
-            with config.modules."plasma-tiledmenu.work"; ( # Custom
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          ) else (
-            with config.modules."plasma-tiledmenu"; ( # Default
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          )
-        );
+        tiledmenu = (config.modules."plasma-tiledmenu.work").attr.tiledmenu; # Custom
 
       };
       mainPanel = (default-mainPanel // {
