@@ -259,4 +259,24 @@
     };
   };
 
+  # VSCodium: (Medium) Code editor
+  config.modules."vscodium.work" = {
+    tags = [ "work-setup" ];
+    setup = {
+      home = { # (Home-Manager Module)
+
+        # Default profile
+        config.programs.vscode.profiles.default = {
+
+          # Settings
+          userSettings = {
+            "editor.wordWrap" = "on"; # Wrap words
+          };
+
+        };
+
+      };
+    };
+  };
+
 }

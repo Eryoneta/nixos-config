@@ -229,15 +229,9 @@
         # TiledMenu
         tiledmenu = (
           if (config.includedModules."plasma-tiledmenu.personal" or false) then (
-            with config.modules."plasma-tiledmenu.personal"; ( # Custom
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          ) else (
-            with config.modules."plasma-tiledmenu"; ( # Default
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          )
-        );
+            (config.modules."plasma-tiledmenu.personal") # Custom
+          ) else (config.modules."plasma-tiledmenu") # Default
+        ).attr.tiledmenu;
 
         # Configurable-Button
         configurablebutton = config.modules."plasma-configurablebutton".attr.configurablebutton;
@@ -375,6 +369,7 @@
     attr = rec {
       packageChannel = pkgs-bundle.system; # (Also included with KDE Plasma)
       default-widgets = config.modules."plasma+panels".attr.widgets;
+      personal-widgets = config.modules."plasma+panels.personal".attr.widgets;
       default-mainPanel = config.modules."plasma+panels".attr.mainPanel;
       widgets = {
 
@@ -385,28 +380,15 @@
               "launchers" = (utils.joinStr "," [ # Pinned apps
                 "applications:org.kde.dolphin.desktop" # Dolphin
                 "applications:firefox.desktop" # Firefox
-                "applications:Zoom.desktop" # Zoom
               ]);
             });
           };
         });
 
-        # Color Picker
-        colorPicker = {
-          name = "org.kde.plasma.colorpicker";
-          config = {
-            "General" = {
-              "defaultFormat" = "RRGGBB";
-            };
-          };
-        };
-
         # System tray
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
-            shown = [
-              "org.kde.plasma.mediacontroller" # Media Controller
-            ];
+            shown = []; # Note: This overrides "volume" and "networkmanagement" shown status
             hidden = (
               default-widgets.systemTray.systemTray.items.hidden ++ [
                 "org.kde.plasma.volume" # System volume
@@ -416,34 +398,20 @@
           });
         });
 
-        # Volume
-        volume = "org.kde.plasma.volume";
-
-        # Network
-        network = "org.kde.plasma.networkmanagement";
-
         # TiledMenu
-        tiledmenu = (
-          if (config.includedModules."plasma-tiledmenu.work" or false) then (
-            with config.modules."plasma-tiledmenu.work"; ( # Custom
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          ) else (
-            with config.modules."plasma-tiledmenu"; ( # Default
-              attr.tiledmenu attr.apps attr.gridModel
-            )
-          )
-        );
+        tiledmenu = (config.modules."plasma-tiledmenu.work").attr.tiledmenu; # Custom
 
       };
       mainPanel = (default-mainPanel // {
         widgets = with default-widgets; with widgets; [
           tiledmenu
-          activityPager
           virtualDesktopsPager
           taskManager
           separator
           systemTray
+          personal-widgets.weatherwidgetplus
+          personal-widgets.volume
+          personal-widgets.network
           clock
           showDesktop
         ];
@@ -456,6 +424,11 @@
         config.programs.plasma.panels = [# (plasma-manager option)
           attr.mainPanel # Main panel
         ];
+
+        # Weather Widget Plus: Install
+        config.xdg.dataFile."plasma/plasmoids/weather.widget.plus" = {
+          source = "${pkgs-bundle.weatherwidgetplus}/weather.widget.plus";
+        };
 
       };
     };

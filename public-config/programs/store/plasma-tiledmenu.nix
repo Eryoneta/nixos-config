@@ -5,39 +5,7 @@
     tags = config.modules."plasma".tags;
     attr = rec {
       tiledmenu-pkg = pkgs-bundle.tiledmenu; # Input
-      apps = { # List of all apps to be present in the grid
-        __ = ""; # Empty space
-        # Browsers
-        Ff = "firefox.desktop";
-        # System
-        SS = "systemsettings.desktop";
-        PA = "org.pulseaudio.pavucontrol.desktop";
-        EE = "com.github.wwmm.easyeffects.desktop";
-        KI = "org.kde.kinfocenter.desktop";
-        MC = "io.missioncenter.MissionCenter.desktop";
-        # Utilities
-        Qa = "io.github.Qalculate.qalculate-qt.desktop";
-        Wr = "writer.desktop";
-        Ca = "calc.desktop";
-        # Development
-        KW = "org.kde.kwrite.desktop";
-        Ka = "org.kde.kate.desktop";
-        Ko = "org.kde.konsole.desktop";
-        Co = "codium.desktop";
-        # Images
-        Pi = "pinta.desktop";
-        # Videos
-        Mp = "mpv.desktop";
-      };
-      gridModel = (with apps; [ # The grid
-        [ Ff __ KW KW Ka __ Pi Pi ]
-        [ __ __ KW KW Ko __ Pi Pi ]
-        [ Qa __ Co Co __ __ Mp Mp ]
-        [ Wr __ Co Co __ __ Mp Mp ]
-        [ Ca __ __ __ __ __ __ __ ]
-        [ SS PA EE KI MC __ __ __ ]
-      ]);
-      tiledmenu = apps: gridModel: (
+      mkTiledmenu = apps: gridModel: (
         let
           gridFactory = apps: gridModel: (
             let
@@ -106,24 +74,24 @@
               tileSize = 64; # 4px + 56px + 4px
               menuWidth = 48; # 48px
               listWidth = 300; # 300px
+              heightAdjust = 1; # 1px. A single pixel. Weird
               #popupWidth = (border + menuWidth + listWidth + border + (tileSize * gridWidth) + border);
               #popupHeight = (border + (tileSize * gridHeight) + border);
               popupWidth = (menuWidth + listWidth + border + (tileSize * gridWidth));
-              popupHeight = (tileSize * gridHeight);
+              popupHeight = ((tileSize * gridHeight) + heightAdjust);
               # Note: It seems like the popup already have borders?
             in {
               "popupWidth" = popupWidth; # Menu width
               "popupHeight" = popupHeight; # Menu height
               "General" = {
                 "icon" = "nix-snowflake-white"; # Icon
-                # TODO: (Plasma/TiledMenu) Set a custom icon
                 # Sidebar
                 "sidebarFollowsTheme" = true; # Theme
-                "sidebarShortcuts" = (utils.joinStr "," [ # Shortcuts
-                # TODO: (Plasma/TiledMenu) Side-shortcuts not being written??? Fix
-                  "org.kde.dolphin.desktop" # Dolphin
-                  "systemsettings.desktop" # Settings
-                ]);
+                # "sidebarShortcuts" = (utils.joinStr "," [ # Shortcuts
+                #   "org.kde.dolphin.desktop" # Dolphin
+                #   "systemsettings.desktop" # Settings
+                # ]);
+                "sidebarShortcuts" = ""; # Shortcuts
                 # List
                 "appListWidth" = listWidth; # Width
                 "defaultAppListView" = "Categories"; # How to organize all the apps
@@ -146,6 +114,39 @@
           );
         }
       );
+      apps = { # List of all apps to be present in the grid
+        __ = ""; # Empty space
+        # Browsers
+        Ff = "firefox.desktop";
+        # System
+        SS = "systemsettings.desktop";
+        PA = "org.pulseaudio.pavucontrol.desktop";
+        EE = "com.github.wwmm.easyeffects.desktop";
+        KI = "org.kde.kinfocenter.desktop";
+        MC = "io.missioncenter.MissionCenter.desktop";
+        # Utilities
+        Qa = "io.github.Qalculate.qalculate-qt.desktop";
+        Wr = "writer.desktop";
+        Ca = "calc.desktop";
+        # Development
+        KW = "org.kde.kwrite.desktop";
+        Ka = "org.kde.kate.desktop";
+        Ko = "org.kde.konsole.desktop";
+        Co = "codium.desktop";
+        # Images
+        Pi = "pinta.desktop";
+        # Videos
+        Mp = "mpv.desktop";
+      };
+      gridModel = (with apps; [ # The grid
+        [ Ff __ KW KW Ka __ Pi Pi ]
+        [ __ __ KW KW Ko __ Pi Pi ]
+        [ Qa __ Co Co __ __ Mp Mp ]
+        [ Wr __ Co Co __ __ Mp Mp ]
+        [ Ca __ __ __ __ __ __ __ ]
+        [ SS PA EE KI MC __ __ __ ]
+      ]);
+      tiledmenu = (mkTiledmenu apps gridModel);
     };
     setup = { attr }: {
       home = { # (Home-Manager Module)
@@ -194,6 +195,7 @@
         Pi = "pinta.desktop";
         # Videos
         Mp = "mpv.desktop";
+        Zo = "Zoom.desktop";
       };
       gridModel = (with apps; [ # The grid
         [ Ch Ff FD __ __ Pi Pi ]
@@ -203,9 +205,20 @@
         [ EE OB __ Co Co Ho __ ]
         [ KI Wr __ Co Co MW __ ]
         [ MC Ca __ __ __ __ __ ]
-        [ SM __ __ __ __ Mp Mp ]
+        [ SM __ __ Zo __ Mp Mp ]
       ]);
-      tiledmenu = config.modules."plasma-tiledmenu".attr.tiledmenu;
+      tiledmenu = (
+        let
+          base = ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel);
+        in (base // {
+          config = base.config // {
+            "General" = base.config."General" // {
+              "icon" = "nix-snowflake"; # Icon with color
+            };
+          };
+          # Note: Ugly! Ugly! Ugly! But this is necessary to not override everything, and target only the icon
+        })
+      );
     };
   };
 

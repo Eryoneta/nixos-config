@@ -19,7 +19,7 @@
           # Garbage Collector
           gc = {
             automatic = (utils.mkDefault) true;
-            dates = (utils.mkDefault) "*-*-* 18:00:00"; # Every day, 18h00
+            dates = (utils.mkDefault) "*-*-* 20:00:00"; # Every day, 20h00
 
             # Notifier ("garbage-collector-notifier.nix")
             notifier = {
@@ -31,7 +31,7 @@
               };
               informConclusion = {
                 show = (utils.mkDefault) true;
-                time = (utils.mkDefault) 30;
+                time = (utils.mkDefault) 20;
               };
             };
 
@@ -62,7 +62,7 @@
         # Garbage Collector
         config.nix.gc = {
           automatic = (utils.mkDefault) true;
-          dates = (utils.mkDefault) "*-*-* 19:00:00"; # Every day, 19h00
+          dates = (utils.mkDefault) "*-*-* 20:30:00"; # Every day, 20h30
         };
         # Note: This one collects user specific ones
 

@@ -62,10 +62,39 @@
 
           # Theme
           polarity = (utils.mkDefault) "light"; # Theme
-          # Gallery: https://tinted-theming.github.io/base16-gallery/
+          # Gallery: https://tinted-theming.github.io/tinted-gallery/
           base16Scheme = (utils.mkDefault) (with attr.packageChannel; ( # Colors
             "${base16-schemes}/share/themes/nord-light.yaml"
             # Note: Between stable and unstable, some themes might not exist
+          ));
+
+        };
+
+      };
+    };
+  };
+
+  # Theme
+  config.modules."theme.work" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = (config.modules."theme").attr.packageChannel;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+
+        # Stylix: Themes and colors manager
+        config.stylix = {
+
+          # Cursor
+          cursor = {
+            package = (attr.packageChannel).bibata-cursors;
+            name = "Bibata-Modern-Ice";
+            size = 24;
+          };
+
+          # Theme
+          polarity = "light"; # Theme
+          base16Scheme = (with attr.packageChannel; ( # Colors
+            "${base16-schemes}/share/themes/github.yaml"
           ));
 
         };

@@ -89,7 +89,7 @@
           operation = "boot";
           allowReboot = false;
           persistent = true;
-          dates = (utils.mkDefault) "Fri *-*-* 16:00:00"; # Every friday, 16h00
+          dates = (utils.mkDefault) "Fri *-*-* 17:00:00"; # Every friday, 17h00
           randomizedDelaySec = (utils.mkDefault) "30min"; # Random delay of 30min (Its best to not upgrade right after booting)
           flake = "git+file://${host.configFolder}?submodules=1#${host.name}";
           # Notice: The flake ignores submodules! The flag "submodules=1" is necessary
