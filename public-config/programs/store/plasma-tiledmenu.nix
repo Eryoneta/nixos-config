@@ -85,14 +85,13 @@
               "popupHeight" = popupHeight; # Menu height
               "General" = {
                 "icon" = "nix-snowflake-white"; # Icon
-                # TODO: (Plasma/TiledMenu) Set a custom icon
                 # Sidebar
                 "sidebarFollowsTheme" = true; # Theme
-                "sidebarShortcuts" = (utils.joinStr "," [ # Shortcuts
-                # TODO: (Plasma/TiledMenu) Side-shortcuts not being written??? Fix
-                  "org.kde.dolphin.desktop" # Dolphin
-                  "systemsettings.desktop" # Settings
-                ]);
+                # "sidebarShortcuts" = (utils.joinStr "," [ # Shortcuts
+                #   "org.kde.dolphin.desktop" # Dolphin
+                #   "systemsettings.desktop" # Settings
+                # ]);
+                "sidebarShortcuts" = ""; # Shortcuts
                 # List
                 "appListWidth" = listWidth; # Width
                 "defaultAppListView" = "Categories"; # How to organize all the apps
