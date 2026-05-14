@@ -388,6 +388,7 @@
         # System tray
         systemTray = (default-widgets.systemTray // {
           systemTray.items = (default-widgets.systemTray.systemTray.items // {
+            shown = []; # Note: This overrides "volume" and "networkmanagement" shown status
             hidden = (
               default-widgets.systemTray.systemTray.items.hidden ++ [
                 "org.kde.plasma.volume" # System volume
@@ -423,6 +424,11 @@
         config.programs.plasma.panels = [# (plasma-manager option)
           attr.mainPanel # Main panel
         ];
+
+        # Weather Widget Plus: Install
+        config.xdg.dataFile."plasma/plasmoids/weather.widget.plus" = {
+          source = "${pkgs-bundle.weatherwidgetplus}/weather.widget.plus";
+        };
 
       };
     };
