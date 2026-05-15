@@ -193,6 +193,8 @@
         );
         # Theme
         "extensions.activeThemeID" = "dreamer-bold-colorway@mozilla.org"; # Purple theme!
+        "browser.theme.toolbar-theme" = 1;
+        "extensions.ui.theme.hidden" = false;
 
         # UX (User experience)
         # Cookies
