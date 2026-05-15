@@ -207,18 +207,10 @@
         [ MC Ca __ __ __ __ __ ]
         [ SM __ __ Zo __ Mp Mp ]
       ]);
-      tiledmenu = (
-        let
-          base = ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel);
-        in (base // {
-          config = base.config // {
-            "General" = base.config."General" // {
-              "icon" = "nix-snowflake"; # Icon with color
-            };
-          };
-          # Note: Ugly! Ugly! Ugly! But this is necessary to not override everything, and target only the icon
-        })
-      );
+      tiledmenu = (utils.mergeAttrs ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel) {
+        config."General"."icon" = "nix-snowflake"; # Icon with color
+        config."General"."defaultTileColor" = "#F4F4F4"; # Almost white
+      });
     };
   };
 
