@@ -263,4 +263,35 @@
     };
   };
 
+  # Firefox: Internet browser
+  config.modules."firefox.work.public" = {
+    tags = [ "work-setup" ];
+    attr.template = {
+      settings = ((config.modules."firefox.work".attr.template).settings // {
+
+        # Theme
+        "extensions.activeThemeID" = "windows-10-default-blue@qw.linux-2g64.local";
+
+      });
+    };
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+
+        # Configuration
+        config.programs.firefox = {
+
+          # Default profile
+          profiles."default" = {
+
+            # Settings
+            settings = (utils.mkForce) (attr.template).settings;
+
+          };
+
+        };
+
+      };
+    };
+  };
+
 }
