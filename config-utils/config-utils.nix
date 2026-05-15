@@ -100,6 +100,9 @@
         # Join strings from a list into one
         joinStr = str: list: (builtins.concatStringsSep str list);
 
+        # Deeply merge two attribute sets
+        mergeAttrs = attrs1: attrs2: (nix-lib.recursiveUpdate attrs1 attrs2);
+
         # Replace strings
         replaceStr = from: to: list: (builtins.replaceStrings [ from ] [ to ] list);
 

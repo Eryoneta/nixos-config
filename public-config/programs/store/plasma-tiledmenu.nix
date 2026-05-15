@@ -103,7 +103,8 @@
                 "searchFieldFollowsTheme" = true; # Search field theme
                 "searchFieldHeight" = 32; # Search field height
                 # Tile
-                "defaultTileGradient" = true; # Gradient background
+                "defaultTileColor" = "#FFFFFF"; # White
+                "defaultTileGradient" = false; # No gradient background
                 "tileLabelAlignment" = "center"; # Center tile label
                 "groupLabelAlignment" = "center"; # Center group label
                 # Tile: Model
@@ -207,18 +208,10 @@
         [ MC Ca __ __ __ __ __ ]
         [ SM __ __ Zo __ Mp Mp ]
       ]);
-      tiledmenu = (
-        let
-          base = ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel);
-        in (base // {
-          config = base.config // {
-            "General" = base.config."General" // {
-              "icon" = "nix-snowflake"; # Icon with color
-            };
-          };
-          # Note: Ugly! Ugly! Ugly! But this is necessary to not override everything, and target only the icon
-        })
-      );
+      tiledmenu = (utils.mergeAttrs ((config.modules."plasma-tiledmenu").attr.mkTiledmenu apps gridModel) {
+        config."General"."icon" = "nix-snowflake"; # Icon with color
+        config."General"."defaultTileColor" = "#F4F4F4"; # Almost white
+      });
     };
   };
 

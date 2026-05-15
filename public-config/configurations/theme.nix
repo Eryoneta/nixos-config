@@ -63,9 +63,9 @@
           # Theme
           polarity = (utils.mkDefault) "light"; # Theme
           # Gallery: https://tinted-theming.github.io/tinted-gallery/
+          # Note: Between stable and unstable, some themes might not exist
           base16Scheme = (utils.mkDefault) (with attr.packageChannel; ( # Colors
             "${base16-schemes}/share/themes/nord-light.yaml"
-            # Note: Between stable and unstable, some themes might not exist
           ));
 
         };
@@ -94,7 +94,7 @@
           # Theme
           polarity = "light"; # Theme
           base16Scheme = (with attr.packageChannel; ( # Colors
-            "${base16-schemes}/share/themes/github.yaml"
+            "${base16-schemes}/share/themes/google-light.yaml"
           ));
 
         };
