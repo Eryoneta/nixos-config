@@ -103,7 +103,8 @@
                 "searchFieldFollowsTheme" = true; # Search field theme
                 "searchFieldHeight" = 32; # Search field height
                 # Tile
-                "defaultTileGradient" = true; # Gradient background
+                "defaultTileColor" = "#FFFFFF"; # White
+                "defaultTileGradient" = false; # No gradient background
                 "tileLabelAlignment" = "center"; # Center tile label
                 "groupLabelAlignment" = "center"; # Center group label
                 # Tile: Model
