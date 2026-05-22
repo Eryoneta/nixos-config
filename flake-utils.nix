@@ -76,9 +76,11 @@ flakePath: (
         #   But Setup loads every user separately. So it can be used instead
         setupNixosSpecialArgs = (nixosSpecialArgs // setupSpecialArgs // {
           user = userHostArgs.userDev; # User-Host-Scheme
+          setup-output = "nixos";
         });
         setupHomeSpecialArgs = username: (nixosSpecialArgs // setupSpecialArgs // {
           user = userHostArgs.users.${username}; # User-Host-Scheme
+          setup-output = "home";
         });
 
       in {
@@ -125,13 +127,6 @@ flakePath: (
                           { # (Setup-Manager Module)
                             config = {
                               includeTags = [ "${user.username}" "${host.hostname}" ]; # Includes user and host modules
-                            };
-                          }
-                          { # (Setup-Manager Module)
-                            config = {
-                              excludeTags = ( # Exclude private stuff, if it's a public user
-                                if (user.usePublicOnly or false) then [ "private" ] else []
-                              );
                             };
                           }
                         ];
