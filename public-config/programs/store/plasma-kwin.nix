@@ -121,6 +121,11 @@
           "Plugins" = {
             "screenedgeEnabled" = false; # Disable the glow effect from screen edges
           };
+        } // {
+          # Border actions
+          "ElectricBorders" = {
+            "TopLeft" = null; # No default action
+          };
         };
 
       };
