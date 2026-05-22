@@ -1,4 +1,4 @@
-{ config, ... }@args: with args.config-utils; { # (Setup-Manager Module)
+{ config, setup-output, ... }@args: with args.config-utils; { # (Setup-Manager Module)
 
   # Eryoneta user
   config.modules."eryoneta" = {
@@ -7,6 +7,11 @@
       "work-setup"
       "developer-setup"
     ];
+    excludeTags = (
+      if (setup-output == "home") then (
+        [ "private" ] # Exclude private stuff, but only for this user
+      ) else []
+    );
     attr.profileIcon = config.modules."user".attr.profileIcon;
     attr.defaultPassword = config.modules."user".attr.defaultPassword;
     attr.hashedPasswordFilePath = config.modules."user".attr.hashedPasswordFilePath;
