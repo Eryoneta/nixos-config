@@ -27,6 +27,18 @@
     };
   };
 
+  # QDiskInfo: Disk health inspection tool
+  config.modules."qdiskinfo" = {
+    tags = [ "basic-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        # Install
+        config.environment.systemPackages = with attr.packageChannel; [ qdiskinfo ];
+      };
+    };
+  };
+
   # SmartMonTools: Disk health inspection tools
   config.modules."smartmontools" = {
     tags = [ "basic-setup" ];
