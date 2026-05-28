@@ -51,7 +51,7 @@
           # Apparently, NixOS already does that: https://github.com/NixOS/nixpkgs/blob/release-24.05/nixos/modules/misc/nixpkgs-flake.nix
 
           extraOptions = ''
-            !include ${config.age.secrets.flakeUpdateToken.path or ""}
+            !include ${config.age.secrets."flakeUpdateToken".path or ""}
           '';
 
         };

@@ -29,14 +29,19 @@
       };
       home = { # (Home-Manager Module)
 
-        # Configuration
-        config.programs.ssh = {
-          enable = true;
-          package = (attr.packageChannel).openssh; # Stable channel
-        };
-
         # SSH Agent
         config.services.ssh-agent.enable = false; # The system already starts the agent
+
+      };
+    };
+  };
+
+  # SSH: Secure connection
+  config.modules."ssh.private" = {
+    tags = [ "basic-setup" "private" ];
+    attr.mkSymlink = config.modules."configuration".attr.mkSymlink;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
 
         # Dotfile: Add GitHub's public keys
         config.home.file.".ssh/known_hosts" = (utils.mkDefault) (attr.mkSymlink {
@@ -49,24 +54,31 @@
 
   # SSH: Secure connection
   config.modules."ssh.developer" = {
-    tags = [ "sysdev-setup" "developer-setup" ];
+    tags = [ "sysdev-setup" "developer-setup" "private" ];
+    attr.packageChannel = config.modules."ssh".attr.packageChannel;
     attr.mkOutOfStoreSymlink = config.modules."configuration".attr.mkOutOfStoreSymlink;
     setup = { attr }: {
       home = { # (Home-Manager Module)
 
-        # SSH identities
-        config.programs.ssh.matchBlocks = {
-          "public" = {
-            hostname = "github.com";
-            identityFile = "~/.ssh/id_ed25519_git-public.pub";
-            identitiesOnly = true;
-            user = userDev.username;
-          };
-          "private" = {
-            hostname = "github.com";
-            identityFile = "~/.ssh/id_ed25519_git-private.pub";
-            identitiesOnly = true;
-            user = userDev.username;
+        # Configuration
+        config.programs.ssh = {
+          enable = true;
+          package = (attr.packageChannel).openssh; # Stable channel
+
+          # SSH identities
+          matchBlocks = {
+            "public" = {
+              hostname = "github.com";
+              identityFile = "~/.ssh/id_ed25519_git-public.pub";
+              identitiesOnly = true;
+              user = userDev.username;
+            };
+            "private" = {
+              hostname = "github.com";
+              identityFile = "~/.ssh/id_ed25519_git-private.pub";
+              identitiesOnly = true;
+              user = userDev.username;
+            };
           };
         };
 

@@ -49,6 +49,8 @@
 
       # Flag to execute "nixos-rebuild" with "--profile-name"
       system.autoUpgrade.flags = [ "--profile-name ${cfg_ap.name}" ];
+
+      # Delete generations above the given limit
       systemd.services."nixos-upgrade" = {
         serviceConfig = {
           "User" = "root";
