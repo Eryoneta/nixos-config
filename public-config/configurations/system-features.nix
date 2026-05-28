@@ -101,7 +101,7 @@
             systemUser = host.userDev.username;
             directory = host.configFolder;
             markDirectoryAsSafe = (utils.mkDefault) true;
-            push = (utils.mkDefault) true;
+            #push = (utils.mkDefault) true;
           };
 
           # Update flake lock ("auto-upgrade-update-flake-lock.nix")
