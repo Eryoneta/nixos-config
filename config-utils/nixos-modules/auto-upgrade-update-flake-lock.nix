@@ -9,17 +9,13 @@
   - Uses "git"
   - Optionally depends on "./auto-upgrade-git-support.nix"
 */
-{ config, options, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
   let
     cfg = config.system.autoUpgrade;
     cfg_ufl = config.system.autoUpgrade.updateFlakeLock;
+    cfg_n = config.system.autoUpgrade.notifier or {};
+    cfg_gs = config.system.autoUpgrade.gitSupport or {};
   in {
-
-    imports = (
-      let
-        gs_path = ./auto-upgrade-git-support.nix;
-      in (lib.optional (builtins.pathExists gs_path) gs_path)
-    );
 
     options = {
       system.autoUpgrade.updateFlakeLock = {
@@ -28,7 +24,7 @@
 
         inputs = lib.mkOption {
           type = (lib.types.listOf (lib.types.str));
-          default = [ ];
+          default = [];
           example = [
             "nixpkgs"
             "home-manager"
@@ -58,50 +54,38 @@
       };
     };
 
-    config = lib.mkIf (cfg.enable && cfg_ufl.enable) (
-      let
-        # Default options
-        cfg_gs = {
-          enable = false;
-          systemUser = "root";
-          directory = "";
-        # If "gitSupport" is present, uses it
-        } // (lib.optionalAttrs (builtins.hasAttr "gitSupport" options.system.autoUpgrade) {
-          enable = cfg.gitSupport.enable;
-          systemUser = cfg.gitSupport.systemUser;
-          directory = cfg.gitSupport.directory;
-        });
-      in {
+    config = lib.mkIf (cfg.enable && cfg_ufl.enable) {
 
-        # Has to be "updateFlakeLock.directory = gitSupport.directory" as said
-        system.autoUpgrade.updateFlakeLock.directory = (lib.mkDefault) cfg_gs.directory;
+      # Has to be "updateFlakeLock.directory = gitSupport.directory" as said
+      system.autoUpgrade.updateFlakeLock.directory = (lib.mkDefault) (cfg_gs.directory or "");
 
-        assertions = [
-          {
-            assertion = !(cfg_ufl.enable && cfg.flake == null);
-            message = ''
-              The option 'system.autoUpgrade.updateFlakeLock' requires 'system.autoUpgrade.flake' to be set
-            '';
-          }
-          {
-            assertion = !(cfg_ufl.directory == "");
-            message = ''
-              The option 'system.autoUpgrade.updateFlakeLock.directory' cannot be empty
-            '';
-          }
-          {
-            assertion = !(cfg_ufl.commitLockFile && !cfg_gs.enable);
-            message = ''
-              The option 'system.autoUpgrade.updateFlakeLock.commitLockFile' requires 'system.autoUpgrade.gitSupport' to be enabled
-            '';
-          }
-        ];
+      assertions = [
+        {
+          assertion = !(cfg_ufl.enable && cfg.flake == null);
+          message = ''
+            The option 'system.autoUpgrade.updateFlakeLock' requires 'system.autoUpgrade.flake' to be set
+          '';
+        }
+        {
+          assertion = !(cfg_ufl.directory == "");
+          message = ''
+            The option 'system.autoUpgrade.updateFlakeLock.directory' cannot be empty
+          '';
+        }
+        {
+          assertion = !(cfg_ufl.commitLockFile && !(cfg_gs.enable or false));
+          message = ''
+            The option 'system.autoUpgrade.updateFlakeLock.commitLockFile' requires 'system.autoUpgrade.gitSupport' to be enabled
+          '';
+        }
+      ];
 
-        # Update "flake.lock"
-        systemd.services."nixos-upgrade-update-flake-lock" = {
+      # Update "flake.lock"
+      systemd.services."nixos-upgrade-update-flake-lock" = (lib.mkMerge [
+        { # Script
           serviceConfig = {
             "Type" = "oneshot";
-            "User" = cfg_gs.systemUser;
+            "User" = (cfg_gs.systemUser or "root");
           };
           path = with pkgs; [
             coreutils
@@ -126,25 +110,32 @@
               git commit --amend --no-edit --author="NixOS AutoUpgrade <nixos@${config.networking.hostName}>";
             fi
           '';
-        };
+        }
+        { # Internet access is needed
+          wants = [ "network-online.target" ];
+          after = [ "network-online.target" ];
+        }
+        # It should happen between "git-prepare" and "git-conclude", and it fails if the first one does
+        (lib.mkIf (cfg_gs.enable or false) {
+          requires = [ "nixos-upgrade-git-prepare.service" ];
+          after = [ "nixos-upgrade-git-prepare.service" ];
+          before = [ "nixos-upgrade-git-conclude.service" ];
+        })
+        # If there is a confirmation prompt, it should obey it
+        (lib.mkIf (!(cfg_gs.enable or false) && ((cfg_n.enable or false) && (cfg_n.informStart.show or false) && (cfg_n.informStart.promptConfirmation or false))) {
+          requires = [ "nixos-upgrade-notify-start.service" ];
+          after = [ "nixos-upgrade-notify-start.service" ];
+        })
+      ]);
 
-        # Has to happen between Git-Pull and Git-Push
-        systemd.services."nixos-upgrade-git-prepare" = {
-          wants = (lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ]);
-          before = (lib.mkIf (cfg_gs.enable) [ "nixos-upgrade-update-flake-lock.service" ]);
-        };
-        systemd.services."nixos-upgrade-update-flake-lock" = {
-          # Internet access is needed
-          wants = [ "network-online.target" ] ++ (lib.optional (cfg_gs.enable) "nixos-upgrade-git-conclude.service");
-          after = [ "network-online.target" ] ++ (lib.optional (cfg_gs.enable) "nixos-upgrade-git-conclude.service");
-        };
-
-        # NixOS-Upgrade starts only after this one
-        systemd.services."nixos-upgrade" = {
+      # NixOS-Upgrade
+      systemd.services."nixos-upgrade" = (lib.mkMerge [
+        # Calls "update-flake-lock", and it fails if that one does
+        (lib.mkIf (!(cfg_gs.enable or false)) {
           requires = [ "nixos-upgrade-update-flake-lock.service" ];
           after = [ "nixos-upgrade-update-flake-lock.service" ];
-        };
+        })
+      ]);
 
-      }
-    );
+    };
   }

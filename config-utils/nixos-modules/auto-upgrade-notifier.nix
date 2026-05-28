@@ -9,6 +9,8 @@
   let
     cfg = config.system.autoUpgrade;
     cfg_n = config.system.autoUpgrade.notifier;
+    cfg_gs = config.system.autoUpgrade.gitSupport or {};
+    cfg_ufl = config.system.autoUpgrade.updateFlakeLock or {};
   in {
 
     options = {
@@ -185,12 +187,18 @@
           };
 
           # NixOS-Upgrade calls the services as needed
-          services."nixos-upgrade" = {
-            requires = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
-            after = (lib.optional (cfg_n.informStart.show) "nixos-upgrade-notify-start.service");
-            onSuccess = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-success.service");
-            onFailure = (lib.optional (cfg_n.informConclusion.show) "nixos-upgrade-notify-failure.service");
-          };
+          services."nixos-upgrade" = (lib.mkMerge [
+            # Show confirmation prompt or not
+            (lib.mkIf (cfg_n.informStart.show && !(cfg_ufl.enable or false) && !(cfg_gs.enable or false)) {
+              requires = [ "nixos-upgrade-notify-start.service" ];
+              after = [ "nixos-upgrade-notify-start.service" ];
+            })
+            # Show conclusion notification or not
+            (lib.mkIf (cfg_n.informConclusion.show) {
+              onSuccess = [ "nixos-upgrade-notify-success.service" ];
+              onFailure = [ "nixos-upgrade-notify-failure.service" ];
+            })
+          ]);
 
         }
       );

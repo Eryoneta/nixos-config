@@ -12,7 +12,9 @@
   let
     cfg = config.system.autoUpgrade;
     cfg_gs = config.system.autoUpgrade.gitSupport;
-    configuration = config;
+    cfg_ufl = config.system.autoUpgrade.updateFlakeLock or {};
+    cfg_n = config.system.autoUpgrade.notifier or {};
+    hasHomeManager = (builtins.hasAttr "home-manager" config);
   in {
 
     options = {
@@ -86,7 +88,7 @@
         '';
         stateVersion = lib.mkDefault (
           if (cfg_gs.systemUser != "root") then (
-            if (builtins.hasAttr "home-manager" configuration) then
+            if (hasHomeManager) then
               config.home-manager.users.${cfg_gs.systemUser}.home.stateVersion
             else config.system.stateVersion
           ) else config.system.stateVersion
@@ -94,76 +96,97 @@
       };
 
       # Git-Pull&Commit
-      systemd.services."nixos-upgrade-git-prepare" = {
-        serviceConfig = {
-          "Type" = "oneshot";
-          "User" = cfg_gs.systemUser;
-        };
-        path = with pkgs; [
-          coreutils
-          git
-        ];
-        script = ''
-          # Interrupts if there is an error or undefined variable
-          set -eu
-          # Access folder
-          cd "${cfg_gs.directory}"
-          # Git Pull
-          ${lib.optionalString (cfg_gs.pull) ''
-            echo "Pulling the latest version..."
-            git pull --recurse-submodules
-          ''}
-          # Git Commit
-          ${lib.optionalString (cfg_gs.commit) ''
-            echo "Committing changes..."
-            git add -A
-            git commit -m "${cfg_gs.commitMessage}"
-          ''}
-        '';
-      };
+      systemd.services."nixos-upgrade-git-prepare" = (lib.mkMerge [
+        { # Script
+          serviceConfig = {
+            "Type" = "oneshot";
+            "User" = cfg_gs.systemUser;
+          };
+          path = with pkgs; [
+            coreutils
+            git
+          ];
+          script = ''
+            ${lib.optionalString (cfg_gs.pull || cfg_gs.commit) ''
+              # Interrupts if there is an error or undefined variable
+              set -eu
+              # Access folder
+              cd "${cfg_gs.directory}"
+              # Git Pull
+              ${lib.optionalString (cfg_gs.pull) ''
+                echo "Pulling the latest version..."
+                git pull --recurse-submodules
+              ''}
+              # Git Commit
+              ${lib.optionalString (cfg_gs.commit) ''
+                echo "Committing changes..."
+                git add -A
+                git commit -m "${cfg_gs.commitMessage}"
+              ''}
+            ''}
+          '';
+        }
+        # Internet access might be needed
+        (lib.mkIf (cfg_gs.pull) {
+          wants = [ "network-online.target" ];
+          after = [ "network-online.target" ];
+        })
+        # If there is a confirmation prompt, it should obey it
+        (lib.mkIf ((cfg_n.enable or false) && (cfg_n.informStart.show or false) && (cfg_n.informStart.promptConfirmation or false)) {
+          requires = [ "nixos-upgrade-notify-start.service" ];
+          after = [ "nixos-upgrade-notify-start.service" ];
+        })
+      ]);
 
       # Git-Push
-      systemd.services."nixos-upgrade-git-conclude" = {
-        serviceConfig = {
-          "Type" = "oneshot";
-          "User" = cfg_gs.systemUser;
-        };
-        path = with pkgs; [
-          coreutils
-          git
-          config.programs.ssh.package
-        ];
-        script = ''
-          ${lib.optionalString (cfg_gs.push) ''
-            # Interrupts if there is an error or undefined variable
-            set -eu
-            # Access folder
-            cd "${cfg_gs.directory}"
-            # Git Push
-            echo "Pushing changes..."
-            git push
-          ''}
-        '';
-      };
-
-      # Git-Push comes after Git-Pull&Commit
-      systemd.services."nixos-upgrade-git-prepare" = {
+      systemd.services."nixos-upgrade-git-conclude" = (lib.mkMerge [
+        { # Script
+          serviceConfig = {
+            "Type" = "oneshot";
+            "User" = cfg_gs.systemUser;
+          };
+          path = with pkgs; [
+            coreutils
+            git
+            config.programs.ssh.package
+          ];
+          script = ''
+            ${lib.optionalString (cfg_gs.push) ''
+              # Interrupts if there is an error or undefined variable
+              set -eu
+              # Access folder
+              cd "${cfg_gs.directory}"
+              # Git Push
+              echo "Pushing changes..."
+              git push
+            ''}
+          '';
+        }
         # Internet access might be needed
-        wants = [ "nixos-upgrade-git-conclude.service" ] ++ (lib.optional (cfg_gs.pull) "network-online.target");
-        before = [ "nixos-upgrade-git-conclude.service" ] ++ (lib.optional (cfg_gs.pull) "network-online.target");
-      };
+        (lib.mkIf (cfg_gs.push) {
+          wants = [ "network-online.target" ];
+          after = [ "network-online.target" ];
+        })
+        # Calls "git-prepare", and it fails if that one does
+        (lib.mkIf (!(cfg_ufl.enable or false)) {
+          requires = [ "nixos-upgrade-git-prepare.service" ];
+          after = [ "nixos-upgrade-git-prepare.service" ];
+        })
+        # Calls "update-flake-lock", and it fails if that one does
+        (lib.mkIf (cfg_ufl.enable or false) {
+          requires = [ "nixos-upgrade-update-flake-lock.service" ];
+          after = [ "nixos-upgrade-update-flake-lock.service" ];
+        })
+      ]);
 
-      # Internet access might be needed
-      systemd.services."nixos-upgrade-git-conclude" = {
-        wants = (lib.mkIf (cfg_gs.push) [ "network-online.target" ]);
-        after = (lib.mkIf (cfg_gs.push) [ "network-online.target" ]);
-      };
-
-      # NixOS-Upgrade starts only after both
-      systemd.services."nixos-upgrade" = {
-        wants = [ "nixos-upgrade-git-prepare.service" "nixos-upgrade-git-conclude.service" ];
-        after = [ "nixos-upgrade-git-prepare.service" "nixos-upgrade-git-conclude.service" ];
-      };
+      # NixOS-Upgrade
+      systemd.services."nixos-upgrade" = (lib.mkMerge [
+        # Calls "git-conclude", and it fails if that one does
+        {
+          requires = [ "nixos-upgrade-git-conclude.service" ];
+          after = [ "nixos-upgrade-git-prepare.service" "nixos-upgrade-git-conclude.service" ];
+        }
+      ]);
 
     };
   }
