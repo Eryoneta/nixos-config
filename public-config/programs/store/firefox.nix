@@ -47,7 +47,7 @@
       };
     };
     setup = { attr }: {
-      home = { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Configuration
         config.programs.firefox = {
@@ -74,6 +74,10 @@
           nativeMessagingHosts = with attr.packageChannel; [
             kdePackages.plasma-browser-integration # Plasma Browser Integration
           ];
+
+          configPath = if ((builtins.compareVersions config.home.stateVersion "26.05") == -1) then (
+            ".mozilla/firefox" # Legacy
+          ) else "${config.xdg.configHome}/mozilla/firefox"; # New, XDG compliant
 
           # Default profile
           # This profile should be as "vanilla" as possible, the "new user experience"

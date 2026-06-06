@@ -77,7 +77,7 @@
         # Configuration
         config.services.mysql = {
           enable = true;
-          package = (attr.packageChannel).mysql80;
+          package = (attr.packageChannel).mysql84;
         };
       };
     };
@@ -133,6 +133,7 @@
 
   # Eclipse(For Java): IDE for Java development
   config.modules."eclipse-java" = {
+    enable = false; # Not used a lot
     tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
@@ -143,14 +144,16 @@
     };
   };
 
-  # Angular-Cli: Helper for Angular development
+  # Angular-CLI: Helper for Angular development
   config.modules."angular-cli" = {
+    enable = false; # It got dropped! In 26.05
     tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     setup = { attr }: {
       home = { # (Home-Manager Module)
         # Install
-        config.home.packages = with attr.packageChannel; [ nodePackages."@angular/cli" ];
+        #config.home.packages = with attr.packageChannel; [ nodePackages."@angular/cli" ];
+        # TODO: (Angular) Reinstall Angular-CLI
       };
     };
   };

@@ -66,18 +66,18 @@
           package = (attr.packageChannel).openssh; # Stable channel
 
           # SSH identities
-          matchBlocks = {
+          settings = {
             "public" = {
-              hostname = "github.com";
-              identityFile = "~/.ssh/id_ed25519_git-public.pub";
-              identitiesOnly = true;
-              user = userDev.username;
+              "HostName" = "github.com";
+              "IdentityFile" = "~/.ssh/id_ed25519_git-public.pub";
+              "IdentitiesOnly" = true;
+              "User" = userDev.username;
             };
             "private" = {
-              hostname = "github.com";
-              identityFile = "~/.ssh/id_ed25519_git-private.pub";
-              identitiesOnly = true;
-              user = userDev.username;
+              "HostName" = "github.com";
+              "IdentityFile" = "~/.ssh/id_ed25519_git-private.pub";
+              "IdentitiesOnly" = true;
+              "User" = userDev.username;
             };
           };
         };
