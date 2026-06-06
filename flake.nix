@@ -146,7 +146,7 @@
         hostname = "lico";
         name = "LiCo";
         system.label = systemLabel;
-        system.stateVersion = "24.05";
+        system.stateVersion = "25.11";
       };
       nelico = flake-utils.buildHost {
         hostname = "nelico";
