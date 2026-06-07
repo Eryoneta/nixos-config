@@ -192,7 +192,7 @@
         MW = "mysql-workbench.desktop";
         DT = "me.iepure.devtoolbox.desktop";
         # Images
-        Pi = "pinta.desktop";
+        Pi = "com.github.PintaProject.Pinta.desktop";
         # Videos
         Mp = "mpv.desktop";
         Zo = "Zoom.desktop";
