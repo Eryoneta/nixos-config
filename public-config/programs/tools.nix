@@ -132,4 +132,21 @@
     };
   };
 
+  # Zoom: Video conferencing app
+  config.modules."zoom.personal" = {
+    tags = [ "personal-setup" ];
+    setup = {
+      home = { # (Home-Manager Module)
+
+        # Desktop entry: Remove "Zoom" from the StartMenu
+        config.xdg.desktopEntries."Zoom" = {
+          name = "Zoom";
+          exec = "zoom";
+          noDisplay = true; # Hide
+        };
+
+      };
+    };
+  };
+
 }
