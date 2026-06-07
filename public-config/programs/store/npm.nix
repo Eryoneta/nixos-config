@@ -10,7 +10,8 @@
         # Configuration
         config.programs.npm = {
           enable = true;
-          package = (attr.packageChannel).nodePackages.npm;
+          package = (attr.packageChannel).nodejs;
+          # Note: It comes with NodeJS
         };
 
       };

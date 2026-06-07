@@ -50,9 +50,6 @@
         config.boot.initrd.kernelModules = [ ];
         config.boot.kernelModules = [ "kvm-amd" ];
 
-        # WiFi
-        config.boot.extraModulePackages = [ config.boot.kernelPackages.rtl8192eu ];
-
         # Personal partition
         config.fileSystems."/home/${host.userDev.username}/Personal" = {
           device = "/dev/disk/by-label/Personal";

@@ -1,1 +1,1 @@
-Fix AutoUpgrade
+Upgrade: 26.05

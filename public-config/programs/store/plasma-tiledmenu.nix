@@ -187,13 +187,12 @@
         KW = "org.kde.kwrite.desktop";
         Ka = "org.kde.kate.desktop";
         Ko = "org.kde.konsole.desktop";
-        Ec = "Eclipse.desktop";
         Co = "codium.desktop";
         Ho = "hoppscotch.desktop";
         MW = "mysql-workbench.desktop";
         DT = "me.iepure.devtoolbox.desktop";
         # Images
-        Pi = "pinta.desktop";
+        Pi = "com.github.PintaProject.Pinta.desktop";
         # Videos
         Mp = "mpv.desktop";
         Zo = "Zoom.desktop";
@@ -201,10 +200,10 @@
       gridModel = (with apps; [ # The grid
         [ Ch Ff FD __ __ Pi Pi ]
         [ __ __ __ __ __ __ __ ]
-        [ SS Qa __ KW KW Ka Ec ]
-        [ PA __ __ KW KW Ko DT ]
-        [ EE OB __ Co Co Ho __ ]
-        [ KI Wr __ Co Co MW __ ]
+        [ SS Qa __ KW KW Ka DT ]
+        [ PA __ __ KW KW Ko Ho ]
+        [ EE OB __ Co Co MW __ ]
+        [ KI Wr __ Co Co __ __ ]
         [ MC Ca __ __ __ __ __ ]
         [ SM __ __ Zo __ Mp Mp ]
       ]);

@@ -9,7 +9,7 @@
       home = { # (Home-Manager Module)
 
         # Configuration
-        config.programs.vscode = { # VSCode, but actually VSCodium
+        config.programs.vscodium = { # VSCode, but actually VSCodium
           enable = true;
           package = (utils.mkDefault) (attr.packageChannel).vscodium;
 
@@ -149,7 +149,7 @@
         ];
 
         # Default profile
-        config.programs.vscode.profiles.default = {
+        config.programs.vscodium.profiles.default = {
 
           # Settings
           userSettings = (
@@ -266,7 +266,7 @@
       home = { # (Home-Manager Module)
 
         # Default profile
-        config.programs.vscode.profiles.default = {
+        config.programs.vscodium.profiles.default = {
 
           # Settings
           userSettings = {
