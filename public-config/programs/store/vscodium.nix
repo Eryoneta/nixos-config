@@ -271,7 +271,7 @@
           # Settings
           userSettings = {
             "editor.wordWrap" = "on"; # Wrap words
-            "workbench.colorTheme" = (utils.mkForce) "Default Light Modern"; # Theme color
+            "workbench.colorTheme" = (utils.mkForce) "Light Modern"; # Theme color
             "files.exclude" = { # Show .git folder
               "**/.git" = false;
             };

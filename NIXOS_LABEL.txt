@@ -1,1 +1,1 @@
-Upgrade: 26.05
+VSCodium: Work Theme
