@@ -30,6 +30,7 @@
         # Do NOT include
         config.environment.plasma6.excludePackages = with pkgs; [
           kdePackages.elisa # Elisa: Music player (Not used)
+          kdePackages.qrca # Qrca: QR code reader (Not used)
         ];
 
       };
