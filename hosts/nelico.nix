@@ -50,10 +50,25 @@
         config.boot.initrd.kernelModules = [ ];
         config.boot.kernelModules = [ "kvm-amd" ];
 
+        # Mirror partition
+        config.fileSystems."/backups/Mirror" = {
+          device = "/dev/disk/by-label/Mirror";
+          fsType = "ext4";
+          options = [ "nofail" ]; # Can be absent
+        };
+
         # Personal partition
         config.fileSystems."/home/${host.userDev.username}/Personal" = {
           device = "/dev/disk/by-label/Personal";
           fsType = "ext4";
+        };
+
+        # Boxroom partition
+        config.fileSystems."/home/${host.userDev.username}/Personal/Mind Mansion/Boxroom" = {
+          device = "/dev/disk/by-label/Boxroom";
+          fsType = "ext4";
+          depends = [ "/home/${host.userDev.username}/Personal" ];
+          options = [ "nofail" ]; # Can be absent
         };
 
         # Basement partition
@@ -64,17 +79,9 @@
           options = [ "nofail" ]; # Can be absent
         };
 
-        # Storage partition
-        config.fileSystems."/home/${host.userDev.username}/Personal/System_Utilities/Storage" = {
-          device = "/dev/disk/by-label/Storage";
-          fsType = "ext4";
-          depends = [ "/home/${host.userDev.username}/Personal" ];
-          options = [ "nofail" ]; # Can be absent
-        };
-
-        # Mirror partition
-        config.fileSystems."/home/${host.userDev.username}/Personal/System_Utilities/Backups/Mirror" = {
-          device = "/dev/disk/by-label/Mirror";
+        # Cache partition
+        config.fileSystems."/home/${host.userDev.username}/Personal/System_Utilities/Cache" = {
+          device = "/dev/disk/by-label/Cache";
           fsType = "ext4";
           depends = [ "/home/${host.userDev.username}/Personal" ];
           options = [ "nofail" ]; # Can be absent
