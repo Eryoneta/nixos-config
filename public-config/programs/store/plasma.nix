@@ -172,20 +172,6 @@
         config.programs.plasma = { # (plasma-manager option)
 
           # Mouse
-          input.mice = [
-            {
-              enable = true;
-              accelerationProfile = "none"; # Do not accelerate mouse
-              acceleration = 1.00; # Max speed
-              leftHanded = false; # Right handed
-              middleButtonEmulation = false; # Left + Right should do nothing
-              scrollSpeed = 1.0; # It's actually: "defaultSpeed * scrollSpeed"
-              # Found in "/proc/bus/input/devices"
-              name = "Gaming Mouse";
-              productId = "2533";
-              vendorId = "093a";
-            }
-          ];
           configFile."kcminputrc" = {
             "ButtonRebinds/Mouse" = {
               "ExtraButton1" = "Key,Meta+K"; # Button 9 = Meta + K
