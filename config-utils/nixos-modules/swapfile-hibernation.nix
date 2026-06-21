@@ -112,29 +112,45 @@
           ];
           script = ''
             if [ -f "${cfg.swapfilePath}" ]; then
+
               # Finds the value of resume_offset
               resume_offset=$( \
                 filefrag -v "${cfg.swapfilePath}" \
                 | awk '$1=="0:" {print substr($4, 1, length($4)-2)}' \
-              )
+              );
+
               # Saves the value into a json file
               if [ -f "${cfg.dataFile.absolutePath}" ]; then
-                # Edits a json file
-                ( jq \
-                  --arg offset "$resume_offset" \
-                  '.hibernation.swapfile.resume_offset = $offset' \
-                  "${cfg.dataFile.absolutePath}" \
-                ) > "${cfg.dataFile.absolutePath}.tmp" \
-                  && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}"
+
+                # Check if the value is different in the file
+                resume_offset_old=$( \
+                  jq \
+                    '.hibernation.swapfile.resume_offset' \
+                    "${cfg.dataFile.absolutePath}" \
+                );
+                if [ "$resume_offset_old" != "\"$resume_offset\"" ]; then
+
+                  # Edit the file, only if the value is different
+                  ( jq \
+                    --arg offset "$resume_offset" \
+                    '.hibernation.swapfile.resume_offset = $offset' \
+                    "${cfg.dataFile.absolutePath}" \
+                  ) > "${cfg.dataFile.absolutePath}.tmp" \
+                    && mv "${cfg.dataFile.absolutePath}.tmp" "${cfg.dataFile.absolutePath}";
+
+                  # Set "systemUser" (and its group) as the owner
+                  chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}";
+                fi
               else
-                # Creates a json file
+                # Create the file, if it doesn't exist
                 ( jq -n \
                   --arg offset "$resume_offset" \
                   '{ hibernation: { swapfile: { resume_offset: $offset } } }' \
-                ) > "${cfg.dataFile.absolutePath}"
+                ) > "${cfg.dataFile.absolutePath}";
+
+                # Set "systemUser" (and its group) as the owner
+                chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}";
               fi
-              # Set "systemUser" (and its group) as the owner
-              chown ${cfg.dataFile.systemUser}: "${cfg.dataFile.absolutePath}"
             fi
           '';
         }
@@ -149,7 +165,7 @@
           offset = (
             builtins.fromJSON (builtins.readFile cfg.dataFile.storePath)
           )."hibernation"."swapfile"."resume_offset";
-        in  [ "resume_offset=${offset}" ]
+        in [ "resume_offset=${offset}" ]
       );
       # Note: If everything works, then "/sys/power/resume_offset" should be populated
 
