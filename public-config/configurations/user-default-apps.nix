@@ -192,6 +192,7 @@
 
           ]);
         };
+        config.xdg.configFile."mimeapps.list".force = true; # Always override
 
       };
     };

@@ -77,8 +77,12 @@
         # Configuration
         config.services.mysql = {
           enable = true;
-          package = (attr.packageChannel).mysql84;
+          #package = (attr.packageChannel).mysql84;
+          #dataDir = "/var/lib/mysql";
+          package = (attr.packageChannel).mariadb;
+          dataDir = "/var/lib/mariadb";
         };
+        # Note: This is served at port "3306"
       };
     };
   };
@@ -189,6 +193,18 @@
       home = { # (Home-Manager Module)
         # Install
         config.home.packages = with attr.packageChannel; [ devtoolbox ];
+      };
+    };
+  };
+
+  # Claude: AI, but in the terminal
+  config.modules."claude-code" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ claude-code ];
       };
     };
   };

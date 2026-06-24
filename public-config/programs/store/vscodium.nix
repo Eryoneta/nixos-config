@@ -110,7 +110,11 @@
                   "when" = "!activeEditorIsPinned";
                 }
                 {
-                  "key" = "ctrl+shift+'";
+                  "key" = "ctrl+t";
+                  "command" = "-workbench.action.showAllSymbols";
+                }
+                {
+                  "key" = "ctrl+t";
                   "command" = "workbench.action.terminal.toggleTerminal";
                   "when" = "terminal.active";
                 }
