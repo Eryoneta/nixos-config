@@ -55,6 +55,7 @@
                 "networkmanager" # Can change networking settings
                 "adbusers" # Can debug Android devices
                 "scanner" "lp" # Can use the scanner or scanner&printer
+                config.services.httpd.group # Can edit the files of the Apache server
               ];
             };
           }
