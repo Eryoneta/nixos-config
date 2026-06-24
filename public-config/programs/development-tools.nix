@@ -193,4 +193,16 @@
     };
   };
 
+  # Claude: AI, but in the terminal
+  config.modules."claude-code" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ claude-code ];
+      };
+    };
+  };
+
 }
