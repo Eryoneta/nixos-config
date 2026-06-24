@@ -77,8 +77,12 @@
         # Configuration
         config.services.mysql = {
           enable = true;
-          package = (attr.packageChannel).mysql84;
+          #package = (attr.packageChannel).mysql84;
+          #dataDir = "/var/lib/mysql";
+          package = (attr.packageChannel).mariadb;
+          dataDir = "/var/lib/mariadb";
         };
+        # Note: This is served at port "3306"
       };
     };
   };
