@@ -13,8 +13,6 @@
           enable = true;
           package = (attr.packageChannel).apacheHttpd;
           enablePHP = true; # Use PHP
-          user = "apache";
-          group = "apache-server";
           virtualHosts."sandbox" = {
             documentRoot = (attr.rootDir); # The root should contain a "index.php"
             extraConfig = ''
