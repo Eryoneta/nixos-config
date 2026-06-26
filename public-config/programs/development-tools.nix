@@ -209,4 +209,33 @@
     };
   };
 
+  # Adminer: MySQL database manager
+  config.modules."adminer" = {
+    tags = [ "developer-setup" "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    attr.rootDir = "/srv/adminer";
+    setup = { attr }: {
+      nixos = { # (NixOS Module)
+        # Configuration
+        config.services.httpd = {
+          virtualHosts."adminer" = (
+            let
+              adminerPath = "${(attr.packageChannel).adminer}/adminer.php";
+              adminerStylePath = builtins.fetchurl {
+                url = "https://www.adminer.org/download/v5.4.2/designs/price/adminer.css";
+                sha256 = "sha256:0nhl197vwqq3zs8878wk4xcprla37sl4137k651z684m30ls1x56";
+              };
+            in {
+              documentRoot = (attr.rootDir);
+              serverAliases = [ "adminer.localhost" ];
+              locations."/adminer.php".alias = adminerPath;
+              locations."/adminer.css".alias = adminerStylePath;
+            }
+          );
+        };
+        config.networking.hosts."127.0.0.1" = [ "adminer.localhost" ];
+      };
+    };
+  };
+
 }

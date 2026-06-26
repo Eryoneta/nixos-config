@@ -14,6 +14,7 @@
           package = (attr.packageChannel).apacheHttpd;
           enablePHP = true; # Use PHP
           virtualHosts."sandbox" = {
+            serverAliases = [ "sandbox.localhost" ];
             documentRoot = (attr.rootDir); # The root should contain a "index.php"
             extraConfig = ''
               # Allow configurations to be set from the source code (.htaccess files)
@@ -23,6 +24,7 @@
             '';
           };
         };
+        config.networking.hosts."127.0.0.1" = [ "sandbox.localhost" ];
 
         # Permissions
         config.systemd.tmpfiles.rules = (
