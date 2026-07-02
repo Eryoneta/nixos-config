@@ -284,12 +284,12 @@
             # Highlight Matching Tag extension
             "highlight-matching-tag.styles" = {
               "opening" = {
-                "full" = {
+                "name" = {
                   "surround" = "blue";
                 };
               };
               "closing" = {
-                "full" = {
+                "name" = {
                   "surround" = "blue";
                 };
               };
