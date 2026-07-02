@@ -266,7 +266,8 @@
   # VSCodium: (Medium) Code editor
   config.modules."vscodium.work" = {
     tags = [ "work-setup" ];
-    setup = {
+    attr.packageChannel = config.modules."vscodium".attr.packageChannel;
+    setup = { attr }: {
       home = { # (Home-Manager Module)
 
         # Default profile
@@ -279,8 +280,46 @@
             "files.exclude" = { # Show .git folder
               "**/.git" = false;
             };
+          } // {
+            # Highlight Matching Tag extension
+            "highlight-matching-tag.styles" = {
+              "opening" = {
+                "full" = {
+                  "surround" = "blue";
+                };
+              };
+              "closing" = {
+                "full" = {
+                  "surround" = "blue";
+                };
+              };
+            };
           };
 
+          # Extensions
+          extensions = (
+            let
+              vscode-marketplace-pkgs = (attr.packageChannel).vscode-utils.extensionFromVscodeMarketplace;
+              vscode-marketplace-extensions = {
+                /*
+                PUBLISHER.NAME = vscode-marketplace-pkgs {
+                  publisher = "PUBLISHER";
+                  name = "NAME";
+                  version = "0.0.0";
+                  sha256 = "";
+                };
+                */
+              };
+            in (
+              (with (attr.packageChannel).vscode-extensions; [
+                vincaslt.highlight-matching-tag # Highlight Matching Tag
+              ])
+              ++
+              (with vscode-marketplace-extensions; [
+
+              ])
+            )
+          );
         };
 
       };
