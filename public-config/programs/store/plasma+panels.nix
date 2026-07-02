@@ -319,6 +319,7 @@
         height = 28; # Smaller
         widgets = with default-widgets; with widgets; [
           kara
+          activityPager
           colorPicker
           spacer
           systemTray
@@ -327,7 +328,6 @@
       mainPanel = (default-mainPanel // {
         widgets = with default-widgets; with widgets; [
           tiledmenu
-          activityPager
           separator
           configurablebutton.showGrid
           separator
