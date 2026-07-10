@@ -1,1 +1,1 @@
-VSCodium: Tags pair extension
+VSCodium: Live server

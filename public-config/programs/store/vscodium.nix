@@ -294,6 +294,9 @@
                 };
               };
             };
+          } // {
+            # Live Server extension
+            "liveServer.settings.donotVerifyTags" = true;
           };
 
           # Extensions
@@ -313,6 +316,7 @@
             in (
               (with (attr.packageChannel).vscode-extensions; [
                 vincaslt.highlight-matching-tag # Highlight Matching Tag
+                ritwickdey.liveserver # LiveServer
               ])
               ++
               (with vscode-marketplace-extensions; [
