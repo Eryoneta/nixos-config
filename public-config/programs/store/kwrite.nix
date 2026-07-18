@@ -59,4 +59,21 @@
     };
   };
 
+  # KWrite: (Light) Text editor
+  config.modules."kwrite.work" = {
+    tags = [ "work-setup" ];
+    setup = {
+      home = { # (Home-Manager Module)
+
+        # Dotfile
+        config.programs.plasma.configFile."kwriterc" = { # (plasma-manager option)
+          "KTextEditor Renderer" = {
+            "Text Font" = (utils.mkForce) "Calibri,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0"; # Something more professional-looking
+          };
+        };
+
+      };
+    };
+  };
+
 }
