@@ -238,4 +238,16 @@
     };
   };
 
+  # Composer: Gerenciador de pacotes para o PHP
+  config.modules."composer" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ phpPackages.composer ];
+      };
+    };
+  };
+
 }
