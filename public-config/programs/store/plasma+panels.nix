@@ -401,19 +401,23 @@
         # TiledMenu
         tiledmenu = (config.modules."plasma-tiledmenu.work").attr.tiledmenu; # Custom
 
+        # Configurable-Button
+        configurablebutton = (config.modules."plasma-configurablebutton").attr.configurablebutton;
+
       };
       mainPanel = (default-mainPanel // {
         widgets = with default-widgets; with widgets; [
           tiledmenu
           virtualDesktopsPager
           taskManager
+          spacer
           separator
           systemTray
           personal-widgets.weatherwidgetplus
           personal-widgets.volume
           personal-widgets.network
           clock
-          showDesktop
+          configurablebutton.toggleYakuake
         ];
       });
     };

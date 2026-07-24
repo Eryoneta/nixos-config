@@ -51,7 +51,7 @@
         config.boot.kernelModules = [ "kvm-amd" ];
 
         # Mirror partition
-        config.fileSystems."/backups/Mirror" = {
+        config.fileSystems."/backups" = {
           device = "/dev/disk/by-label/Mirror";
           fsType = "ext4";
           options = [ "nofail" ]; # Can be absent
