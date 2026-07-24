@@ -100,7 +100,6 @@
           "cmd_logger" = "${pkgs.inetutils}/bin/logger";
           "cmd_du" = "${pkgs.coreutils}/bin/du";
           "cmd_rsnapshot_diff" = "${pkgs.rsnapshot}/bin/rsnapshot-diff";
-          "lockfile" = "/home/${user.username}/rsnapshot_${configName}.pid";
           "link_dest" = 1;
         };
         basicConfig = {
@@ -134,6 +133,7 @@
             text = (attr.mkRsnapshotConfig {
               name = "my_backup";
               startBlock = {
+                "lockfile" = "/home/USERNAME/rsnapshot_${name}.pid";
                 "snapshot_root" = "/run/media/USERNAME/REMOVABLE_DEVICE_NAME/";
               };
               middleBlock = {
