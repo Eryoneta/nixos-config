@@ -299,6 +299,33 @@
             "liveServer.settings.donotVerifyTags" = true;
           };
 
+            # Shortcuts
+            keybindings = [
+              { # Removes the shortcut
+                "key" = "ctrl+alt+i";
+                "command" = "-workbench.action.chat.open";
+                "when" = "!chatSetupDisabledInWorkspace && !chatSetupHidden";
+              }
+              { # Removes the shortcut
+                "key" = "ctrl+alt+i";
+                "command" = "-workbench.panel.chat";
+                "when" = "workbench.panel.chat.view.copilot.active";
+              }
+              { # Removes the shortcut
+                "key" = "ctrl+shift+alt+i";
+                "command" = "-workbench.action.chat.openagent";
+                "when" = "config.chat.agent.enabled && !chatSetupDisabledInWorkspace && !chatSetupHidden";
+              }
+              {
+                "key" = "ctrl+alt+i";
+                "command" = "editor.emmet.action.incrementNumberByOne";
+              }
+              {
+                "key" = "ctrl+shift+alt+i";
+                "command" = "editor.emmet.action.decrementNumberByOne";
+              }
+            ];
+
           # Extensions
           extensions = (
             let
