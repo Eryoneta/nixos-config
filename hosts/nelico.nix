@@ -48,7 +48,17 @@
         # Kernel
         config.boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
         config.boot.initrd.kernelModules = [ ];
-        config.boot.kernelModules = [ "kvm-amd" ];
+        config.boot.kernelModules = [
+          "kvm-amd"
+          "it87" # Use sensor driver for Gigabyte motherboards
+        ];
+
+        # Fan control for Gigabyte motherboards
+        config.boot.extraModulePackages = [ config.boot.kernelPackages.it87 ];
+        config.boot.extraModprobeConfig = ''
+          options it87 force_id=0x8622 ignore_resource_conflict=1
+        '';
+        # Note: The correct one is "8688", but it is not supported. Here, the driver used is from another one. Not ideal
 
         # Mirror partition
         config.fileSystems."/backups" = {
