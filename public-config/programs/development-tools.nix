@@ -108,10 +108,11 @@
         # Install
         config.home.packages = with attr.packageChannel; [
           (python3.withPackages (py-pkgs: (with py-pkgs; [
-            pandas # Pandas: Library for data structures
-            openpyxl # OpenPyXL: Library to read Microsoft Excel Spreadsheet files
-            django # DJango: Framework for web-development with Python
-            mysqlclient # MySQL Client: Allows for communication with a MySQL server
+            #pandas # Pandas: Library for data structures
+            #openpyxl # OpenPyXL: Library to read Microsoft Excel Spreadsheet files
+            #django # DJango: Framework for web-development with Python
+            #mysqlclient # MySQL Client: Allows for communication with a MySQL server
+            # Note: These are not used, for now
           ])))
         ];
       };
