@@ -23,6 +23,9 @@
 
         };
 
+        # Also include PulseAudio tools
+        config.environment.systemPackages = with attr.packageChannel; [ pulseaudio ];
+
       };
     };
   };
