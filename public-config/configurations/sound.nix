@@ -4,7 +4,7 @@
   config.modules."sound" = {
     tags = [ "basic-setup" ];
     setup = {
-      nixos = { # (NixOS Module)
+      nixos = { pkgs, ...}: { # (NixOS Module)
 
         # PipeWire: Framework for sound
         config.services.pipewire = {
@@ -24,7 +24,7 @@
         };
 
         # Also include PulseAudio tools
-        config.environment.systemPackages = with attr.packageChannel; [ pulseaudio ];
+        config.environment.systemPackages = with pkgs; [ pulseaudio ];
 
       };
     };
