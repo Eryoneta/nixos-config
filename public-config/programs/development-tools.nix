@@ -251,4 +251,16 @@
     };
   };
 
+  # PHP: "PHP: Hypertext Preprocessor"
+  config.modules."php" = {
+    tags = [ "work-setup" ];
+    attr.packageChannel = pkgs-bundle.stable;
+    setup = { attr }: {
+      home = { # (Home-Manager Module)
+        # Install
+        config.home.packages = with attr.packageChannel; [ php ];
+      };
+    };
+  };
+
 }
