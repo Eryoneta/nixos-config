@@ -67,7 +67,7 @@
     };
   };
 
-  # MySQL: MySQL Database v8.0
+  # MySQL: MySQL Database
   config.modules."mysql" = {
     enable = true; # Enable only when developing
     tags = [ "developer-setup" ];
@@ -99,7 +99,7 @@
     };
   };
 
-  # Python: Full Python environment v3
+  # Python: Full Python environment
   config.modules."python" = {
     tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
@@ -119,7 +119,7 @@
     };
   };
 
-  # Java: Java Development Kit v17
+  # Java: Java Development Kit
   config.modules."java" = {
     tags = [ "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
@@ -239,7 +239,7 @@
     };
   };
 
-  # Composer: Gerenciador de pacotes para o PHP
+  # Composer: PHP package manager
   config.modules."composer" = {
     tags = [ "work-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
