@@ -84,7 +84,8 @@
           session = {
             general.askForConfirmationOnLogout = true; # Show confirmation screen
             sessionRestore.restoreOpenApplicationsOnLogin = (
-              "whenSessionWasManuallySaved" # Restore apps only when explicitly saved
+              "startWithEmptySession" # Never restore apps
+              # Note: Sounds cool, but never really used it
             );
           };
 
