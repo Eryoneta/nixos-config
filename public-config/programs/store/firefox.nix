@@ -153,15 +153,16 @@
                 "alltabs-button" # All-tabs button
                 "tabbrowser-tabs" # Tabs
                 "new-tab-button" # New-tab button
+                "customizableui-special-spring1" # Stretch space
               ];
               "nav-bar" = [ # The bar that contains URLbar
                 "back-button" # Go-back button
                 "forward-button" # Go-forward button
                 "stop-reload-button" # Reload button
-                "customizableui-special-spring1" # Stretch space
+                "customizableui-special-spring2" # Stretch space
                 tab-stash-id
                 "urlbar-container" # URLbar
-                "customizableui-special-spring2" # Stretch space
+                "customizableui-special-spring3" # Stretch space
                 "downloads-button" # Downloads button
                 "developer-button" # Developer tools button
                 "history-panelmenu" # History button
@@ -175,7 +176,7 @@
               ];
               "PersonalToolbar" = [ # The bar that contains bookmars
                 "sidebar-button" # Sidebar button
-                "customizableui-special-spring3"# Stretch space
+                "customizableui-special-spring4" # Stretch space
                 "personal-bookmarks" # Bookmarks
               ];
             };
