@@ -268,7 +268,7 @@
     tags = [ "work-setup" ];
     attr.packageChannel = config.modules."vscodium".attr.packageChannel;
     setup = { attr }: {
-      home = { # (Home-Manager Module)
+      home = { config, ... }: { # (Home-Manager Module)
 
         # Default profile
         config.programs.vscodium.profiles.default = {
@@ -297,6 +297,11 @@
           } // {
             # Live Server extension
             "liveServer.settings.donotVerifyTags" = true;
+          } // {
+            # Open Remote SSH extension
+            "remote.SSH.configFile" = "${config.home.homeDirectory}/.ssh/config"; # Just to be sure
+            "remote.SSH.remoteServerListenOnSocket" = true; # Important, it allows it to be resilient against isolated networks
+            # Note: Connections are managed by socket files. All connections can see the home directory, therefore, they can connect
           };
 
             # Shortcuts
