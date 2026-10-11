@@ -26,7 +26,7 @@
           "media.videocontrols.picture-in-picture-video-toggle-enable" = true; # Picture-In-Picture
           "widget.gtk.overlay-scrollbars.enabled" = false; # Do not hide scrollbar, always show
           # Theme
-          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org"; # Dark theme!
+          "extensions.activeThemeID" = "{9310602c-19c6-4948-9826-e30046e4c80e}"; # Dark theme!
           # New page
           "browser.newtabpage.activity-stream.showWeather" = false; # Do not show weather info
           "browser.newtabpage.activity-stream.feeds.topsites" = false; # Do not show grid of sites
