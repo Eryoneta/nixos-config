@@ -1,1 +1,1 @@
-VSCodium: SSH Fix
+FirefoxDev: New theme
