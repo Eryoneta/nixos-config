@@ -111,6 +111,8 @@
             "--verbose" # Show messages
           ]);
           "verbose" = 4; # Show all action messages
+          #"logfile" = "~/rsnapshot"; # Create a log file
+          "loglevel" = 2; # Show warnings and errors
         };
       in ({ name, startBlock ? {}, middleBlock ? {}, endBlock ? {} }: (
         "# Auto-generated configuration file. Do not edit\n\n"
