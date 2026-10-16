@@ -4,7 +4,10 @@
   config.modules."apache" = {
     tags = [ "work-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
-    attr.rootDir = "/srv/apache";
+    attr.rootDir = {
+      "sandbox" = "/srv/apache";
+      "testzone" = "/srv/apache-test";
+    };
     setup = { attr }: {
       nixos = { config, ... }: { # (NixOS Module)
 
@@ -13,15 +16,27 @@
           enable = true;
           package = (attr.packageChannel).apacheHttpd;
           enablePHP = true; # Use PHP
-          virtualHosts."sandbox" = {
-            serverAliases = [ "sandbox.localhost" ];
-            documentRoot = (attr.rootDir); # The root should contain a "index.php"
-            extraConfig = ''
-              # Allow configurations to be set from the source code (.htaccess files)
-              <Directory "${attr.rootDir}">
-                AllowOverride All
-              </Directory>
-            '';
+          virtualHosts = {
+            "sandbox" = {
+              serverAliases = [ "sandbox.localhost" ];
+              documentRoot = (attr.rootDir."sandbox"); # The root should contain a "index.php"
+              extraConfig = ''
+                # Allow configurations to be set from the source code (.htaccess files)
+                <Directory "${attr.rootDir."sandbox"}">
+                  AllowOverride All
+                </Directory>
+              '';
+            };
+            "testzone" = {
+              serverAliases = [ "testzone.localhost" ];
+              documentRoot = (attr.rootDir."testzone"); # The root should contain a "index.php"
+              extraConfig = ''
+                # Allow configurations to be set from the source code (.htaccess files)
+                <Directory "${attr.rootDir."testzone"}">
+                  AllowOverride All
+                </Directory>
+              '';
+            };
           };
         };
         config.networking.hosts."127.0.0.1" = [ "sandbox.localhost" ];
@@ -31,9 +46,12 @@
           let
             apacheUser = config.services."httpd".user;
             apacheGroup = config.services."httpd".group;
-          in [
-            "d ${attr.rootDir} 0774 ${apacheUser} ${apacheGroup}"
-            # Note: this allows for it to be accessible by Apache and any user within the group
+          in (builtins.attrValues (
+              builtins.mapAttrs (host: pathRootDir: (
+                "d ${pathRootDir} 0774 ${apacheUser} ${apacheGroup}"
+                # Note: this allows for it to be accessible by Apache and any user within the group
+              )) attr.rootDir
+            )) ++ [
             "d '${config.services.httpd.logDir}' 0750 ${apacheUser} ${apacheGroup}"
             # Note: Users in the group should be able to see the logs
           ]
@@ -44,7 +62,7 @@
         # Git Configuration
         config.programs.git.settings = {
           "safe" = {
-            "directory" = attr.rootDir; # Trust the Git repository inside
+            "directory" = "/srv/*"; # Trust the Git repositories inside
           };
         };
       };
