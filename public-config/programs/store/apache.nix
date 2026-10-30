@@ -2,7 +2,7 @@
 
   # Apache: A PHP server
   config.modules."apache" = {
-    tags = [ "work-setup" ];
+    tags = [ "work-setup" "developer-setup" ];
     attr.packageChannel = pkgs-bundle.stable;
     attr.rootDir = {
       "sandbox" = "/srv/apache";

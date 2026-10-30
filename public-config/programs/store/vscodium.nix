@@ -302,6 +302,9 @@
             "remote.SSH.configFile" = "${config.home.homeDirectory}/.ssh/config"; # Just to be sure
             "remote.SSH.remoteServerListenOnSocket" = true; # Important, it allows it to be resilient against isolated networks
             # Note: Connections are managed by socket files. All connections can see the home directory, therefore, they can connect
+          } // {
+            # Markdown PDF
+            "markdown-pdf.executablePath" = "/etc/profiles/per-user/${config.home.username}/bin/chromium"; # Use the provided browser
           };
 
             # Shortcuts
@@ -349,6 +352,7 @@
               (with (attr.packageChannel).vscode-extensions; [
                 vincaslt.highlight-matching-tag # Highlight Matching Tag
                 ritwickdey.liveserver # LiveServer
+                yzane.markdown-pdf # Markdown PDF
               ])
               ++
               (with vscode-marketplace-extensions; [

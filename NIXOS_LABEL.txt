@@ -1,1 +1,1 @@
-RSnapshot: Log
+VSCodium: Extensão
