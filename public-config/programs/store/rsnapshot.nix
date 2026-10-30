@@ -108,11 +108,11 @@
             "--numeric-ids" # Use ids rather than usernames to own files
             "--delete-excluded" # Be sure to delete files that are excluded
             "--no-relative" # Do not recreate absolute file paths
-            "--verbose" # Show messages
+            # "--verbose" # Show messages
           ]);
           "verbose" = 4; # Show all action messages
           #"logfile" = "~/rsnapshot"; # Create a log file
-          "loglevel" = 2; # Show warnings and errors
+          "loglevel" = 4; # Show all action messages
         };
       in ({ name, startBlock ? {}, middleBlock ? {}, endBlock ? {} }: (
         "# Auto-generated configuration file. Do not edit\n\n"
