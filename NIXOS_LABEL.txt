@@ -1,1 +1,1 @@
-VSCodium: Extensão
+RSnapshot: Fix
