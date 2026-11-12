@@ -1,1 +1,1 @@
-RSnapshot: Fix
+Plasma panels: Weather
