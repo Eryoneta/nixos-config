@@ -266,24 +266,28 @@
         };
 
         # Weather Widget Plus
-        weatherwidgetplus = {
-          name = "weather.widget.plus";
-          config = {
-            "Appearance" = {
-              "iconSizeMode" = "Fixed"; # Icon has a fixed size
-              "widgetIconSize" = 16; # 16px
-              "textSizeMode" = "Fixed"; # Text has a fixed size
-              "widgetFontSize" = 14; # 14px
-              "layoutType" = "Vertical"; # Show both vertically
+        weatherwidgetplus = (
+          if (config.includedModules."plasma+panels.personal.private" or false) then (
+            (config.modules."plasma+panels.personal.private").attr.widgets.weatherwidgetplus # Custom
+          ) else {
+            name = "weather.widget.plus";
+            config = { # Default
+              "Appearance" = {
+                "iconSizeMode" = "Fixed"; # Icon has a fixed size
+                "widgetIconSize" = 16; # 16px
+                "textSizeMode" = "Fixed"; # Text has a fixed size
+                "widgetFontSize" = 14; # 14px
+                "layoutType" = "Vertical"; # Show both vertically
+              };
+              "Location" = {
+                "places" = ''[{"providerId":"owm","placeIdentifier":"3448439","placeAlias":"São Paulo, BR","timezoneID":-1}]'';
+              };
+              "Units" = {
+                "windSpeedType" = "kmh"; # Show speed in KM/H
+              };
             };
-            "Location" = {
-              "places" = ''[{"providerId":"owm","placeIdentifier":"3448439","placeAlias":"São Paulo, BR","timezoneID":-1}]'';
-            };
-            "Units" = {
-              "windSpeedType" = "kmh"; # Show speed in KM/H
-            };
-          };
-        };
+          }
+        );
 
       };
       # helperPanel = (default-mainPanel // {
