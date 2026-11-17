@@ -27,6 +27,7 @@
           "widget.gtk.overlay-scrollbars.enabled" = false; # Do not hide scrollbar, always show
           # Theme
           "extensions.activeThemeID" = "{9310602c-19c6-4948-9826-e30046e4c80e}"; # Dark theme!
+          "browser.theme.content-theme" = 1; # Light theme. A lot of websites look bad on dark theme
           # New page
           "browser.newtabpage.activity-stream.showWeather" = false; # Do not show weather info
           "browser.newtabpage.activity-stream.feeds.topsites" = false; # Do not show grid of sites
@@ -173,7 +174,8 @@
           "dom.private-attribution.submission.enabled" = false; # Do not inform measurements to advertisers
           "privacy.firstparty.isolate" = false; # Isolate cookies to its own domain
           #   Note: Ideally, it should be on, but it's too inconvenient to do so
-          "privacy.resistFingerprinting" = true; # Resist browser fingerprinting
+          "privacy.resistFingerprinting" = false; # Resist browser fingerprinting
+          #   Note: It should be on. Annoyingly, Google and YouTube are very nasty with this on. Hate
           # Cookies
           "network.cookie.cookieBehavior" = 1; # Block third party cookies
           "network.cookie.lifetimePolicy" = 2; # Delete cookies at the end of the session
